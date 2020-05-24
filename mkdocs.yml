@@ -23,7 +23,8 @@ nav:
     - 比赛内容:
         - leetcode:
             - 题目0001:两数之和: 比赛内容/leetcode/题目0001_两数之和.md
-
+    - 其他内容:
+        - Emoji表情: 其他内容/Emoji表情.md
 markdown_extensions:
     - toc:
         permalink: true
