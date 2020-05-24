@@ -36,6 +36,7 @@
               {title: "\u4e00\u3001\u8ba1\u7b97\u673a\u8bbe\u5907", url: "#_2" },
               {title: "\u4e8c\u3001\u4e92\u8054\u7f51\u77e5\u8bc6", url: "#_3" },
               {title: "\u4e09\u3001\u65f6\u95f4\u534f\u8bae", url: "#_4" },
+              {title: "\u56db\u3001\u90ae\u4ef6\u534f\u8bae", url: "#_5" },
           ]},
         ];
 
@@ -1159,6 +1160,928 @@ date -d <span class="s2">&quot;15:21:11 03/18/2017  -1 days&quot;</span>  // 指
 </tr>
 </tbody>
 </table>
+<h2 id="_5">四、邮件协议<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<h3 id="41-pop3">4.1 POP3协议<a class="headerlink" href="#41-pop3" title="Permanent link">&para;</a></h3>
+<p>POP3全称为Post Office Protocol version3,即邮局协议第3版。它被用户代理用来邮件服务器取得邮件。POP3采用的也是C/S通信模型,采用的是一问一答式的方式,你向服务器发送一个命令,服务器必然会回复一个信息对应的RFC文档为RFC1939。</p>
+<ul>
+<li><strong>通信过程</strong></li>
+</ul>
+<p>用户从邮件服务器上接收邮件的典型通信过程如下。</p>
+<blockquote>
+<ol>
+<li>用户运行用户代理(如Foxmail, Outlook Express)。</li>
+<li>用户代理(以下简称客户端)与邮件服务器(以下简称服务器端)的110端口建立TCP连接。</li>
+<li>客户端向服务器端发出各种命令,来请求各种服务(如查询邮箱信息,下载某封邮件等)。</li>
+<li>服务端解析用户的命令,做出相应动作并返回给客户端一个响应。</li>
+<li>3和4交替进行,直到接收完所有邮件转到步骤6,或两者的连接被意外中断而直接退出。</li>
+<li>用户代理解析从服务器端获得的邮件,以适当地形式(如可读)的形式呈现给用户。</li>
+</ol>
+</blockquote>
+<p>其中2、3和4用POP3协议通信。可以看出命令和响应是POP3通信的重点</p>
+<ul>
+<li><strong>收取邮件过程</strong></li>
+</ul>
+<p>收取邮件的过程一般是:</p>
+<blockquote>
+<ol>
+<li>连接pop3服务器(poplib.POP3.init)</li>
+<li>发送用户名和密码进行验证(poplib.POP3.user poplib.POP3.pass_)</li>
+<li>获取邮箱中信件信息(poplib.POP3.stat)</li>
+<li>收取邮件(poplib.POP3.retr)</li>
+<li>删除邮件(poplib.POP3.dele)</li>
+<li>退出 (poplib.POP3.quit)</li>
+</ol>
+</blockquote>
+<ul>
+<li><strong>命令和响应</strong></li>
+</ul>
+<p>POP3的命令不多,它的一般形式是:<code>COMMAND [Parameter] &lt;CRLF&gt;</code>。其中COMMAND是ASCII形式的命令名,Parameter是相应的命令参数,<code>&lt;CRLF&gt;</code>是回车换行符(0xDH,0xAH)。</p>
+<p>服务器响应是由一个单独的命令行组成,或多个命令行组成,响应第一行"+OK"或"-ERR"开头,然后再加上一些ASCII文本。"+OK"和"-ERR"分别指出相应的操作状态是成功的还是失败的。</p>
+<p>POP3协议中有三种状态,认正状态,处理状态和更新状态。命令的执行可以改变协议的状态,而对于具体的某命令,它只能在具体的某状态下使用。客户机与服务器刚与服务器建立连接时,它的状态为认证状态;一旦客户机提供了自己身份并被成功地确认,即由认可状态转入处理状态;在完成相应的操作后客户机发出QUIT命令,则进入更新状态,更新之后又重返认可状态;当然在认可状态下执行QUIT命令,可释放连接。状态间的转移如图所示。</p>
+<p><img alt="" src="http://p-blog.csdn.net/images/p_blog_csdn_net/bripengandre/pop3状态转移图.JPG" /></p>
+<p><font color="#DDAA00" size="2px">图1:POP状态转移图</font></p>
+<ul>
+<li><strong>常用命令和相应函数</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>poplib方法</th>
+<th>参数</th>
+<th>状态　</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>USER</td>
+<td>user</td>
+<td>username　</td>
+<td>认证</td>
+<td>用户名,此命令与下面的pass命令若成功,将导致状态转换(明文)</td>
+</tr>
+<tr>
+<td>PASS</td>
+<td><code>pass_</code></td>
+<td>password</td>
+<td>认证</td>
+<td>用户密码,此命令若成功,状态转化为更新(授权码明文)</td>
+</tr>
+<tr>
+<td>APOP</td>
+<td>apop</td>
+<td>Name,Digest</td>
+<td>认证</td>
+<td>Digest是MD5消息摘要</td>
+</tr>
+<tr>
+<td>STAT</td>
+<td>stat</td>
+<td>None</td>
+<td>处理</td>
+<td>请求服务器发回关于邮箱的统计资料,如邮件总数和总字节数</td>
+</tr>
+<tr>
+<td>UIDL</td>
+<td>uidl</td>
+<td>[Msg#]</td>
+<td>处理</td>
+<td>返回邮件的唯一标识符,POP3会话的每个标识符都将是唯一的</td>
+</tr>
+<tr>
+<td>LIST</td>
+<td>list</td>
+<td>[Msg#]</td>
+<td>处理</td>
+<td>返回邮件数量和每个邮件的大小</td>
+</tr>
+<tr>
+<td>RETR</td>
+<td>retr</td>
+<td>[Msg#]</td>
+<td>处理</td>
+<td>返回由参数标识的邮件的全部文本</td>
+</tr>
+<tr>
+<td>DELE</td>
+<td>dele</td>
+<td>[Msg#]</td>
+<td>处理</td>
+<td>服务器将由参数标识的邮件标记为删除,由quit命令执行</td>
+</tr>
+<tr>
+<td>RSET</td>
+<td>rset</td>
+<td>None</td>
+<td>处理</td>
+<td>服务器将重置所有标记为删除的邮件,用于撤消DELE命令</td>
+</tr>
+<tr>
+<td>TOP</td>
+<td>top</td>
+<td>[Msg#]</td>
+<td>处理</td>
+<td>服务器将返回由参数标识的邮件的邮件头+前n行内容,n必须是正整数</td>
+</tr>
+<tr>
+<td>NOOP</td>
+<td>noop</td>
+<td>None</td>
+<td>处理</td>
+<td>服务器返回一个肯定的响应</td>
+</tr>
+<tr>
+<td>QUIT</td>
+<td>quit</td>
+<td>None　</td>
+<td>更新</td>
+<td>1) 如果服务器处于“处理”状态,么将进入“更新”状态以删除任何标记为删除的邮件,并重返“认证”状态。<br>2) 如果服务器处于“认证”状态,则结束会话,退出连接</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>shell样例</strong></li>
+</ul>
+<div class="highlight"><pre><span></span>openssl s_client -crlf -connect mail.staff.sina.com.cn:995   <span class="c1"># SSL连接(995端口)</span>
+telnet mail.staff.sina.com.cn <span class="m">110</span> <span class="o">(</span>非SSL加密<span class="o">)</span>
+</pre></div>
+
+<ul>
+<li><strong>python代码</strong></li>
+</ul>
+<div class="highlight"><pre><span></span>import poplib, getpass
+popserver, <span class="nv">user</span> <span class="o">=</span> <span class="s1">&#39;mail.staff.sina.com.cn&#39;</span>, <span class="s1">&#39;jizhong1&#39;</span>
+<span class="nv">passwd</span> <span class="o">=</span> getpass.getpass<span class="o">(</span><span class="s2">&quot;Email passwd for user %s: &quot;</span> % user<span class="o">)</span>
+<span class="nv">server</span> <span class="o">=</span> poplib.POP3_SSL<span class="o">(</span>popserver<span class="o">)</span>    <span class="c1"># server = poplib.POP3(popserver)</span>
+print<span class="o">(</span>server.user<span class="o">(</span>user<span class="o">))</span>
+print<span class="o">(</span>server.pass_<span class="o">(</span>passwd<span class="o">))</span>
+try:
+    print<span class="o">(</span>server.getwelcome<span class="o">())</span>
+    msgCount, <span class="nv">msgBytes</span> <span class="o">=</span> server.stat<span class="o">()</span>
+    print<span class="o">(</span><span class="s1">&#39;There are {} mail messages in {}MB.&#39;</span>.format<span class="o">(</span>msgCount, msgBytes / <span class="m">1024</span>. / <span class="m">1024</span>.<span class="o">))</span>
+    <span class="k">for</span> i in range<span class="o">(</span><span class="m">1</span>, <span class="m">10</span><span class="o">)</span>:
+        hdr, messages, <span class="nv">octes</span> <span class="o">=</span> server.retr<span class="o">(</span>i<span class="o">)</span>
+        print<span class="o">(</span><span class="s2">&quot;Email {} has {} bytes.&quot;</span>.format<span class="o">(</span>hdr,octes<span class="o">))</span>
+finally:
+    server.quit<span class="o">()</span>
+</pre></div>
+
+<h3 id="42-mime">4.2 MIME消息格式<a class="headerlink" href="#42-mime" title="Permanent link">&para;</a></h3>
+<p>MIME,英文全称为“MultipurposeInternetMailExtensions”,即多用途互联网邮件扩展,是目前互联网电子邮件普遍遵循的邮件技术规范。在MIME出现之前,互联网电子邮件主要遵循由RFC822所制定的标准,电子邮件一般只用来传递基本的ASCII码文本信息,MIME在RFC822的基础上对电子邮件规范做了大量的扩展,引入了新的格式规范和编码方式,在MIME的支持下,图像、声音、动画等二进制文件都可方便的通过电子邮件来进行传递,极大地丰富了电子邮件的功能,而且扩展了很多基于MIME的应用。目前互联网上使用的基本都是遵循MIME规范的电子邮件。从编码方式来说,MIME定义了两种编码方法Base64与QP(Quote-Printable)。</p>
+<p>电子邮件的分析和读取一般都通过专用的邮件软件来实现,比如Outlook、Foxmail,但这种第三方软件无法和开发者自己的系统整合,通过对MIME邮件格式的分析,我们可以在自己的应用程序中实现对MIME邮件所含信息的读取。</p>
+<p>总体来说,MIME消息由消息头和消息体两大部分组成。这里,分别称为邮件头、邮件体</p>
+<h4 id="421-mime">4.2.1 MIME邮件头<a class="headerlink" href="#421-mime" title="Permanent link">&para;</a></h4>
+<p>邮件头包含了发件人、收件人、主题、时间、MIME版本、邮件内容的类型等重要信息。每条信息称为一个域,域的基本格式:{域名}:{内容},域由域名后面跟":"再加上域的信息内容构成,一条域在邮件中占一行或者多行,域的首行左侧不能有空白字符,比如空格或者制表符,占用多行的域其后续行则必须以空白字符开头。域的信息内容中还可以包含属性,属性之间以";"分隔,属性的格式如下:{属性名称}="{属性值}"。</p>
+<p>一个消息头的例子:</p>
+<div class="highlight"><pre><span></span>Received: from SINA-HUB02 <span class="o">(</span><span class="m">10</span>.210.97.52<span class="o">)</span> by SINA-HUB02.staff.sina.com.cn
+ <span class="o">(</span><span class="m">10</span>.210.97.52<span class="o">)</span> with Microsoft SMTP Server id <span class="m">14</span>.3.123.3<span class="p">;</span> Thu, <span class="m">6</span> Jul <span class="m">2017</span>
+ <span class="m">00</span>:00:54 +0800
+From: &lt;myhr@staff.sina.com.cn&gt;
+To: &lt;jizhong1@staff.weibo.com&gt;
+Date: Thu, <span class="m">6</span> Jul <span class="m">2017</span> <span class="m">00</span>:00:54 +0800
+Subject: <span class="o">=</span>?utf-8?B?5qyi6L+O5oKo5Yqg5YWl5b6u5Y2a77yM5Y+C5LiO5YWs5Y+45pyq5p2l55qE5Y+R5bGV77yB?<span class="o">=</span>
+Content-Type: text/html<span class="p">;</span> <span class="nv">charset</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span>
+Content-Transfer-Encoding: base64
+Message-ID: &lt;dc9de56f-c7d8-439a-9cc7-8d75bb0f2996@SINA-HUB02.staff.sina.com.cn&gt;
+Return-Path: myhr@staff.sina.com.cn
+X-MS-Exchange-Organization-AuthSource: SINA-HUB02.staff.sina.com.cn
+X-MS-Exchange-Organization-AuthAs: Anonymous
+MIME-Version: <span class="m">1</span>.0
+</pre></div>
+
+<p>常见的标准域名和含义如下:</p>
+<table>
+<thead>
+<tr>
+<th align="left">域名</th>
+<th>含义</th>
+<th>添加者</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Received</td>
+<td>传输路径</td>
+<td>各级邮件服务器</td>
+</tr>
+<tr>
+<td align="left">Return-Path</td>
+<td>回复地址</td>
+<td>目标邮件服务器</td>
+</tr>
+<tr>
+<td align="left">Delivered-To</td>
+<td>发送地址</td>
+<td>目标邮件服务器</td>
+</tr>
+<tr>
+<td align="left">Reply-To</td>
+<td>回复地址</td>
+<td>邮件的创建者</td>
+</tr>
+<tr>
+<td align="left">From</td>
+<td>发件人地址</td>
+<td>邮件的创建者</td>
+</tr>
+<tr>
+<td align="left">To</td>
+<td>收件人地址</td>
+<td>邮件的创建者</td>
+</tr>
+<tr>
+<td align="left">Cc</td>
+<td>抄送地址</td>
+<td>邮件的创建者</td>
+</tr>
+<tr>
+<td align="left">Bcc</td>
+<td>暗送地址</td>
+<td>邮件的创建者</td>
+</tr>
+<tr>
+<td align="left">Date</td>
+<td>日期和时间</td>
+<td>邮件的创建者</td>
+</tr>
+<tr>
+<td align="left">Subject</td>
+<td>主题</td>
+<td>邮件的创建者</td>
+</tr>
+<tr>
+<td align="left">Message-ID</td>
+<td>消息ID</td>
+<td>邮件的创建者</td>
+</tr>
+<tr>
+<td align="left">MIME-Version</td>
+<td>MIME版本</td>
+<td>邮件的创建者</td>
+</tr>
+<tr>
+<td align="left">Content-Type</td>
+<td>内容的类型</td>
+<td>邮件的创建者</td>
+</tr>
+<tr>
+<td align="left">Content-Transfer-Encoding</td>
+<td>内容的传输编码方式</td>
+<td>邮件的创建者</td>
+</tr>
+</tbody>
+</table>
+<h4 id="422">4.2.2 邮件体<a class="headerlink" href="#422" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>MIME段头信息</strong></li>
+</ul>
+<p>在段头中,大致有如下一些域:</p>
+<table>
+<thead>
+<tr>
+<th align="left">域名</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Content-Type</td>
+<td>段体的类型</td>
+</tr>
+<tr>
+<td align="left">Content-Transfer-Encoding</td>
+<td>段体的传输编码方式</td>
+</tr>
+<tr>
+<td align="left">Content-Disposition</td>
+<td>段体的安排方式</td>
+</tr>
+<tr>
+<td align="left">Content-ID</td>
+<td>段体的ID</td>
+</tr>
+<tr>
+<td align="left">Content-Location</td>
+<td>段体的位置(路径)</td>
+</tr>
+<tr>
+<td align="left">Content-Base</td>
+<td>段体的基位置</td>
+</tr>
+</tbody>
+</table>
+<p>有的域除了值之外,还带有参数。值与参数、参数与参数之间以“;”分隔。参数名与参数值之间以“=”分隔。</p>
+<ul>
+<li><strong>multipart类型</strong></li>
+</ul>
+<p>multipart类型是MIME邮件的精髓。邮件体被分为多个段,每个段又包含段头和段体两部分,这两部分之间也以空行分隔。常见的multipart类型有三种:multipart/mixed, multipart/related和multipart/alternative。从它们的名称,不难推知这些类型各自的含义和用处。它们之间的层次关系可归纳为下图所示:</p>
+<div class="highlight"><pre><span></span>  +------------------------- multipart/mixed -----------------------------+
+  <span class="p">|</span>                                                                       <span class="p">|</span>
+  <span class="p">|</span>   +----------------- multipart/related -------------------+           <span class="p">|</span>
+  <span class="p">|</span>   <span class="p">|</span>                                                       <span class="p">|</span>           <span class="p">|</span>
+  <span class="p">|</span>   <span class="p">|</span>   +----- multipart/alternative ------+   +----------+ <span class="p">|</span> +------+  <span class="p">|</span>
+  <span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>                                  <span class="p">|</span>   <span class="p">|</span> 内嵌资源 <span class="p">|</span> <span class="p">|</span> <span class="p">|</span> 附件 <span class="p">|</span>  <span class="p">|</span>
+  <span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span> +------------+ +------------+    <span class="p">|</span>   +----------+ <span class="p">|</span> +------+  <span class="p">|</span>
+  <span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span> <span class="p">|</span> 纯文本正文 <span class="p">|</span> <span class="p">|</span> 超文本正文 <span class="p">|</span>    <span class="p">|</span>                <span class="p">|</span>           <span class="p">|</span>
+  <span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span> +------------+ +------------+    <span class="p">|</span>   +----------+ <span class="p">|</span> +------+  <span class="p">|</span>
+  <span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>                                  <span class="p">|</span>   <span class="p">|</span> 内嵌资源 <span class="p">|</span> <span class="p">|</span> <span class="p">|</span> 附件 <span class="p">|</span>  <span class="p">|</span>
+  <span class="p">|</span>   <span class="p">|</span>   +----------------------------------+   +----------+ <span class="p">|</span> +------+  <span class="p">|</span>
+  <span class="p">|</span>   <span class="p">|</span>                                                       <span class="p">|</span>           <span class="p">|</span>
+  <span class="p">|</span>   +-------------------------------------------------------+           <span class="p">|</span>
+  <span class="p">|</span>                                                                       <span class="p">|</span>
+  +-----------------------------------------------------------------------+
+</pre></div>
+
+<p>可以看出,如果要在邮件中要添加附件就必须将整封邮件的MIME类型定义为multipart/mixed;如果要在HTML格式的正文中引用内嵌资源,那就要定义multipart/related类型的MIME消息;如果普通文本内容与HTML文本内容共存,那就要定义multipart/alternative类型的MIME消息。</p>
+<p><strong>注意:如果整封邮件中只有普通文本内容与HTML文本内容,那么整封邮件的MIME类型则应定义为multipart/alternative;如果整封邮件中包含有HTML文本内容和内嵌资源,但不包含附件,那么整封邮件的MIME类型则应定义为multipart/related。</strong></p>
+<ul>
+<li><strong>content-type域</strong></li>
+</ul>
+<p>对于表示某个具体资源的MIME消息,它的消息头中需要指定资源的数据类型,用于定义用户的浏览器或相关设备如何显示将要加载的数据,或者如何处理将要加载的数据,此属性的值可以查看MIME类型;对于MIME组合消息,它的消息头中需要指定组合关系。具体资源的数据类型和组合消息的组合关系,都是通过消息头中的Content-Type头字段来指定的。</p>
+<p>content-type一般以下面的形式出现:Content-Type:[type]/[subtype]; parameter。Content-Type字段中的内容以“主类型/子类型”的形式出现,主类型有text、image、audio、video、application、multipart、message等,分别表示文本、图片、音频、视频、应用程序、组合结构、消息等。每个主类型下面都有多个子类型,例如text主类型包含plain、html、xml、css等子类型。multipart主类型用于表示MIME组合消息,它是MIME协议中最重要的一种类型。一封MIME邮件中的MIME消息可以有三种组合关系:混合、关联、选择,它们对应MIME类型如下:</p>
+<blockquote>
+<ol>
+<li><code>multipart/mixed</code>:表示消息体中的内容是混和组合类型,内容可以是文本、声音和附件等不同邮件内容的混和体。</li>
+<li><code>multipart/related</code>:表示消息体中的内容是关联(依赖)组合类型,邮件正文要使用HTML代码引用内嵌的图片资源,它们组合成的MIME消息的MIME类型就应该定义为multipart/related,表示其中某些资源(HTML代码)要引用(依赖)另外的资源(图像数据),引用资源与被引用的资源必须组合成multipart/related类型的MIME组合消息。</li>
+<li><code>multipart/alternative</code>:表示消息体中的内容是选择组合类型,例如一封邮件的邮件正文同时采用HTML格式和普通文本格式进行表达时,就可以将它们嵌套在一个 multipart/alternative类型的MIME组合消息中。这种做法的好处在于如果邮件阅读程序不支持HTML格式时,可以采用其中的文本格式进行替代。</li>
+</ol>
+</blockquote>
+<p>type 有下面的形式:</p>
+<blockquote>
+<ul>
+<li><code>Text</code>:用于标准化地表示的文本信息,文本消息可以是多种字符集和或者多种格式的;</li>
+<li><code>Multipart</code>:用于连接消息体的多个部分构成一个消息,这些部分可以是不同类型的数据;</li>
+<li><code>Application</code>:用于传输应用程序数据或者二进制数据;</li>
+<li><code>Message</code>:用于包装一个E-mail消息;</li>
+<li><code>Image</code>:用于传输静态图片数据;</li>
+<li><code>Audio</code>:用于传输音频或者音声数据;</li>
+<li><code>Video</code>:用于传输动态影像数据,可以是与音频编辑在一起的视频数据格式。</li>
+</ul>
+</blockquote>
+<p>subtype用于指定type的详细形式。"type/subtype"配对的集合和与此相关的参数。下面是最经常用到的一些MIME类型:</p>
+<div class="highlight"><pre><span></span>text/html(HTML 文档);
+text/plain(纯文本);
+text/css(CSS 样式表);
+image/gif(GIF 图像);
+image/jpeg(JPG 图像);
+application/x-javascript(JavaScript 脚本);
+application/x-shockwave-flash(Flash);
+application/x- www-form-urlencoded(使用 HTTP 的 POST 方法提交的表单);
+multipart/form-data(同上,但主要用于表单提交时伴随文件上传的场合)。
+</pre></div>
+
+<p>更详细的内容请查看:<a href="http://tool.oschina.net/commons"><code>HTTP Content-type</code></a></p>
+<p>一封最复杂的电子邮件的基本情况为:含有邮件正文和邮件附件,邮件正文可以同时使用HTML格式和普通文本格式表示,并且HTML格式的正文中又引用了其他的内嵌资源。对于这种最复杂的电子邮件,可以采用如图所示的MIME消息结构进行描述。</p>
+<p>在Content-type头字段中除了可以定义消息体的MIME类型外,还可以在MIME类型后面包含相应的属性,属性以“属性名=属性值”的形式出现,属性与MIME类型之间采用分号(;)分隔,如下所示:</p>
+<div class="highlight"><pre><span></span>Content-Type:multipart/mixed<span class="p">;</span><span class="nv">boundary</span><span class="o">=</span><span class="s2">&quot;----=_NextPart_000_0050_01C&quot;</span>
+</pre></div>
+
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Complete_list_of_MIME_types">常用的属性如表</a>所示:</p>
+<table>
+<thead>
+<tr>
+<th align="left">主类型</th>
+<th>属性名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">text</td>
+<td>charset</td>
+<td>用于说明文本内容的字符集编码</td>
+</tr>
+<tr>
+<td align="left">image</td>
+<td>name</td>
+<td>用于说明图片文件的文件名</td>
+</tr>
+<tr>
+<td align="left">application</td>
+<td>name</td>
+<td>用于说明应用程序的文件名</td>
+</tr>
+<tr>
+<td align="left">multipart</td>
+<td>boundary</td>
+<td>用于定义MIME消息之间的分隔符</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Content-Transfer-Encoding字段</strong></li>
+</ul>
+<p>Content-Transfer-Encoding头字段用于指定MIME消息体中的内容所采用的邮件编码方式.</p>
+<ul>
+<li><strong>Content-Disposition字段</strong></li>
+</ul>
+<p>Content-Disposition头字段用于指定邮件阅读程序处理数据内容的方式,有inline和attachment两种标准方式,inline表示直接处理,而attachment表示当做附件处理。如果将Content-Disposition设置为attachment,在其后还可以指定filename 属性,如下所示:</p>
+<div class="highlight"><pre><span></span>Content-Disposition: attachment; filename=&quot;1.bmp&quot;
+</pre></div>
+
+<p>上面的MIME头字段表示MIME消息体的内容为邮件附件,附件名"1.bmp"。</p>
+<ul>
+<li><strong>Content-ID字段</strong></li>
+</ul>
+<p>Content-ID头字段用于为"<code>multipart/related</code>"组合消息中的内嵌资源指定一个唯一标识号,在HTML格式的正文中可以使用这个唯一标识号来引用该内嵌资源。例如,假设将一个表示内嵌图片的MIME消息的Content-ID头字段设置为如下形式:<code>Content-ID:it315logo_gif</code>。</p>
+<p>那么,在HTML正文中就需要使用如下HTML语句来引用该图片资源:<code>&lt;img src="cid:it315logo_gif"&gt;</code></p>
+<p><strong>注意,在引用Content-ID头字段标识的内嵌资源时,要在资源的唯一标识号前面加上“cid:”,以说明要采用唯一标识号对资源进行引用。</strong></p>
+<ul>
+<li><strong>Content-Location</strong></li>
+</ul>
+<p>Content-Location头字段用于为内嵌资源设置一个URI地址,这个URI地址可以是绝对或相对的。当使用Content-Location头字段为一个内嵌资源指定一个URI地址后,在HTML格式的正文中也可以使用这个URI来引用该内嵌资源。例如,假设将一个表示内嵌图片的MIME消息的Content-Location头字段设置为如下形式:<code>Content-Location:http://www.it315.org/images/it315logo.gif</code></p>
+<p>那么,在HTML正文中就可以使用如下HTML语句来引用该图片资源:<code>&lt;img src="http://www.it315.org/images/it315logo.gif"&gt;</code></p>
+<ul>
+<li><strong>Content-Base</strong></li>
+</ul>
+<p>Content-Base头字段用于为内嵌资源设置一个基准路径,只有这样,Content-Location头字段中设置的URI才可以采用相对地址。例如,假设将一个表示内嵌图片的MIME消息的Content-Base和Content-Location头字段设置为如下形式:</p>
+<div class="highlight"><pre><span></span>Content-Base: http://www.it315.org/images/
+Content-Location: it315logo.gif
+</pre></div>
+
+<p>那么,内嵌资源的完整路径就是Content-Base头字段设置的基准路径与Content-Location头字段设置的相对路径相加的结果,在HTML正文中就可以使用如下HTML语句来引用该图片资源:<code>&lt;img src="http://www.it315.org/images/it315logo.gif"&gt;</code></p>
+<h4 id="423-python">4.2.3 python代码<a class="headerlink" href="#423-python" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">poplib</span><span class="o">,</span> <span class="nn">email</span><span class="o">,</span> <span class="nn">getpass</span>
+<span class="kn">from</span> <span class="nn">email.parser</span> <span class="kn">import</span> <span class="n">Parser</span>
+<span class="kn">from</span> <span class="nn">email.header</span> <span class="kn">import</span> <span class="n">decode_header</span>
+<span class="kn">from</span> <span class="nn">email.utils</span> <span class="kn">import</span> <span class="n">parseaddr</span>
+
+<span class="c1"># 邮件的Subject或者Email中包含的名字都是经过编码后的str,要正常显示,就必须decode</span>
+<span class="k">def</span> <span class="nf">decode_str</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="n">value</span><span class="p">,</span> <span class="n">charset</span> <span class="o">=</span> <span class="n">decode_header</span><span class="p">(</span><span class="n">s</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">charset</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">charset</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">pass</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">==</span> <span class="nb">unicode</span><span class="p">:</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf8&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">value</span>
+
+<span class="c1"># 解析邮件内容</span>
+<span class="k">def</span> <span class="nf">parse_mail</span><span class="p">(</span><span class="n">msg_content</span><span class="p">,</span> <span class="n">UIDL</span><span class="o">=</span><span class="s2">&quot;0001&quot;</span><span class="p">):</span>
+    <span class="n">temp_download_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DOWNLOAD_PATH</span><span class="p">,</span><span class="n">UIDL</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">temp_download_path</span><span class="p">):</span><span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">temp_download_path</span><span class="p">)</span>
+
+    <span class="n">msg</span> <span class="o">=</span> <span class="n">Parser</span><span class="p">()</span><span class="o">.</span><span class="n">parsestr</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\r\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">msg_content</span><span class="p">))</span>
+
+    <span class="c1"># 获取header 相关的信息</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">header</span> <span class="ow">in</span> <span class="n">headers</span><span class="p">:</span>
+        <span class="n">item</span><span class="p">,</span> <span class="n">content</span> <span class="o">=</span> <span class="n">header</span>
+        <span class="k">if</span> <span class="n">item</span> <span class="o">==</span> <span class="s2">&quot;Subject&quot;</span> <span class="ow">or</span> <span class="n">item</span> <span class="o">==</span> <span class="s2">&quot;Thread-Index&quot;</span> <span class="ow">or</span> <span class="n">item</span> <span class="o">==</span> <span class="s2">&quot;Thread-Topic&quot;</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">decode_str</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;{} : {}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">item</span> <span class="o">==</span> <span class="s2">&quot;From&quot;</span> <span class="ow">or</span> <span class="n">item</span> <span class="o">==</span> <span class="s2">&quot;To&quot;</span> <span class="ow">or</span> <span class="n">item</span> <span class="o">==</span> <span class="s2">&quot;CC&quot;</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">item_addr_list</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">item_addr</span> <span class="ow">in</span> <span class="n">item_addr_list</span><span class="p">:</span>
+                <span class="n">hdr</span><span class="p">,</span> <span class="n">addr</span> <span class="o">=</span><span class="n">parseaddr</span><span class="p">(</span><span class="n">item_addr</span><span class="p">)</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">decode_str</span><span class="p">(</span><span class="n">hdr</span><span class="p">)</span>
+                <span class="n">value</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;{}&lt;{}&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">addr</span><span class="p">))</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;{} : {}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">value</span><span class="p">)))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;{} : {}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">decode_str</span><span class="p">(</span><span class="n">content</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">)))</span>
+
+    <span class="c1"># 获取邮件内容</span>
+    <span class="n">ct</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">par</span> <span class="ow">in</span> <span class="n">msg</span><span class="o">.</span><span class="n">walk</span><span class="p">():</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">par</span><span class="o">.</span><span class="n">get_filename</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">name</span><span class="p">:</span>           <span class="c1"># 是否为附件</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">decode_str</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">par</span><span class="o">.</span><span class="n">get_payload</span><span class="p">(</span><span class="n">decode</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c1"># 注意一定要用wb来打开文件,因为附件一般都是二进制文件</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">temp_download_path</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+                    <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s1">&#39;ERROR: {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># 不是附件,是文本内容</span>
+            <span class="n">body</span> <span class="o">=</span> <span class="n">par</span><span class="o">.</span><span class="n">get_payload</span><span class="p">(</span><span class="n">decode</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span> <span class="c1"># 解码出文本内容,直接输出来就可以了。</span>
+            <span class="n">content_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">temp_download_path</span><span class="p">,</span> <span class="s2">&quot;content_{}.txt&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ct</span><span class="p">))</span>
+
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">content_file</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">body</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                    <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">decode_str</span><span class="p">(</span><span class="n">body</span><span class="p">))</span>
+                    <span class="n">ct</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="k">def</span> <span class="nf">get_mails</span><span class="p">(</span><span class="n">popserver</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">server</span> <span class="o">=</span> <span class="n">poplib</span><span class="o">.</span><span class="n">POP3_SSL</span><span class="p">(</span><span class="n">popserver</span><span class="p">)</span>
+        <span class="n">server</span><span class="o">.</span><span class="n">user</span><span class="p">(</span><span class="n">username</span><span class="p">)</span>
+        <span class="n">server</span><span class="o">.</span><span class="n">pass_</span><span class="p">(</span><span class="n">password</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">server</span><span class="o">.</span><span class="n">getwelcome</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;+OK&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)))</span>
+
+        <span class="c1"># 获取邮件数量以及大小</span>
+        <span class="n">msgCount</span><span class="p">,</span> <span class="n">msgBytes</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="n">stat</span><span class="p">()</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Get {} mails costing storage {} Mb.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">msgCount</span><span class="p">,</span> <span class="n">msgBytes</span> <span class="o">/</span> <span class="mf">1024.</span> <span class="o">/</span> <span class="mf">1024.</span><span class="p">))</span>
+
+        <span class="c1"># 获取前十封邮件</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">msgCount</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+
+            <span class="c1"># 获取邮件的标识符和邮件大小</span>
+            <span class="n">status</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">UIDL</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="n">uidl</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+            <span class="n">status</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">SIZE</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+
+            <span class="c1"># 获取邮件的内容(状态, 内容, 大小)</span>
+            <span class="n">hdr</span><span class="p">,</span> <span class="n">messages</span><span class="p">,</span> <span class="n">octes</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="n">retr</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Mail index({}):uidl ({}) and size ({})&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">UIDL</span><span class="p">,</span> <span class="n">SIZE</span><span class="p">))</span>
+            <span class="n">parse_mail</span><span class="p">(</span><span class="n">messages</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">UIDL</span><span class="p">))</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">server</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">popserver</span><span class="p">,</span> <span class="n">user</span> <span class="o">=</span> <span class="s1">&#39;mail.staff.sina.com.cn&#39;</span><span class="p">,</span> <span class="s1">&#39;jizhong1&#39;</span>
+    <span class="n">passwd</span> <span class="o">=</span> <span class="n">getpass</span><span class="o">.</span><span class="n">getpass</span><span class="p">(</span><span class="s2">&quot;Email passwd for user </span><span class="si">%s</span><span class="s2">: &quot;</span> <span class="o">%</span> <span class="n">user</span><span class="p">)</span>
+    <span class="n">get_mails</span><span class="p">(</span><span class="n">popserver</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">passwd</span><span class="p">)</span>
+</pre></div>
+
+<p>官方的MIME信息是由<code>Internet Engineering Task Force (IETF)</code>在下面的文档中提供的:</p>
+<blockquote>
+<ul>
+<li>RFC-822 Standard for ARPA Internet text messages</li>
+<li>RFC-2045 MIME Part 1: Format of Internet Message Bodies</li>
+<li>RFC-2046 MIME Part 2: Media Types</li>
+<li>RFC-2047 MIME Part 3: Header Extensions for Non-ASCII Text</li>
+<li>RFC-2048 MIME Part 4: Registration Procedures</li>
+<li>RFC-2049 MIME Part 5: Conformance Criteria and Examples</li>
+</ul>
+</blockquote>
+<h3 id="43-smtp">4.3 SMTP格式<a class="headerlink" href="#43-smtp" title="Permanent link">&para;</a></h3>
+<p>SMTP(Simple Mail Transfer Protocol,简单邮件传输协议)即简单邮件传输协议,它是一组用于由源地址到目的地址传送邮件的规则,由它来控制信件的中转方式。它定义了邮件客户端与SMTP服务器之间,以及两台SMTP服务器之间发送邮件的通信规则。SMTP协议属于TCP/IP协议族,通信双方采用一问一答的命令/响应形式进行对话,且定了对话的规则和所有命令/响应的语法格式。</p>
+<h4 id="431">4.3.1 用户代理<a class="headerlink" href="#431" title="Permanent link">&para;</a></h4>
+<p>用户代理UA(User Agent)是用户与电子邮件系统的交互接口,一般来说它就是我们PC机上的一个程序。Windows上常见的用户代理是Foxmail和Outlook Express。</p>
+<p>用户代理提供一个好的用户界面,它提取用户在其界面填写的各项信息,生成一封符合SMTP等邮件标准的邮件,然后采用SMTP协议将邮件发送到发送端邮件服务器。</p>
+<h4 id="432">4.3.2 邮件服务器<a class="headerlink" href="#432" title="Permanent link">&para;</a></h4>
+<p>邮件服务器是电子邮件系统的核心,它用来发送和接收邮件。邮件服务器不同于普通PC的是它几乎是全天工作的,所以它可以在任何时候为用户提供服务,很多ISP都提供免费的邮件服务器,如126提供smtp.126.com邮件服务器。邮件服务器向其它邮件服务器转发邮件也是采用SMTP协议。</p>
+<p>一般情况下,一封邮件的发送和接收过程如下:</p>
+<blockquote>
+<ol>
+<li>发信人在用户代理里编辑邮件,包括填写发信人邮箱、收信人邮箱和邮件标题等等。</li>
+<li>用户代理提取发信人编辑的信息,生成一封符合邮件格式标准(RFC822)的邮件。</li>
+<li>用户代理用SMTP将邮件发送到发送端邮件服务器(即发信人邮箱所对应的邮件服务器)。</li>
+<li>发送端邮件服务器用SMTP将邮件发送到接收端邮件服务器(即收信人邮箱所对应的邮件服务器)。</li>
+<li>用户代理解析收到的邮件,以适当的形式呈现在收信人面前。</li>
+</ol>
+</blockquote>
+<p>一个具体的SMTP通信(如发送端邮件服务器与接收端服务器的通信)的过程如下:</p>
+<blockquote>
+<ol>
+<li>发送端邮件服务器(以下简称客户端)与接收端邮件服务器(以下简称服务器)的25号端口建立TCP连接。</li>
+<li>客户端向服务器发送各种命令,来请求各种服务(如认证、指定发送人和接收人)。</li>
+<li>服务器解析用户的命令,做出相应动作并返回给客户端一个响应。</li>
+<li>2和3交替进行,直到所有邮件都发送完或两者的 连接被意外中断。</li>
+</ol>
+</blockquote>
+<p>SMTP连接和发送的过程</p>
+<blockquote>
+<ol>
+<li>建立TCP连接</li>
+<li>客户端发送HELO命令以标识发件人自己的身份,然后客户端发送MAIL命令;</li>
+<li>客户端发送RCPT命令,以标识该电子邮件的计划接收人,可以有多个RCPT行;</li>
+<li>协商结束,发送邮件,用命令DATA发送</li>
+<li>以.表示结束输入内容一起发送出去</li>
+<li>结束此次发送,用QUIT命令退出</li>
+</ol>
+</blockquote>
+<h4 id="433-smtp">4.3.3 SMTP常见命令和响应<a class="headerlink" href="#433-smtp" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>SMTP常见的命令</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left">命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>EHLO &lt;domain&gt;</code></td>
+<td>ehlo命令是SMTP邮件发送程序与SMTP邮件接收程序建立连接后必须发送的第一条SMTP命令,参数<code>&lt;domain&gt;</code>表示SMTP邮件发送者的主机名。ehlo命令用于替代传统SMTP协议中的helo命令。使服务器可以表明自己支持扩展简单邮件传输协议(ESMTP)命令</td>
+</tr>
+<tr>
+<td align="left"><code>HELO &lt;domain&gt;</code></td>
+<td>客户端为标识自己的身份而发送的命令</td>
+</tr>
+<tr>
+<td align="left"><code>AUTH &lt;para&gt;</code></td>
+<td>如果SMTP邮件接收程序需要SMTP邮件发送程序进行认证时,它会向SMTP邮件发送程序提示它所采用的认证方式,SMTP邮件发送程序接着应该使用这个命令回应SMTP邮件接收程序,参数<code>&lt;para&gt;</code>表示回应的认证方式,通常是SMTP邮件接收程序先前提示的认证方式。[PLAIN/LOGIN/]。其中数据都是base64加密的。</td>
+</tr>
+<tr>
+<td align="left"><code>MAIL FROM &lt;reverse-path&gt;</code></td>
+<td>此命令用于指定邮件发送者的邮箱地址,参数<code>&lt;reverse-path&gt;</code>表示发件人的邮箱地址。[可以不是自己的邮箱地址,可以伪装]</td>
+</tr>
+<tr>
+<td align="left"><code>RCPT TO &lt;forward-path&gt;</code></td>
+<td>此命令用于指定邮件接收者的邮箱地址,参数<code>&lt;forward-path&gt;</code>表示接收者的邮箱地址。如果邮件要发送给多个接收者,那么应使用多条rcpt to命令来分别指定每一个接收者的邮箱地址。</td>
+</tr>
+<tr>
+<td align="left"><code>DATA</code></td>
+<td>此命令用于表示SMTP邮件发送程序准备开始传送邮件内容,在这个命令后面发送的所有数据都将被当作邮件内容,直至遇到“<code>&lt;CRLF&gt;．&lt;CRLF&gt;</code>”标识符,则表示邮件内容结束。</td>
+</tr>
+<tr>
+<td align="left"><code>REST</code></td>
+<td>重置会话,当前传输被取消</td>
+</tr>
+<tr>
+<td align="left"><code>NOOP</code></td>
+<td>要求服务器返回OK应答,一般用作测试</td>
+</tr>
+<tr>
+<td align="left"><code>VRFY &lt;string&gt;</code></td>
+<td>验证指定的邮箱是否存在,由于安全方面的原因,服务器大多禁止此命令</td>
+</tr>
+<tr>
+<td align="left"><code>EXPN &lt;string&gt;</code></td>
+<td>验证给定的邮箱列表是否存在,由于安全方面的原因,服务器大多禁止此命令</td>
+</tr>
+<tr>
+<td align="left"><code>HELP</code></td>
+<td>返回SMTP服务所支持的命令列表。</td>
+</tr>
+<tr>
+<td align="left"><code>QUIT</code></td>
+<td>此命令表示要结束邮件发送过程,SMTP邮件接收程序接收到此命令后,将关闭与SMTP邮件发送程序的网络连接。</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>SMTP常用的响应</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left">响应码</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">220<code>&lt;domain&gt;</code></td>
+<td>服务器就绪</td>
+</tr>
+<tr>
+<td align="left">211<code>&lt;domain&gt;</code></td>
+<td>系统状态或系统帮助响应</td>
+</tr>
+<tr>
+<td align="left">214<code>&lt;domain&gt;</code></td>
+<td>帮助信息</td>
+</tr>
+<tr>
+<td align="left">221</td>
+<td>服务关闭</td>
+</tr>
+<tr>
+<td align="left">250</td>
+<td>要求的邮件操作完成</td>
+</tr>
+<tr>
+<td align="left">251</td>
+<td>用户非本地,将转发向<code>&lt;forward-path&gt;</code></td>
+</tr>
+<tr>
+<td align="left">354</td>
+<td>开始邮件输入,以“.”结束</td>
+</tr>
+<tr>
+<td align="left">421</td>
+<td>服务器未就绪,关闭传输信道</td>
+</tr>
+<tr>
+<td align="left">450</td>
+<td>要求的邮件操作未完成,邮箱不可用</td>
+</tr>
+<tr>
+<td align="left">451</td>
+<td>放弃要求的操作,处理过程中出错</td>
+</tr>
+<tr>
+<td align="left">452</td>
+<td>系统存储不足,要求的操作未执行</td>
+</tr>
+<tr>
+<td align="left">501</td>
+<td>参数格式错误</td>
+</tr>
+<tr>
+<td align="left">502</td>
+<td>命令不可实现</td>
+</tr>
+<tr>
+<td align="left">503</td>
+<td>错误的命令序列</td>
+</tr>
+<tr>
+<td align="left">504</td>
+<td>命令参数不可实现</td>
+</tr>
+<tr>
+<td align="left">550</td>
+<td>要求的邮件操作未完成,邮箱不可用</td>
+</tr>
+<tr>
+<td align="left">551</td>
+<td>用户非本地,请尝试<code>&lt;forward-path&gt;</code></td>
+</tr>
+<tr>
+<td align="left">552</td>
+<td>过量的存储分配,要求的操作未执行</td>
+</tr>
+<tr>
+<td align="left">553</td>
+<td>邮箱名不可用,要求的操作未执行</td>
+</tr>
+<tr>
+<td align="left">554</td>
+<td>操作失败</td>
+</tr>
+</tbody>
+</table>
+<h4 id="434-python">4.3.4 python发送邮件<a class="headerlink" href="#434-python" title="Permanent link">&para;</a></h4>
+<p>在Python程序中,经常使用SMTP来发送邮件。支持的库有:smtplib和email, smtplib负责发送邮件,email负责构造邮件。</p>
+<ul>
+<li><strong>简单的例子</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><span class="c1"># 首先构造邮件:</span>
+<span class="kn">from</span> <span class="nn">email.mime.text</span> <span class="kn">import</span> <span class="n">MIMEText</span>
+<span class="n">msg</span> <span class="o">=</span> <span class="n">MIMEText</span><span class="p">(</span><span class="s1">&#39;hello, send by Python...&#39;</span><span class="p">,</span> <span class="s1">&#39;plain&#39;</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+<span class="n">msg</span><span class="p">[</span><span class="s2">&quot;from&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;hello@sina.cn&quot;</span>     <span class="c1"># 邮件的发件人</span>
+
+<span class="c1"># 使用smtplib发送邮件</span>
+<span class="kn">import</span> <span class="nn">smtplib</span>
+<span class="c1"># smtpObject = smtplib.SMTP(host, port)</span>
+<span class="c1"># smtpObject = smtplib.SMTP_SSL(host, port)        # 有的服务器禁用25端口,此时用加密的SMTP</span>
+<span class="n">smtpObject</span> <span class="o">=</span> <span class="n">smtplib</span><span class="o">.</span><span class="n">SMTP</span><span class="p">(</span><span class="s2">&quot;smtp.sina.cn&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span>  <span class="c1"># 连接smtp服务器, port 是端口号,一般是25, SSL为465</span>
+<span class="c1"># smtp.login(user, password)      # 登陆账号: user 为账号, password为账号对应的密码</span>
+<span class="n">smtpObject</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="s2">&quot;hello&quot;</span><span class="p">)</span>
+<span class="c1"># smtpObject.sendmail(sender, receivers_list, msg)</span>
+<span class="n">smtpObject</span><span class="o">.</span><span class="n">sendmail</span><span class="p">(</span><span class="s2">&quot;hello@sina.cn&quot;</span><span class="p">,[</span><span class="s2">&quot;jzwang@whu.edu.cn&quot;</span><span class="p">,],</span> <span class="n">msg</span><span class="o">.</span><span class="n">as_string</span><span class="p">())</span>
+<span class="n">smtpObject</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+</pre></div>
+
+<ul>
+<li><strong>邮件的头部信息</strong></li>
+</ul>
+<p>从发送的邮件可以看到:主题没有和收件人没有显示。这是因为邮件主题、如何显示发件人、收件人等信息并不是通过SMTP协议发给MTA(Mail Transport Agent),而是包含在发给MTA的文本中的,所以,必须把From、To和Subject添加到·MIMEText·中,才是一封完整的邮件:</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">email.header</span> <span class="kn">import</span> <span class="n">Header</span>
+<span class="kn">from</span> <span class="nn">email.mime.text</span> <span class="kn">import</span> <span class="n">MIMEText</span>
+<span class="kn">from</span> <span class="nn">email.utils</span> <span class="kn">import</span> <span class="n">parseaddr</span><span class="p">,</span> <span class="n">formataddr</span>
+<span class="k">def</span> <span class="nf">_format_addr</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="n">name</span><span class="p">,</span> <span class="n">addr</span> <span class="o">=</span> <span class="n">parseaddr</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">formataddr</span><span class="p">((</span> \
+        <span class="n">Header</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span> \
+        <span class="n">addr</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">)</span> <span class="k">else</span> <span class="n">addr</span><span class="p">))</span>
+
+<span class="n">msg</span> <span class="o">=</span> <span class="n">MIMEText</span><span class="p">(</span><span class="s1">&#39;hello, send by Python...&#39;</span><span class="p">,</span> <span class="s1">&#39;plain&#39;</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+<span class="n">msg</span><span class="p">[</span><span class="s1">&#39;From&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;18515546516@sina.cn&quot;</span>
+<span class="c1"># msg[&#39;To&#39;] = _format_addr(u&#39;纪中 &lt;jizhong1@staff.weibo.com&gt;&#39;) + &quot;,jzwang@whu.edu.cn&quot;</span>
+<span class="n">msg</span><span class="p">[</span><span class="s2">&quot;to&quot;</span><span class="p">]</span><span class="o">=</span><span class="s2">&quot;jzwang@whu.edu.cn,jizhong1@staff.weibo.com&quot;</span>
+<span class="n">msg</span><span class="p">[</span><span class="s1">&#39;Subject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Header</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;来自SMTP的问候……&#39;</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+</pre></div>
+
+<p>我们编写了一个函数_format_addr()来格式化一个邮件地址。注意不能简单地传入name \&lt;<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#97;&#100;&#100;&#114;&#64;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#111;&#109;">&#97;&#100;&#100;&#114;&#64;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#111;&#109;</a>>,因为如果包含中文,需要通过Header对象进行编码。msg['To']接收的是字符串而不是list,如果有多个邮件地址,用,分隔即可。</p>
+<p>有时候在发送邮件时候,我们希望某几个人是收的,其他有些人只是知道有这种情况而已,这时需要邮件的抄送功能,这也是在邮件头部信息中体现的:</p>
+<div class="highlight"><pre><span></span><span class="n">cc</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;bb@bbb.com&#39;</span><span class="p">,</span> <span class="s1">&#39;cc@ccc.com&#39;</span><span class="p">]</span>
+<span class="n">message</span><span class="p">[</span><span class="s1">&#39;Cc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Header</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cc</span><span class="p">),</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>   <span class="c1"># 抄送</span>
+<span class="n">message</span><span class="p">[</span><span class="s1">&#39;Bcc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Header</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cc</span><span class="p">),</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>  <span class="c1"># 密送</span>
+</pre></div>
+
+<ul>
+<li><strong>带有附件</strong></li>
+</ul>
+<p>带附件的邮件可以看做包含若干部分的邮件:文本和各个附件本身,所以,可以构造一个MIMEMultipart对象代表邮件本身,然后往里面加上一个MIMEText作为邮件正文,再继续往里面加上表示附件的MIMEBase对象即可:</p>
+<div class="highlight"><pre><span></span><span class="n">msg</span> <span class="o">=</span> <span class="n">email</span><span class="o">.</span><span class="n">mime</span><span class="o">.</span><span class="n">multipart</span><span class="o">.</span><span class="n">MIMEMultipart</span><span class="p">()</span>
+<span class="n">msg</span><span class="p">[</span><span class="s1">&#39;from&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sendAddr</span>
+<span class="n">msg</span><span class="p">[</span><span class="s1">&#39;to&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">recipientAddrs</span>
+<span class="n">msg</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">subject</span>
+<span class="n">msg</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">email</span><span class="o">.</span><span class="n">mime</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">MIMEText</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="s1">&#39;plain&#39;</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+<span class="c1"># 添加附件,添加rar文件</span>
+<span class="n">part</span> <span class="o">=</span> <span class="n">MIMEApplication</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./test.rar&#39;</span><span class="p">,</span><span class="s1">&#39;rb&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+<span class="n">part</span><span class="o">.</span><span class="n">add_header</span><span class="p">(</span><span class="s1">&#39;Content-Disposition&#39;</span><span class="p">,</span> <span class="s1">&#39;attachment&#39;</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;test.rar&quot;</span><span class="p">)</span>
+<span class="n">part</span><span class="o">.</span><span class="n">add_header</span><span class="p">(</span><span class="s1">&#39;Content-ID&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;0&gt;&#39;</span><span class="p">)</span>       <span class="c1"># 定义内容ID</span>
+<span class="n">part</span><span class="o">.</span><span class="n">add_header</span><span class="p">(</span><span class="s1">&#39;X-Attachment-Id&#39;</span><span class="p">,</span> <span class="s1">&#39;0&#39;</span><span class="p">)</span>
+<span class="n">msg</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">part</span><span class="p">)</span>
+<span class="n">smtp</span><span class="o">.</span><span class="n">sendmail</span><span class="p">(</span><span class="n">sendAddr</span><span class="p">,</span> <span class="n">recipientAddrs</span><span class="p">,</span> <span class="n">msg</span><span class="o">.</span><span class="n">to_string</span><span class="p">())</span>
+<span class="n">smtp</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+</pre></div>
+
+<p>在python中,MIME的这些对象的继承关系如下。</p>
+<div class="highlight"><pre><span></span><span class="n">MIMEBase</span>
+<span class="o">|--</span> <span class="n">MIMENonMultipart</span>
+    <span class="o">|--</span> <span class="n">MIMEApplication</span>
+    <span class="o">|--</span> <span class="n">MIMEAudio</span>
+    <span class="o">|--</span> <span class="n">MIMEImage</span>
+    <span class="o">|--</span> <span class="n">MIMEMessage</span>
+    <span class="o">|--</span> <span class="n">MIMEText</span>
+<span class="o">|--</span> <span class="n">MIMEMultipart</span>
+</pre></div>
+
+<p>一般来说,不会用到MIMEBase,而是直接使用它的继承类。MIMEMultipart有attach方法,而MIMENonMultipart没有,只能被attach。MIME有很多种类型,这个略麻烦,如果附件是图片格式,我要用MIMEImage,如果是音频,要用MIMEAudio,如果是word、excel,我都不知道该用哪种MIME类型了,得上google去查。最懒的方法就是,不管什么类型的附件,都用MIMEApplication,MIMEApplication默认子类型是application/octet-stream。application/octet-stream表明“这是个二进制的文件,希望你们那边知道怎么处理”,然后客户端,比如qq邮箱,收到这个声明后,会根据文件扩展名来猜测。</p>
+<ul>
+<li><strong>显示图片的HTML邮件</strong></li>
+</ul>
+<p>如果我们要发送HTML邮件,而不是普通的纯文本文件怎么办？方法很简单,在构造MIMEText对象时,把HTML字符串传进去,再把第二个参数由plain变为html就可以了:</p>
+<div class="highlight"><pre><span></span><span class="n">msg</span> <span class="o">=</span> <span class="n">MIMEText</span><span class="p">(</span><span class="s1">&#39;&lt;html&gt;&lt;body&gt;&lt;h1&gt;Hello&lt;/h1&gt;&#39;</span> <span class="o">+</span>
+<span class="s1">&#39;&lt;p&gt;send by &lt;a href=&quot;http://www.python.org&quot;&gt;Python&lt;/a&gt;...&lt;/p&gt;&#39;</span> <span class="o">+</span>
+<span class="s1">&#39;&lt;/body&gt;&lt;/html&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;html&#39;</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+</pre></div>
+
+<p>如果要把一个图片嵌入到邮件正文中怎么做？直接在HTML邮件中链接图片地址行不行？答案不行,大部分邮件服务商都会自动屏蔽带有外链的图片,因为不知道这些链接是否指向恶意网站。</p>
+<p>要把图片嵌入到邮件正文中,我们只需按照发送附件的方式,先把邮件作为附件添加进去,然后,在HTML中通过引用src="cid:0"就可以把附件作为图片嵌入了。如果有多个图片,给它们依次编号,然后引用不同的cid:x即可。</p>
+<p>把上面代码加入MIMEMultipart的MIMEText从plain改为html,然后在适当的位置引用图片:</p>
+<div class="highlight"><pre><span></span><span class="n">msg</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">MIMEText</span><span class="p">(</span><span class="s1">&#39;&lt;html&gt;&lt;body&gt;&lt;h1&gt;Hello&lt;/h1&gt;&#39;</span> <span class="o">+</span>
+    <span class="s1">&#39;&lt;p&gt;&lt;img src=&quot;cid:0&quot;&gt;&lt;/p&gt;&#39;</span> <span class="o">+</span>
+    <span class="s1">&#39;&lt;/body&gt;&lt;/html&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;html&#39;</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+</pre></div>
+
+<p>如果我们发送HTML邮件,收件人通过浏览器或者Outlook之类的软件是可以正常浏览邮件内容的,但是,如果收件人使用的设备太古老,查看不了HTML邮件怎么办？办法是在发送HTML的同时再附加一个纯文本,如果收件人无法查看HTML格式的邮件,就可以自动降级查看纯文本邮件。</p>
+<p>利用MIMEMultipart就可以组合一个HTML和Plain,要注意指定subtype是alternative:</p>
+<div class="highlight"><pre><span></span><span class="n">msg</span> <span class="o">=</span> <span class="n">MIMEMultipart</span><span class="p">(</span><span class="s1">&#39;alternative&#39;</span><span class="p">)</span>
+<span class="n">msg</span><span class="p">[</span><span class="s1">&#39;From&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="o">...</span>
+<span class="n">msg</span><span class="p">[</span><span class="s1">&#39;To&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="o">...</span>
+<span class="n">msg</span><span class="p">[</span><span class="s1">&#39;Subject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="o">...</span>
+
+<span class="n">msg</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">MIMEText</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">,</span> <span class="s1">&#39;plain&#39;</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+<span class="n">msg</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">MIMEText</span><span class="p">(</span><span class="s1">&#39;&lt;html&gt;&lt;body&gt;&lt;h1&gt;Hello&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;html&#39;</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+<span class="c1"># 正常发送msg对象...</span>
+</pre></div>
+
+<ul>
+<li><strong>加密SMTP</strong></li>
+</ul>
+<p>使用标准的25端口连接SMTP服务器时,使用的是明文传输,发送邮件的整个过程可能会被窃听。要更安全地发送邮件,可以加密SMTP会话,实际上就是先创建SSL安全连接,然后再使用SMTP协议发送邮件。</p>
+<p>某些邮件服务商,例如Gmail,提供的SMTP服务必须要加密传输。我们来看看如何通过Gmail提供的安全SMTP发送邮件。</p>
+<p>必须知道,Gmail的SMTP端口是587,因此,修改代码如下:</p>
+<div class="highlight"><pre><span></span><span class="n">smtp_server</span> <span class="o">=</span> <span class="s1">&#39;smtp.gmail.com&#39;</span>
+<span class="n">smtp_port</span> <span class="o">=</span> <span class="mi">587</span>
+<span class="n">server</span> <span class="o">=</span> <span class="n">smtplib</span><span class="o">.</span><span class="n">SMTP</span><span class="p">(</span><span class="n">smtp_server</span><span class="p">,</span> <span class="n">smtp_port</span><span class="p">)</span>
+<span class="n">server</span><span class="o">.</span><span class="n">starttls</span><span class="p">()</span>
+<span class="c1"># 剩下的代码和前面的一模一样:</span>
+<span class="n">server</span><span class="o">.</span><span class="n">set_debuglevel</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="o">...</span>
+</pre></div>
+
+<p>或者使用smtplib.SMTP构造,只需要在创建SMTP对象后,立刻调用starttls()方法,就创建了安全连接。后面的代码和前面的发送邮件代码完全一样。</p>
+<ul>
+<li><strong>python例子</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">email.message</span> <span class="kn">import</span> <span class="n">Message</span>
+<span class="kn">from</span> <span class="nn">email.mime.audio</span> <span class="kn">import</span> <span class="n">MIMEAudio</span>
+<span class="kn">from</span> <span class="nn">email.mime.base</span> <span class="kn">import</span> <span class="n">MIMEBase</span>
+<span class="kn">from</span> <span class="nn">email.mime.image</span> <span class="kn">import</span> <span class="n">MIMEImage</span>
+<span class="kn">from</span> <span class="nn">email.mime.multipart</span> <span class="kn">import</span> <span class="n">MIMEMultipart</span>
+<span class="kn">from</span> <span class="nn">email.mime.text</span> <span class="kn">import</span> <span class="n">MIMEText</span>
+<span class="kn">from</span> <span class="nn">email.utils</span> <span class="kn">import</span> <span class="n">formataddr</span>
+<span class="kn">from</span> <span class="nn">email</span> <span class="kn">import</span> <span class="n">encoders</span>
+<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">mimetypes</span>
+
+<span class="n">attach_dir</span> <span class="o">=</span> <span class="s2">&quot;./&quot;</span>
+
+<span class="n">outer</span> <span class="o">=</span> <span class="n">MIMEMultipart</span><span class="p">()</span>
+<span class="n">outer</span><span class="p">[</span><span class="s1">&#39;Subject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Contents of directory </span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">attach_dir</span><span class="p">)</span>
+<span class="n">outer</span><span class="p">[</span><span class="s1">&#39;To&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">formataddr</span><span class="p">([</span><span class="s2">&quot;纪中&quot;</span><span class="p">,</span><span class="s2">&quot;jizhong1@staff.weibo.com&quot;</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;;&quot;</span> <span class="o">+</span> <span class="s2">&quot;1792403713@qq.com&quot;</span>
+<span class="n">outer</span><span class="p">[</span><span class="s1">&#39;From&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">formataddr</span><span class="p">([</span><span class="s2">&quot;纪中&quot;</span><span class="p">,</span><span class="s2">&quot;jizhong1@staff.weibo.com&quot;</span><span class="p">])</span>
+<span class="n">outer</span><span class="p">[</span><span class="s2">&quot;Cc&quot;</span><span class="p">]</span><span class="o">=</span><span class="n">formataddr</span><span class="p">([</span><span class="s2">&quot;纪中&quot;</span><span class="p">,</span><span class="s2">&quot;jizhong1@staff.weibo.com&quot;</span><span class="p">])</span>
+
+<span class="n">outer</span><span class="o">.</span><span class="n">preamble</span> <span class="o">=</span> <span class="s1">&#39;You will not see this in a MIME-aware mail reader.</span><span class="se">\n</span><span class="s1">&#39;</span>
+
+<span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">attach_dir</span><span class="p">):</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">attach_dir</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">path</span><span class="p">):</span><span class="k">continue</span>
+    <span class="n">ctype</span><span class="p">,</span> <span class="n">encoding</span> <span class="o">=</span> <span class="n">mimetypes</span><span class="o">.</span><span class="n">guess_type</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">ctype</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">encoding</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">ctype</span> <span class="o">=</span> <span class="s1">&#39;application/octet-stream&#39;</span>
+        <span class="n">maintype</span><span class="p">,</span> <span class="n">subtype</span> <span class="o">=</span> <span class="n">ctype</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">maintype</span> <span class="o">==</span> <span class="s1">&#39;text&#39;</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">MIMEText</span><span class="p">(</span><span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">(),</span> <span class="n">_subtype</span><span class="o">=</span><span class="n">subtype</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">maintype</span> <span class="o">==</span> <span class="s1">&#39;image&#39;</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">MIMEImage</span><span class="p">(</span><span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">(),</span> <span class="n">_subtype</span><span class="o">=</span><span class="n">subtype</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">maintype</span> <span class="o">==</span> <span class="s1">&#39;audio&#39;</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">MIMEAudio</span><span class="p">(</span><span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">(),</span> <span class="n">_subtype</span><span class="o">=</span><span class="n">subtype</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">MIMEBase</span><span class="p">(</span><span class="n">maintype</span><span class="p">,</span> <span class="n">subtype</span><span class="p">)</span>
+            <span class="n">msg</span><span class="o">.</span><span class="n">set_payload</span><span class="p">(</span><span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+            <span class="n">encoders</span><span class="o">.</span><span class="n">encode_base64</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="n">msg</span><span class="o">.</span><span class="n">add_header</span><span class="p">(</span><span class="s1">&#39;Content-Disposition&#39;</span><span class="p">,</span> <span class="s1">&#39;attachment&#39;</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">)</span>
+    <span class="n">outer</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+<span class="n">composed</span> <span class="o">=</span> <span class="n">outer</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span>
+</pre></div>
 
   <br>
     <style>
