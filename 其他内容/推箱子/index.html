@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E5%85%B6%E4%BB%96%E5%86%85%E5%AE%B9/%E6%8E%A8%E7%AE%B1%E5%AD%90/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>推箱子 - 图像/视频算法</title>
+    <link href="../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+        ];
+
+    </script>
+    <script src="../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    
+
+    <style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    body {
+        background-color: #dda;
+    }
+    select {
+        width: 100px;
+        height: 30px;
+        left: 30px;
+        top: 30px;
+    }
+    button {
+        width: 50px;
+        height: 30px;
+        left: 30px;
+        top: 30px;
+        border-radius: 5px;
+        background-color: #aa0;
+    }
+
+    #box {
+        width: 480px;
+        height: 360px;
+        margin: 100px auto;
+    }
+
+    #box div {
+        width: 40px;
+        height: 40px;
+        float: left;
+    }
+
+    .type1 {
+        background-color: #fe0;
+        border-radius: 55px;
+    }
+    .type2 {
+        background-color: #ddb;
+    }
+    .type3 {
+        background-image: url('./images/type3.jpg');
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+    }
+    .type4 {
+        background-image: url('./images/type4.jpg');
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+    }
+
+    .pusher{
+        background-image: url('./images/pusher.jpg');
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+    }
+</style>
+
+<p><body>
+<center><h1 style='margin-top:10px;'>推箱子</h1></center>
+<div id='info' style='margin-top: 10px;margin-left: 30px;'>
+    <select name="select" id="selectLev">
+        <option value="1">第1关</option>
+        <option value="2">第2关</option>
+        <option value="3">第3关</option>
+        <option value="4">第4关</option>
+        <option value="5">第5关</option>
+    </select>
+    <button id="btn">确认</button>
+    <button id="restart">重玩</button>
+</div>    </p>
+<pre><code>&lt;div id="box"&gt;
+    &lt;!-- 创建一个12*8的格子 --&gt;
+    &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; 
+    &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt;
+    &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt;
+
+    &lt;!-- 第2行 --&gt;
+    &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; 
+    &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt;
+    &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt;
+
+    &lt;!-- 第3行 --&gt;
+    &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; 
+    &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt;
+    &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt;
+
+    &lt;!-- 第4行 --&gt;
+    &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; 
+    &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt;
+    &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt;
+
+    &lt;!-- 第5行 --&gt;
+    &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; 
+    &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt;
+    &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt;
+
+    &lt;!-- 第6行 --&gt;
+    &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; 
+    &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt;
+    &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt;
+
+    &lt;!-- 第7行 --&gt;
+    &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; 
+    &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt;
+    &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt;
+
+    &lt;!-- 第8行 --&gt;
+    &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; 
+    &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt;
+    &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt;
+
+    &lt;!-- 第9行 --&gt;
+    &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; 
+    &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt;
+    &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt; &lt;div&gt;&lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<p></body></p>
+<p><script
+  src="https://code.jquery.com/jquery-1.12.4.min.js"
+  integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+  crossorigin="anonymous"></script>
+<script></p>
+<pre><code>// 0代表不可抵达区域,1代表目标(要被推到的地方),2代表普通路径(可以走的),3代表墙,4代表箱子
+var map_info=[
+    {'orgin':54,'goalList':4,'board':[
+        0, 0, 0, 0, 3, 3, 3, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 3, 1, 3, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 3, 2, 3, 3, 3, 3, 0, 0,
+        0, 0, 3, 3, 3, 4, 2, 4, 1, 3, 0, 0,
+        0, 0, 3, 1, 2, 4, 2, 3, 3, 3, 0, 0,
+        0, 0, 3, 3, 3, 3, 4, 3, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 3, 1, 3, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 3, 3, 3, 0, 0, 0, 0]},
+
+    {'orgin':15,'goalList':3,'board':[
+        0, 0, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0,
+        0, 0, 3, 2, 2, 2, 3, 0, 0, 0, 0, 0,
+        0, 0, 3, 2, 4, 4, 3, 0, 3, 3, 3, 0,
+        0, 0, 3, 2, 4, 2, 3, 0, 3, 1, 3, 0,
+        0, 0, 3, 3, 3, 2, 3, 3, 3, 1, 3, 0,
+        0, 0, 0, 3, 3, 2, 2, 2, 2, 1, 3, 0,
+        0, 0, 0, 3, 2, 2, 2, 3, 2, 2, 3, 0,
+        0, 0, 0, 3, 2, 2, 2, 3, 3, 3, 3, 0,
+        0, 0, 0, 3, 3, 3, 3, 3, 0, 0, 0, 0]},
+
+    {'orgin':39,'goalList':4,'board':[
+        0, 0, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0,
+        0, 0, 3, 2, 2, 2, 2, 2, 3, 3, 3, 0,
+        0, 3, 3, 4, 3, 3, 3, 2, 2, 2, 3, 0,
+        0, 3, 2, 2, 2, 4, 2, 2, 4, 2, 3, 0,
+        0, 3, 2, 1, 1, 3, 2, 4, 2, 3, 3, 0,
+        0, 3, 3, 1, 1, 3, 2, 2, 2, 3, 0, 0,
+        0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0]},
+
+    {'orgin':29,'goalList':4,'board':[
+        0, 0, 0, 0, 3, 3, 3, 3, 0, 0, 0, 0,
+        0, 0, 0, 3, 3, 2, 2, 3, 0, 0, 0, 0,
+        0, 0, 0, 3, 2, 2, 4, 3, 0, 0, 0, 0,
+        0, 0, 0, 3, 3, 2, 2, 3, 3, 0, 0, 0,
+        0, 0, 0, 3, 3, 4, 4, 2, 3, 0, 0, 0,
+        0, 0, 0, 3, 1, 4, 2, 2, 3, 0, 0, 0,
+        0, 0, 0, 3, 1, 1, 2, 1, 3, 0, 0, 0,
+        0, 0, 0, 3, 3, 3, 3, 3, 3, 0, 0, 0]},
+
+    {'orgin':17,'goalList':3,'board':[
+        0, 0, 0, 3, 3, 3, 3, 3, 0, 0, 0, 0,
+        0, 0, 0, 3, 2, 2, 3, 3, 3, 0, 0, 0,
+        0, 0, 0, 3, 2, 4, 2, 2, 3, 0, 0, 0,
+        0, 0, 3, 3, 3, 2, 3, 2, 3, 3, 0, 0,
+        0, 0, 3, 1, 3, 2, 3, 2, 2, 3, 0, 0,
+        0, 0, 3, 1, 4, 2, 2, 3, 2, 3, 0, 0,
+        0, 0, 3, 1, 2, 2, 2, 4, 2, 3, 0, 0,
+        0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0]},
+
+    {'orgin':21,'goalList':5,'board':[
+        0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 0,
+        0, 0, 0, 3, 3, 2, 2, 3, 2, 2, 3, 0,
+        0, 0, 0, 3, 2, 2, 2, 3, 2, 2, 3, 0,
+        0, 0, 0, 3, 4, 2, 4, 2, 4, 2, 3, 0,
+        0, 0, 0, 3, 2, 4, 3, 3, 2, 2, 3, 0,
+        0, 3, 3, 3, 2, 4, 2, 3, 2, 3, 3, 0,
+        0, 3, 1, 1, 1, 1, 1, 2, 2, 3, 0, 0,
+        0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0]},
+    {'orgin':45,'goalList':5,'board':[  
+        0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 0, 0,
+        0, 0, 3, 3, 3, 2, 2, 2, 2, 3, 0, 0,
+        0, 3, 3, 1, 2, 4, 3, 3, 2, 3, 3, 0,
+        0, 3, 1, 1, 4, 2, 4, 2, 2, 2, 3, 0,
+        0, 3, 1, 1, 2, 4, 2, 4, 2, 3, 3, 0,
+        0, 3, 3, 3, 3, 3, 3, 2, 2, 3, 0, 0,
+        0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 0, 0]},
+    {'orgin':94,'goalList':6,'board':[
+        0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0,
+        0, 0, 3, 2, 2, 3, 3, 2, 2, 2, 3, 0,
+        0, 0, 3, 2, 2, 2, 4, 2, 2, 2, 3, 0,
+        0, 0, 3, 4, 2, 3, 3, 3, 2, 4, 3, 0,
+        0, 0, 3, 2, 3, 1, 1, 1, 3, 2, 3, 0,
+        0, 3, 3, 2, 3, 1, 1, 1, 3, 2, 3, 3,
+        0, 3, 2, 4, 2, 2, 4, 2, 2, 4, 2, 3,
+        0, 3, 2, 2, 2, 2, 2, 3, 2, 2, 2, 3,
+        0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3]},
+    {'orgin':39,'goalList':5,'board':[   
+        0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 0, 0,
+        0, 0, 0, 0, 3, 2, 2, 2, 2, 3, 0, 0,
+        0, 0, 3, 3, 3, 4, 4, 4, 2, 3, 0, 0,
+        0, 0, 3, 2, 2, 4, 1, 1, 2, 3, 0, 0,
+        0, 0, 3, 2, 4, 1, 1, 1, 3, 3, 0, 0,
+        0, 0, 3, 3, 3, 3, 2, 2, 3, 0, 0, 0,
+        0, 0, 0, 0, 0, 3, 3, 3, 3, 0, 0, 0]},
+    {'orgin':56,'goalList':4,'board':[
+        0, 3, 3, 3, 3, 0, 0, 3, 3, 3, 3,3,
+        3, 3, 2, 2, 3, 0, 0, 3, 2, 2, 2,3,
+        3, 2, 4, 2, 3, 3, 3, 3, 4, 2, 2,3,
+        3, 2, 2, 4, 1, 1, 1, 1, 2, 4, 2,3,
+        3, 3, 2, 2, 2, 2, 3, 2, 2, 2, 3,3,
+        0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,0]},
+]
+
+
+var div_boxes = $('#box div');
+var level = 0; // 关卡等级0-9级
+var col = 12;  // 上下移动的移动距离
+var position;  // pusher所在的格子
+
+
+// 将地图渲染到页面上
+render_select();
+map();
+
+
+//选择关卡
+$('#btn').click(function(){
+    level = $('#selectLev').val() - 1;
+    map();
+})
+
+//重玩按钮
+$('#restart').click(function(){
+    map();
+})
+
+// 渲染选择的关数
+function render_select(){
+    var html=''
+    for(var i=0;i&lt;map_info.length;i=i+1){
+        var j=i+1;
+        html = html + ' &lt;option value="'+j+'"&gt;第'+j+'关&lt;/option&gt;';
+    }
+    $('#selectLev').html(html);
+}
+
+// 渲染游戏地图的函数封装
+function map() {
+    // 先给div_boxes里面所有的div去除class属性
+    div_boxes.each(function (index, ele) {
+        $(ele).removeClass();
+    });
+    // 给div_boxes里面所有的div按照builder排列加上class属性
+    div_boxes.each(function (index, ele) {
+        if (map_info[level]['board'][index] == 4) {
+            $(ele).addClass(' type' + 2);
+        }
+        $(ele).addClass(' type' + map_info[level]['board'][index]);
+    })
+
+    // 将任务渲染到地图上的指定位置
+    position = map_info[level]['orgin'];
+    div_boxes.eq(position).addClass(' pusher');
+}
+</code></pre>
+<p>// pusher的移动按键
+    $(window).keydown(function (e) {
+        var key = e.keyCode;
+        switch (key) {
+            //方向键上或者w
+            case 87:
+            case 38:
+                move(-col);
+                break;
+                //方向键下或者s
+            case 83:
+            case 40:
+                move(col);
+                break;
+                //方向键左或者a
+            case 65:
+            case 37:
+                move(-1);
+                break;
+                //方向键右或者d
+            case 68:
+            case 39:
+                move(1);
+                break;
+        }
+    })</p>
+<pre><code>// 推箱子者和箱子移动的函数封装
+function move(step) {
+    // pusher目前的位置
+    var pusher1 = position; // pusher目前的位置
+    var pusher2 = position + step; // pusher下一步的位置
+    var pusher1Color = div_boxes.eq(pusher1).css('backgroundColor');
+    var pusher2Color = div_boxes.eq(pusher2).css('backgroundColor');
+    var pushbox = position + step * 2; //箱子下一步的位置
+    //如果pusher没有推箱子，并且在可行走区域或目标位置移动
+    if (!div_boxes.eq(pusher2).hasClass('type4') &amp;&amp; (div_boxes.eq(pusher2).hasClass('type1') || div_boxes.eq(pusher2).hasClass(
+            'type2'))) {
+        //pusher从当前位置挪到下一个位置
+        div_boxes.eq(pusher1).removeClass('pusher');
+        div_boxes.eq(pusher2).addClass(' pusher');
+        position = pusher2;
+    }
+    //如果pusher有推箱子，并且在可走区域或者目标位置移动,且箱子不能推到一起
+    else if (div_boxes.eq(pusher2).hasClass('type4') &amp;&amp; (div_boxes.eq(pushbox).hasClass('type1') || div_boxes.eq(pushbox).hasClass(
+            'type2')) &amp;&amp; !div_boxes.eq(pushbox).hasClass('type4')) {
+        //pushbox也从当前位置挪到下一个位置
+        div_boxes.eq(pusher2).removeClass('type4');
+        div_boxes.eq(pushbox).addClass(' type4');
+        //pusher从当前位置挪到下一个位置
+        div_boxes.eq(pusher1).removeClass('pusher');
+        div_boxes.eq(pusher2).addClass(' pusher');
+        position = pusher2;
+    }
+
+
+    win();
+}
+
+
+function win() {
+    //游戏成功的判断
+    if ($('.type1.type4').length == map_info[level]['goalList']) {
+        if (level &lt; map_info.length) {
+            alert('恭喜你过关，进入下一关！');
+            level++;
+            $('#selectLev').val(level+1);
+            map();
+        } else {
+            alert('恭喜你，游戏通关！');
+        }
+    }
+}
+</code></pre>
+</script>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    <br>
+</div>
+
+</body>
+</html>
