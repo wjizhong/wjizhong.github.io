@@ -35,6 +35,7 @@
           {title: "\u8ba1\u7b97\u673a\u6982\u8bba", url: "#_top", children: [
               {title: "\u4e00\u3001\u8ba1\u7b97\u673a\u8bbe\u5907", url: "#_2" },
               {title: "\u4e8c\u3001\u4e92\u8054\u7f51\u77e5\u8bc6", url: "#_3" },
+              {title: "\u4e09\u3001\u65f6\u95f4\u534f\u8bae", url: "#_4" },
           ]},
         ];
 
@@ -448,6 +449,716 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>当发送方连续收到三个重复确认,就执行“乘法减小”算法,把慢开始门限ssthresh减半。</p>
 <p>与慢开始不同之处是现在不执行慢开始算法(即拥塞窗口cwnd现在不设置为1),而是把cwnd值设置为 慢开始门限ssthresh减半后的数值,然后开始执行拥塞避免算法(“加法增大”),使拥塞窗口缓慢地线性增大。</p>
 </blockquote>
+<h2 id="_4">三、时间协议<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<h3 id="31">3.1 格式标示符<a class="headerlink" href="#31" title="Permanent link">&para;</a></h3>
+<p>常见的时间格式标识符:</p>
+<table>
+<thead>
+<tr>
+<th align="left">符号</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">%%</td>
+<td>显示一个百分号'%'</td>
+</tr>
+<tr>
+<td align="left">%a</td>
+<td>星期的简称,如:Sun/Mon/Tue/Wed/...</td>
+</tr>
+<tr>
+<td align="left">%A</td>
+<td>星期完整名字,如:Sunday/Monday/...</td>
+</tr>
+<tr>
+<td align="left">%b</td>
+<td>月份简称,如:Jan/Feb/...</td>
+</tr>
+<tr>
+<td align="left">%B</td>
+<td>月份全称,如:January/February/...</td>
+</tr>
+<tr>
+<td align="left">%c</td>
+<td>显示当前日期和时间,如:Thu Mar 3 23:05:25 2005</td>
+</tr>
+<tr>
+<td align="left">%C</td>
+<td>世纪,如:现在是20世纪,输入date +"%C"显示20</td>
+</tr>
+<tr>
+<td align="left">%d</td>
+<td>日期,如当前是8号,则显示:08</td>
+</tr>
+<tr>
+<td align="left">%D</td>
+<td>完整日期,date +"%D"相当于date +"%m/%d/%y"</td>
+</tr>
+<tr>
+<td align="left">%e</td>
+<td>日期,用空格补全,而不是0,如当前日期:7号,则显示"7"</td>
+</tr>
+<tr>
+<td align="left">%F</td>
+<td>完整日期,相当于:date +"%Y-%m-%d"</td>
+</tr>
+<tr>
+<td align="left">%g</td>
+<td>年份后2位,如果是2017,则为:17</td>
+</tr>
+<tr>
+<td align="left">%G</td>
+<td>年份全4位,如2017</td>
+</tr>
+<tr>
+<td align="left">%h</td>
+<td>月份简称,如:Jan/Feb/Mar/...,跟%b相同</td>
+</tr>
+<tr>
+<td align="left">%H</td>
+<td>小时(00/01/02/..23),24小时制</td>
+</tr>
+<tr>
+<td align="left">%I</td>
+<td>小时(01/02/..12),12小时制</td>
+</tr>
+<tr>
+<td align="left">%j</td>
+<td>一年的第几天(001/002/..366)</td>
+</tr>
+<tr>
+<td align="left">%k</td>
+<td>小时,填充空格,如(0/&frac12;/..23);相当于<code>%_H</code></td>
+</tr>
+<tr>
+<td align="left">%l</td>
+<td>小时,填充空格(&frac12;/3/..12);相当于<code>%_I</code></td>
+</tr>
+<tr>
+<td align="left">%m</td>
+<td>月份(01/02/03/..12)</td>
+</tr>
+<tr>
+<td align="left">%M</td>
+<td>分钟(00/01/02/..59)</td>
+</tr>
+<tr>
+<td align="left">%n</td>
+<td>换行,date +"%d%n%d",将会分成两行分别显示日期</td>
+</tr>
+<tr>
+<td align="left">%N</td>
+<td>纳秒(000000000/000000001/..999999999)</td>
+</tr>
+<tr>
+<td align="left">%p</td>
+<td>AM/PM,即上午或者下午</td>
+</tr>
+<tr>
+<td align="left">%P</td>
+<td>跟%p意思一样,不过是小写字母,即am/pm</td>
+</tr>
+<tr>
+<td align="left">%r</td>
+<td>显示12小时制的当前时间,如:10:48:05 PM</td>
+</tr>
+<tr>
+<td align="left">%R</td>
+<td>24小时制的当前时间和分钟,相当于:%H:%M,22:49</td>
+</tr>
+<tr>
+<td align="left">%s</td>
+<td>从1970-01-01 00:00:00UTC开始的秒数,相当于日期转时间戳</td>
+</tr>
+<tr>
+<td align="left">%S</td>
+<td>秒(00/01/02/..60)</td>
+</tr>
+<tr>
+<td align="left">%t</td>
+<td>一个tab键,制表符</td>
+</tr>
+<tr>
+<td align="left">%T</td>
+<td>当前时间,相当于:%H:%M:%S。如:22:52:07</td>
+</tr>
+<tr>
+<td align="left">%u</td>
+<td>星期中的第几天(&frac12;/..7);1是星期一</td>
+</tr>
+<tr>
+<td align="left">%U</td>
+<td>一年中的第几个星期(00..53),星期天作为一个星期的第一天</td>
+</tr>
+<tr>
+<td align="left">%V</td>
+<td>一年中的第几个星期(ISO标准)(01..53),星期一作为一个星期的第一天</td>
+</tr>
+<tr>
+<td align="left">%w</td>
+<td>星期中的第几天(0..6);0是星期天</td>
+</tr>
+<tr>
+<td align="left">%W</td>
+<td>一年中的第几个星期(00..53),星期一作为一个星期的第一天</td>
+</tr>
+<tr>
+<td align="left">%x</td>
+<td>当前日期(例如:03/07/17)</td>
+</tr>
+<tr>
+<td align="left">%X</td>
+<td>当前时间(例如:23:13:48)</td>
+</tr>
+<tr>
+<td align="left">%y</td>
+<td>年的后两位(00/02/..99)</td>
+</tr>
+<tr>
+<td align="left">%Y</td>
+<td>年,如:2017</td>
+</tr>
+<tr>
+<td align="left">%z</td>
+<td><code>+hhmm</code>数字时区(例如:北京:+0800)</td>
+</tr>
+<tr>
+<td align="left">%:z</td>
+<td><code>+hh:mm</code>数字时区(例如:北京:+08:00)</td>
+</tr>
+<tr>
+<td align="left">%::z</td>
+<td><code>+hh:mm:ss</code>数字时区(例如:北京:+08:00:00)</td>
+</tr>
+<tr>
+<td align="left">%:::z</td>
+<td>numerictime zone with:tonecessary precision(e.g.,-04,+05:30)</td>
+</tr>
+<tr>
+<td align="left">%Z</td>
+<td>字母时区缩写(如CST)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="32-date">3.2 date命令<a class="headerlink" href="#32-date" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>显示当前时间和按指定格式显示时间</strong></li>
+</ul>
+<div class="highlight"><pre><span></span>date +<span class="s2">&quot;%Y/%m/%d %H:%m:%S&quot;</span>
+</pre></div>
+
+<ul>
+<li><strong>时间解析,将输入的字符串解析为时间</strong></li>
+</ul>
+<div class="highlight"><pre><span></span>date -d <span class="s2">&quot;20170305&quot;</span>  //解析日期, 输出:Sun Mar  <span class="m">5</span> <span class="m">00</span>:00:00 CST <span class="m">2017</span>。
+date -d <span class="s2">&quot;03/05/2017&quot;</span>
+date -d <span class="s2">&quot;2017/03/05 11:12:13&quot;</span> // 解析日期和时间, 输出: Sun Mar  <span class="m">5</span> <span class="m">11</span>:12:13 CST <span class="m">2017</span>。
+date -d <span class="s2">&quot;2017-03-05 21:12:17&quot;</span> +<span class="s2">&quot;%s&quot;</span> // 将输入时间转为时间戳,输出:1488719537。
+date -d <span class="s2">&quot;2017-03-05 21:12:17&quot;</span> +<span class="s2">&quot;%Y/%m/%d %H:%M:%S&quot;</span>  // 时间格式转换,将输入日期转换为自定义格式。
+</pre></div>
+
+<ul>
+<li><strong>时间数字、时间整数、时间戳转字符串和数字和字符串时间转换</strong></li>
+</ul>
+<div class="highlight"><pre><span></span>date --date @1488899583    // 将从1970-01-01 <span class="m">00</span>:00:00 UTC开始的秒数,转为字符串时间
+date --date @<span class="s2">&quot;1488899583&quot;</span>  // 同上,即时间戳转字符串,或者整数秒转字符串时间。
+date +<span class="s2">&quot;%s&quot;</span>                 // 日期转时间戳,日期转整数。
+</pre></div>
+
+<ul>
+<li><strong>设置当前时间</strong></li>
+</ul>
+<div class="highlight"><pre><span></span>date -s <span class="s2">&quot;2017/05/08 23:28:13&quot;</span>   // 设置日期和时间
+date -s <span class="s2">&quot;2017/05/08&quot;</span> // 设置日期<span class="o">(</span>注意,时间会同时被设置为00:00:00,慎用<span class="o">)</span>。
+date -s <span class="s2">&quot;23:28:13&quot;</span>   // 设置时间。
+</pre></div>
+
+<ul>
+<li><strong>时间运算</strong></li>
+</ul>
+<div class="highlight"><pre><span></span>// 时间加减运算
+// 直接用-d命令结合year/month/week/day/hour/minute/second, 单复数都行
+date -d <span class="s2">&quot;+1 days&quot;</span> // 明天,当前时间加1天。
+date -d <span class="s2">&quot;+2 days&quot;</span> // 后天,当前时间加2天。
+date -d <span class="s2">&quot;+10 days&quot;</span> +<span class="s2">&quot;%Y%m%d %H:%M:%S&quot;</span> // 当前时间加10天,并按指定格式输出。
+date -d <span class="s2">&quot;-1 days&quot;</span> // 昨天,当前时间减1天。
+date -d <span class="s2">&quot;-2 days&quot;</span> // 前天,当前时间减2天。
+date -d <span class="s2">&quot;2017/03/05 +1 days&quot;</span>    // 指定日期加1天。
+date -d <span class="s2">&quot;2017/03/05 -1 days&quot;</span>    // 指定日期减1天。
+date -d <span class="s2">&quot;2017/03/08 +600 seconds&quot;</span> // 指定日期加600秒。
+date -d <span class="s2">&quot;2017/03/08 -600 seconds&quot;</span> // 指定日期减600秒。
+date -d <span class="s2">&quot;2017/03/08 +600 minutes&quot;</span> // 指定日期加600分钟。
+date -d <span class="s2">&quot;2017/03/08 -600 minutes&quot;</span> // 指定日期减600分钟。
+date -d <span class="s2">&quot;2017/03/08 +10 year&quot;</span>     // 指定日期加10年。
+date -d <span class="s2">&quot;Tue Mar 10 14:12:13 CST 2015  +1 days&quot;</span> // 指定日期时间,加一天。
+date -d <span class="s2">&quot;15:21:11 03/18/2017  -1 days&quot;</span>  // 指定日期时间,减一天。注：时间放在日期的后面目前似乎不可用。
+</pre></div>
+
+<p>数字可以用next,last代替,明天,昨天也可以tomorrow，yesterday来制定</p>
+<ul>
+<li><strong>时间相关代码模版</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><span class="c1"># 根据时间运行程序</span>
+<span class="nv">startdate</span><span class="o">=</span><span class="m">2018090314</span>
+<span class="nv">enddate</span><span class="o">=</span><span class="m">2018083022</span>
+<span class="k">for</span> i in <span class="sb">`</span>seq <span class="m">1</span> <span class="m">300</span><span class="sb">`</span><span class="p">;</span> <span class="k">do</span>
+    <span class="k">if</span> <span class="o">[[</span> <span class="nv">$startdate</span> -lt <span class="nv">$enddate</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+        <span class="nb">break</span>
+    <span class="k">fi</span>
+
+    <span class="c1"># 拼接成YYYYmmdd HH的格式,否则使用下个命令中+%s,会无法转换</span>
+    <span class="nv">startdate</span><span class="o">=</span><span class="si">${</span><span class="nv">startdate</span><span class="p">:</span><span class="nv">0</span><span class="p">:</span><span class="nv">4</span><span class="si">}</span><span class="s2">&quot;-&quot;</span><span class="si">${</span><span class="nv">startdate</span><span class="p">:</span><span class="nv">4</span><span class="p">:</span><span class="nv">2</span><span class="si">}</span><span class="s2">&quot;-&quot;</span><span class="si">${</span><span class="nv">startdate</span><span class="p">:</span><span class="nv">6</span><span class="p">:</span><span class="nv">2</span><span class="si">}</span><span class="s2">&quot; &quot;</span><span class="si">${</span><span class="nv">startdate</span><span class="p">:</span><span class="nv">8</span><span class="p">:</span><span class="nv">2</span><span class="si">}</span>
+    <span class="c1"># 转换成时间戳,+%s为时间格式</span>
+    <span class="nv">startdate</span><span class="o">=</span><span class="k">$(</span>date +%s -d <span class="s2">&quot;</span><span class="nv">$startdate</span><span class="s2">&quot;</span><span class="k">)</span>
+    <span class="c1"># 每次执行后,开始日期减一个小时</span>
+    <span class="nv">startdate</span><span class="o">=</span><span class="k">$((</span><span class="nv">$startdate</span><span class="o">-</span><span class="m">1</span><span class="o">*</span><span class="m">60</span><span class="o">*</span><span class="m">60</span><span class="k">))</span>
+    <span class="c1"># 时间戳转正常格式时间</span>
+    <span class="nv">startdate</span><span class="o">=</span><span class="k">$(</span>date +%Y%m%d%H -d <span class="s2">&quot;1970-01-01 UTC </span><span class="nv">$startdate</span><span class="s2"> seconds&quot;</span><span class="k">)</span>
+    <span class="c1"># 执行程序</span>
+    <span class="nb">echo</span> <span class="si">${</span><span class="nv">startdate</span><span class="si">}</span>
+<span class="k">done</span>
+</pre></div>
+
+<h3 id="33-python">3.3 python函数<a class="headerlink" href="#33-python" title="Permanent link">&para;</a></h3>
+<h4 id="331-time">3.3.1 time模块<a class="headerlink" href="#331-time" title="Permanent link">&para;</a></h4>
+<p>time模块中时间表现的格式主要有三种：</p>
+<blockquote>
+<ul>
+<li><strong>timestamp时间戳</strong>:时间戳表示的是从1970年1月1日00:00:00开始按秒计算的偏移量</li>
+<li><strong><code>struct_time</code>时间元组</strong> 共有九个元素组。</li>
+</ul>
+</blockquote>
+<div class="highlight"><pre><span></span><span class="n">struct_time元组元素结构</span>
+    <span class="err">属性</span>                            <span class="err">值</span>
+    <span class="n">tm_year</span><span class="err">（年）</span>                  <span class="err">比如</span><span class="mi">2011</span>
+    <span class="n">tm_mon</span><span class="err">（月）</span>                   <span class="mi">1</span> <span class="o">-</span> <span class="mi">12</span>
+    <span class="n">tm_mday</span><span class="err">（日）</span>                  <span class="mi">1</span> <span class="o">-</span> <span class="mi">31</span>
+    <span class="n">tm_hour</span><span class="err">（时）</span>                  <span class="mi">0</span> <span class="o">-</span> <span class="mi">23</span>
+    <span class="n">tm_min</span><span class="err">（分）</span>                   <span class="mi">0</span> <span class="o">-</span> <span class="mi">59</span>
+    <span class="n">tm_sec</span><span class="err">（秒）</span>                   <span class="mi">0</span> <span class="o">-</span> <span class="mi">61</span>
+    <span class="n">tm_wday</span><span class="err">（</span><span class="n">weekday</span><span class="err">）</span>             <span class="mi">0</span> <span class="o">-</span> <span class="mi">6</span><span class="err">（</span><span class="mi">0</span><span class="err">表示周日）</span>
+    <span class="n">tm_yday</span><span class="err">（一年中的第几天）</span>        <span class="mi">1</span> <span class="o">-</span> <span class="mi">366</span>
+    <span class="n">tm_isdst</span><span class="err">（是否是夏令时）</span>        <span class="err">默认为</span><span class="o">-</span><span class="mi">1</span>
+</pre></div>
+
+<blockquote>
+<ul>
+<li><strong>format time格式化时间</strong> 已格式化的结构使时间更具可读性。包括自定义格式和固定格式。</li>
+</ul>
+</blockquote>
+<ul>
+<li><strong>时间格式转换图</strong></li>
+</ul>
+<p><img alt="" src="http://images2015.cnblogs.com/blog/996085/201610/996085-20161026171443546-488752980.png" /></p>
+<div class="highlight"><pre><span></span><span class="c1"># 代码转化示例</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>       <span class="c1"># 生成timestamp : 1545018718.573361</span>
+<span class="n">time</span><span class="o">.</span><span class="n">localtime</span><span class="p">()</span>  <span class="c1"># 生成struct_time : time.struct_time(tm_year=2018, tm_mon=12, tm_mday=17, tm_hour=11, tm_min=56, tm_sec=8, tm_wday=0, tm_yday=351, tm_isdst=0)</span>
+<span class="n">time</span><span class="o">.</span><span class="n">mktime</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">localtime</span><span class="p">())</span>    <span class="c1"># struct_time to timestamp</span>
+<span class="n">time</span><span class="o">.</span><span class="n">localtime</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span>      <span class="c1"># timestamp to struct_time 本地时间</span>
+
+<span class="c1"># 格林威治时间</span>
+<span class="n">time</span><span class="o">.</span><span class="n">gmtime</span><span class="p">()</span>
+<span class="n">time</span><span class="o">.</span><span class="n">gmtime</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span>
+<span class="n">time</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="s1">&#39;2011-05-05 16:37:06&#39;</span><span class="p">,</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> </span><span class="si">%X</span><span class="s1">&#39;</span><span class="p">)</span> <span class="c1"># format_time to struct_time</span>
+
+<span class="c1"># 生成format_time 以及struct_time to format_time</span>
+<span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> </span><span class="si">%X</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> </span><span class="si">%X</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">time</span><span class="o">.</span><span class="n">localtime</span><span class="p">())</span>
+
+<span class="c1"># 生成固定格式的时间表示格式</span>
+<span class="n">time</span><span class="o">.</span><span class="n">asctime</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">localtime</span><span class="p">())</span>
+<span class="n">time</span><span class="o">.</span><span class="n">ctime</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span>
+<span class="c1"># Wed Oct 26 16:45:08 2016</span>
+</pre></div>
+
+<h4 id="332-datetime">3.3.2 datetime模块<a class="headerlink" href="#332-datetime" title="Permanent link">&para;</a></h4>
+<p>datatime模块重新封装了time模块,提供更多接口,提供的类有:date,time,datetime,timedelta,tzinfo。</p>
+<ul>
+<li><strong>date类:datetime.date(year, month, day)</strong></li>
+</ul>
+<p>静态方法和字段:</p>
+<p><div class="highlight"><pre><span></span><span class="n">date</span><span class="o">.</span><span class="n">max</span><span class="err">、</span><span class="n">date</span><span class="o">.</span><span class="n">min</span><span class="p">:</span><span class="n">date对象所能表示的最大</span><span class="err">、最小日期</span><span class="p">;</span>
+<span class="n">date</span><span class="o">.</span><span class="n">resolution</span><span class="p">:</span><span class="n">date对象表示日期的最小单位</span><span class="err">。这里是天。</span>
+<span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">():</span><span class="err">返回一个表示当前本地日期的</span><span class="n">date对象</span><span class="p">;</span>
+<span class="n">date</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">timestamp</span><span class="p">):</span><span class="err">根据给定的时间戮，返回一个</span><span class="n">date对象</span><span class="p">;</span>
+</pre></div>
+方法和属性:</p>
+<div class="highlight"><pre><span></span><span class="n">d1</span> <span class="o">=</span> <span class="n">date</span><span class="p">(</span><span class="mi">2011</span><span class="p">,</span><span class="mo">06</span><span class="p">,</span><span class="mo">03</span><span class="p">)</span> <span class="c1"># date对象</span>
+<span class="n">d1</span><span class="o">.</span><span class="n">year</span><span class="err">、</span><span class="n">date</span><span class="o">.</span><span class="n">month</span><span class="err">、</span><span class="n">date</span><span class="o">.</span><span class="n">day</span><span class="p">:</span><span class="err">年、月、日</span><span class="p">;</span>
+<span class="n">d1</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">):</span><span class="err">生成一个新的日期对象，用参数指定的年，月，日代替原有对象中的属性。（原有对象仍保持不变）</span>
+<span class="n">d1</span><span class="o">.</span><span class="n">timetuple</span><span class="p">():</span><span class="err">返回日期对应的</span><span class="n">time</span><span class="o">.</span><span class="n">struct_time对象</span><span class="p">;</span>
+<span class="n">d1</span><span class="o">.</span><span class="n">weekday</span><span class="p">():</span><span class="err">返回</span><span class="n">weekday</span><span class="err">，如果是星期一，返回</span><span class="mi">0</span><span class="p">;</span><span class="err">如果是星期</span><span class="mi">2</span><span class="err">，返回</span><span class="mi">1</span><span class="err">，以此类推</span><span class="p">;</span>
+<span class="n">d1</span><span class="o">.</span><span class="n">isoweekday</span><span class="p">():</span><span class="err">返回</span><span class="n">weekday</span><span class="err">，如果是星期一，返回</span><span class="mi">1</span><span class="p">;</span><span class="err">如果是星期</span><span class="mi">2</span><span class="err">，返回</span><span class="mi">2</span><span class="err">，以此类推</span><span class="p">;</span>
+<span class="n">d1</span><span class="o">.</span><span class="n">isocalendar</span><span class="p">():</span><span class="err">返回格式如</span><span class="p">(</span><span class="n">year</span><span class="err">，</span><span class="n">month</span><span class="err">，</span><span class="n">day</span><span class="p">)</span><span class="err">的元组</span><span class="p">;</span>
+<span class="n">d1</span><span class="o">.</span><span class="n">isoformat</span><span class="p">():</span><span class="err">返回格式如</span><span class="s1">&#39;YYYY-MM-DD’的字符串;</span>
+<span class="n">d1</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">fmt</span><span class="p">):</span><span class="err">和</span><span class="n">time模块format相同</span><span class="err">。</span>
+</pre></div>
+
+<ul>
+<li><strong>time类:datetime.time(hour[,minute[,second[,microsecond[,tzinfo]]]])</strong></li>
+</ul>
+<p>静态方法和字段:</p>
+<div class="highlight"><pre><span></span><span class="n">time</span><span class="o">.</span><span class="n">min</span><span class="err">、</span><span class="n">time</span><span class="o">.</span><span class="n">max</span><span class="p">:</span><span class="n">time类所能表示的最小</span><span class="err">、最大时间。其中</span><span class="p">,</span><span class="n">time</span><span class="o">.</span><span class="n">min</span> <span class="o">=</span> <span class="n">time</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">time</span><span class="o">.</span><span class="n">max</span> <span class="o">=</span> <span class="n">time</span><span class="p">(</span><span class="mi">23</span><span class="p">,</span> <span class="mi">59</span><span class="p">,</span> <span class="mi">59</span><span class="p">,</span> <span class="mi">999999</span><span class="p">);</span>
+<span class="n">time</span><span class="o">.</span><span class="n">resolution</span><span class="p">:</span><span class="err">时间的最小单位</span><span class="p">,</span><span class="err">这里是</span><span class="mi">1</span><span class="err">微秒</span><span class="p">;</span>
+</pre></div>
+
+<p>方法和属性:</p>
+<div class="highlight"><pre><span></span><span class="n">t1</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">time</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">23</span><span class="p">,</span><span class="mi">15</span><span class="p">)</span><span class="c1">#time对象</span>
+<span class="n">t1</span><span class="o">.</span><span class="n">hour</span><span class="err">、</span><span class="n">t1</span><span class="o">.</span><span class="n">minute</span><span class="err">、</span><span class="n">t1</span><span class="o">.</span><span class="n">second</span><span class="err">、</span><span class="n">t1</span><span class="o">.</span><span class="n">microsecond</span><span class="p">:</span><span class="err">时、分、秒、微秒</span><span class="p">;</span>
+<span class="n">t1</span><span class="o">.</span><span class="n">tzinfo</span><span class="p">:</span><span class="err">时区信息</span><span class="p">;</span>
+<span class="n">t1</span><span class="o">.</span><span class="n">replace</span><span class="p">([</span> <span class="n">hour</span><span class="p">[</span> <span class="p">,</span> <span class="n">minute</span><span class="p">[</span> <span class="p">,</span> <span class="n">second</span><span class="p">[</span> <span class="p">,</span> <span class="n">microsecond</span><span class="p">[</span> <span class="p">,</span> <span class="n">tzinfo</span><span class="p">]</span> <span class="p">]</span> <span class="p">]</span> <span class="p">]</span> <span class="p">]</span> <span class="p">):</span><span class="err">创建一个新的时间对象</span><span class="p">,</span><span class="err">用参数指定的时、分、秒、微秒代替原有对象中的属性（原有对象仍保持不变）</span><span class="p">;</span>
+<span class="n">t1</span><span class="o">.</span><span class="n">isoformat</span><span class="p">():</span><span class="err">返回型如</span><span class="s2">&quot;HH:MM:SS&quot;</span><span class="err">格式的字符串表示</span><span class="p">;</span>
+<span class="n">t1</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">fmt</span><span class="p">):</span><span class="err">同</span><span class="n">time模块中的format</span><span class="p">;</span>
+</pre></div>
+
+<ul>
+<li><strong>datetime类</strong></li>
+</ul>
+<p>datetime相当于date和time结合起来。</p>
+<div class="highlight"><pre><span></span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">day</span><span class="p">[,</span><span class="n">hour</span><span class="p">[,</span><span class="n">minute</span><span class="p">[,</span><span class="n">second</span><span class="p">[,</span><span class="n">microsecond</span><span class="p">[,</span><span class="n">tzinfo</span><span class="p">]]]]])</span>
+</pre></div>
+
+<p>静态方法和字段:</p>
+<div class="highlight"><pre><span></span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="err">：返回一个表示当前本地时间的</span><span class="n">datetime对象</span><span class="err">；</span>
+<span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">([</span><span class="n">tz</span><span class="p">])</span><span class="err">：返回一个表示当前本地时间的</span><span class="n">datetime对象</span><span class="err">，如果提供了参数</span><span class="n">tz</span><span class="err">，则获取</span><span class="n">tz参数所指时区的本地时间</span><span class="err">；</span>
+<span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span><span class="err">：返回一个当前</span><span class="n">utc时间的datetime对象</span><span class="err">；</span><span class="c1">#格林威治时间</span>
+<span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">timestamp</span><span class="p">[,</span> <span class="n">tz</span><span class="p">])</span><span class="err">：根据时间戮创建一个</span><span class="n">datetime对象</span><span class="err">，参数</span><span class="n">tz指定时区信息</span><span class="err">；</span>
+<span class="n">datetime</span><span class="o">.</span><span class="n">utcfromtimestamp</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span><span class="err">：根据时间戮创建一个</span><span class="n">datetime对象</span><span class="err">；</span>
+<span class="n">datetime</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="n">time</span><span class="p">)</span><span class="err">：根据</span><span class="n">date和time</span><span class="err">，创建一个</span><span class="n">datetime对象</span><span class="err">；</span>
+<span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">date_string</span><span class="p">,</span> <span class="n">format</span><span class="p">)</span><span class="err">：将格式字符串转换为</span><span class="n">datetime对象</span><span class="err">；</span>
+</pre></div>
+
+<p>方法和属性:</p>
+<div class="highlight"><pre><span></span><span class="n">dt</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="c1"># datetime对象</span>
+<span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="err">、</span><span class="n">month</span><span class="err">、</span><span class="n">day</span><span class="err">、</span><span class="n">hour</span><span class="err">、</span><span class="n">minute</span><span class="err">、</span><span class="n">second</span><span class="err">、</span><span class="n">microsecond</span><span class="err">、</span><span class="n">tzinfo</span><span class="err">：</span>
+<span class="n">dt</span><span class="o">.</span><span class="n">date</span><span class="p">()</span><span class="err">：获取</span><span class="n">date对象</span><span class="err">；</span>
+<span class="n">dt</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="err">：获取</span><span class="n">time对象</span><span class="err">；</span>
+<span class="n">dt</span><span class="o">.</span><span class="n">replace</span> <span class="p">([</span> <span class="n">year</span><span class="p">[</span> <span class="p">,</span> <span class="n">month</span><span class="p">[</span> <span class="p">,</span> <span class="n">day</span><span class="p">[</span> <span class="p">,</span> <span class="n">hour</span><span class="p">[</span> <span class="p">,</span> <span class="n">minute</span><span class="p">[</span> <span class="p">,</span> <span class="n">second</span><span class="p">[</span> <span class="p">,</span> <span class="n">microsecond</span><span class="p">[</span> <span class="p">,</span> <span class="n">tzinfo</span><span class="p">]</span> <span class="p">]</span> <span class="p">]</span> <span class="p">]</span> <span class="p">]</span> <span class="p">]</span> <span class="p">]</span> <span class="p">])</span><span class="err">：</span>
+<span class="n">dt</span><span class="o">.</span><span class="n">timetuple</span> <span class="p">()</span>
+<span class="n">dt</span><span class="o">.</span><span class="n">utctimetuple</span> <span class="p">()</span>
+<span class="n">dt</span><span class="o">.</span><span class="n">toordinal</span> <span class="p">()</span>
+<span class="n">dt</span><span class="o">.</span><span class="n">weekday</span> <span class="p">()</span>
+<span class="n">dt</span><span class="o">.</span><span class="n">isocalendar</span> <span class="p">()</span>
+<span class="n">dt</span><span class="o">.</span><span class="n">isoformat</span> <span class="p">([</span> <span class="n">sep</span><span class="p">]</span> <span class="p">)</span>
+<span class="n">dt</span><span class="o">.</span><span class="n">ctime</span> <span class="p">()</span><span class="err">：返回一个日期时间的</span><span class="n">C格式字符串</span><span class="err">，等效于</span><span class="n">time</span><span class="o">.</span><span class="n">ctime</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">mktime</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">timetuple</span><span class="p">()))</span><span class="err">；</span>
+<span class="n">dt</span><span class="o">.</span><span class="n">strftime</span> <span class="p">(</span><span class="n">format</span><span class="p">)</span>
+</pre></div>
+
+<ul>
+<li><strong>timedelta类,时间加减</strong></li>
+</ul>
+<p>在模板和tuple之间,有一个%号分隔,它代表了格式化操作。使用<code>timedelta</code>可以很方便的在日期上做天days,小时hour,分钟,秒,毫秒,微妙的时间计算,如果要计算月份则需要另外的办法。</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span>  <span class="nn">datetime</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+<span class="c1">#日期减一天</span>
+<span class="n">dt1</span> <span class="o">=</span> <span class="n">dt</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="c1">#昨天</span>
+<span class="n">dt2</span> <span class="o">=</span> <span class="n">dt</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="c1">#昨天</span>
+<span class="n">dt3</span> <span class="o">=</span> <span class="n">dt</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="c1">#明天</span>
+<span class="n">delta_obj</span> <span class="o">=</span> <span class="n">dt3</span><span class="o">-</span><span class="n">dt</span>
+<span class="k">print</span> <span class="nb">type</span><span class="p">(</span><span class="n">delta_obj</span><span class="p">),</span><span class="n">delta_obj</span>       <span class="c1"># &lt;type &#39;datetime.timedelta&#39;&gt; 1 day, 0:00:00</span>
+<span class="k">print</span> <span class="n">delta_obj</span><span class="o">.</span><span class="n">days</span> <span class="p">,</span><span class="n">delta_obj</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>      <span class="c1"># 1 86400.0</span>
+</pre></div>
+
+<ul>
+<li><strong>tzinfo时区类</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">tzinfo</span><span class="p">,</span><span class="n">timedelta</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">tzinfo是关于时区信息的类</span>
+<span class="sd">tzinfo是一个抽象类，所以不能直接被实例化</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="k">class</span> <span class="nc">UTC</span><span class="p">(</span><span class="n">tzinfo</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;UTC&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">offset</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_offset</span> <span class="o">=</span> <span class="n">offset</span>
+
+    <span class="k">def</span> <span class="nf">utcoffset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_offset</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">tzname</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;UTC +</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_offset</span>
+
+    <span class="k">def</span> <span class="nf">dst</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_offset</span><span class="p">)</span>
+
+<span class="c1"># 北京时间</span>
+<span class="n">beijing</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2011</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">tzinfo</span> <span class="o">=</span> <span class="n">UTC</span><span class="p">(</span><span class="mi">8</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;beijing time:&quot;</span><span class="p">,</span><span class="n">beijing</span><span class="p">)</span>
+<span class="c1"># 曼谷时间</span>
+<span class="n">bangkok</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2011</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">tzinfo</span> <span class="o">=</span> <span class="n">UTC</span><span class="p">(</span><span class="mi">7</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;bangkok time&quot;</span><span class="p">,</span><span class="n">bangkok</span><span class="p">)</span>
+<span class="c1"># 北京时间转成曼谷时间</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;beijing-time to bangkok-time:&quot;</span><span class="p">,</span><span class="n">beijing</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">UTC</span><span class="p">(</span><span class="mi">7</span><span class="p">)))</span>
+
+<span class="c1"># 计算时间差时也会考虑时区的问题</span>
+<span class="n">timespan</span> <span class="o">=</span> <span class="n">beijing</span> <span class="o">-</span> <span class="n">bangkok</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;时差:&quot;</span><span class="p">,</span><span class="n">timespan</span><span class="p">)</span>
+</pre></div>
+
+<h4 id="333-calendar">3.3.3 calendar模块<a class="headerlink" href="#333-calendar" title="Permanent link">&para;</a></h4>
+<p>calendar模块定义了Calendar类,它封装了值的计算,比如计算给定月份或年份中周的日期。此外,TextCalendar和HTMLCalendar类可以生成预格式化的输出。</p>
+<ul>
+<li><strong>格式化示例</strong></li>
+</ul>
+<p>prmonth()方法是很简单,可以生成一个月的格式化文本输出。</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">calendar</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">calendar</span><span class="o">.</span><span class="n">TextCalendar</span><span class="p">(</span><span class="n">calendar</span><span class="o">.</span><span class="n">SUNDAY</span><span class="p">)</span>
+<span class="n">c</span><span class="o">.</span><span class="n">prmonth</span><span class="p">(</span><span class="mi">2017</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
+<span class="c1"># 输出</span>
+<span class="c1">#      July 2017</span>
+<span class="c1"># Su Mo Tu We Th Fr Sa</span>
+<span class="c1">#                    1</span>
+<span class="c1">#  2  3  4  5  6  7  8</span>
+<span class="c1">#  9 10 11 12 13 14 15</span>
+<span class="c1"># 16 17 18 19 20 21 22</span>
+<span class="c1"># 23 24 25 26 27 28 29</span>
+<span class="c1"># 30 31</span>
+</pre></div>
+
+<p>根据TextCalendar美国惯例,该示例配置为在周日开始周。默认是使用星期一开始一周的欧洲惯例。可以使用HTMLCalendar和formatmonth()生成类似HTML的表格。呈现的输出看起来与纯文本大致相同,但是用HTML标记包装。每个表格单元格都有一个与星期几相对应的类属性,因此HTML可以通过CSS设置样式。</p>
+<p>要以不同于其中一个可用默认值的格式生成输出,请使用calendar计算日期并将值组织为周和月范围,然后迭代结果。Calendar模块的weekheader(),monthcalendar()和yeardays2calendar()方法对此特别有用。</p>
+<p>调用yeardays2calendar()会生成一系列“月份行”列表。每个列表包括月份作为另一个周列表。这几周是由日期编号(1-31)和工作日编号(0-6)组成的元组列表。超出月份的天数为0。</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">calendar</span>
+<span class="kn">import</span> <span class="nn">pprint</span>
+
+<span class="n">cal</span> <span class="o">=</span> <span class="n">calendar</span><span class="o">.</span><span class="n">Calendar</span><span class="p">(</span><span class="n">calendar</span><span class="o">.</span><span class="n">SUNDAY</span><span class="p">)</span>
+<span class="n">cal_data</span> <span class="o">=</span> <span class="n">cal</span><span class="o">.</span><span class="n">yeardays2calendar</span><span class="p">(</span><span class="mi">2017</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;len(cal_data)      :&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">cal_data</span><span class="p">))</span>
+
+<span class="n">top_months</span> <span class="o">=</span> <span class="n">cal_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;len(top_months)    :&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">top_months</span><span class="p">))</span>
+
+<span class="n">first_month</span> <span class="o">=</span> <span class="n">top_months</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;len(first_month)   :&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">first_month</span><span class="p">))</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;first_month:&#39;</span><span class="p">)</span>
+<span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">first_month</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">65</span><span class="p">)</span>
+
+<span class="c1"># 输出</span>
+<span class="c1"># len(cal_data)      : 4</span>
+<span class="c1"># len(top_months)    : 3</span>
+<span class="c1"># len(first_month)   : 5</span>
+<span class="c1"># first_month:</span>
+<span class="c1"># [[(1, 6), (2, 0), (3, 1), (4, 2), (5, 3), (6, 4), (7, 5)],</span>
+<span class="c1">#  [(8, 6), (9, 0), (10, 1), (11, 2), (12, 3), (13, 4), (14, 5)],</span>
+<span class="c1">#  [(15, 6), (16, 0), (17, 1), (18, 2), (19, 3), (20, 4), (21, 5)],</span>
+<span class="c1">#  [(22, 6), (23, 0), (24, 1), (25, 2), (26, 3), (27, 4), (28, 5)],</span>
+<span class="c1">#  [(29, 6), (30, 0), (31, 1), (0, 2), (0, 3), (0, 4), (0, 5)]]</span>
+</pre></div>
+
+<p>相当于使用formatyear()。</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">calendar</span>
+
+<span class="n">cal</span> <span class="o">=</span> <span class="n">calendar</span><span class="o">.</span><span class="n">TextCalendar</span><span class="p">(</span><span class="n">calendar</span><span class="o">.</span><span class="n">SUNDAY</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">cal</span><span class="o">.</span><span class="n">formatyear</span><span class="p">(</span><span class="mi">2017</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+
+<span class="c1"># 输出</span>
+<span class="c1">#                               2017</span>
+<span class="c1">#</span>
+<span class="c1">#       January               February               March</span>
+<span class="c1"># Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa</span>
+<span class="c1">#  1  2  3  4  5  6  7            1  2  3  4            1  2  3  4</span>
+<span class="c1">#  8  9 10 11 12 13 14   5  6  7  8  9 10 11   5  6  7  8  9 10 11</span>
+<span class="c1"># 15 16 17 18 19 20 21  12 13 14 15 16 17 18  12 13 14 15 16 17 18</span>
+<span class="c1"># 22 23 24 25 26 27 28  19 20 21 22 23 24 25  19 20 21 22 23 24 25</span>
+<span class="c1"># 29 30 31              26 27 28              26 27 28 29 30 31</span>
+<span class="c1">#</span>
+<span class="c1">#        April                  May                   June</span>
+<span class="c1"># Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa</span>
+<span class="c1">#                    1      1  2  3  4  5  6               1  2  3</span>
+<span class="c1">#  2  3  4  5  6  7  8   7  8  9 10 11 12 13   4  5  6  7  8  9 10</span>
+<span class="c1">#  9 10 11 12 13 14 15  14 15 16 17 18 19 20  11 12 13 14 15 16 17</span>
+<span class="c1"># 16 17 18 19 20 21 22  21 22 23 24 25 26 27  18 19 20 21 22 23 24</span>
+<span class="c1"># 23 24 25 26 27 28 29  28 29 30 31           25 26 27 28 29 30</span>
+<span class="c1"># 30</span>
+<span class="c1">#</span>
+<span class="c1">#         July                 August              September</span>
+<span class="c1"># Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa</span>
+<span class="c1">#                    1         1  2  3  4  5                  1  2</span>
+<span class="c1">#  2  3  4  5  6  7  8   6  7  8  9 10 11 12   3  4  5  6  7  8  9</span>
+<span class="c1">#  9 10 11 12 13 14 15  13 14 15 16 17 18 19  10 11 12 13 14 15 16</span>
+<span class="c1"># 16 17 18 19 20 21 22  20 21 22 23 24 25 26  17 18 19 20 21 22 23</span>
+<span class="c1"># 23 24 25 26 27 28 29  27 28 29 30 31        24 25 26 27 28 29 30</span>
+<span class="c1"># 30 31</span>
+<span class="c1">#</span>
+<span class="c1">#       October               November              December</span>
+<span class="c1"># Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa</span>
+<span class="c1">#  1  2  3  4  5  6  7            1  2  3  4                  1  2</span>
+<span class="c1">#  8  9 10 11 12 13 14   5  6  7  8  9 10 11   3  4  5  6  7  8  9</span>
+<span class="c1"># 15 16 17 18 19 20 21  12 13 14 15 16 17 18  10 11 12 13 14 15 16</span>
+<span class="c1"># 22 23 24 25 26 27 28  19 20 21 22 23 24 25  17 18 19 20 21 22 23</span>
+<span class="c1"># 29 30 31              26 27 28 29 30        24 25 26 27 28 29 30</span>
+<span class="c1">#                                             31</span>
+</pre></div>
+
+<p>day_name,day_abbr,month_name和month_abbr模块主要用于生产定制格式化输出(即包括在HTML输出链接)。它们会针对当前区域自动化配置。</p>
+<ul>
+<li><strong>区域设置</strong></li>
+</ul>
+<p>如果想生成非默认区域的格式化日历,可以使用LocaleTextCalendar或LocaleHTMLCalendar。</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">calendar</span>
+
+<span class="n">c</span> <span class="o">=</span> <span class="n">calendar</span><span class="o">.</span><span class="n">LocaleTextCalendar</span><span class="p">(</span><span class="n">locale</span><span class="o">=</span><span class="s1">&#39;en_US&#39;</span><span class="p">)</span>
+<span class="n">c</span><span class="o">.</span><span class="n">prmonth</span><span class="p">(</span><span class="mi">2017</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
+<span class="k">print</span><span class="p">()</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">calendar</span><span class="o">.</span><span class="n">LocaleTextCalendar</span><span class="p">(</span><span class="n">locale</span><span class="o">=</span><span class="s1">&#39;fr_FR&#39;</span><span class="p">)</span>
+<span class="n">c</span><span class="o">.</span><span class="n">prmonth</span><span class="p">(</span><span class="mi">2017</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
+
+<span class="c1"># 输出</span>
+<span class="c1">#      July 2017</span>
+<span class="c1"># Mo Tu We Th Fr Sa Su</span>
+<span class="c1">#                 1  2</span>
+<span class="c1">#  3  4  5  6  7  8  9</span>
+<span class="c1"># 10 11 12 13 14 15 16</span>
+<span class="c1"># 17 18 19 20 21 22 23</span>
+<span class="c1"># 24 25 26 27 28 29 30</span>
+<span class="c1"># 31</span>
+<span class="c1">#</span>
+<span class="c1">#     juillet 2017</span>
+<span class="c1"># Lu Ma Me Je Ve Sa Di</span>
+<span class="c1">#                 1  2</span>
+<span class="c1">#  3  4  5  6  7  8  9</span>
+<span class="c1"># 10 11 12 13 14 15 16</span>
+<span class="c1"># 17 18 19 20 21 22 23</span>
+<span class="c1"># 24 25 26 27 28 29 30</span>
+<span class="c1"># 31</span>
+</pre></div>
+
+<p>一周的第一天不是语言环境设置的一部分,而且这个值就是该类的一个参数,就像TextCalendar一样。</p>
+<ul>
+<li><strong>计算日期</strong></li>
+</ul>
+<p>虽然日历模块主要侧重于以各种格式打印完整日历,但它还提供了以其他方式处理日期的有用功能,例如计算重复事件的日期。例如,Python亚特兰大用户组在每个月的第二个星期四开会。要计算一年的会议日期,请使用monthcalendar()。</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">calendar</span>
+<span class="kn">import</span> <span class="nn">pprint</span>
+
+<span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">calendar</span><span class="o">.</span><span class="n">monthcalendar</span><span class="p">(</span><span class="mi">2017</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+
+<span class="c1"># 输出</span>
+<span class="c1"># [[0, 0, 0, 0, 0, 1, 2],</span>
+<span class="c1">#  [3, 4, 5, 6, 7, 8, 9],</span>
+<span class="c1">#  [10, 11, 12, 13, 14, 15, 16],</span>
+<span class="c1">#  [17, 18, 19, 20, 21, 22, 23],</span>
+<span class="c1">#  [24, 25, 26, 27, 28, 29, 30],</span>
+<span class="c1">#  [31, 0, 0, 0, 0, 0, 0]]</span>
+</pre></div>
+
+<p>0值是与给定月份重叠的一周中的时间,是另一个月的一部分。一周的第一天默认为星期一,可以通过调用setfirstweekday()来更改,但由于日历模块包含用于索引返回的日期范围的常量monthcalendar(),因此在这种情况下跳过该步骤更方便。要计算一年的小组会议日期,假设它们总是在每个月的第二个星期四,查看monthcalendar()输出来查找星期四。本月的第一周和最后一周填充0值作为前一个月或后一个月天数的占位符。例如,如果一个月在星期五开始,则星期四位置第一周的值将为0。</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">calendar</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="n">year</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="c1"># Show every month</span>
+<span class="k">for</span> <span class="n">month</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">13</span><span class="p">):</span>
+    <span class="c1"># Compute the dates for each week that overlaps the month</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">calendar</span><span class="o">.</span><span class="n">monthcalendar</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">)</span>
+    <span class="n">first_week</span> <span class="o">=</span> <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">second_week</span> <span class="o">=</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">third_week</span> <span class="o">=</span> <span class="n">c</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+    <span class="c1"># If there is a Thursday in the first week, the second Thursday is # in the second week.</span>
+    <span class="c1"># Otherwise, the second Thursday must be in the third week.</span>
+    <span class="k">if</span> <span class="n">first_week</span><span class="p">[</span><span class="n">calendar</span><span class="o">.</span><span class="n">THURSDAY</span><span class="p">]:</span>
+        <span class="n">meeting_date</span> <span class="o">=</span> <span class="n">second_week</span><span class="p">[</span><span class="n">calendar</span><span class="o">.</span><span class="n">THURSDAY</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">meeting_date</span> <span class="o">=</span> <span class="n">third_week</span><span class="p">[</span><span class="n">calendar</span><span class="o">.</span><span class="n">THURSDAY</span><span class="p">]</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;{:&gt;3}: {:&gt;2}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">calendar</span><span class="o">.</span><span class="n">month_abbr</span><span class="p">[</span><span class="n">month</span><span class="p">],</span> <span class="n">meeting_date</span><span class="p">))</span>
+
+<span class="c1"># 输出</span>
+<span class="c1"># Jan: 12</span>
+<span class="c1"># Feb:  9</span>
+<span class="c1"># Mar:  9</span>
+<span class="c1"># Apr: 13</span>
+<span class="c1"># May: 11</span>
+<span class="c1"># Jun:  8</span>
+<span class="c1"># Jul: 13</span>
+<span class="c1"># Aug: 10</span>
+<span class="c1"># Sep: 14</span>
+<span class="c1"># Oct: 12</span>
+<span class="c1"># Nov:  9</span>
+<span class="c1"># Dec: 14</span>
+</pre></div>
+
+<ul>
+<li><strong>其他可能有用的函数列表</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left">序号</th>
+<th>函数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">1</td>
+<td>calendar.calendar(year,w=2,l=1,c=6)</td>
+<td>返回一个多行字符串格式的year年年历,3个月一行,间隔距离为c。每日宽度间隔为w字符,每行长度为21*W+18+2*C,l是每星期行数</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td>calendar.firstweekday()</td>
+<td>返回当前每周起始日期的设置。默认情况下,首次载入calendar模块时返回0,即星期一</td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td>calendar.isleap(year)</td>
+<td>是闰年返回True,否则为false</td>
+</tr>
+<tr>
+<td align="left">4</td>
+<td>calendar.leapdays(y1,y2)</td>
+<td>返回在Y1,Y2两年之间的闰年总数</td>
+</tr>
+<tr>
+<td align="left">5</td>
+<td>calendar.month(year,month,w=2,l=1)</td>
+<td>返回一个多行字符串格式的year年month月日历,两行标题,一周一行。每日宽度间隔为w字符,每行的长度为7*w+6,l是每星期的行数</td>
+</tr>
+<tr>
+<td align="left">6</td>
+<td>calendar.monthcalendar(year,month)</td>
+<td>返回一个整数的单层嵌套列表。每个子列表装载代表一个星期的整数,Year年month月外的日期都设为0;范围内的日子都由该月第几日表示,从1开始</td>
+</tr>
+<tr>
+<td align="left">7</td>
+<td>calendar.monthrange(year,month)</td>
+<td>返回两个整数,第一个是该月的星期几的日期码,第二个是该月的日期码。日从0(星期一)到6(星期日),月从1到12</td>
+</tr>
+<tr>
+<td align="left">8</td>
+<td>calendar.prcal(year,w=2,l=1,c=6)</td>
+<td>相当于print calendar.calendar(year,w,l,c)</td>
+</tr>
+<tr>
+<td align="left">9</td>
+<td>calendar.prmonth(year,month,w=2,l=1)</td>
+<td>相当于print calendar.calendar(year,w,l,c)</td>
+</tr>
+<tr>
+<td align="left">10</td>
+<td>calendar.setfirstweekday(weekday)</td>
+<td>设置每周的起始日期码,0(星期一)到6(星期日)</td>
+</tr>
+<tr>
+<td align="left">11</td>
+<td>calendar.timegm(tupletime),time.gmtime相反</td>
+<td>接受一个时间元组形式,返回该时刻的时间辍(1970纪元后经过的浮点秒数)</td>
+</tr>
+<tr>
+<td align="left">12</td>
+<td>calendar.weekday(year,month,day)</td>
+<td>返回给定日期的日期码,0(星期一)到6(星期日),月份为1(一月)到12(12月)</td>
+</tr>
+</tbody>
+</table>
 
   <br>
     <style>
