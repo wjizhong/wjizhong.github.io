@@ -1,0 +1,49 @@
+site_name: 图像/视频算法
+site_description: 图像/视频相关算法以及引申的工具和生活内容
+site_author: wjizhong
+site_url: https://wjizhong.github.io
+
+repo_name: 'wjizhong'
+repo_url: https://github.com/wjizhong
+
+theme:
+    name: null
+    custom_dir: custom
+    # Copy settings from mkdocs_theme.yml, which is ignored by custom_dir themes.
+    static_templates: [404.html]
+    search_index_only: true
+    include_search_page: true
+
+# This should be renamed to nav for mkdocs 1.0+
+nav:
+    - 个人简历: index.md
+    - 工程内容:
+        - 计算机概论: 工程内容/计算机概论.md
+    - 比赛内容:
+        - leetcode:
+            - 题目0001:两数之和: 比赛内容/leetcode/题目0001_两数之和.md
+
+markdown_extensions:
+    - toc:
+        permalink: true
+    - footnotes
+    - meta
+    - def_list
+    - pymdownx.arithmatex
+    - pymdownx.betterem:
+        smart_enable: all
+    - pymdownx.caret
+    - pymdownx.critic
+    - pymdownx.details
+    - pymdownx.emoji:
+        emoji_generator: !!python/name:pymdownx.emoji.to_png
+    - pymdownx.inlinehilite
+    - pymdownx.magiclink
+    - pymdownx.mark
+    - pymdownx.smartsymbols
+    - pymdownx.superfences
+    - pymdownx.tasklist
+    - pymdownx.tilde
+
+extra:
+    history_buttons: false
