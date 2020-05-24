@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/leetcode/%E9%A2%98%E7%9B%AE0001_%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>题目0001:两数之和 - 图像/视频算法</title>
+    <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "\u9898\u76ee0001:\u4e24\u6570\u4e4b\u548c", url: "#_top", children: [
+              {title: "\u63cf\u8ff0", url: "#_1" },
+              {title: "\u9898\u89e3", url: "#_2" },
+          ]},
+        ];
+
+    </script>
+    <script src="../../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    
+
+    <h1 id="0001">题目0001:两数之和<a class="headerlink" href="#0001" title="Permanent link">&para;</a></h1>
+<h2 id="_1">描述<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>给定一个整数数组<code>nums</code>和一个目标值<code>target</code>,请你在该数组中找出和为目标值的那两个整数,并返回他们的数组下标。</p>
+<p>你可以假设每种输入只会对应一个答案。但是,你不能重复利用这个数组中同样的元素。</p>
+<p>示例:</p>
+<div class="highlight"><pre><span></span>给定 nums = [2, 7, 11, 15], target = 9
+因为 nums[0] + nums[1] = 2 + 7 = 9
+所以返回 [0, 1]
+</pre></div>
+
+<h2 id="_2">题解<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>方法一:暴力法</strong></li>
+</ul>
+<p>暴力法很简单,遍历每个元素<code>x</code>,并查找是否存在一个值与<code>target-x</code>相等的目标元素。</p>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">twoSum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">target</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">nums</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="n">target</span><span class="o">-</span><span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                    <span class="k">return</span> <span class="n">i</span><span class="p">,</span><span class="n">j</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;No two sum solution&quot;</span><span class="p">);</span>
+</pre></div>
+
+<p>复杂度分析:</p>
+<blockquote>
+<p>时间复杂度:<span><span class="MathJax_Preview">O(n^2)</span><script type="math/tex">O(n^2)</script></span>,对于每个元素,我们试图通过遍历数组的其余部分来寻找它所对应的目标元素,这将耗费<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>的时间。因此时间复杂度为<span><span class="MathJax_Preview">O(n^2)</span><script type="math/tex">O(n^2)</script></span></p>
+<p>空间复杂度:<span><span class="MathJax_Preview">O(1)</span><script type="math/tex">O(1)</script></span>。</p>
+</blockquote>
+<ul>
+<li><strong>方法二:两遍哈希表</strong></li>
+</ul>
+<p>为了对运行时间复杂度进行优化,我们需要一种更有效的方法来检查数组中是否存在目标元素。如果存在,我们需要找出它的索引。保持数组中的每个元素与其索引相互对应的最好方法是什么?哈希表。</p>
+<p>通过以空间换取速度的方式,我们可以将查找时间从<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>降低到<span><span class="MathJax_Preview">O(1)</span><script type="math/tex">O(1)</script></span>。哈希表正是为此目的而构建的,它支持以近似恒定的时间进行快速查找。我用“近似”来描述,是因为一旦出现冲突,查找用时可能会退化到<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>。但只要你仔细地挑选哈希函数,在哈希表中进行查找的用时应当被摊销为<span><span class="MathJax_Preview">O(1)</span><script type="math/tex">O(1)</script></span>。</p>
+<p>一个简单的实现使用了两次迭代。在第一次迭代中,我们将每个元素的值和它的索引添加到表中。然后,在第二次迭代中,我们将检查每个元素所对应的目标元素(<code>target-nums[i]</code>)是否存在于表中。注意,该目标元素不能是<code>nums[i]</code>本身！</p>
+<div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kt">int</span><span class="o">[]</span> <span class="nf">twoSum</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">nums</span><span class="o">,</span> <span class="kt">int</span> <span class="n">target</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">Map</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;</span> <span class="n">map</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;();</span>
+    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nums</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+        <span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">nums</span><span class="o">[</span><span class="n">i</span><span class="o">],</span> <span class="n">i</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nums</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+        <span class="kt">int</span> <span class="n">complement</span> <span class="o">=</span> <span class="n">target</span> <span class="o">-</span> <span class="n">nums</span><span class="o">[</span><span class="n">i</span><span class="o">];</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">map</span><span class="o">.</span><span class="na">containsKey</span><span class="o">(</span><span class="n">complement</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="n">map</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">complement</span><span class="o">)</span> <span class="o">!=</span> <span class="n">i</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="kt">int</span><span class="o">[]</span> <span class="o">{</span> <span class="n">i</span><span class="o">,</span> <span class="n">map</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">complement</span><span class="o">)</span> <span class="o">};</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="n">IllegalArgumentException</span><span class="o">(</span><span class="s">&quot;No two sum solution&quot;</span><span class="o">);</span>
+<span class="o">}</span>
+</pre></div>
+
+<p>复杂度分析:</p>
+<blockquote>
+<p>时间复杂度:<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>, 我们把包含有n个元素的列表遍历两次。由于哈希表将查找时间缩短到<span><span class="MathJax_Preview">O(1)</span><script type="math/tex">O(1)</script></span>,所以时间复杂度为<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>。</p>
+<p>空间复杂度:<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>, 所需的额外空间取决于哈希表中存储的元素数量,该表中存储了<code>n</code>个元素。</p>
+</blockquote>
+<ul>
+<li><strong>方法三:一遍哈希表</strong></li>
+</ul>
+<p>事实证明,我们可以一次完成。在进行迭代并将元素插入到表中的同时,我们还会回过头来检查表中是否已经存在当前元素所对应的目标元素。如果它存在,那我们已经找到了对应解,并立即将其返回。</p>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">twoSum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">target</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="n">map_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">();</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)):</span>
+            <span class="n">temp</span> <span class="o">=</span> <span class="n">target</span><span class="o">-</span><span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">temp</span> <span class="ow">in</span> <span class="n">map_dict</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">map_dict</span><span class="p">[</span><span class="n">temp</span><span class="p">],</span><span class="n">i</span>
+            <span class="n">map_dict</span><span class="p">[</span><span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">i</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;No two sum solution&quot;</span><span class="p">);</span>
+</pre></div>
+
+<p>复杂度分析:</p>
+<blockquote>
+<p>时间复杂度:<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>, 我们只遍历了包含有n个元素的列表一次。在表中进行的每次查找只花费<span><span class="MathJax_Preview">O(1)</span><script type="math/tex">O(1)</script></span>的时间。</p>
+<p>空间复杂度:<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>, 所需的额外空间取决于哈希表中存储的元素数量,该表最多需要存储<code>n</code>个元素。</p>
+</blockquote>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    <br>
+</div>
+
+</body>
+</html>
