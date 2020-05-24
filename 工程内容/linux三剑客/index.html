@@ -1,0 +1,1511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E5%B7%A5%E7%A8%8B%E5%86%85%E5%AE%B9/linux%E4%B8%89%E5%89%91%E5%AE%A2/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>linux三剑客 - 图像/视频算法</title>
+    <link href="../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "linux\u4e09\u5251\u5ba2", url: "#_top", children: [
+              {title: "\u4e00\u3001\u6b63\u5219\u8868\u8fbe\u5f0f", url: "#_1" },
+              {title: "\u4e8c\u3001grep\u547d\u4ee4", url: "#grep" },
+              {title: "\u4e09\u3001awk\u547d\u4ee4", url: "#awk" },
+              {title: "\u56db\u3001sed\u547d\u4ee4", url: "#sed" },
+              {title: "\u4e94\u3001\u5176\u4ed6\u64cd\u4f5c", url: "#_2" },
+          ]},
+        ];
+
+    </script>
+    <script src="../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    
+
+    <h1 id="linux">linux三剑客<a class="headerlink" href="#linux" title="Permanent link">&para;</a></h1>
+<h2 id="_1">一、正则表达式<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>正则表达式(Regular Expression,在代码中常简写为regex、regexp或RE),又称正规表示式、正规表示法、正规表达式、规则表达式、常规表示法,是计算机科学的一个概念。正则表达式使用单个字符串来描述、匹配一系列匹配某个句法规则的字符串。在很多文本编辑器里,正则表达式通常被用来检索、替换那些匹配某个模式的文本。</p>
+<p>许多程序设计语言都支持利用正则表达式进行字符串操作。例如,在Perl中就内建了一个功能强大的正则表达式引擎。正则表达式这个概念最初是由Unix中的工具软件(例如sed和grep)普及开的。正则表达式通常缩写成regex,单数有regexp、regex,复数有regexps、regexes、regexen。</p>
+<h3 id="11">1.1 历史<a class="headerlink" href="#11" title="Permanent link">&para;</a></h3>
+<p>最初的正则表达式出现于理论计算机科学的自动控制理论和形式化语言理论中。在这些领域中有对计算(自动控制)的模型和对形式化语言描述与分类的研究。</p>
+<p>1940年,沃伦·麦卡洛克与Walter Pitts将神经系统中的神经元描述成小而简单的自动控制元。</p>
+<p>1950年代,数学家斯蒂芬·科尔·克莱尼利用称之为"正则集合"的数学符号来描述此模型。肯·汤普逊将此符号系统引入编辑器QED,随后是Unix上的编辑器ed,并最终引入grep。自此以后,正则表达式被广泛地应用于各种Unix或类Unix系统的工具中。正则表达式的POSIX规范,分为基本型正则表达式(Basic Regular Expression,BRE)和扩展型正则表达式(Extended Regular Express,ERE)两大流派。在兼容POSIX的UNIX系统上,grep和egrep之类的工具都遵循POSIX规范,一些数据库系统中的正则表达式也匹配POSIX规范。grep、vi、sed都属于BRE,是历史最早的正则表达式,因此元字符必须转译之后才具有特殊含义。egrep、awk则属于ERE,元字符不用转译</p>
+<p>Perl的正则表达式源自于Henry Spencer于1986年1月19日发布的regex,它已经演化成了PCRE(Perl兼容正则表达式,Perl Compatible Regular Expressions,一个由Philip Hazel开发的,为很多现代工具所使用的库。</p>
+<h3 id="12">1.2 理论知识<a class="headerlink" href="#12" title="Permanent link">&para;</a></h3>
+<p>正则表达式可以用形式化语言理论的方式来表达。正则表达式由常量和算子组成,它们分别表示字符串的集合和在这些集合上的运算。给定有限字母表Σ定义了下列常量:</p>
+<blockquote>
+<ul>
+<li>空集<span><span class="MathJax_Preview">\varnothing</span><script type="math/tex">\varnothing</script></span>表示集合<span><span class="MathJax_Preview">\varnothing</span><script type="math/tex">\varnothing</script></span>。</li>
+<li>空串<span><span class="MathJax_Preview">\varepsilon</span><script type="math/tex">\varepsilon</script></span>表示集合<span><span class="MathJax_Preview">\{\varepsilon \}</span><script type="math/tex">\{\varepsilon \}</script></span>。</li>
+<li>文字字符在<span><span class="MathJax_Preview">\Sigma</span><script type="math/tex">\Sigma</script></span>中的a表示集合<span><span class="MathJax_Preview">\{a\}</span><script type="math/tex">\{a\}</script></span>。</li>
+</ul>
+</blockquote>
+<p>定义了下列运算:</p>
+<blockquote>
+<ul>
+<li>串接<span><span class="MathJax_Preview">RS</span><script type="math/tex">RS</script></span>表示集合<span><span class="MathJax_Preview">\{\alpha \beta \mid \alpha \in R,\beta \in S\}</span><script type="math/tex">\{\alpha \beta \mid \alpha \in R,\beta \in S\}</script></span>。例如:<span><span class="MathJax_Preview">\{ab,c\}\{d,ef\}=\{abd,abef,cd,cef\}</span><script type="math/tex">\{ab,c\}\{d,ef\}=\{abd,abef,cd,cef\}</script></span>。</li>
+<li>选择<span><span class="MathJax_Preview">R|S</span><script type="math/tex">R|S</script></span>表示<span><span class="MathJax_Preview">R</span><script type="math/tex">R</script></span>和<span><span class="MathJax_Preview">S</span><script type="math/tex">S</script></span>的并集。例如:<span><span class="MathJax_Preview">\{ab,c\}|\{ab,d,ef\}=\{ab,c,d,ef\}</span><script type="math/tex">\{ab,c\}|\{ab,d,ef\}=\{ab,c,d,ef\}</script></span>。</li>
+<li>Kleene星号<span><span class="MathJax_Preview">R^*</span><script type="math/tex">R^*</script></span>表示包含<span><span class="MathJax_Preview">\varepsilon</span><script type="math/tex">\varepsilon</script></span>并且闭合在字符串串接下的<span><span class="MathJax_Preview">R</span><script type="math/tex">R</script></span>的最小子集。这是可以通过<span><span class="MathJax_Preview">R</span><script type="math/tex">R</script></span>中的零或多个字符串的串接得到所有字符串的集合。例如:<span><span class="MathJax_Preview">\{ab,c\}^{*}=\{\varepsilon ,ab,c,abab,abc,cab,cc,ababab,\cdots \}</span><script type="math/tex">\{ab,c\}^{*}=\{\varepsilon ,ab,c,abab,abc,cab,cc,ababab,\cdots \}</script></span>。</li>
+</ul>
+</blockquote>
+<p>上述常量和算子形成了克莱尼代数。</p>
+<p>很多地方使用对选择使用符号<span><span class="MathJax_Preview">\cup</span><script type="math/tex">\cup</script></span>、<span><span class="MathJax_Preview">+</span><script type="math/tex">+</script></span>或<span><span class="MathJax_Preview">\vee</span><script type="math/tex">\vee</script></span>替代竖线。为了避免括号,假定<code>Kleene</code>星号有最高优先级,接着是串接,接着是并集。如果没有歧义则可以省略括号。例如:<span><span class="MathJax_Preview">(ab)c</span><script type="math/tex">(ab)c</script></span>可以写为<span><span class="MathJax_Preview">abc</span><script type="math/tex">abc</script></span>而<span><span class="MathJax_Preview">a|(b(c*))</span><script type="math/tex">a|(b(c*))</script></span>可以写为<span><span class="MathJax_Preview">a|bc*</span><script type="math/tex">a|bc*</script></span>。</p>
+<p>正则表达式为了避免多余的量词,定义了?和+,例如:<span><span class="MathJax_Preview">aa*</span><script type="math/tex">aa*</script></span>可以被表达为<span><span class="MathJax_Preview">a+</span><script type="math/tex">a+</script></span>;<span><span class="MathJax_Preview">(a|ε)</span><script type="math/tex">(a|ε)</script></span>可以被表达为<span><span class="MathJax_Preview">a?</span><script type="math/tex">a?</script></span>。有时增加补算子<span><span class="MathJax_Preview">\sim</span><script type="math/tex">\sim</script></span>; <span><span class="MathJax_Preview">\sim R</span><script type="math/tex">\sim R</script></span>表示在<span><span class="MathJax_Preview">\Sigma ^{*}</span><script type="math/tex">\Sigma ^{*}</script></span>上但不在<span><span class="MathJax_Preview">R</span><script type="math/tex">R</script></span>中的所有字符串的集合。补算子是多余的,因为它可以使用其他算子来表达(尽管计算这种表示的过程是复杂的,而结果可能以指数增大)。</p>
+<p>这种意义上的正则表达式可以表达正则语言,精确的是可被<a href="https://zh.wikipedia.org/wiki/%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E8%87%AA%E5%8A%A8%E6%9C%BA">有限状态自动机</a>接受的语言类。但是在简洁性上有重要区别。某类正则语言只能用大小指数增长的自动机来描述,而要求的正则表达式的长度只线性的增长。</p>
+<p>正则表达式对应于乔姆斯基层级的<a href="https://zh.wikipedia.org/wiki/%E6%AD%A3%E5%88%99%E6%96%87%E6%B3%95">类型-3</a>文法。但通常编程语言或其相关库(例如PCRE)中实现的正则表达式的表达能力是乔姆斯基层级中<a href="https://zh.wikipedia.org/wiki/%E6%AD%A3%E5%88%99%E6%96%87%E6%B3%95">类型-3</a>文法的超集[来源请求]。在另一方面,在正则表达式和不导致这种大小上的爆炸的非确定有限状态自动机(NFA)之间有简单的映射;为此NFA经常被用作正则表达式的替表示式。</p>
+<p>我们还要在这种形式化中研究表达力。如下面例子所展示的,不同的正则表达式可以表达同样的语言:这种形式化中存在着冗余。</p>
+<p>有可能对两个给定正则表达式写一个算法来判定它们所描述的语言是否本质上相等,简约每个表达式到极小确定有限自动机,确定它们是否同构(等价)。</p>
+<p>这种冗余可以消减到什么程度?我们可以找到仍有完全表达力的正则表达式的有趣的子集吗?Kleene星号和并集明显是需要的,但是我们或许可以限制它们的使用。这提出了一个令人惊奇的困难问题。因为正则表达式如此简单,没有办法在语法上把它重写成某种规范形式。过去公理化的缺乏导致了星号高度问题。最近Dexter Kozen用克莱尼代数公理化了正则表达式。</p>
+<p>很多现实世界的“正则表达式”引擎实现了不能用正则表达式代数表达的特征。</p>
+<h3 id="13">1.3 逻辑原理<a class="headerlink" href="#13" title="Permanent link">&para;</a></h3>
+<p>先看看出问题的正则:</p>
+<p><img src="http://user-gold-cdn.xitu.io/2019/7/15/16bf3bdc6db86b22" width="80%"></p>
+<p>引起性能问题的关键部分是<code>.*(?:.*=.*)</code>,这里我们先不管那个非捕获组,将性能问题的正则看做<code>.*.*=.*</code>。其中<code>.</code>表示匹配除了换行以外的任意字符(很多人把这里搞错,容易出<code>bug</code>),<code>.*</code>表示贪婪匹配任意字符任意次。</p>
+<ul>
+<li><strong>回溯</strong></li>
+</ul>
+<p>在使用贪婪匹配或者惰性匹配或者或匹配进入到匹配路径选择的时候,遇到失败的匹配路径,尝试走另外一个匹配路径的这种行为,称作回溯。</p>
+<p><img src="http://user-gold-cdn.xitu.io/2019/7/15/16bf3bdc6dd947ae?imageslim" width="80%"></p>
+<p>可以理解为走迷宫,一条路走到底,发现无路可走就回到上一个三岔口选择另外的路。</p>
+<div class="highlight"><pre><span></span><span class="c1">// 性能问题正则</span>
+<span class="c1">// 将下面代码粘贴到浏览器控制台运行试试</span>
+<span class="kr">const</span> <span class="nx">regexp</span> <span class="o">=</span> <span class="sb">`[A-Z]+\\d+(.*):(.*)+[A-Z]+\\d+`</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">str</span> <span class="o">=</span> <span class="sb">`A1:B$1,C$1:D$1,E$1:F$1,G$1:H$1`</span>
+<span class="kr">const</span> <span class="nx">reg</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="nx">regexp</span><span class="p">);</span>
+<span class="nx">start</span> <span class="o">=</span> <span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">res</span> <span class="o">=</span> <span class="nx">reg</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">str</span><span class="p">);</span>
+<span class="nx">end</span> <span class="o">=</span> <span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">();</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;常规正则执行耗时:&#39;</span> <span class="o">+</span> <span class="p">(</span><span class="nx">end</span> <span class="o">-</span> <span class="nx">start</span><span class="p">))</span>
+</pre></div>
+
+<p>现在来看看回溯究竟是怎么一回事:假设我们有一段正则<code>(.*)+\d</code> ,这个时候输入字符串为abcd,注意这个时候仅仅输入了一个长度为4的字符串,我们来分析一下匹配回溯的过程:</p>
+<p><img alt="" src="http://user-gold-cdn.xitu.io/2019/7/15/16bf3bdc688a58bb" /></p>
+<p>上面展示了一个回溯的匹配过程,大概描述一下前三轮匹配。注意<code>(.*)+</code>这里可以先暂且看成多次执行<code>.*</code>。<code>(.*){1,}</code></p>
+<p><img alt="" src="http://user-gold-cdn.xitu.io/2019/7/15/16bf3bdc6809f813?imageslim" /></p>
+<p>第一次匹配,因为<code>.*</code>可以匹配任意个字符任意次,那么这里可以选择匹配空、a、ab、abc、abcd,因为<code>*</code>的贪婪特性,所以<code>.*</code>直接匹配了abcd4个字符,<code>+</code>因为后面没有其他字符了,所以只看着<code>.*</code>吃掉abcd后就不匹配了,这里记录<code>+</code>的值为1,然后<code>\d</code>没有东西能够匹配,所以匹配失败,进行第一次回溯。</p>
+<p><img alt="" src="http://user-gold-cdn.xitu.io/2019/7/15/16bf3bdc67a17040" /></p>
+<p>第二次匹配,因为进行了回溯,所以回到上一个匹配路径选择的时候,上次<code>.*</code>匹配的是abcd ,并且路不通,那么这次只能尝试匹配<code>abc</code>,这个时候末尾还有一个d,那么可以理解为<code>.*</code>第一次匹配了abc ,然后因为<code>(.*)+</code>的原因,<code>.*</code>可以进行第二次匹配,这里<code>.*</code>可以匹配d ,这里记录<code>+</code>的值为2,然后<code>\d</code>没有东西能够匹配,所以匹配失败,进行第二次回溯。</p>
+<p><img alt="" src="https://user-gold-cdn.xitu.io/2019/7/15/16bf3bdc73a0e5d1?imageslim" /></p>
+<p>第三次匹配,因为进行了回溯,所以回到上一个匹配路径选择的时候,上次第一个<code>.*</code>匹配的是abc,第二个<code>.*</code>匹配的是<code>d</code>,并且路不通,所以这里第二次的<code>.*</code>不进行匹配,这个时候末尾还有一个<code>d</code>,<code>\d</code>和<code>d</code>匹配失败,进行第三次回溯。</p>
+<ul>
+<li><strong>如何减少或避免回溯</strong></li>
+</ul>
+<blockquote>
+<p>优化正则表达式:时刻注意回溯造成的性能影响。</p>
+<p>使用DFA正则引擎的正则表达式</p>
+</blockquote>
+<ul>
+<li><strong>DFA正则引擎</strong></li>
+</ul>
+<p>传统正则引擎分为NFA(非确定性有限状态自动机),和DFA(确定性有限状态自动机)。</p>
+<p><strong>DFA</strong></p>
+<p>对于给定的任意一个状态和输入字符,DFA只会转移到一个确定的状态。并且DFA不允许出现没有输入字符的状态转移</p>
+<p><img alt="" src="https://user-gold-cdn.xitu.io/2019/7/15/16bf3bdcc3964971?imageslim" /></p>
+<p>比如状态0,在输入字符A的时候,终点只有1个,只能到状态1。</p>
+<p><strong>NFA</strong></p>
+<p>对于任意一个状态和输入字符,NFA所能转移的状态是一个非空集合。</p>
+<p><img alt="" src="https://user-gold-cdn.xitu.io/2019/7/15/16bf3bdcc36fe4df?imageslim" /></p>
+<p>比如状态0,在输入字符A的时候,终点可以是多个,即能到状态1,也能到状态0。</p>
+<p><strong>DFA和NFA的正则引擎的区别</strong></p>
+<blockquote>
+<ul>
+<li><strong>DFA</strong></li>
+</ul>
+</blockquote>
+<p>正则里面的DFA引擎实际上就是把正则表达式转换成一个图的邻接表,然后通过跳表的形式判断一个字符串是否匹配该正则。</p>
+<div class="highlight"><pre><span></span><span class="c1">// 大概模拟一下</span>
+<span class="kd">function</span> <span class="nx">machine</span><span class="p">(</span><span class="nx">input</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">input</span> <span class="o">!==</span> <span class="s1">&#39;string&#39;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;输入有误&#39;</span><span class="p">);</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="c1">// 比如正则:/abc/ 转换成DFA之后</span>
+    <span class="c1">// 这里我们定义了4种状态,分别是0,1,2,3,初始状态为0</span>
+    <span class="kr">const</span> <span class="nx">reg</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="mi">0</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">a</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="mi">1</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">b</span><span class="o">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="mi">2</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">isEnd</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="mi">3</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">c</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">};</span>
+    <span class="kd">let</span> <span class="nx">status</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">input</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kr">const</span> <span class="nx">inputChar</span> <span class="o">=</span> <span class="nx">input</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+        <span class="nx">status</span> <span class="o">=</span> <span class="nx">reg</span><span class="p">[</span><span class="nx">status</span><span class="p">][</span><span class="nx">inputChar</span><span class="p">];</span>
+        <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">status</span> <span class="o">===</span> <span class="s1">&#39;undefined&#39;</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;匹配失败&#39;</span><span class="p">);</span>
+            <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="kr">const</span> <span class="nx">end</span> <span class="o">=</span> <span class="nx">reg</span><span class="p">[</span><span class="nx">status</span><span class="p">];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">end</span> <span class="o">&amp;&amp;</span> <span class="nx">end</span><span class="p">.</span><span class="nx">isEnd</span> <span class="o">===</span> <span class="kc">true</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;匹配成功&#39;</span><span class="p">);</span>
+        <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;匹配失败&#39;</span><span class="p">);</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kr">const</span> <span class="nx">input</span> <span class="o">=</span> <span class="s1">&#39;abc&#39;</span><span class="p">;</span>
+<span class="nx">machine</span><span class="p">(</span><span class="nx">input</span><span class="p">);</span>
+</pre></div>
+
+<blockquote>
+<p>优点:不管正则表达式写的再烂,匹配速度都很快</p>
+<p>缺点:高级功能比如捕获组和断言都不支持</p>
+<ul>
+<li><strong>NFA</strong></li>
+</ul>
+</blockquote>
+<p>正则里面NFA引擎实际上就是在语法解析的时候,构造出的一个有向图。然后通过深搜的方式,去一条路径一条路径的递归尝试。</p>
+<p><img alt="" src="http://user-gold-cdn.xitu.io/2019/7/15/16bf3bdcc376e082" /></p>
+<blockquote>
+<p>优点:功能强大,可以拿到匹配的上下文信息,支持各种断言捕获组环视之类的功能</p>
+<p>缺点:对开发正则功底要求较高,需要注意回溯造成的性能问题</p>
+</blockquote>
+<h3 id="14">1.4 语法知识<a class="headerlink" href="#14" title="Permanent link">&para;</a></h3>
+<p>正则表达式(Regular Expression)是一种文本模式,包括普通字符(例如,a到z之间的字母)和特殊字符(称为"元字符")。正则表达式使用单个字符串来描述、匹配一系列匹配某个句法规则的字符串。</p>
+<ul>
+<li><strong>为什么使用正则表达式</strong></li>
+</ul>
+<p>典型的搜索和替换操作要求您提供与预期的搜索结果匹配的确切文本。虽然这种技术对于对静态文本执行简单搜索和替换任务可能已经足够了,但它缺乏灵活性。若采用这种方法搜索动态文本,即使不是不可能,至少也会变得很困难。</p>
+<p>通过使用正则表达式,可以:</p>
+<blockquote>
+<p>数据验证:测试输入字符串是否出现电话号码模式或信用卡号码</p>
+<p>替换文本:可以使用正则表达式来识别文档中的特定文本,完全删除该文本或者用其他文本替换它。</p>
+<p>基于模式匹配从字符串中提取子字符串:查找文档内或输入域内特定的文本。</p>
+</blockquote>
+<ul>
+<li><strong>正则表达式语法</strong></li>
+</ul>
+<p><strong>普通字符</strong></p>
+<p>普通字符包括没有显式指定为元字符的所有可打印和不可打印字符。这包括所有大写和小写字母、所有数字、所有标点符号和一些其他符号。绝大部分字符都是普通字符。</p>
+<p><strong>转义字符</strong></p>
+<p><code>\</code>是转移字符,其后面的字符会代表不同的意思,转移字符主要有三个作用:</p>
+<blockquote>
+<ol>
+<li>是为了匹配不方便显示的特殊字符,比如换行,tab符号等</li>
+<li>正则中预先定义了一些代表特殊意义的字符,比如\w等</li>
+<li>在正则中某些字符有特殊含义(比如下面说到的),转义字符可以让其显示自身的含义</li>
+</ol>
+</blockquote>
+<p>转义字符列表:</p>
+<table>
+<thead>
+<tr>
+<th align="left">字符</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">\cx</td>
+<td>匹配由x指明的控制字符,如\cM匹配一个Control-M或回车符,x的值必须为A-Z或a-z之一,否则将c视为一个原义的'c'字符</td>
+</tr>
+<tr>
+<td align="left">\un</td>
+<td>匹配n,其中n是一个用四个十六进制数字表示的Unicode字符,如\u00A9匹配版权符号(©)</td>
+</tr>
+<tr>
+<td align="left">\xn</td>
+<td>匹配n,其中n为十六进制转义值,十六进制转义值必须为确定的两个数字长,如'\x41'匹配"A",'\x041'则等价于'\x04'&amp;"1",正则表达式中可以使用ASCII编码</td>
+</tr>
+<tr>
+<td align="left">\n</td>
+<td>匹配一个换行符,等价于\x0a和\cJ</td>
+</tr>
+<tr>
+<td align="left">\r</td>
+<td>匹配一个回车符,等价于\x0d和\cM</td>
+</tr>
+<tr>
+<td align="left"><code>\f</code></td>
+<td>匹配一个换页符,等价于<code>\x0c</code>和<code>\cL</code></td>
+</tr>
+<tr>
+<td align="left"><code>\t</code></td>
+<td>匹配一个制表符,等价于<code>\x09</code>和<code>\cI</code></td>
+</tr>
+<tr>
+<td align="left"><code>\v</code></td>
+<td>匹配一个垂直制表符,等价于<code>\x0b</code>和<code>\cK</code></td>
+</tr>
+<tr>
+<td align="left"><code>\w</code></td>
+<td>匹配字母、数字、下划线,等价于'<code>[A-Za-z0-9_]</code>'</td>
+</tr>
+<tr>
+<td align="left"><code>\W</code></td>
+<td>匹配非字母、数字、下划线,等价于'<code>[^A-Za-z0-9_]</code>'</td>
+</tr>
+<tr>
+<td align="left"><code>\s</code></td>
+<td>匹配任何空白字符,包括空格、制表符、换页符等等,等价于<code>[\f\n\r\t\v]</code></td>
+</tr>
+<tr>
+<td align="left"><code>\S</code></td>
+<td>匹配任何非空白字符,等价于<code>[^\f\n\r\t\v]</code></td>
+</tr>
+<tr>
+<td align="left"><code>\d</code></td>
+<td>匹配一个数字字符,等价于<code>[0-9]</code></td>
+</tr>
+<tr>
+<td align="left"><code>\D</code></td>
+<td>匹配一个非数字字符,等价于<code>[^0-9]</code></td>
+</tr>
+<tr>
+<td align="left"><code>\b</code></td>
+<td>匹配一个单词边界,也就是指单词和空格间的位置,例如<code>'er\b'</code>可以匹配<code>"never"</code>中的<code>'er'</code>,但不能匹配<code>"verb"</code>中的<code>'er'</code></td>
+</tr>
+<tr>
+<td align="left"><code>\B</code></td>
+<td>匹配非单词边界,<code>'er\B'</code>能匹配<code>"verb"</code>中的<code>'er'</code>,但不能匹配<code>"never"</code>中的<code>'er'</code></td>
+</tr>
+<tr>
+<td align="left"><code>\\\\</code></td>
+<td>匹配<code>\</code>本身字符</td>
+</tr>
+<tr>
+<td align="left"><code>\num</code></td>
+<td>匹配<code>num</code>,其中<code>num</code>是一个正整数,对所获取的匹配的引用,例如,'<code>(.)\1</code>'匹配两个连续的相同字符</td>
+</tr>
+</tbody>
+</table>
+<p><strong>字符集和定位字符</strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">字符</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>[xyz]</code></td>
+<td>字符集合,匹配所包含的任意一个字符,例如<code>'[abc]'</code>可以匹配"<code>plain</code>"中的'<code>a</code>'</td>
+</tr>
+<tr>
+<td align="left"><code>[a-z]</code></td>
+<td>字符范围,匹配指定范围内的任意字符,例如<code>'[a-z]'</code>可以匹配<code>'a'</code>到<code>'z'</code>范围内的任意小写字母字符</td>
+</tr>
+<tr>
+<td align="left"><code>[^xyz]</code></td>
+<td>负值字符集合,匹配未包含的任意字符,例如<code>'[^abc]'</code>可以匹配<code>"plain"</code>中的<code>'p'</code>、<code>'l'</code>、<code>'i'</code>、<code>'n'</code></td>
+</tr>
+<tr>
+<td align="left"><code>[^a-z]</code></td>
+<td>负值字符范围,匹配任何不在指定范围内的任意字符,例如<code>'[^a-z]'</code>可以匹配任何不在<code>'a'</code>到<code>'z'</code>范围内的任意字符</td>
+</tr>
+<tr>
+<td align="left"><code>.</code></td>
+<td>匹配除换行符<code>(\n、\r)</code>之外的任何单个字符,与上边的区别是是否有<code>[]</code>,要匹配包括'<code>\n</code>'在内的任何字符,请使用像"<code>(.|\n)</code>"的模式。</td>
+</tr>
+<tr>
+<td align="left"><code>^</code></td>
+<td>匹配输入字符串的开始位置,如果设置了<code>RegExp</code>对象的<code>Multiline</code>属性,<code>^</code>也匹配'<code>\n</code>'或'<code>\r</code>'之后的位置</td>
+</tr>
+<tr>
+<td align="left"><code>$</code></td>
+<td>匹配输入字符串的结束位置,如果设置了<code>RegExp</code>对象的<code>Multiline</code>属性,<code>$</code>也匹配'<code>\n</code>'或'<code>\r</code>'之前的位置</td>
+</tr>
+<tr>
+<td align="left"><code>\b</code></td>
+<td>匹配一个单词边界,也就是指单词和空格间的位置,例如'<code>er\b</code>'可以匹配"<code>never</code>"中的'<code>er</code>',但不能匹配"<code>verb</code>"中的'<code>er</code>'</td>
+</tr>
+<tr>
+<td align="left"><code>\B</code></td>
+<td>匹配非单词边界,'<code>er\B</code>'能匹配"<code>verb</code>"中的'<code>er</code>',但不能匹配"<code>never</code>"中的'<code>er</code>'</td>
+</tr>
+</tbody>
+</table>
+<p><strong>字符数量</strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">字符</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>{n}</code></td>
+<td><code>n</code>是一个非负整数,匹配确定的<code>n</code>次,如'<code>o{2}</code>'不能匹配"<code>Bob</code>"中的'<code>o</code>',但是能匹配"<code>food</code>"中的两个<code>o</code></td>
+</tr>
+<tr>
+<td align="left"><code>{n,}</code></td>
+<td><code>n</code>是一个非负整数,至少匹配<code>n</code>次,如'<code>o{2,}</code>'不能匹配"<code>Bob</code>"中的'<code>o</code>',但能匹配"<code>foooood</code>"中的所有<code>o</code>,'<code>o{1,}</code>'等价于'<code>o+</code>','<code>o{0,}</code>'则等价于'<code>o*</code>'</td>
+</tr>
+<tr>
+<td align="left"><code>{n,m}</code></td>
+<td><code>m</code>和<code>n</code>均为非负整数,其中<code>n&lt;=m</code>,最少匹配<code>n</code>次且最多匹配<code>m</code>次,如"<code>o{1,3}</code>"将匹配"<code>fooooood</code>"中的前三个<code>o</code>,'<code>o{0,1}</code>'等价于'<code>o?</code>',请注意在逗号和两个数之间不能有空格</td>
+</tr>
+<tr>
+<td align="left"><code>*</code></td>
+<td>匹配前面的子表达式零次或多次,例如<code>zo*</code>能匹配"<code>z</code>"以及"<code>zoo</code>",<code>*</code>等价于<code>{0,}</code></td>
+</tr>
+<tr>
+<td align="left"><code>+</code></td>
+<td>匹配前面的子表达式一次或多次,例如'<code>zo+</code>'能匹配"<code>zo</code>"以及"<code>zoo</code>",但不能匹配"<code>z</code>",<code>+</code>等价于<code>{1,}</code></td>
+</tr>
+<tr>
+<td align="left"><code>?</code></td>
+<td>匹配前面的子表达式零次或一次,例如"<code>do(es)?</code>"可以匹配"<code>do</code>"或"<code>does</code>",<code>?</code>等价于<code>{0,1}</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>选择,分组,引用和预搜索</strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">字符</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>x|y</code></td>
+<td>匹配<code>x</code>或<code>y</code>,<code>|</code>可以多个来组合<code>(a|b|c)</code>,如'<code>z|food</code>'能匹配"<code>z</code>"或"<code>food</code>",'<code>(z|f)ood</code>'则匹配"<code>zood</code>"或"<code>food</code>"</td>
+</tr>
+<tr>
+<td align="left"><code>(pattern)</code></td>
+<td>匹配<code>pattern</code>并获取这一匹配,所获取的匹配可以从产生的<code>Matches</code>集合得到,如<code>(abc){2}</code>匹配<code>abcabc</code></td>
+</tr>
+<tr>
+<td align="left"><code>\num</code></td>
+<td>匹配<code>num</code>,其中<code>num</code>是一个正整数,对所获取的匹配的引用,如<code>&lt;([a-z]+)&gt;&lt;\1&gt;</code>可以匹配<code>&lt;span&gt;&lt;/span&gt;</code>或<code>&lt;div&gt;&lt;/div&gt;</code>等</td>
+</tr>
+<tr>
+<td align="left"><code>(?:pattern)</code></td>
+<td>匹配pattern但不获取匹配结果,也就是说这是一个非获取匹配,不进行存储供以后使用。这在使用"&gt;或"字符(</td>
+</tr>
+<tr>
+<td align="left"><code>(?=pattern)</code></td>
+<td>正向肯定预查,在任何匹配<code>pattern</code>的字符串开始处匹配查找字符串,这是一个非获取匹配,也就是说该匹配不需要获取供以后使用,例如"<code>Windows(?=95|98|NT|2000)</code>"能匹配"<code>Windows2000</code>"中的"<code>Windows</code>",但不能匹配"<code>Windows3.1</code>"中的"<code>Windows</code>"。预查不消耗字符,也就是说,在一个匹配发生后,在最后一次匹配之后立即开始下一次匹配的搜索,而不是从包含预查的字符之后开始</td>
+</tr>
+<tr>
+<td align="left"><code>(?!pattern)</code></td>
+<td>正向否定预查,在任何不匹配<code>pattern</code>的字符串开始处匹配查找字符串,这是一个非获取匹配,也就是说,该匹配不需要获取供以后使用,例如"<code>Windows(?!95|98|NT|2000)</code>"能匹配"<code>Windows3.1</code>"中的"<code>Windows</code>",但不能匹配"<code>Windows2000</code>"中的"<code>Windows</code>"。预查不消耗字符,也就是说,在一个匹配发生后,在最后一次匹配之后立即开始下一次匹配的搜索,而不是从包含预查的字符之后开始</td>
+</tr>
+<tr>
+<td align="left"><code>(?&lt;=pattern)</code></td>
+<td>反向肯定预查,与正向肯定预查类似,只是方向相反,例如"<code>(?&lt;=95|98|NT|2000)Windows</code>"能匹配"<code>2000Windows</code>"中的"<code>Windows</code>",但不能匹配"<code>3.1Windows</code>"中的"<code>Windows</code>"</td>
+</tr>
+<tr>
+<td align="left"><code>(?&lt;!pattern)</code></td>
+<td>反向否定预查,与正向否定预查类似,只是方向相反,例如"<code>(?&lt;!95|98|NT|2000)Windows</code>"能匹配"<code>3.1Windows</code>"中的"<code>Windows</code>",但不能匹配"<code>2000Windows</code>"中的"<code>Windows</code>"</td>
+</tr>
+<tr>
+<td align="left"><code>?</code></td>
+<td>当该字符紧跟在任何一个其他限制符<code>(*,+,?,{n},{n,},{n,m})</code>后面时,匹配模式是非贪婪的,非贪婪模式尽可能少的匹配所搜索的字符串,而默认的贪婪模式则尽可能多的匹配所搜索的字符串,如对于字符串"<code>oooo</code>",'<code>o+?</code>'将匹配单个"<code>o</code>",而'<code>o+</code>'将匹配所有'<code>o</code>'</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>常用的正则表达式</strong></li>
+</ul>
+<p><strong>校验数字的表达式</strong></p>
+<blockquote>
+<ul>
+<li>数字:<code>^[0-9]*</code></li>
+<li>n位的数字:<code>^\d{n}</code></li>
+<li>至少n位的数字:<code>^\d{n,}</code></li>
+<li>m-n位的数字:<code>^\d{m,n}</code></li>
+<li>零和非零开头的数字:<code>^(0|[1-9][0-9]*)</code></li>
+<li>非零开头的最多带两位小数的数字:<code>^([1-9][0-9]*)+(.[0-9]{1,2})?</code></li>
+<li>带1-2位小数的正数或负数:<code>^(\-)?\d+(\.\d{1,2})?</code></li>
+<li>正数、负数、和小数:<code>^(\-|\+)?\d+(\.\d+)?</code></li>
+<li>有两位小数的正实数:<code>^[0-9]+(.[0-9]{2})?</code></li>
+<li>有1~3位小数的正实数:<code>^[0-9]+(.[0-9]{1,3})?</code></li>
+<li>非零的正整数:<code>^[1-9]\d*</code>或<code>^([1-9][0-9]*){1,3}</code>或<code>^\+?[1-9][0-9]*</code></li>
+<li>非零的负整数:<code>^\-[1-9][]0-9"*</code>或<code>^-[1-9]\d*</code></li>
+<li>非负整数:<code>^\d+</code>或<code>^[1-9]\d*|0</code></li>
+<li>非正整数:<code>^-[1-9]\d*|0</code>或<code>^((-\d+)|(0+))</code></li>
+<li>非负浮点数:<code>^\d+(\.\d+)?</code>或<code>^[1-9]\d*\.\d*|0\.\d*[1-9]\d*|0?\.0+|0</code></li>
+<li>非正浮点数:<code>^((-\d+(\.\d+)?)|(0+(\.0+)?))</code>或<code>^(-([1-9]\d*\.\d*|0\.\d*[1-9]\d*))|0?\.0+|0</code></li>
+<li>正浮点数:<code>^[1-9]\d*\.\d*|0\.\d*[1-9]\d*</code>或<code>^(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*))</code></li>
+<li>负浮点数:<code>^-([1-9]\d*\.\d*|0\.\d*[1-9]\d*)</code>或<code>^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))</code></li>
+<li>浮点数:<code>^(-?\d+)(\.\d+)?$</code>或<code>^-?([1-9]\d*\.\d*|0\.\d*[1-9]\d*|0?\.0+|0)</code></li>
+</ul>
+</blockquote>
+<p><strong>校验字符的表达式</strong></p>
+<blockquote>
+<ul>
+<li>汉字:<code>^[\u4e00-\u9fa5]{0,}</code></li>
+<li>英文和数字:<code>^[A-Za-z0-9]+</code>或<code>^[A-Za-z0-9]{4,40}</code></li>
+<li>长度为3-20的所有字符:<code>^.{3,20}</code></li>
+<li>由26个英文字母组成的字符串:<code>^[A-Za-z]+</code></li>
+<li>由26个大写英文字母组成的字符串:<code>^[A-Z]+</code></li>
+<li>由26个小写英文字母组成的字符串:<code>^[a-z]+</code></li>
+<li>由数字和26个英文字母组成的字符串:<code>^[A-Za-z0-9]+</code></li>
+<li>由数字、26个英文字母或者下划线组成的字符串:<code>^\w+</code>或<code>^\w{3,20}</code></li>
+<li>中文、英文、数字包括下划线:<code>^[\u4E00-\u9FA5A-Za-z0-9_]+</code></li>
+<li>中文、英文、数字但不包括下划线等符号:<code>^[\u4E00-\u9FA5A-Za-z0-9]+</code>或<code>^[\u4E00-\u9FA5A-Za-z0-9]{2,20}</code></li>
+<li>可以输入含有^%&amp;',;=?$\"等字符:<code>[^%&amp;',;=?$\x22]+</code></li>
+<li>禁止输入含有~的字符:<code>[^~\x22]+</code></li>
+</ul>
+</blockquote>
+<p><strong>特殊需求表达式</strong></p>
+<blockquote>
+<ul>
+<li>Email地址:<code>^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*</code></li>
+<li>域名:<code>[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(/.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+/.?</code></li>
+<li>InternetURL:<code>[a-zA-z]+://[^\s]*</code>或<code>^http://([\w-]+\.)+[\w-]+(/[\w-./?%&amp;=]*)?</code></li>
+<li>手机号码:<code>^(13[0-9]|14[0-9]|15[0-9]|16[0-9]|17[0-9]|18[0-9]|19[0-9])\d{8}</code>(由于工信部放号段不定时,所以建议使用泛解析<code>^([1][3,4,5,6,7,8,9])\d{9}</code>)</li>
+<li>电话号码("XXX-XXXXXXX"、"XXXX-XXXXXXXX"、"XXX-XXXXXXX"、"XXX-XXXXXXXX"、"XXXXXXX"和"XXXXXXXX):<code>^(\(\d{3,4}-)|\d{3.4}-)?\d{7,8}</code></li>
+<li>国内电话号码(0511-4405222、021-87888822):<code>\d{3}-\d{8}|\d{4}-\d{7}</code></li>
+<li>18位身份证号码(数字、字母x结尾):<code>^((\d{18})|([0-9x]{18})|([0-9X]{18}))</code></li>
+<li>帐号是否合法(字母开头,允许5-16字节,允许字母数字下划线):<code>^[a-zA-Z][a-zA-Z0-9_]{4,15}</code></li>
+<li>密码(以字母开头,长度在6~18之间,只能包含字母、数字和下划线):<code>^[a-zA-Z]\w{5,17}</code></li>
+<li>强密码(必须包含大小写字母和数字的组合,不能使用特殊字符,长度在8-10之间):<code>^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,10}</code></li>
+<li>日期格式:<code>^\d{4}-\d{1,2}-\d{1,2}</code></li>
+<li>一年的12个月(01～09和1～12):<code>^(0?[1-9]|1[0-2])</code></li>
+<li>一个月的31天(01～09和1～31):<code>^((0?[1-9])|((1|2)[0-9])|30|31)</code></li>
+<li>钱的输入格式:</li>
+<li>有四种钱的表示形式我们可以接受:"10000.00"和"10,000.00",和没有"分"的"10000"和"10,000":<code>^[1-9][0-9]*</code></li>
+<li>这表示任意一个不以0开头的数字,但是,这也意味着一个字符"0"不通过,所以我们采用下面的形式:<code>^(0|[1-9][0-9]*)</code></li>
+<li>一个0或者一个不以0开头的数字.我们还可以允许开头有一个负号:<code>^(0|-?[1-9][0-9]*)</code></li>
+<li>这表示一个0或者一个可能为负的开头不为0的数字.让用户以0开头好了.把负号的也去掉,因为钱总不能是负的吧.下面我们要加的是说明可能的小数部分:<code>^[0-9]+(.[0-9]+)?</code></li>
+<li>必须说明的是,小数点后面至少应该有1位数,所以"10."是不通过的,但是"10"和"10.2"是通过的:<code>^[0-9]+(.[0-9]{2})?</code></li>
+<li>这样我们规定小数点后面必须有两位,如果你认为太苛刻了,可以这样:<code>^[0-9]+(.[0-9]{1,2})?</code></li>
+<li>这样就允许用户只写一位小数.下面我们该考虑数字中的逗号了,我们可以这样:<code>^[0-9]{1,3}(,[0-9]{3})*(.[0-9]{1,2})?</code></li>
+<li>1到3个数字,后面跟着任意个逗号+3个数字,逗号成为可选,而不是必须:<code>^([0-9]+|[0-9]{1,3}(,[0-9]{3})*)(.[0-9]{1,2})?</code></li>
+<li>备注:这就是最终结果了,别忘了"+"可以用"*"替代如果你觉得空字符串也可以接受的话(奇怪,为什么?)最后,别忘了在用函数时去掉去掉那个反斜杠,一般的错误都在这里</li>
+<li>xml文件:<code>^([a-zA-Z]+-?)+[a-zA-Z0-9]+\\.[x|X][m|M][l|L]</code></li>
+<li>中文字符的正则表达式:<code>[\u4e00-\u9fa5]</code></li>
+<li>双字节字符:<code>[^\x00-\xff]</code>(包括汉字在内,可以用来计算字符串的长度(一个双字节字符长度计2,ASCII字符计1))</li>
+<li>空白行的正则表达式:<code>\n\s*\r</code> (可以用来删除空白行)</li>
+<li>HTML标记的正则表达式:<code>&lt;(\S*?)[^&gt;]*&gt;.*?&lt;/\1&gt;|&lt;.*? /&gt;</code>    (网上流传的版本太糟糕,上面这个也仅仅能部分,对于复杂的嵌套标记依旧无能为力)</li>
+<li>首尾空白字符的正则表达式:<code>^\s*|\s\*$</code>或<code>(^\s*)|(\s*$)</code>  (可以用来删除行首行尾的空白字符(包括空格、制表符、换页符等等),非常有用的表达式)</li>
+<li>腾讯QQ号:<code>[1-9][0-9]{4,}</code> (腾讯QQ号从10000开始)</li>
+<li>中国邮政编码:<code>[1-9]\d{5}(?!\d)</code> (中国邮政编码为6位数字)</li>
+<li>IP地址:<code>\d+\.\d+\.\d+\.\d+</code>   (提取IP地址时有用)</li>
+<li>IP地址:<code>((?:(?:25[0-5]|2[0-4]\\d|[01]?\\d?\\d)\\.){3}(?:25[0-5]|2[0-4]\\d|[01]?\\d?\\d))</code></li>
+</ul>
+</blockquote>
+<h2 id="grep">二、<code>grep</code>命令<a class="headerlink" href="#grep" title="Permanent link">&para;</a></h2>
+<p>参考源码:<a href="http://ftp.gnu.org/gnu/grep/"><code>http://ftp.gnu.org/gnu/grep/</code></a></p>
+<p><code>grep</code>(<code>global search regular expression(RE) and print out the line</code>:全面搜索正则表达式并把行打印出来)是一种强大的文本搜索工具,它能使用正则表达式搜索文本,并把匹配的行打印出来。</p>
+<p>参数选项:</p>
+<table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>-a</code></td>
+<td align="left">不要忽略二进制数据</td>
+</tr>
+<tr>
+<td align="left"><code>-A &lt;显示列数&gt;</code></td>
+<td align="left">除了显示符合范本样式的那一行之外,并显示该行之后的内容</td>
+</tr>
+<tr>
+<td align="left"><code>-b</code></td>
+<td align="left">在显示符合范本样式的那一行之外,并显示该行之前的内容</td>
+</tr>
+<tr>
+<td align="left"><code>-c</code></td>
+<td align="left">计算符合范本样式的列数</td>
+</tr>
+<tr>
+<td align="left"><code>-C &lt;显示列数&gt;或-&lt;显示列数&gt;</code></td>
+<td align="left">除了显示符合范本样式的那一列之外,并显示该列之前后的内容</td>
+</tr>
+<tr>
+<td align="left"><code>-d &lt;进行动作&gt;</code></td>
+<td align="left">当指定要查找的是目录而非文件时,必须使用这项参数,否则<code>grep</code>命令将回报信息并停止动作</td>
+</tr>
+<tr>
+<td align="left"><code>-e &lt;范本样式&gt;</code></td>
+<td align="left">指定字符串作为查找文件内容的范本样式</td>
+</tr>
+<tr>
+<td align="left"><code>-E</code></td>
+<td align="left">将范本样式为延伸的普通表示法来使用,意味着使用能使用扩展正则表达式</td>
+</tr>
+<tr>
+<td align="left"><code>-f &lt;范本文件&gt;</code></td>
+<td align="left">指定范本文件,其内容有一个或多个范本样式,让<code>grep</code>查找符合范本条件的文件内容,格式为每一列的范本样式</td>
+</tr>
+<tr>
+<td align="left"><code>-F</code></td>
+<td align="left">将范本样式视为固定字符串的列表</td>
+</tr>
+<tr>
+<td align="left"><code>-G</code></td>
+<td align="left">将范本样式视为普通的表示法来使用</td>
+</tr>
+<tr>
+<td align="left"><code>-h</code></td>
+<td align="left">在显示符合范本样式的那一列之前,不标示该列所属的文件名称</td>
+</tr>
+<tr>
+<td align="left"><code>-H</code></td>
+<td align="left">在显示符合范本样式的那一列之前,标示该列的文件名称</td>
+</tr>
+<tr>
+<td align="left"><code>-i</code></td>
+<td align="left">忽略字符大小写的差别</td>
+</tr>
+<tr>
+<td align="left"><code>-l</code></td>
+<td align="left">列出文件内容符合指定的范本样式的文件名称</td>
+</tr>
+<tr>
+<td align="left"><code>-L</code></td>
+<td align="left">列出文件内容不符合指定的范本样式的文件名称</td>
+</tr>
+<tr>
+<td align="left"><code>-n</code></td>
+<td align="left">在显示符合范本样式的那一列之前,标示出该列的编号</td>
+</tr>
+<tr>
+<td align="left"><code>-q</code></td>
+<td align="left">不显示任何信息</td>
+</tr>
+<tr>
+<td align="left"><code>-R/-r</code> : 此参数的效果和指定"<code>-d recurse</code>"参数相同</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><code>-s</code></td>
+<td align="left">不显示错误信息</td>
+</tr>
+<tr>
+<td align="left"><code>-v</code></td>
+<td align="left">反转查找</td>
+</tr>
+<tr>
+<td align="left"><code>-w</code></td>
+<td align="left">只显示全字符合的列</td>
+</tr>
+<tr>
+<td align="left"><code>-x</code></td>
+<td align="left">只显示全列符合的列</td>
+</tr>
+<tr>
+<td align="left"><code>-y</code></td>
+<td align="left">此参数效果跟"<code>-i</code>"相同</td>
+</tr>
+<tr>
+<td align="left"><code>-o</code></td>
+<td align="left">只输出文件中匹配到的部分</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><span class="c1"># 在多个文件中查找：</span>
+grep <span class="s2">&quot;match_pattern&quot;</span> file_1 file_2 file_3 ...
+<span class="c1"># 输出除之外的所有行-v选项</span>
+grep -v <span class="s2">&quot;match_pattern&quot;</span> file_name
+<span class="c1"># 标记匹配颜色--color=auto选项</span>
+grep <span class="s2">&quot;match_pattern&quot;</span> file_name --color<span class="o">=</span>auto
+<span class="c1"># 使用正则表达式-E选项</span>
+grep -E <span class="s2">&quot;[1-9]+&quot;</span>
+<span class="c1"># 只输出文件中匹配到的部分-o选项</span>
+<span class="nb">echo</span> this is a <span class="nb">test</span> line. <span class="p">|</span> grep -o -E <span class="s2">&quot;[a-z]+\.&quot;</span>
+line.
+<span class="c1"># 统计文件或者文本中包含匹配字符串的行数-c选项</span>
+grep -c <span class="s2">&quot;text&quot;</span> file_name
+<span class="c1"># 输出包含匹配字符串的行数-n选项</span>
+grep <span class="s2">&quot;text&quot;</span> -n file_name
+<span class="c1"># 多个文件</span>
+grep <span class="s2">&quot;text&quot;</span> -n file_1 file_2
+<span class="c1"># 打印样式匹配所位于的字符或字节偏移：</span>
+<span class="nb">echo</span> gun is not unix <span class="p">|</span> grep -b -o <span class="s2">&quot;not&quot;</span>
+<span class="m">7</span>:not
+
+<span class="c1"># 解析字段(零宽断言)</span>
+<span class="nb">echo</span> <span class="s2">&quot;background-image: url(/media/images/index/im2.jpg);&quot;</span> <span class="p">|</span> grep -oP <span class="s1">&#39;(?&lt;=url\()[^)]+&#39;</span>
+</pre></div>
+
+<h2 id="awk">三、<code>awk</code>命令<a class="headerlink" href="#awk" title="Permanent link">&para;</a></h2>
+<p><code>awk</code>是一个强大的文本分析工具,相对于<code>grep</code>的查找,<code>sed</code>的编辑,<code>awk</code>在其对数据分析并生成报告时,显得尤为强大。简单来说<code>awk</code>就是把文件逐行的读入,以空格为默认分隔符将每行切片,切开的部分再进行各种分析处理。<code>awk</code>语言的最基本功能是将文件逐行读入,以空格为默认分隔符将每行切片,切开部分再基于指定规则浏览和抽取信息。<code>awk</code>抽取信息后,才能进行其他文本操作。完整的<code>awk</code>脚本通常用来格式化文本文件中的信息。通常,<code>awk</code>是以文件的一行为处理单位的。<code>awk</code>每接收文件的一行,然后执行相应的命令,来处理文本。</p>
+<p><code>awk</code>其名称得自于它的创始人Alfred Aho、Peter Weinberger和Brian Kernighan姓氏的首个字母。实际上AWK的确拥有自己的语言:AWK程序设计语言.三位创建者已将它正式定义为“样式扫描和处理语言”。它允许您创建简短的程序,这些程序读取输入文件、为数据排序、处理数据、对输入执行计算以及生成报表,还有无数其他的功能。</p>
+<p>基本语法: <code>awk 'pattern { action }' filename</code>,其中<code>BEGIN</code>和<code>END</code>是开始读入和结束读入的控制<code>pattern</code>。</p>
+<p><strong>awk工作流程是这样的:先执行<code>BEGIN</code>,然后读取文件,读入有<code>\n</code>换行符分割的一条记录,然后将记录按指定的域分隔符划分域,填充域,<code>$0</code>则表示所有域,<code>$1</code>表示第一个域,<code>$n</code>表示第<code>n</code>个域,随后开始执行模式所对应的动作<code>action</code>。接着开始读入第二条记录······直到所有的记录都读完,最后执行<code>END</code>操作。参考:<a href="https://www.freebsd.org/cgi/man.cgi?query=awk&amp;apropos=0&amp;sektion=0&amp;manpath=FreeBSD+12.0-RELEASE+and+Ports&amp;arch=default&amp;format=html"><code>FreeBSD Manual Pages:awk</code></a></strong></p>
+<ul>
+<li><strong>调用方式</strong></li>
+</ul>
+<p><strong>命令行方式</strong>:<code>awk [-F field-separator] 'commands' input-file(s)</code>,其中<code>commands</code>是真正<code>awk</code>命令,[<code>-F</code>域分隔符]是可选的。<code>input-file(s)</code>是待处理的文件。在<code>awk</code>中,文件的每一行中,由域分隔符分开的每一项称为一个域。通常,在不指名<code>-F</code>域分隔符的情况下,默认的域分隔符是空格。</p>
+<p><strong>shell脚本方式</strong>:将所有的<code>awk</code>命令插入一个文件,并使<code>awk</code>程序可执行,然后<code>awk</code>命令解释器作为脚本的首行,一遍通过键入脚本名称来调用。相当于shell脚本首行的:<code>#!/bin/sh</code>,可以换成:<code>#!/bin/awk</code>。</p>
+<p><strong>文件调用方式</strong>:将所有的<code>awk</code>命令插入一个单独文件,然后调用:<code>awk -f awk-script-file input-file(s)</code>,其中,<code>-f</code>选项加载<code>awk-script-file</code>中的<code>awk</code>脚本,<code>input-file(s)</code>跟上面的是一样的。</p>
+<ul>
+<li><strong><code>pattern</code>模式</strong></li>
+</ul>
+<p><strong><code>BEGIN</code>模式</strong></p>
+<p>一种特殊的内置模式,在awk处理完所有数据文件之前执行,不需要指定被处理数据文件,直接输出用户设置的内容。在awk中的生命周期只是执行一次。</p>
+<div class="highlight"><pre><span></span><span class="c1"># 通过BEGIN模式输出字符串</span>
+awk <span class="s1">&#39;BEGIN{print &quot;Hello! World.&quot;}&#39;</span>
+</pre></div>
+
+<p><strong><code>END</code>模式</strong></p>
+<p>和BEGIN模式正好相反,它是在awk处理完所有数据文件之后,即将退出程序时成立,在此之前END模式不成立。BEGIN模式也是如此！</p>
+<div class="highlight"><pre><span></span><span class="ch">#! /bin/awk -f</span>
+
+<span class="c1">#输出报表头</span>
+BEGIN <span class="o">{</span>
+   print <span class="s2">&quot;scores report&quot;</span>
+   print <span class="s2">&quot;=================================&quot;</span>
+<span class="o">}</span>
+
+<span class="c1">#输出数据</span>
+<span class="o">{</span> print <span class="o">}</span>
+
+<span class="c1">#报表完成</span>
+END <span class="o">{</span>
+   print <span class="s2">&quot;================================&quot;</span>
+   print <span class="s2">&quot;printing is over&quot;</span>
+<span class="o">}</span>
+</pre></div>
+
+<p><strong>关系表达式</strong></p>
+<p><code>awk</code>可以支持许多关系运算符,例如<code>&gt;,&gt;=,&lt;,&lt;=,==,!=,!~,~</code>等。对于数据文件,我们经常需要把比较关系作为匹配模式。</p>
+<div class="highlight"><pre><span></span><span class="c1"># 打印第2列的成绩超过80的行</span>
+awk <span class="s1">&#39;$2 &gt; 80 { print }&#39;</span> scores.txt
+</pre></div>
+
+<p><strong>正则表达式</strong></p>
+<p><code>/regular expression/</code>匹配方式和上面一致,不过pattern是基于正则表达式的,一般涉及到数据文件中的字符串匹配。</p>
+<div class="highlight"><pre><span></span><span class="c1">#输出以Tom或者Kon开头的行</span>
+awk <span class="s1">&#39;/^(Tom|Kon)/ { print }&#39;</span> scores.txt
+</pre></div>
+
+<p>正则表达式做为匹配模式,一定要把表达式放在两条斜线之间,<code>/regular_expression/</code>。</p>
+<p><strong>混合模式</strong></p>
+<p>混合模式就是把关系表达式和正则表达式结合起来,可以使用<code>&amp;&amp;,||, !</code>来连接,不过它们都需要在单引号以内。</p>
+<div class="highlight"><pre><span></span><span class="c1"># 混合模式</span>
+<span class="c1">## 输出以K开头的行,同时第2列分数大于80分的行</span>
+awk <span class="s1">&#39;/^K/ &amp;&amp; $2 &gt; 80 { print }&#39;</span> scores.txt
+
+<span class="c1">## 输出以K开头的行或者第2列分数大于80分的行</span>
+awk <span class="s1">&#39;/^K/ || $2 &gt; 80 { print }&#39;</span> scores.txt
+</pre></div>
+
+<p><strong>区间模式</strong></p>
+<p>用于匹配一段连续的文本行。语法为:<code>awk 'pattern1, pattern2 { actions }' processed datafile</code></p>
+<div class="highlight"><pre><span></span><span class="c1"># 区间模式</span>
+awk <span class="s1">&#39;/^Nancy/, $2==92 { print }&#39;</span> scores.txt
+<span class="c1"># 区间为:以Nancy开头的行为起始,第2列等于92分的行为终止,输出之间的连续的行</span>
+<span class="c1"># 注意:当满足patter1或者pattern2的行不只一行的时候,会自动选择第一个符合要求的行。</span>
+</pre></div>
+
+<p><strong>选择模式</strong></p>
+<p>根据条件选择执行的模式,语法:<code>awk 'pattern ? pattern : pattern{actions}' file</code></p>
+<div class="highlight"><pre><span></span><span class="c1"># 选择模式</span>
+awk <span class="s1">&#39;$2&gt;80?a=&quot;YES&quot;:a=&quot;NO&quot;{print $1,a}&#39;</span> scores.txt
+</pre></div>
+
+<p><strong>BEGINFILE/ENDFILE模式</strong></p>
+<p>BEGINFILE/ENDFILE模式是特殊的模式,发生在读每一行之前/之后执行的动作。</p>
+<ul>
+<li><strong><code>action</code>语句</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left">语句</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>if( expression ) statement [ else statement ]</code></td>
+<td>条件语句</td>
+</tr>
+<tr>
+<td align="left"><code>if ( expression ) statement [ else if (expression1) statement2 [else statement]]</code></td>
+<td><code>if-elif-else</code>语句</td>
+</tr>
+<tr>
+<td align="left"><code>while( expression ) statement</code></td>
+<td><code>while</code>循环语句</td>
+</tr>
+<tr>
+<td align="left"><code>for( expression ; expression ; expression ) statement</code></td>
+<td><code>for</code>循环语句</td>
+</tr>
+<tr>
+<td align="left"><code>for( var in array ) statement</code></td>
+<td><code>for</code>循环语句</td>
+</tr>
+<tr>
+<td align="left"><code>do statement while( expression )</code></td>
+<td><code>do while</code>循环语句</td>
+</tr>
+<tr>
+<td align="left"><code>break</code></td>
+<td>当<code>break</code>语句用于<code>while</code>或<code>for</code>语句时,导致退出程序循环</td>
+</tr>
+<tr>
+<td align="left"><code>continue</code></td>
+<td>当<code>continue</code>语句用于<code>while</code>或<code>for</code>语句时,使程序循环移动到下一个迭代</td>
+</tr>
+<tr>
+<td align="left"><code>{ [ statement ... ] }</code></td>
+<td>语句列表</td>
+</tr>
+<tr>
+<td align="left"><code>expression</code></td>
+<td>普通的赋值表达式:<code>var = expression</code></td>
+</tr>
+<tr>
+<td align="left"><code>print [ expression-list ] [ &gt; expression ]</code></td>
+<td>打印</td>
+</tr>
+<tr>
+<td align="left"><code>printf format [ , expression-list ] [ &gt; expression ]</code></td>
+<td>以<code>format</code>格式打印</td>
+</tr>
+<tr>
+<td align="left"><code>return [ expression ]</code></td>
+<td>退出并返回expression ｜</td>
+</tr>
+<tr>
+<td align="left"><code>next</code></td>
+<td>语句使主输入循环退出并将控制转移到END,如果END存在的话。如果没有定义<code>END</code>规则,或在<code>END</code>中应用<code>exit</code>语句,则终止脚本的执行</td>
+</tr>
+<tr>
+<td align="left"><code>nextfile</code></td>
+<td>跳过文件的其他部分,执行<code>next</code></td>
+</tr>
+<tr>
+<td align="left"><code>delete array[ expression ]</code></td>
+<td>删除数组元素</td>
+</tr>
+<tr>
+<td align="left"><code>delete array</code></td>
+<td>删除所有的数组元素</td>
+</tr>
+<tr>
+<td align="left"><code>exit [ expression ]</code></td>
+<td>马上退出,<code>expression</code>为退出状态</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>awk内置变量</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left">变量</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>ARGC</code></td>
+<td>命令行参数个数</td>
+</tr>
+<tr>
+<td align="left"><code>ARGV</code></td>
+<td>命令行参数数组</td>
+</tr>
+<tr>
+<td align="left"><code>ARGIND</code></td>
+<td>当前被处理文件的<code>ARGV</code>标志符</td>
+</tr>
+<tr>
+<td align="left"><code>CONVFMT</code></td>
+<td>数字转换格式,默认为<code>"%.6g"</code></td>
+</tr>
+<tr>
+<td align="left"><code>ENVIRON</code></td>
+<td>系统环境变量列表,下标为<code>name</code></td>
+</tr>
+<tr>
+<td align="left"><code>ERRNO</code></td>
+<td>UNIX系统错误消息</td>
+</tr>
+<tr>
+<td align="left"><code>FILENAME</code></td>
+<td><code>awk</code>浏览的文件名</td>
+</tr>
+<tr>
+<td align="left"><code>FIELDWIDTHS</code></td>
+<td>输入字段宽度的空白分隔字符串</td>
+</tr>
+<tr>
+<td align="left"><code>FNR</code></td>
+<td>当前文件的浏览数</td>
+</tr>
+<tr>
+<td align="left"><code>FS</code></td>
+<td>输入字段分隔符,默认是空格,可以使用-F参数指定</td>
+</tr>
+<tr>
+<td align="left"><code>IGNORECASE</code></td>
+<td>如果为真,则进行忽略大小写的匹配</td>
+</tr>
+<tr>
+<td align="left"><code>NF</code></td>
+<td>当前记录中的字段个数,就是有多少列,跟-F参数有关</td>
+</tr>
+<tr>
+<td align="left"><code>NR</code></td>
+<td>已经读出的记录数,就是行号,从<code>1</code>开始</td>
+</tr>
+<tr>
+<td align="left"><code>OFMT</code></td>
+<td>数字的输出格式,默认为<code>%.6g</code></td>
+</tr>
+<tr>
+<td align="left"><code>OFS</code></td>
+<td>输出字段分隔符,默认也是空格</td>
+</tr>
+<tr>
+<td align="left"><code>ORS</code></td>
+<td>输出记录分隔符,默认为换行符</td>
+</tr>
+<tr>
+<td align="left"><code>RLENGTH</code></td>
+<td>被匹配函数匹配的字符串长度</td>
+</tr>
+<tr>
+<td align="left"><code>RS</code></td>
+<td>输入记录的分隔符,默认为换行符</td>
+</tr>
+<tr>
+<td align="left"><code>RSTART</code></td>
+<td>被匹配函数匹配的字符串首位置</td>
+</tr>
+<tr>
+<td align="left"><code>$0</code></td>
+<td>当前记录(作为单个变量)</td>
+</tr>
+<tr>
+<td align="left"><code>$1~$n</code></td>
+<td>当前记录的第<code>n</code>个字段,字段间由<code>FS</code>分隔</td>
+</tr>
+<tr>
+<td align="left"><code>SUBSEP</code></td>
+<td>数组下标的分割行符,其默认值为<code>\034</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong><code>awk</code>内置函数</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>函数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>atan2(y,x)</code></td>
+<td>返回<code>y/x</code>的反正切</td>
+</tr>
+<tr>
+<td><code>cos(x)</code></td>
+<td>返回<code>x</code>的余弦;x是弧度</td>
+</tr>
+<tr>
+<td><code>sin(x)</code></td>
+<td>返回<code>x</code>的正弦;x是弧度</td>
+</tr>
+<tr>
+<td><code>exp(x)</code></td>
+<td>返回<code>x</code>幂函数</td>
+</tr>
+<tr>
+<td><code>log(x)</code></td>
+<td>返回<code>x</code>的自然对数</td>
+</tr>
+<tr>
+<td><code>sqrt(x)</code></td>
+<td>返回<code>x</code>平方根</td>
+</tr>
+<tr>
+<td><code>int(x)</code></td>
+<td>返回<code>x</code>的截断至整数的值</td>
+</tr>
+<tr>
+<td><code>rand()</code></td>
+<td>返回<code>(0,1)</code>的随机数字</td>
+</tr>
+<tr>
+<td><code>srand([Expr])</code></td>
+<td>将<code>rand</code>函数的种子值设置为<code>Expr</code>参数的值,或如果省略<code>Expr</code>参数则使用某天的时间,返回先前的种子值</td>
+</tr>
+<tr>
+<td><code>gsub(Ere,Repl,[In])</code></td>
+<td>除了正则表达式所有具体值被替代这点,它和<code>sub</code>函数完全一样地执行</td>
+</tr>
+<tr>
+<td><code>sub(Ere,Repl,[In])</code></td>
+<td>用<code>Repl</code>参数指定的字符串替换为In参数指定的字符串中的由<code>Ere</code>参数指定的扩展正则表达式的第一个具体值。<code>sub</code>函数返回替换的数量,出现在<code>Repl</code>参数指定的字符串中的<code>&amp;</code>由<code>In</code>参数指定的与<code>Ere</code>参数的指定的扩展正则表达式匹配的字符串替换。如果未指定<code>In</code>参数,缺省值是整个记录(<code>$0</code>记录变量)</td>
+</tr>
+<tr>
+<td><code>index(String1,String2)</code></td>
+<td>在由<code>String1</code>参数指定的字符串(其中有出现<code>String2</code>指定的参数)中,返回位置,从1开始编号。如果<code>String2</code>参数不在<code>String1</code>参数中出现,则返回<code>0</code></td>
+</tr>
+<tr>
+<td><code>length[(String)]</code></td>
+<td>返回<code>String</code>参数指定的字符串的长度(字符形式)。如果未给出String参数,则返回整个记录的长度(<code>$0</code>记录变量)</td>
+</tr>
+<tr>
+<td><code>blength[(String)]</code></td>
+<td>返回<code>String</code>参数指定的字符串的长度(以字节为单位)。如果未给出<code>String</code>参数,则返回整个记录的长度($0记录变量)</td>
+</tr>
+<tr>
+<td><code>substr(String,M,[N])</code></td>
+<td>返回字符串<code>s</code>中开始位置为<code>M</code>,长度为<code>N</code>的子字符串</td>
+</tr>
+<tr>
+<td><code>match(String,Ere)</code></td>
+<td>在<code>String</code>参数指定的字符串(<code>Ere</code>参数指定的扩展正则表达式出现在其中)中返回<code>Ere</code>正则表达式出现的位置(字符形式),从<code>1</code>开始编号,或如果<code>Ere</code>参数不出现,则返回<code>0</code>(零)。<code>RSTART</code>特殊变量设置为返回值。<code>RLENGTH</code>特殊变量设置为匹配的字符串的长度,或如果未找到任何匹配,则设置为-1</td>
+</tr>
+<tr>
+<td><code>split(String,A,[Ere])</code></td>
+<td>将<code>String</code>参数指定的参数分割为数组元素<code>A[1],A[2],...,A[n]</code>,并返回nn的值。此分隔可以通过<code>Ere</code>参数指定的扩展正则表达式进行,或用当前字段分隔符(<code>FS</code>特殊变量)来进行(如果没有给出Ere参数)。除非上下文指明特定的元素还应具有一个数字值,否则A数组中的元素用字符串值来创建</td>
+</tr>
+<tr>
+<td><code>tolower(String)</code></td>
+<td>返回String参数指定的字符串,字符串中每个大写字符将更改为小写。大写和小写的映射由当前语言环境的<code>LC_CTYPE</code>范畴定义</td>
+</tr>
+<tr>
+<td><code>toupper(String)</code></td>
+<td>返回String参数指定的字符串,字符串中每个小写字符将更改为大写。大写和小写的映射由当前语言环境的<code>LC_CTYPE</code>范畴定义</td>
+</tr>
+<tr>
+<td><code>sprintf(Format,Expr,Expr,...)</code></td>
+<td>根据Format参数指定的printf子例程格式字符串来格式化Expr参数指定的表达式并返回最后生成的字符串</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong><code>awk</code>内置时间函数</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left">函数</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>systime()</code></td>
+<td align="left">返回当前时间戳,即指格林威治时间1970-01-01 00:00:00 UTC以来经过的秒数,<code>awk 'BEGIN {print "当前时间的时间戳为:" systime()}'</code></td>
+</tr>
+<tr>
+<td align="left"><code>mktime(datespec)</code></td>
+<td align="left">用于将指定格式的时间字符串转换为时间戳,datesspec为时间字符串,符合以下格式<code>YYYY MM DD HH MM SS</code></td>
+</tr>
+<tr>
+<td align="left"><code>strftime([format [, timestamp[, utc-flag]]])</code></td>
+<td align="left">将一个时间戳格式的时间根据指定的时间格式化符转成字符串形式表示</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong><code>awk</code>位操作</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left">函数</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>and</code></td>
+<td align="left">位与操作符号&amp;</td>
+</tr>
+<tr>
+<td align="left"><code>compl</code></td>
+<td align="left">返回某个数字的按位取反结果,语法格式如下<code>number compl(num)</code></td>
+</tr>
+<tr>
+<td align="left"><code>lshift(num,n)</code></td>
+<td align="left">位操作符<code>&lt;&lt;</code>,高位丢弃,低位补0</td>
+</tr>
+<tr>
+<td align="left"><code>rshift(num,n)</code></td>
+<td align="left">位操作符<code>&gt;&gt;</code>,对无符号数,高位补0,有符号数,各编译器处理方法不一样,有的补符号位(算术右移),有的补0(逻辑右移)</td>
+</tr>
+<tr>
+<td align="left"><code>or(num1,num2)</code></td>
+<td align="left">位操作符<code>|</code>,当两个数字的二进制格式的相同的位有一个为1则返回1,否则返回0</td>
+</tr>
+<tr>
+<td align="left"><code>xor(num1,num2)</code></td>
+<td align="left">位操作符<code>^</code>,当两个数字的二进制格式的相同的位相同时返回0,不同则返回1</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>某些示例</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><span class="c1"># 显示时间</span>
+<span class="nb">echo</span> <span class="s2">&quot;4491449987956754&quot;</span> <span class="p">|</span> awk <span class="s1">&#39;{print strftime(&quot;%Y-%m-%d %H:%M:%d&quot;,515483463+rshift($1,22))}&#39;</span>
+
+<span class="c1"># 显示文件file的匹配行的第一、二个域加10。</span>
+awk <span class="s1">&#39;/101/{print $1,$2 + 10}&#39;</span> file
+<span class="c1"># 只显示最近登陆的五个账号</span>
+last -n <span class="m">5</span> <span class="p">|</span> awk  <span class="s1">&#39;{print $1}&#39;</span>
+<span class="c1"># 只是显示/etc/passwd的账户和账户对应的shell,而账户与shell之间以tab键分割</span>
+cat /etc/passwd <span class="p">|</span>awk  -F <span class="s1">&#39;:&#39;</span>  <span class="s1">&#39;{print $1&quot;\t&quot;$7}&#39;</span>
+
+<span class="c1"># 只是显示/etc/passwd的账户和账户对应的shell,而账户与shell之间以逗号分割,而且在所有行添加列名name,shell,在最后一行添加&quot;blue,/bin/nosh&quot;</span>
+cat /etc/passwd <span class="p">|</span>awk  -F <span class="s1">&#39;:&#39;</span>  <span class="s1">&#39;BEGIN {print &quot;name,shell&quot;}  {print $1&quot;,&quot;$7} END{print &quot;blue,/bin/nosh&quot;}&#39;</span>
+
+<span class="c1"># 搜索/etc/passwd有root关键字的所有行,并显示对应的shell</span>
+awk -F: <span class="s1">&#39;/root/{print $7}&#39;</span> /etc/passwd
+
+<span class="c1"># 获得linux环境变量（ENVIRON使用）</span>
+awk <span class="s1">&#39;BEGIN{print ENVIRON[&quot;PATH&quot;];}&#39;</span> /etc/passwd
+
+<span class="c1"># 输出数据格式设置:(OFMT使用）</span>
+<span class="nb">echo</span> <span class="m">20100117054932</span> <span class="p">|</span> awk <span class="s1">&#39;BEGIN{OFMT=&quot;%.3f&quot;;print 2/3,123.11111111; FIELDWIDTHS=&quot;4 2 2 2 2 3&quot;}{print $1&quot;-&quot;$2&quot;-&quot;$3,$4&quot;:&quot;$5&quot;:&quot;$6}&#39;</span>
+
+<span class="c1"># 输入和输出分隔符</span>
+awk <span class="s1">&#39;BEGIN{FS=&quot;:&quot;;OFS=&quot; : &quot;;ORS=&quot;\n\n&quot;}{print FNR,$1,$NF}&#39;</span> /etc/passwd
+
+<span class="c1"># 输入参数获取(ARGC ,ARGV使用）</span>
+awk <span class="s1">&#39;BEGIN{FS=&quot;:&quot;;print &quot;ARGC=&quot;ARGC;for(k in ARGV) {print k&quot;=&quot;ARGV[k]; }}&#39;</span> /etc/passwd
+
+<span class="c1"># 统计/etc/passwd的账户人数</span>
+awk <span class="s1">&#39;BEGIN {count=0;print &quot;[start]user count is &quot;, count} {count=count+1;print $0;} END{print &quot;[end]user count is &quot;, count}&#39;</span> /etc/passwd
+
+<span class="c1"># 统计某个文件夹下的文件占用的字节数, 以M为单位</span>
+ls -l <span class="p">|</span>awk <span class="s1">&#39;BEGIN {size=0;} {size=size+$5;} END{print &quot;[end]size is &quot;, size/1024/1024,&quot;M&quot;}&#39;</span>
+
+<span class="c1"># 统计某个文件夹下的文件占用的字节数,过滤4096大小的文件</span>
+ls -l <span class="p">|</span>awk <span class="s1">&#39;BEGIN {size=0;print &quot;[start]size is &quot;, size} {if($5!=4096){size=size+$5;}} END{print &quot;[end]size is &quot;, size/1024/1024,&quot;M&quot;}&#39;</span>
+
+<span class="c1"># 三行变1行</span>
+awk <span class="s1">&#39;{if(NR%3!=0)ORS=&quot; &quot;;else ORS=&quot;\n&quot;}1&#39;</span> <span class="m">5</span>.txt
+</pre></div>
+
+<h2 id="sed">四、<code>sed</code>命令<a class="headerlink" href="#sed" title="Permanent link">&para;</a></h2>
+<p><code>sed</code>是非交互式的编辑器。它不会修改文件,除非使用<code>shell</code>重定向来保存结果。默认情况下,所有的输出行都被打印到屏幕上。</p>
+<p><code>sed</code>编辑器逐行处理文件(或输入),并将结果发送到屏幕。具体过程如下:首先<code>sed</code>把当前正在处理的行保存在一个临时缓存区中(也称为模式空间),然后处理临时缓冲区中的行,完成后把该行发送到屏幕上。<code>sed</code>每处理完一行就将其从
+临时缓冲区删除,然后将下一行读入,进行处理和显示。处理完输入文件的最后一行后,<code>sed</code>便结束运行。<code>sed</code>把每一行
+都存在临时缓冲区中,对这个副本进行编辑,所以不会修改原文件。</p>
+<ul>
+<li><strong>定址</strong></li>
+</ul>
+<p>定址用于决定对哪些行进行编辑。地址的形式可以是数字、正则表达式、或二者的结合。如果没有指定地址,<code>sed</code>将处理输入文件的所有行。</p>
+<blockquote>
+<p>地址是一个数字,则表示行号;"$"符号,则表示最后一行。例如:<code>sed -n '3p' datafile</code>则只打印第三行;</p>
+<p>只显示指定行范围的文件内容,如:<code>sed -n '100,200p' mysql_slow_query.log</code>只查看文件的第100行到第200行;</p>
+<p>地址是逗号分隔的,那么需要处理的地址是这两行之间的范围(包括这两行在内)。范围可以用数字、正则表达式、或二者的组合表示。例如:</p>
+</blockquote>
+<div class="highlight"><pre><span></span>sed <span class="s1">&#39;2,5d&#39;</span> datafile <span class="c1"># 删除第二到第五行</span>
+sed <span class="s1">&#39;/My/,/You/d&#39;</span> datafile <span class="c1"># 删除包含&quot;My&quot;的行到包含&quot;You&quot;的行之间的行</span>
+sed <span class="s1">&#39;/My/,10d&#39;</span> datafile <span class="c1"># 删除包含&quot;My&quot;的行到第十行的内容</span>
+</pre></div>
+
+<ul>
+<li><strong>命令与选项</strong></li>
+</ul>
+<p>sed命令告诉sed如何处理由地址指定的各输入行,如果没有指定地址则处理所有的输入行。命令参数:</p>
+<table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>a\</code></td>
+<td align="left">在当前行后添加一行或多行。所追加的文本行位于<code>sed</code>命令的下方另起一行,多行时除最后一行外,每行末尾需用"<code>\</code>续行</td>
+</tr>
+<tr>
+<td align="left"><code>c\</code></td>
+<td align="left">用此符号后的新文本替换当前行中的文本。多行时除最后一行外,每行末尾需用"<code>\</code>"续行</td>
+</tr>
+<tr>
+<td align="left"><code>i\</code></td>
+<td align="left">在当前行之前插入文本。多行时除最后一行外,每行末尾需用"<code>\</code>"续行</td>
+</tr>
+<tr>
+<td align="left"><code>d</code></td>
+<td align="left">删除行</td>
+</tr>
+<tr>
+<td align="left"><code>h</code></td>
+<td align="left">把模式空间里的内容复制到暂存缓冲区</td>
+</tr>
+<tr>
+<td align="left"><code>H</code></td>
+<td align="left">把模式空间里的内容追加到暂存缓冲区</td>
+</tr>
+<tr>
+<td align="left"><code>g</code></td>
+<td align="left">把暂存缓冲区里的内容复制到模式空间,覆盖原有的内容</td>
+</tr>
+<tr>
+<td align="left"><code>G</code></td>
+<td align="left">把暂存缓冲区的内容追加到模式空间里,追加在原有内容的后面</td>
+</tr>
+<tr>
+<td align="left"><code>l</code></td>
+<td align="left">列出非打印字符</td>
+</tr>
+<tr>
+<td align="left"><code>p</code></td>
+<td align="left">打印行</td>
+</tr>
+<tr>
+<td align="left"><code>n</code></td>
+<td align="left">读入下一输入行,并从下一条命令而不是第一条命令开始对其的处理</td>
+</tr>
+<tr>
+<td align="left"><code>q</code></td>
+<td align="left">结束或退出<code>sed</code></td>
+</tr>
+<tr>
+<td align="left"><code>r</code></td>
+<td align="left">从文件中读取输入行</td>
+</tr>
+<tr>
+<td align="left"><code>!</code></td>
+<td align="left">对所选行以外的所有行应用命令</td>
+</tr>
+<tr>
+<td align="left"><code>s</code></td>
+<td align="left">用一个字符串替换另一个</td>
+</tr>
+<tr>
+<td align="left"><code>g</code></td>
+<td align="left">在行内进行全局替换</td>
+</tr>
+<tr>
+<td align="left"><code>w</code></td>
+<td align="left">将所选的行写入文件</td>
+</tr>
+<tr>
+<td align="left"><code>x</code></td>
+<td align="left">交换暂存缓冲区与模式空间的内容</td>
+</tr>
+<tr>
+<td align="left"><code>y</code></td>
+<td align="left">将字符替换为另一字符(不能对正则表达式使用<code>y</code>命令)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong><code>sed</code>命令选项</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left">选项</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>-e</code></td>
+<td align="left">进行多项编辑,即对输入行应用多条sed命令时使用</td>
+</tr>
+<tr>
+<td align="left"><code>-n</code></td>
+<td align="left">取消默认的输出</td>
+</tr>
+<tr>
+<td align="left"><code>-f</code></td>
+<td align="left">指定<code>sed</code>脚本的文件名</td>
+</tr>
+</tbody>
+</table>
+<p><strong>退出状态</strong>: <code>sed</code>不向<code>grep</code>一样,不管是否找到指定的模式,它的退出状态都是0。只有当命令存在语法错误时,<code>sed</code>的退出状态才不是0。</p>
+<ul>
+<li><strong>常见例子</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><span class="c1"># 默认情况下,sed把输入行打印在屏幕上,选项-n用于取消默认的打印操作。</span>
+<span class="c1"># 当选项-n和命令p同时出现时,sed可打印选定的内容。</span>
+<span class="c1"># 命令p用于显示模式空间的内容。</span>
+sed <span class="s1">&#39;/my/p&#39;</span> datafile
+<span class="c1"># 默认情况下,sed把所有输入行都打印在标准输出上。如果某行匹配模式my, p命令将把该行另外打印一遍。</span>
+sed -n <span class="s1">&#39;/my/p&#39;</span> datafile
+<span class="c1"># 选项-n取消sed默认的打印,p命令把匹配模式my的行打印一遍。</span>
+
+
+<span class="c1"># 命令d用于删除输入行。</span>
+<span class="c1"># sed先将输入行从文件复制到模式空间里,然后对该行执行sed命令,最后将模式空间里的内容显示在屏幕上。如果发出的是命令d,当前模式空间里的输入行会被删除,不被显示。</span>
+sed <span class="s1">&#39;$d&#39;</span> datafile     <span class="c1"># 删除最后一行,其余的都被显示</span>
+sed <span class="s1">&#39;/my/d&#39;</span> datafile  <span class="c1"># 删除包含my的行,其余的都被显示</span>
+
+
+sed <span class="s1">&#39;s/^My/You/g&#39;</span> datafile         <span class="c1"># 命令末端的g表示在行内进行全局替换,也就是说如果某行出现多个My,所有的My都被替换为You。</span>
+sed -n <span class="s1">&#39;1,20s/My$/You/gp&#39;</span> datafile <span class="c1"># 取消默认输出,处理1到20行里匹配以My结尾的行,把行内所有的My替换为You,并打印到屏幕上。</span>
+
+sed <span class="s1">&#39;s#My#Your#g&#39;</span> datafile        <span class="c1"># 紧跟在s命令后的字符就是查找串和替换串之间的分隔符。分隔符默认为正斜杠,但可以改变。无论什么字符(换行符、反斜线除外),只要紧跟s命令,就成了新的串分隔符。</span>
+
+sed -e <span class="s1">&#39;1,10d&#39;</span> -e <span class="s1">&#39;s/My/Your/g&#39;</span> datafile <span class="c1"># 选项-e用于进行多重编辑。第一重编辑删除第1-3行。第二重编辑将出现的所有My替换为Your。因为是逐行进行这两项编辑(即这两个命令都在模式空间的当前行上执行),所以编辑命令&gt;的顺序会影响结果。</span>
+
+<span class="c1"># r命令是读命令。sed使用该命令将一个文本文件中的内容加到当前文件的特定位置上。</span>
+sed <span class="s1">&#39;/My/r introduce.txt&#39;</span> datafile <span class="c1"># 如果在文件datafile的某一行匹配到模式My,就在该行后读入文件introduce.txt的内容。如果出现My的行不止一行,则在出现My的各行后都读入introduce.txt文件的内容。</span>
+
+sed -n <span class="s1">&#39;/hrwang/w me.txt&#39;</span> datafile
+
+<span class="c1"># a\ 命令是追加命令,追加将添加新文本到文件中当前行(即读入模式缓冲区中的行)的后面。所追加的文本行位于sed命令的下方另起一行。如果要追加的内容超过一行,则每一行都必须以反斜线结束,最后一行除外。最后一行将以引&gt;号和文件名结束。</span>
+
+sed <span class="s1">&#39;/^hrwang/a\</span>
+<span class="s1">&gt;hrwang and mjfan are husband\</span>
+<span class="s1">&gt;and wife&#39;</span> datafile
+<span class="c1"># 如果在datafile文件中发现匹配以hrwang开头的行,则在该行下面追加hrwang and mjfan are husband and wife</span>
+
+<span class="c1"># i\ 命令是在当前行的前面插入新的文本。</span>
+<span class="c1"># c\ 命令,sed使用该命令将已有文本修改成新的文本。</span>
+
+<span class="c1"># sed使用该命令获取输入文件的下一行,并将其读入到模式缓冲区中,任何sed命令都将应用到匹配行紧接着的下一行上。</span>
+sed <span class="s1">&#39;/hrwang/{n;s/My/Your/;}&#39;</span> datafile
+<span class="c1"># 注：如果需要使用多条命令,或者需要在某个地址范围内嵌套地址,就必须用花括号将命令括起来,每行只写一条命令,或这用分号分割同一行中的多条命令。</span>
+
+<span class="c1"># 该命令与UNIX/Linux中的tr命令类似,字符按照一对一的方式从左到右进行转换。例如,y/abc/ABC/将把所有小写的a转换成A,小写的b转换成B,小写的c转换成C。</span>
+sed <span class="s1">&#39;1,20y/hrwang12/HRWANG^$/&#39;</span> datafile
+<span class="c1"># 将1到20行内,所有的小写hrwang转换成大写,将1转换成^,将2转换成$。</span>
+<span class="c1"># 正则表达式元字符对y命令不起作用。与s命令的分隔符一样,斜线可以被替换成其它的字符。</span>
+
+
+<span class="c1"># q命令将导致sed程序退出,不再进行其它的处理。</span>
+sed <span class="s1">&#39;/hrwang/{s/hrwang/HRWANG/;q;}&#39;</span> datafile
+
+<span class="c1"># sed脚本就是写在文件中的一列sed命令。</span>
+<span class="c1"># 脚本中,要求命令的末尾不能有任何多余的空格或文本。如果在一行中有多个命令,要用分号分隔。</span>
+<span class="c1"># 执行脚本时,sed先将输入文件中第一行复制到模式缓冲区,然后对其执行脚本中所有的命令。每一行处理完毕后,sed再复制文件中下一行到模式缓冲区,对其执行脚本中所有命令。</span>
+<span class="c1"># 使用sed脚本时,不再用引号来确保sed命令不被shell解释。</span>
+
+
+<span class="c1"># 搜索/etc/passwd,找到root对应的行,执行后面花括号中的一组命令,每个命令之间用分号分隔,这里把bash替换为blueshell,再输出这行</span>
+cat /etc/passwd <span class="p">|</span> sed -n <span class="s1">&#39;/root/{s/bash/blueshell/;p}&#39;</span>
+
+<span class="c1"># 删除/etc/passwd第三行到末尾的数据，并把bash替换为blueshell</span>
+cat /etc/passwd <span class="p">|</span> sed -e <span class="s1">&#39;3,$d&#39;</span> -e <span class="s1">&#39;s/bash/blueshell/&#39;</span>
+</pre></div>
+
+<h2 id="_2">五、其他操作<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<h3 id="52-vim">5.2 <code>vim</code>正则操作<a class="headerlink" href="#52-vim" title="Permanent link">&para;</a></h3>
+<p>函数式:<code>:s/替换字符串/\=函数式</code></p>
+<blockquote>
+<ol>
+<li>
+<p>将各行的<code>id</code>字符串替换为行号:<code>:%s/\&lt;id\&gt;/\=line(".")</code></p>
+</li>
+<li>
+<p>将每行开头的单词替换为(行号-10).单词的格式:<code>:%s/^\&lt;\w\+\&gt;/\=(line(".")-10) .".". submatch(1)</code></p>
+</li>
+</ol>
+</blockquote>
+<h3 id="53-python">5.3 <code>python</code>操作<a class="headerlink" href="#53-python" title="Permanent link">&para;</a></h3>
+<p><code>re</code>库采用<code>raw string</code>类型来表示正则表达式,表示为<code>r’text’</code>。<code>raw string</code>是不包含对转义符的再次转义的字符串,总而言就是<code>string</code>会对字符转义,而<code>raw string</code>不会,因为在正则表达中会出现转义符号,所以避免繁琐我们使用<code>raw string</code>。</p>
+<p><code>Re</code>库主要功能函数:</p>
+<ul>
+<li><strong><code>re.search(pattern, string, flags=0)</code></strong></li>
+</ul>
+<p>在一个字符串中搜索正则表达式的第一个位置,返回match对象</p>
+<blockquote>
+<p><code>pattern</code>:正则表达式的字符串或原生字符串表示</p>
+<p><code>string</code>:待匹配字符串</p>
+<p><code>flags</code>:正则表达式使用时的控制标记</p>
+<p><code>re.I</code>,<code>re.IGNORECASE</code>:忽略正则表达式的大小写,<code>[A‐Z]</code>能够匹配小写字符</p>
+<p><code>re.M</code>,<code>re.MULTILINE</code>:正则表达式中的<code>^</code>操作符能够将给定字符串的每行当作匹配开始</p>
+<p><code>re.S</code>,<code>re.DOTALL</code>:正则表达式中的.操作符能够匹配所有字符,默认匹配除换行外的所有字符</p>
+</blockquote>
+<p>举例说明:</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
+<span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[1-9]\d{5}&#39;</span><span class="p">,</span> <span class="s1">&#39;BIT 100081&#39;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+<span class="c1"># 100081</span>
+</pre></div>
+
+<ul>
+<li><strong><code>re.match(pattern, string, flags=0)</code></strong></li>
+</ul>
+<p>从一个字符串的开始位置起匹配正则表达式,返回<code>match</code>对象,参数同<code>search</code>函数。举例说明:</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
+<span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[1-9]\d{5}&#39;</span><span class="p">,</span> <span class="s1">&#39;BIT 100081&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+<span class="c1"># 报错,match为空</span>
+</pre></div>
+
+<ul>
+<li><strong><code>re.findall(pattern,string,flags=0)</code></strong></li>
+</ul>
+<p>搜索字符串,以列表类型返回全部能匹配的子串,参数同<code>search</code>。举例说明:</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
+<span class="n">ls</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[1-9]\d{5}&#39;</span><span class="p">,</span> <span class="s1">&#39;BIT100081 TSU100084&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">ls</span><span class="p">)</span>
+<span class="c1"># [&#39;100081&#39;, &#39;100084&#39;]</span>
+</pre></div>
+
+<ul>
+<li><strong>re.split(pattern,string,maxsplit=0,flags=0)`</strong></li>
+</ul>
+<p>将一个字符串按照正则表达式匹配结果进行分割返回列表类型,参数参考<code>search</code></p>
+<blockquote>
+<p><code>maxsplit</code>:最大分割数,剩余部分作为最后一个元素输出</p>
+</blockquote>
+<p>举例说明:</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
+<span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[1-9]\d{5}&#39;</span><span class="p">,</span> <span class="s1">&#39;BIT100081 TSU100084&#39;</span><span class="p">)</span>
+<span class="c1"># [&#39;BIT&#39;, &#39; TSU&#39;, &#39; &#39;]</span>
+
+<span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[1-9]\d{5}&#39;</span><span class="p">,</span> <span class="s1">&#39;BIT100081 TSU100084&#39;</span><span class="p">,</span> <span class="n">maxsplit</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="c1"># [&#39;BIT&#39;, &#39; TSU100081&#39;]</span>
+</pre></div>
+
+<ul>
+<li><strong><code>re.finditer(pattern,string,maxsplit=0,flags=0)</code></strong>
+搜索字符串,返回一个匹配结果的迭代类型,每个迭代元素是<code>match</code>对象,参数同<code>split</code>。
+举例说明:</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
+<span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[1-9]\d{5}&#39;</span><span class="p">,</span> <span class="s1">&#39;BIT100081 TSU100084&#39;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">m</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+
+<span class="c1"># 100081</span>
+<span class="c1"># 100084</span>
+</pre></div>
+
+<ul>
+<li><strong><code>re.sub(pattern,repl,string,count=0,flags=0)</code></strong></li>
+</ul>
+<p>在一个字符串中替换所有匹配正则表达式的子串返回替换后的字符串:</p>
+<blockquote>
+<p><code>repl</code> : 替换匹配字符串的字符串</p>
+<p><code>count</code> : 匹配的最大替换次数</p>
+</blockquote>
+<p>举例说明:</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
+<span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[1-9]\d{5}&#39;</span><span class="p">,</span> <span class="s1">&#39;:zipcode&#39;</span><span class="p">,</span> <span class="s1">&#39;BIT100081 TSU100084&#39;</span><span class="p">)</span>
+
+<span class="c1"># &#39;BIT:zipcode TSU:zipcode&#39;</span>
+</pre></div>
+
+<p><code>Re</code>库的另一种等价用法(面向对象):<code>rst=re.search(r'[1-9]\d{5}', 'BIT 100081')</code>函数式的调用,一次性操作:</p>
+<div class="highlight"><pre><span></span><span class="n">pat</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[1-9]\d{5}&#39;</span><span class="p">)</span>
+<span class="n">rst</span><span class="o">=</span><span class="n">pat</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;BIT 100081&#39;</span><span class="p">)</span>
+</pre></div>
+
+<p>编译后多次操作<code>regex=re.complie(pattern,flags=0)</code>,<code>regex</code>也有以上六种用法。</p>
+<p><code>Re</code>库的<code>Match</code>对象是一次匹配的结果,包含匹配的很多信息。以下是<code>Match</code>对象的属性:</p>
+<blockquote>
+<p><code>.string</code> : 待匹配的文本</p>
+<p><code>.re</code> : 匹配时使用的<code>patter</code>对象(正则表达式)</p>
+<p><code>.pos</code> : 正则表达式搜索文本的开始位置</p>
+<p><code>.endpos</code> : 正则表达式搜索文本的结束位置</p>
+</blockquote>
+<p>以下是<code>Match</code>对象的方法</p>
+<blockquote>
+<p><code>.group(0)</code> : 获得匹配后的字符串</p>
+<p><code>.start()</code> : 匹配字符串在原始字符串的开始位置</p>
+<p><code>.end()</code> : 匹配字符串在原始字符串的结束位置</p>
+<p><code>.span()</code> : 返回<code>(.start(), .end())</code></p>
+</blockquote>
+<p><code>Re</code>库默认采用贪婪匹配,即返回匹配最长的子串,最小匹配:</p>
+<blockquote>
+<p><code>*?</code>:前一个字符0次或无限次扩展,最小匹配</p>
+<p><code>+?</code>:前一个字符1次或无限次扩展,最小匹配</p>
+<p><code>??</code>:前一个字符<code>0</code>次或<code>1</code>次扩展,最小匹配</p>
+<p><code>{m,n}?</code>:扩展前一个字符<code>m</code>至<code>n</code>次(含<code>n</code>),最小匹配</p>
+<p>只要长度输出可能不同的,都可以通过在操作符后增加<code>?</code>变成最小匹配</p>
+</blockquote>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    <br>
+</div>
+
+</body>
+</html>
