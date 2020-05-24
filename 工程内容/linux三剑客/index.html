@@ -107,8 +107,8 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>上述常量和算子形成了克莱尼代数。</p>
 <p>很多地方使用对选择使用符号<span><span class="MathJax_Preview">\cup</span><script type="math/tex">\cup</script></span>、<span><span class="MathJax_Preview">+</span><script type="math/tex">+</script></span>或<span><span class="MathJax_Preview">\vee</span><script type="math/tex">\vee</script></span>替代竖线。为了避免括号,假定<code>Kleene</code>星号有最高优先级,接着是串接,接着是并集。如果没有歧义则可以省略括号。例如:<span><span class="MathJax_Preview">(ab)c</span><script type="math/tex">(ab)c</script></span>可以写为<span><span class="MathJax_Preview">abc</span><script type="math/tex">abc</script></span>而<span><span class="MathJax_Preview">a|(b(c*))</span><script type="math/tex">a|(b(c*))</script></span>可以写为<span><span class="MathJax_Preview">a|bc*</span><script type="math/tex">a|bc*</script></span>。</p>
 <p>正则表达式为了避免多余的量词,定义了?和+,例如:<span><span class="MathJax_Preview">aa*</span><script type="math/tex">aa*</script></span>可以被表达为<span><span class="MathJax_Preview">a+</span><script type="math/tex">a+</script></span>;<span><span class="MathJax_Preview">(a|ε)</span><script type="math/tex">(a|ε)</script></span>可以被表达为<span><span class="MathJax_Preview">a?</span><script type="math/tex">a?</script></span>。有时增加补算子<span><span class="MathJax_Preview">\sim</span><script type="math/tex">\sim</script></span>; <span><span class="MathJax_Preview">\sim R</span><script type="math/tex">\sim R</script></span>表示在<span><span class="MathJax_Preview">\Sigma ^{*}</span><script type="math/tex">\Sigma ^{*}</script></span>上但不在<span><span class="MathJax_Preview">R</span><script type="math/tex">R</script></span>中的所有字符串的集合。补算子是多余的,因为它可以使用其他算子来表达(尽管计算这种表示的过程是复杂的,而结果可能以指数增大)。</p>
-<p>这种意义上的正则表达式可以表达正则语言,精确的是可被<a href="https://zh.wikipedia.org/wiki/%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E8%87%AA%E5%8A%A8%E6%9C%BA">有限状态自动机</a>接受的语言类。但是在简洁性上有重要区别。某类正则语言只能用大小指数增长的自动机来描述,而要求的正则表达式的长度只线性的增长。</p>
-<p>正则表达式对应于乔姆斯基层级的<a href="https://zh.wikipedia.org/wiki/%E6%AD%A3%E5%88%99%E6%96%87%E6%B3%95">类型-3</a>文法。但通常编程语言或其相关库(例如PCRE)中实现的正则表达式的表达能力是乔姆斯基层级中<a href="https://zh.wikipedia.org/wiki/%E6%AD%A3%E5%88%99%E6%96%87%E6%B3%95">类型-3</a>文法的超集[来源请求]。在另一方面,在正则表达式和不导致这种大小上的爆炸的非确定有限状态自动机(NFA)之间有简单的映射;为此NFA经常被用作正则表达式的替表示式。</p>
+<p>这种意义上的正则表达式可以表达正则语言,精确的是可被<a href="http://zh.wikipedia.org/wiki/%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E8%87%AA%E5%8A%A8%E6%9C%BA">有限状态自动机</a>接受的语言类。但是在简洁性上有重要区别。某类正则语言只能用大小指数增长的自动机来描述,而要求的正则表达式的长度只线性的增长。</p>
+<p>正则表达式对应于乔姆斯基层级的<a href="http://zh.wikipedia.org/wiki/%E6%AD%A3%E5%88%99%E6%96%87%E6%B3%95">类型-3</a>文法。但通常编程语言或其相关库(例如PCRE)中实现的正则表达式的表达能力是乔姆斯基层级中<a href="http://zh.wikipedia.org/wiki/%E6%AD%A3%E5%88%99%E6%96%87%E6%B3%95">类型-3</a>文法的超集[来源请求]。在另一方面,在正则表达式和不导致这种大小上的爆炸的非确定有限状态自动机(NFA)之间有简单的映射;为此NFA经常被用作正则表达式的替表示式。</p>
 <p>我们还要在这种形式化中研究表达力。如下面例子所展示的,不同的正则表达式可以表达同样的语言:这种形式化中存在着冗余。</p>
 <p>有可能对两个给定正则表达式写一个算法来判定它们所描述的语言是否本质上相等,简约每个表达式到极小确定有限自动机,确定它们是否同构(等价)。</p>
 <p>这种冗余可以消减到什么程度?我们可以找到仍有完全表达力的正则表达式的有趣的子集吗?Kleene星号和并集明显是需要的,但是我们或许可以限制它们的使用。这提出了一个令人惊奇的困难问题。因为正则表达式如此简单,没有办法在语法上把它重写成某种规范形式。过去公理化的缺乏导致了星号高度问题。最近Dexter Kozen用克莱尼代数公理化了正则表达式。</p>
@@ -141,7 +141,7 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>第一次匹配,因为<code>.*</code>可以匹配任意个字符任意次,那么这里可以选择匹配空、a、ab、abc、abcd,因为<code>*</code>的贪婪特性,所以<code>.*</code>直接匹配了abcd4个字符,<code>+</code>因为后面没有其他字符了,所以只看着<code>.*</code>吃掉abcd后就不匹配了,这里记录<code>+</code>的值为1,然后<code>\d</code>没有东西能够匹配,所以匹配失败,进行第一次回溯。</p>
 <p><img alt="" src="http://user-gold-cdn.xitu.io/2019/7/15/16bf3bdc67a17040" /></p>
 <p>第二次匹配,因为进行了回溯,所以回到上一个匹配路径选择的时候,上次<code>.*</code>匹配的是abcd ,并且路不通,那么这次只能尝试匹配<code>abc</code>,这个时候末尾还有一个d,那么可以理解为<code>.*</code>第一次匹配了abc ,然后因为<code>(.*)+</code>的原因,<code>.*</code>可以进行第二次匹配,这里<code>.*</code>可以匹配d ,这里记录<code>+</code>的值为2,然后<code>\d</code>没有东西能够匹配,所以匹配失败,进行第二次回溯。</p>
-<p><img alt="" src="https://user-gold-cdn.xitu.io/2019/7/15/16bf3bdc73a0e5d1?imageslim" /></p>
+<p><img alt="" src="http://user-gold-cdn.xitu.io/2019/7/15/16bf3bdc73a0e5d1?imageslim" /></p>
 <p>第三次匹配,因为进行了回溯,所以回到上一个匹配路径选择的时候,上次第一个<code>.*</code>匹配的是abc,第二个<code>.*</code>匹配的是<code>d</code>,并且路不通,所以这里第二次的<code>.*</code>不进行匹配,这个时候末尾还有一个<code>d</code>,<code>\d</code>和<code>d</code>匹配失败,进行第三次回溯。</p>
 <ul>
 <li><strong>如何减少或避免回溯</strong></li>
@@ -156,11 +156,11 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>传统正则引擎分为NFA(非确定性有限状态自动机),和DFA(确定性有限状态自动机)。</p>
 <p><strong>DFA</strong></p>
 <p>对于给定的任意一个状态和输入字符,DFA只会转移到一个确定的状态。并且DFA不允许出现没有输入字符的状态转移</p>
-<p><img alt="" src="https://user-gold-cdn.xitu.io/2019/7/15/16bf3bdcc3964971?imageslim" /></p>
+<p><img alt="" src="http://user-gold-cdn.xitu.io/2019/7/15/16bf3bdcc3964971?imageslim" /></p>
 <p>比如状态0,在输入字符A的时候,终点只有1个,只能到状态1。</p>
 <p><strong>NFA</strong></p>
 <p>对于任意一个状态和输入字符,NFA所能转移的状态是一个非空集合。</p>
-<p><img alt="" src="https://user-gold-cdn.xitu.io/2019/7/15/16bf3bdcc36fe4df?imageslim" /></p>
+<p><img alt="" src="http://user-gold-cdn.xitu.io/2019/7/15/16bf3bdcc36fe4df?imageslim" /></p>
 <p>比如状态0,在输入字符A的时候,终点可以是多个,即能到状态1,也能到状态0。</p>
 <p><strong>DFA和NFA的正则引擎的区别</strong></p>
 <blockquote>
@@ -686,11 +686,11 @@ grep <span class="s2">&quot;text&quot;</span> -n file_1 file_2
 <span class="nb">echo</span> <span class="s2">&quot;background-image: url(/media/images/index/im2.jpg);&quot;</span> <span class="p">|</span> grep -oP <span class="s1">&#39;(?&lt;=url\()[^)]+&#39;</span>
 </pre></div>
 
-<h2 id="awk">三、<code>awk</code>命令<a class="headerlink" href="#awk" title="Permanent link">&para;</a></h2>
-<p><code>awk</code>是一个强大的文本分析工具,相对于<code>grep</code>的查找,<code>sed</code>的编辑,<code>awk</code>在其对数据分析并生成报告时,显得尤为强大。简单来说<code>awk</code>就是把文件逐行的读入,以空格为默认分隔符将每行切片,切开的部分再进行各种分析处理。<code>awk</code>语言的最基本功能是将文件逐行读入,以空格为默认分隔符将每行切片,切开部分再基于指定规则浏览和抽取信息。<code>awk</code>抽取信息后,才能进行其他文本操作。完整的<code>awk</code>脚本通常用来格式化文本文件中的信息。通常,<code>awk</code>是以文件的一行为处理单位的。<code>awk</code>每接收文件的一行,然后执行相应的命令,来处理文本。</p>
-<p><code>awk</code>其名称得自于它的创始人Alfred Aho、Peter Weinberger和Brian Kernighan姓氏的首个字母。实际上AWK的确拥有自己的语言:AWK程序设计语言.三位创建者已将它正式定义为“样式扫描和处理语言”。它允许您创建简短的程序,这些程序读取输入文件、为数据排序、处理数据、对输入执行计算以及生成报表,还有无数其他的功能。</p>
+<h2 id="awk">三、awk命令<a class="headerlink" href="#awk" title="Permanent link">&para;</a></h2>
+<p>awk是一个强大的文本分析工具,相对于grep的查找,sed的编辑,awk在其对数据分析并生成报告时,显得尤为强大。简单来说awk就是把文件逐行的读入,以空格为默认分隔符将每行切片,切开的部分再进行各种分析处理。awk语言的最基本功能是将文件逐行读入,以空格为默认分隔符将每行切片,切开部分再基于指定规则浏览和抽取信息。awk抽取信息后,才能进行其他文本操作。完整的awk脚本通常用来格式化文本文件中的信息。通常,awk是以文件的一行为处理单位的。awk每接收文件的一行,然后执行相应的命令,来处理文本。</p>
+<p>awk其名称得自于它的创始人Alfred Aho、Peter Weinberger和Brian Kernighan姓氏的首个字母。实际上AWK的确拥有自己的语言:AWK程序设计语言.三位创建者已将它正式定义为“样式扫描和处理语言”。它允许您创建简短的程序,这些程序读取输入文件、为数据排序、处理数据、对输入执行计算以及生成报表,还有无数其他的功能。</p>
 <p>基本语法: <code>awk 'pattern { action }' filename</code>,其中<code>BEGIN</code>和<code>END</code>是开始读入和结束读入的控制<code>pattern</code>。</p>
-<p><strong>awk工作流程是这样的:先执行<code>BEGIN</code>,然后读取文件,读入有<code>\n</code>换行符分割的一条记录,然后将记录按指定的域分隔符划分域,填充域,<code>$0</code>则表示所有域,<code>$1</code>表示第一个域,<code>$n</code>表示第<code>n</code>个域,随后开始执行模式所对应的动作<code>action</code>。接着开始读入第二条记录······直到所有的记录都读完,最后执行<code>END</code>操作。参考:<a href="https://www.freebsd.org/cgi/man.cgi?query=awk&amp;apropos=0&amp;sektion=0&amp;manpath=FreeBSD+12.0-RELEASE+and+Ports&amp;arch=default&amp;format=html"><code>FreeBSD Manual Pages:awk</code></a></strong></p>
+<p><strong>awk工作流程是这样的:先执行<code>BEGIN</code>,然后读取文件,读入有<code>\n</code>换行符分割的一条记录,然后将记录按指定的域分隔符划分域,填充域,<code>$0</code>则表示所有域,<code>$1</code>表示第一个域,<code>$n</code>表示第<code>n</code>个域,随后开始执行模式所对应的动作<code>action</code>。接着开始读入第二条记录······直到所有的记录都读完,最后执行<code>END</code>操作。参考:<a href="http://www.freebsd.org/cgi/man.cgi?query=awk&amp;apropos=0&amp;sektion=0&amp;manpath=FreeBSD+12.0-RELEASE+and+Ports&amp;arch=default&amp;format=html"><code>FreeBSD Manual Pages:awk</code></a></strong></p>
 <ul>
 <li><strong>调用方式</strong></li>
 </ul>
@@ -698,15 +698,15 @@ grep <span class="s2">&quot;text&quot;</span> -n file_1 file_2
 <p><strong>shell脚本方式</strong>:将所有的<code>awk</code>命令插入一个文件,并使<code>awk</code>程序可执行,然后<code>awk</code>命令解释器作为脚本的首行,一遍通过键入脚本名称来调用。相当于shell脚本首行的:<code>#!/bin/sh</code>,可以换成:<code>#!/bin/awk</code>。</p>
 <p><strong>文件调用方式</strong>:将所有的<code>awk</code>命令插入一个单独文件,然后调用:<code>awk -f awk-script-file input-file(s)</code>,其中,<code>-f</code>选项加载<code>awk-script-file</code>中的<code>awk</code>脚本,<code>input-file(s)</code>跟上面的是一样的。</p>
 <ul>
-<li><strong><code>pattern</code>模式</strong></li>
+<li><strong>pattern模式</strong></li>
 </ul>
-<p><strong><code>BEGIN</code>模式</strong></p>
+<p><strong>BEGIN模式</strong></p>
 <p>一种特殊的内置模式,在awk处理完所有数据文件之前执行,不需要指定被处理数据文件,直接输出用户设置的内容。在awk中的生命周期只是执行一次。</p>
 <div class="highlight"><pre><span></span><span class="c1"># 通过BEGIN模式输出字符串</span>
 awk <span class="s1">&#39;BEGIN{print &quot;Hello! World.&quot;}&#39;</span>
 </pre></div>
 
-<p><strong><code>END</code>模式</strong></p>
+<p><strong>END模式</strong></p>
 <p>和BEGIN模式正好相反,它是在awk处理完所有数据文件之后,即将退出程序时成立,在此之前END模式不成立。BEGIN模式也是如此！</p>
 <div class="highlight"><pre><span></span><span class="ch">#! /bin/awk -f</span>
 
