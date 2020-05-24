@@ -2,7 +2,9 @@ body {
     background-color: #f8f8f8;
     font-family: Georgia, "Times New Roman", "KaiTi", "STKaiti", "Microsoft YaHei", "微软雅黑", STXihei, "华文细黑", serif;
 }
-
+img {
+    width:70%;
+}
 /***********************************************************************
  Top bar
  ***********************************************************************/
