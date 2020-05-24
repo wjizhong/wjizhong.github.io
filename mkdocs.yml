@@ -27,7 +27,7 @@ nav:
         - Emoji表情: 其他内容/Emoji表情.md
         - unicode字符: 其他内容/unicode字符.md
         - 推箱子: 其他内容/推箱子.html
-
+        - 国际象棋: 其他内容/国际象棋.html
 
 markdown_extensions:
     - toc:
