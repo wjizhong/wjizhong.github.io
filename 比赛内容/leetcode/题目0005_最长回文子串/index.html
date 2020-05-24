@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/leetcode/%E9%A2%98%E7%9B%AE0005_%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E5%AD%90%E4%B8%B2/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>题目0005:最长回文子串 - 图像/视频算法</title>
+    <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "\u9898\u76ee0005:\u6700\u957f\u56de\u6587\u5b50\u4e32", url: "#_top", children: [
+              {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1" },
+              {title: "\u89e3\u7b54\u6280\u5de7", url: "#_2" },
+          ]},
+        ];
+
+    </script>
+    <script src="../../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    
+
+    <h1 id="0005">题目0005:最长回文子串<a class="headerlink" href="#0005" title="Permanent link">&para;</a></h1>
+<h2 id="_1">题目描述<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>给定一个字符串s,找到s中最长的回文子串。你可以假设s的最大长度为1000。</p>
+<ul>
+<li>示例1:</li>
+</ul>
+<blockquote>
+<p>输入: "babad"</p>
+<p>输出: "bab"</p>
+<p>注意: "aba" 也是一个有效答案。</p>
+</blockquote>
+<ul>
+<li>示例2:</li>
+</ul>
+<blockquote>
+<p>输入: "cbbd"</p>
+<p>输出: "bb"</p>
+</blockquote>
+<h2 id="_2">解答技巧<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<h3 id="_3">方法一:最长公共子串<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<p>有些人会忍不住提出一个快速的解决方案,不幸的是,这个解决方案有缺陷(但是可以很容易地纠正):</p>
+<blockquote>
+<p>反转S,使之变成S'。找到S和S'之间最长的公共子串,这也必然是最长的回文子串。这似乎是可行的,让我们看看下面的一些例子。</p>
+</blockquote>
+<p>例如,<code>S="caba",S'="abac"</code>:S以及S'之间的最长公共子串为<code>"aba"</code>,恰恰是答案。让我们尝试一下这个例子:<code>S=“abacdfgdcaba”,S'="abacdgfdcaba"</code>:S以及S'之间的最长公共子串为<code>"abacd"</code>。显然,这不是回文。</p>
+<p>我们可以看到,当S的其他部分中存在非回文子串的反向副本时,最长公共子串法就会失败。为了纠正这一点,每当我们找到最长的公共子串的候选项时,都需要检查子串的索引是否与反向子串的原始索引相同。如果相同,那么我们尝试更新目前为止找到的最长回文子串;如果不是,我们就跳过这个候选项并继续寻找下一个候选。</p>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+    <span class="k">public</span><span class="o">:</span>
+        <span class="n">string</span> <span class="n">longestPalindrome</span><span class="p">(</span><span class="n">string</span> <span class="n">s</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">s</span><span class="o">==</span><span class="s">&quot;&quot;</span><span class="p">)</span> <span class="k">return</span> <span class="s">&quot;&quot;</span><span class="p">;</span>
+            <span class="n">string</span> <span class="n">reverse</span><span class="p">;</span>
+            <span class="n">reverse</span><span class="p">.</span><span class="n">assign</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">rbegin</span><span class="p">(),</span> <span class="n">s</span><span class="p">.</span><span class="n">rend</span><span class="p">());</span>
+
+            <span class="kt">int</span> <span class="n">length</span><span class="o">=</span><span class="n">s</span><span class="p">.</span><span class="n">length</span><span class="p">();</span>
+            <span class="kt">int</span> <span class="n">maxLen</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">maxEnd</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+            <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">arr</span><span class="p">;</span>
+            <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">length</span><span class="p">;</span><span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="n">arr</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+
+            <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">length</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+                <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="n">length</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span><span class="n">j</span><span class="o">&gt;=</span><span class="mi">0</span><span class="p">;</span><span class="n">j</span><span class="o">--</span><span class="p">){</span>
+                    <span class="k">if</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="n">reverse</span><span class="p">[</span><span class="n">j</span><span class="p">])</span> <span class="p">{</span>
+                    <span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="o">==</span><span class="mi">0</span> <span class="o">||</span> <span class="n">j</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span>
+                        <span class="n">arr</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+                    <span class="k">else</span>
+                        <span class="n">arr</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">else</span> <span class="n">arr</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">maxLen</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="kt">int</span> <span class="n">beforeRev</span> <span class="o">=</span> <span class="n">length</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">j</span><span class="p">;</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">beforeRev</span> <span class="o">+</span> <span class="n">arr</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">==</span> <span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="n">maxLen</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="n">j</span><span class="p">];</span>
+                        <span class="n">maxEnd</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+                    <span class="p">}</span>
+
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">s</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="n">maxEnd</span> <span class="o">-</span> <span class="n">maxLen</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">maxLen</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+
+<p>这给我们提供了一个复杂度为<span><span class="MathJax_Preview">O(n^2)</span><script type="math/tex">O(n^2)</script></span>动态规划解法,它将占用<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>的空间。</p>
+<h3 id="_4">方法二:暴力法<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<p>很明显,暴力法将选出所有子字符串可能的开始和结束位置,并检验它是不是回文。</p>
+<p>复杂度分析</p>
+<blockquote>
+<p>时间复杂度:<span><span class="MathJax_Preview">O(n^3)</span><script type="math/tex">O(n^3)</script></span>,假设n是输入字符串的长度,则<span><span class="MathJax_Preview">\binom{n}{2} = \frac{n(n-1)}{2}</span><script type="math/tex">\binom{n}{2} = \frac{n(n-1)}{2}</script></span>,为此类子字符串(不包括字符本身是回文的一般解法)的总数。因为验证每个子字符串需要<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>的时间,所以运行时间复杂度是<span><span class="MathJax_Preview">O(n^3)</span><script type="math/tex">O(n^3)</script></span>。</p>
+<p>空间复杂度:<span><span class="MathJax_Preview">O(1)</span><script type="math/tex">O(1)</script></span>。</p>
+</blockquote>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+    <span class="k">public</span><span class="o">:</span>
+        <span class="n">string</span> <span class="n">longestPalindrome</span><span class="p">(</span><span class="n">string</span> <span class="n">s</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">string</span> <span class="n">ans</span><span class="p">;</span>
+            <span class="kt">int</span> <span class="n">max_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">len</span><span class="o">=</span><span class="n">s</span><span class="p">.</span><span class="n">length</span><span class="p">();</span>
+            <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">len</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+                <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span><span class="n">j</span><span class="o">&lt;=</span><span class="n">len</span><span class="p">;</span><span class="n">j</span><span class="o">++</span><span class="p">){</span>
+                    <span class="n">string</span> <span class="n">test</span><span class="o">=</span><span class="n">s</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="o">-</span><span class="n">i</span><span class="p">);</span>
+                    <span class="k">if</span><span class="p">(</span><span class="n">isPalindromic</span><span class="p">(</span><span class="n">test</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">test</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">max_value</span><span class="p">){</span>
+                        <span class="n">ans</span><span class="o">=</span><span class="n">s</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="o">-</span><span class="n">i</span><span class="p">);</span>
+                        <span class="n">max_value</span><span class="o">=</span><span class="n">max</span><span class="p">(</span><span class="n">max_value</span><span class="p">,</span><span class="kt">int</span><span class="p">(</span><span class="n">ans</span><span class="p">.</span><span class="n">length</span><span class="p">()));</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="k">return</span> <span class="n">ans</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="kt">bool</span> <span class="n">isPalindromic</span><span class="p">(</span><span class="n">string</span> <span class="n">s</span><span class="p">){</span>
+            <span class="kt">int</span> <span class="n">len</span> <span class="o">=</span> <span class="n">s</span><span class="p">.</span><span class="n">length</span><span class="p">();</span>
+            <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">len</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="n">s</span><span class="p">[</span><span class="n">len</span><span class="o">-</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]){</span>
+                    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+
+<h3 id="_5">方法三:动态规划<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<p>为了改进暴力法,我们首先观察如何避免在验证回文时进行不必要的重复计算。考虑"ababa"这个示例。如果我们已经知道"bab"是回文,那么很明显,"ababa"一定是回文,因为它的左首字母和右尾字母是相同的。</p>
+<p>我们给出<span><span class="MathJax_Preview">P(i,j)</span><script type="math/tex">P(i,j)</script></span>的定义如下:</p>
+<div>
+<div class="MathJax_Preview">P(i,j) = \begin{cases} \text{true,} &amp;\quad\text{如果子串} S_i \dots S_j \text{是回文子串}\\ \text{false,} &amp;\quad\text{其它情况} \end{cases}</div>
+<script type="math/tex; mode=display">P(i,j) = \begin{cases} \text{true,} &\quad\text{如果子串} S_i \dots S_j \text{是回文子串}\\ \text{false,} &\quad\text{其它情况} \end{cases}</script>
+</div>
+<p>因此,</p>
+<div>
+<div class="MathJax_Preview">P(i, j) = ( P(i+1, j-1) \text{ and } S_i == S_j )</div>
+<script type="math/tex; mode=display">P(i, j) = ( P(i+1, j-1) \text{ and } S_i == S_j )</script>
+</div>
+<p>基本示例如下:</p>
+<div>
+<div class="MathJax_Preview">
+\begin{aligned}
+&amp; P(i,i)=true \\
+&amp; P(i, i+1) = ( S_i == S_{i+1} )
+\end{aligned}
+</div>
+<script type="math/tex; mode=display">
+\begin{aligned}
+& P(i,i)=true \\
+& P(i, i+1) = ( S_i == S_{i+1} )
+\end{aligned}
+</script>
+</div>
+<p>这产生了一个直观的动态规划解法,我们首先初始化一字母和二字母的回文,然后找到所有三字母回文,并依此类推…</p>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+    <span class="k">public</span><span class="o">:</span>
+        <span class="n">string</span> <span class="n">longestPalindrome</span><span class="p">(</span><span class="n">string</span> <span class="n">s</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kt">int</span> <span class="n">len</span> <span class="o">=</span> <span class="n">s</span><span class="p">.</span><span class="n">length</span><span class="p">();</span>
+            <span class="n">string</span> <span class="n">res</span><span class="p">;</span>
+            <span class="n">vector</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;</span> <span class="n">P</span><span class="p">;</span>
+            <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">len</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="n">P</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span>
+            <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="n">len</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span><span class="n">i</span><span class="o">&gt;=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">--</span><span class="p">)</span>
+                <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="n">len</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span><span class="n">j</span><span class="o">&gt;=</span><span class="n">i</span><span class="p">;</span><span class="n">j</span><span class="o">--</span><span class="p">){</span>
+                    <span class="n">P</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="n">s</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">j</span><span class="o">-</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">3</span><span class="o">||</span><span class="n">P</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]);</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">P</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="n">j</span> <span class="o">-</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&gt;</span> <span class="n">res</span><span class="p">.</span><span class="n">length</span><span class="p">())</span> <span class="p">{</span>
+                        <span class="n">res</span> <span class="o">=</span> <span class="n">s</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="o">-</span><span class="n">i</span><span class="p">);</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="k">return</span> <span class="n">res</span><span class="p">;</span>
+        <span class="p">}</span>  
+<span class="p">};</span>
+</pre></div>
+
+<p>复杂度分析</p>
+<blockquote>
+<p>时间复杂度:<span><span class="MathJax_Preview">O(n^2)</span><script type="math/tex">O(n^2)</script></span>,这里给出我们的运行时间复杂度为<span><span class="MathJax_Preview">O(n^2)</span><script type="math/tex">O(n^2)</script></span>。</p>
+<p>空间复杂度:<span><span class="MathJax_Preview">O(n^2)</span><script type="math/tex">O(n^2)</script></span>,该方法使用<span><span class="MathJax_Preview">O(n^2)</span><script type="math/tex">O(n^2)</script></span> 的空间来存储表。</p>
+</blockquote>
+<h3 id="_6">方法四:中心扩展算法<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
+<p>事实上,只需使用恒定的空间,我们就可以在<span><span class="MathJax_Preview">O(n^2)</span><script type="math/tex">O(n^2)</script></span>的时间内解决这个问题。我们观察到回文中心的两侧互为镜像。因此,回文可以从它的中心展开,并且只有<span><span class="MathJax_Preview">2n - 1</span><script type="math/tex">2n - 1</script></span>个这样的中心。你可能会问,为什么会是<span><span class="MathJax_Preview">2n - 1</span><script type="math/tex">2n - 1</script></span>个,而不是<code>n</code>个中心?原因在于所含字母数为偶数的回文的中心可以处于两字母之间(例如<code>"abba"</code>的中心在两个<code>'b'</code>之间)。</p>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+    <span class="k">public</span><span class="o">:</span>
+        <span class="n">string</span> <span class="n">longestPalindrome</span><span class="p">(</span><span class="n">string</span> <span class="n">s</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">s</span> <span class="o">==</span> <span class="s">&quot;&quot;</span> <span class="o">||</span> <span class="n">s</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">)</span> <span class="k">return</span> <span class="s">&quot;&quot;</span><span class="p">;</span>
+            <span class="kt">int</span> <span class="n">start</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">s</span><span class="p">.</span><span class="n">length</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                <span class="kt">int</span> <span class="n">len1</span> <span class="o">=</span> <span class="n">expandAroundCenter</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+                <span class="kt">int</span> <span class="n">len2</span> <span class="o">=</span> <span class="n">expandAroundCenter</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+                <span class="kt">int</span> <span class="n">len</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">len1</span><span class="p">,</span> <span class="n">len2</span><span class="p">);</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">len</span> <span class="o">&gt;</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="n">start</span> <span class="o">=</span> <span class="n">i</span> <span class="o">-</span> <span class="p">(</span><span class="n">len</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+                    <span class="n">end</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="n">len</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="n">s</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">+</span> <span class="mi">1</span><span class="o">-</span><span class="n">start</span><span class="p">);</span>  
+        <span class="p">}</span>
+        <span class="kt">int</span> <span class="n">expandAroundCenter</span><span class="p">(</span><span class="n">string</span> <span class="n">s</span><span class="p">,</span><span class="kt">int</span> <span class="n">left</span><span class="p">,</span> <span class="kt">int</span> <span class="n">right</span><span class="p">){</span>
+            <span class="kt">int</span> <span class="n">L</span><span class="o">=</span><span class="n">left</span><span class="p">,</span><span class="n">R</span><span class="o">=</span><span class="n">right</span><span class="p">;</span>
+            <span class="k">while</span><span class="p">(</span><span class="n">L</span><span class="o">&gt;=</span><span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">R</span><span class="o">&lt;</span><span class="n">s</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">&amp;&amp;</span><span class="n">s</span><span class="p">[</span><span class="n">L</span><span class="p">]</span><span class="o">==</span><span class="n">s</span><span class="p">[</span><span class="n">R</span><span class="p">]){</span>
+                <span class="n">L</span><span class="o">--</span><span class="p">,</span><span class="n">R</span><span class="o">++</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="n">R</span><span class="o">-</span><span class="n">L</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+        <span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+
+<p>复杂度分析</p>
+<blockquote>
+<p>时间复杂度:<span><span class="MathJax_Preview">O(n^2)</span><script type="math/tex">O(n^2)</script></span>,由于围绕中心来扩展回文会耗去<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>的时间,所以总的复杂度为<span><span class="MathJax_Preview">O(n^2)</span><script type="math/tex">O(n^2)</script></span>。</p>
+<p>空间复杂度:<span><span class="MathJax_Preview">O(1)</span><script type="math/tex">O(1)</script></span>。</p>
+</blockquote>
+<h3 id="manacher">方法五:Manacher 算法<a class="headerlink" href="#manacher" title="Permanent link">&para;</a></h3>
+<p>还有一个复杂度为<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>的Manacher算法。然而,这是一个非同寻常的算法,在45分钟的编码时间内提出这个算法将会是一个不折不扣的挑战。理解它,我保证这将是非常有趣的。</p>
+<p>马拉车算法Manacher‘s Algorithm是用来查找一个字符串的最长回文子串的线性方法,由一个叫Manacher的人在1975年发明的,这个方法的最大贡献是在于将时间复杂度提升到了线性。</p>
+<p>首先我们解决下奇数和偶数的问题,在每个字符间插入"#",并且为了使得扩展的过程中,到边界后自动结束,在两端分别插入"^"和 "$",两个不可能在字符串中出现的字符,这样中心扩展的时候,判断两端字符是否相等的时候,如果到了边界就一定会不相等,从而出了循环。经过处理,字符串的长度永远都是奇数了。</p>
+<p><img alt="" src="https://pic.leetcode-cn.com/ad2b5e0da4a3a35b60f60c9a5a2be07a8074f9be0fe1597351eeff7dc460789a-image.png" /></p>
+<p>首先我们用一个数组P保存从中心扩展的最大个数,而它刚好也是去掉"#"的原字符串的总长度。例如下图中下标是6的地方,可以看到P[6]等于5,所以它是从左边扩展5个字符,相应的右边也是扩展5个字符,也就是<code>"#c#b#c#b#c#"</code>。而去掉#恢复到原来的字符串,变成"cbcbc",它的长度刚好也就是5。</p>
+<p><img alt="" src="https://pic.leetcode-cn.com/ae2c30d48d35faa7f3d0d8bc4fe18d0691f3d13dcfc5846ddce1bf7a002681f5-image.png" /></p>
+<ul>
+<li>求原字符串下标</li>
+</ul>
+<p>用P的下标i减去P[i],再除以2,就是原字符串的开头下标了。</p>
+<p>例如我们找到P[i]的最大值为5,也就是回文串的最大长度是5,对应的下标是6,所以原字符串的开头下标是(6-5)/2= 0。所以我们只需要返回原字符串的第0到第(5-1)位就可以了。</p>
+<ul>
+<li>求每个P[i]</li>
+</ul>
+<p>接下来是算法的关键了,它充分利用了回文串的对称性。</p>
+<p>我们用C表示回文串的中心,用R表示回文串的右边半径。所以R=C+P[i]。C和R所对应的回文串是当前循环中R最靠右的回文串。</p>
+<p>让我们考虑求P[i]的时候,如下图。用i_mirror表示当前需要求的第i个字符关于C对应的下标。</p>
+<p><img alt="" src="https://pic.leetcode-cn.com/29eb66280ca149c3bf5d9906e066b4a2b39d1bf8f9dd0533ca00479aca6f4f39-image.png" /></p>
+<p>我们现在要求P[i],如果是用中心扩展法,那就向两边扩展比对就行了。但是我们其实可以利用回文串C的对称性。i 关于C的对称点是i_mirror,P[i_mirror]=3,所以P[i]也等于3。</p>
+<p>但是有三种情况将会造成直接赋值为P[i_mirror]是不正确的,下边一一讨论。</p>
+<blockquote>
+<ol>
+<li>超出了R</li>
+</ol>
+</blockquote>
+<p><img alt="" src="https://pic.leetcode-cn.com/b0d52a5f30747e55ef09b3c7b7cfc23026e37040edc41f387263e8f8a0ba8f49-image.png" /></p>
+<p>当我们要求P[i]的时候,P[mirror]=7,而此时P[i]并不等于7,为什么呢,因为我们从i开始往后数7个,等于22,已经超过了最右的R,此时不能利用对称性了,但我们一定可以扩展到R的,所以P[i]至少等于R-i= 20-15=5,会不会更大呢,我们只需要比较T[R+1] 和T[R+1]关于i的对称点就行了,就像中心扩展法一样一个个扩展。</p>
+<blockquote>
+<ol>
+<li>P[i_mirror]遇到了原字符串的左边界</li>
+</ol>
+</blockquote>
+<p><img alt="" src="https://pic.leetcode-cn.com/714e6f768e67304fb7162ecac3ae85fcf23ad82a21456e8ca55ac2c8cfd2609e-image.png" /></p>
+<p>此时P[i_mirror]=1,但是P[i]赋值成1是不正确的,出现这种情况的原因是P[i_mirror]在扩展的时候首先是"#"=="#",之后遇到了"^"和另一个字符比较,也就是到了边界,才终止循环的。而P[i]并没有遇到边界,所以我们可以继续通过中心扩展法一步一步向两边扩展就行了。</p>
+<blockquote>
+<ol>
+<li>i等于了R</li>
+</ol>
+</blockquote>
+<p>此时我们先把P[i]赋值为0,然后通过中心扩展法一步一步扩展就行了。</p>
+<blockquote>
+<p>考虑C和R的更新</p>
+</blockquote>
+<p>就这样一步一步的求出每个P[i],当求出的P[i]的右边界大于当前的R时,我们就需要更新C和R为当前的回文串了。因为我们必须保证i在R里面,所以一旦有更右边的R就要更新R。</p>
+<p><img alt="" src="https://pic.leetcode-cn.com/5fbe52880634a9d5fa60ad5e126e8c5c38c5a6eadd0c901a3495dc1307d46d6b-image.png" /></p>
+<p>此时的P[i]求出来将会是3,P[i]对应的右边界将是10+3=13,所以大于当前的R,我们需要把C更新成i的值,也就是10,R更新成13。继续下边的循环。</p>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+    <span class="k">public</span><span class="o">:</span>
+        <span class="c1">// 马拉车算法</span>
+        <span class="n">string</span> <span class="n">longestPalindrome</span><span class="p">(</span><span class="n">string</span> <span class="n">s</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">string</span> <span class="n">T</span> <span class="o">=</span> <span class="n">preProcess</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+            <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">T</span><span class="p">.</span><span class="n">length</span><span class="p">();</span>
+            <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">P</span><span class="p">;</span>
+            <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">n</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="n">P</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+            <span class="kt">int</span> <span class="n">C</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">R</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+            <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                <span class="kt">int</span> <span class="n">i_mirror</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">C</span> <span class="o">-</span> <span class="n">i</span><span class="p">;</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">R</span> <span class="o">&gt;</span> <span class="n">i</span><span class="p">)</span> <span class="n">P</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">min</span><span class="p">(</span><span class="n">R</span> <span class="o">-</span> <span class="n">i</span><span class="p">,</span> <span class="n">P</span><span class="p">[</span><span class="n">i_mirror</span><span class="p">]);</span><span class="c1">// 防止超出 R</span>
+                <span class="k">else</span> <span class="n">P</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="c1">// 等于 R 的情况</span>
+
+
+                <span class="c1">// 碰到之前讲的三种情况时候，需要利用中心扩展法</span>
+                <span class="k">while</span> <span class="p">(</span><span class="n">T</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="o">+</span><span class="n">P</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">==</span> <span class="n">T</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="n">P</span><span class="p">[</span><span class="n">i</span><span class="p">]])</span> <span class="n">P</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">++</span><span class="p">;</span>
+
+                <span class="c1">// 判断是否需要更新 R</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">P</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">R</span><span class="p">)</span> <span class="n">C</span> <span class="o">=</span> <span class="n">i</span><span class="p">,</span> <span class="n">R</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="n">P</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+            <span class="p">}</span>
+
+            <span class="c1">// 找出 P 的最大值</span>
+            <span class="kt">int</span> <span class="n">maxLen</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">centerIndex</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> 
+                <span class="k">if</span> <span class="p">(</span><span class="n">P</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">maxLen</span><span class="p">)</span> 
+                    <span class="n">maxLen</span> <span class="o">=</span> <span class="n">P</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">centerIndex</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+
+            <span class="kt">int</span> <span class="n">start</span> <span class="o">=</span> <span class="p">(</span><span class="n">centerIndex</span> <span class="o">-</span> <span class="n">maxLen</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span> <span class="c1">//最开始讲的求原字符串下标</span>
+            <span class="k">return</span> <span class="n">s</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">maxLen</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="n">string</span> <span class="n">preProcess</span><span class="p">(</span><span class="n">string</span> <span class="n">s</span><span class="p">){</span>
+            <span class="kt">int</span> <span class="n">n</span><span class="o">=</span><span class="n">s</span><span class="p">.</span><span class="n">length</span><span class="p">();</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">n</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="s">&quot;^$&quot;</span><span class="p">;</span>
+            <span class="n">string</span> <span class="n">ret</span><span class="o">=</span><span class="s">&quot;^&quot;</span><span class="p">;</span>
+            <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">n</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+                <span class="n">ret</span> <span class="o">=</span> <span class="n">ret</span> <span class="o">+</span> <span class="s">&quot;#&quot;</span> <span class="o">+</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="n">ret</span> <span class="o">+</span> <span class="s">&quot;#$&quot;</span><span class="p">;</span>
+            <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+        <span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+
+<p>复杂度分析:</p>
+<blockquote>
+<p>时间复杂度:for循环里边套了一层while循环,难道不是<span><span class="MathJax_Preview">O(n^2)</span><script type="math/tex">O(n^2)</script></span>?不!其实是<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>。不严谨的想一下,因为while循环访问R右边的数字用来扩展,也就是那些还未求出的节点,然后不断扩展,而期间访问的节点下次就不会再进入while了,可以利用对称得到自己的解,所以每个节点访问都是常数次,所以是<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>。</p>
+<p>空间复杂度:<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>。</p>
+</blockquote>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    <br>
+</div>
+
+</body>
+</html>

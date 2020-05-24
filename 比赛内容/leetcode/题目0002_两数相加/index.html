@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/leetcode/%E9%A2%98%E7%9B%AE0002_%E4%B8%A4%E6%95%B0%E7%9B%B8%E5%8A%A0/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>题目0002:两数相加 - 图像/视频算法</title>
+    <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "\u9898\u76ee0002:\u4e24\u6570\u76f8\u52a0", url: "#_top", children: [
+              {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1" },
+              {title: "\u9898\u89e3", url: "#_2" },
+          ]},
+        ];
+
+    </script>
+    <script src="../../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    
+
+    <h1 id="0002">题目0002:两数相加<a class="headerlink" href="#0002" title="Permanent link">&para;</a></h1>
+<h2 id="_1">题目描述<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>给出两个非空的链表用来表示两个非负的整数。其中,它们各自的位数是按照逆序的方式存储的,并且它们的每个节点只能存储 一位数字。</p>
+<p>如果,我们将这两个数相加起来,则会返回一个新的链表来表示它们的和。</p>
+<p>您可以假设除了数字0之外,这两个数都不会以0开头。</p>
+<p>示例:</p>
+<div class="highlight"><pre><span></span>输入:(2 -&gt; 4 -&gt; 3) + (5 -&gt; 6 -&gt; 4)
+输出:7 -&gt; 0 -&gt; 8
+原因:342 + 465 = 807
+</pre></div>
+
+<h2 id="_2">题解<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>我们使用变量来跟踪进位，并从包含最低有效位的表头开始模拟逐位相加的过程。</p>
+<p><img alt="" src="https://pic.leetcode-cn.com/Figures/2/2_add_two_numbers.svg" /></p>
+<p>图1,对两数相加方法的可视化:<code>342+465=807</code>,每个结点都包含一个数字,并且数字按位逆序存储。</p>
+<p>就像你在纸上计算两个数字的和那样,我们首先从最低有效位也就是列表<code>l1</code>和<code>l2</code>的表头开始相加。由于每位数字都应当处于<code>0…9</code>的范围内,我们计算两个数字的和时可能会出现“溢出”。例如,<code>5+7=12</code>。在这种情况下,我们会将当前位的数值设置为<code>2</code>,并将进位<code>carry=1</code>带入下一次迭代。进位<code>carry</code>必定是<code>0</code>或<code>1</code>,这是因为两个数字相加(考虑到进位)可能出现的最大和为<code>9+9+1=19</code>。</p>
+<p>伪代码如下:</p>
+<ul>
+<li>将当前结点初始化为返回列表的哑结点。</li>
+<li>将进位<code>carry</code>初始化为<code>0</code>。</li>
+<li>将<code>p</code>和<code>q</code>分别初始化为列表<code>l1</code>和<code>l2</code>的头部。</li>
+<li>遍历列表<code>l1</code>和 l2l2 直至到达它们的尾端。<ul>
+<li>将<code>x</code>设为结点<code>p</code>的值。如果<code>p</code>已经到达<code>l1</code>的末尾,则将其值设置为<code>0</code>。</li>
+<li>将<code>y</code>设为结点<code>q</code>的值。如果<code>q</code>已经到达<code>l2</code>的末尾,则将其值设置为<code>0</code>。</li>
+<li>设定<code>sum=x+y+carry</code>。</li>
+<li>更新进位的值,<code>carry = sum / 10</code>。</li>
+<li>创建一个数值为(<code>sum mod10</code>)的新结点,并将其设置为当前结点的下一个结点,然后将当前结点前进到下一个结点。</li>
+<li>同时,将<code>p</code>和<code>q</code>前进到下一个结点。</li>
+</ul>
+</li>
+<li>检查<code>carry = 1</code>是否成立,如果成立,则向返回列表追加一个含有数字<code>1</code>的新结点。</li>
+<li>返回哑结点的下一个结点。</li>
+</ul>
+<p>请注意,我们使用哑结点来简化代码。如果没有哑结点,则必须编写额外的条件语句来初始化表头的值。</p>
+<p>请特别注意以下情况:</p>
+<table>
+<thead>
+<tr>
+<th align="left">测试用例</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>l1=[0,1],l2=[0,1,2]</code></td>
+<td align="left">当一个列表比另一个列表长时</td>
+</tr>
+<tr>
+<td align="left"><code>l1=[],l2=[0,1]</code></td>
+<td align="left">当一个列表为空时,即出现空列表</td>
+</tr>
+<tr>
+<td align="left"><code>l1=[9,9],l2=[1]</code></td>
+<td align="left">求和运算最后可能出现额外的进位,这一点很容易被遗忘</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><span class="c1"># Definition for singly-linked list.</span>
+<span class="c1"># class ListNode:</span>
+<span class="c1">#     def __init__(self, x):</span>
+<span class="c1">#         self.val = x</span>
+<span class="c1">#         self.next = None</span>
+
+<span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">addTwoNumbers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">l1</span><span class="p">:</span> <span class="n">ListNode</span><span class="p">,</span> <span class="n">l2</span><span class="p">:</span> <span class="n">ListNode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ListNode</span><span class="p">:</span>
+        <span class="n">dummyHead</span> <span class="o">=</span> <span class="n">ListNode</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">curr</span> <span class="o">=</span> <span class="n">l1</span><span class="p">,</span> <span class="n">l2</span><span class="p">,</span> <span class="n">dummyHead</span>
+        <span class="n">carry</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="n">p</span> <span class="o">!=</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">q</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">val</span> <span class="k">if</span> <span class="n">p</span><span class="o">!=</span><span class="bp">None</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">val</span> <span class="k">if</span> <span class="n">q</span><span class="o">!=</span><span class="bp">None</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="n">sum_</span> <span class="o">=</span> <span class="n">carry</span> <span class="o">+</span> <span class="n">y</span> <span class="o">+</span> <span class="n">x</span>
+            <span class="n">carry</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sum_</span><span class="o">/</span><span class="mi">10</span><span class="p">)</span>
+            <span class="n">curr</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">ListNode</span><span class="p">(</span><span class="n">sum_</span><span class="o">%</span><span class="mi">10</span><span class="p">)</span>
+            <span class="n">curr</span> <span class="o">=</span> <span class="n">curr</span><span class="o">.</span><span class="n">next</span> 
+            <span class="k">if</span> <span class="n">p</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span> <span class="n">p</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">next</span>
+            <span class="k">if</span> <span class="n">q</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span> <span class="n">q</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">next</span>
+        <span class="k">if</span> <span class="n">carry</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+            <span class="n">curr</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">ListNode</span><span class="p">(</span><span class="n">carry</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">dummyHead</span><span class="o">.</span><span class="n">next</span>
+</pre></div>
+
+<p>复杂度分析</p>
+<blockquote>
+<p>时间复杂度:<span><span class="MathJax_Preview">O(\max(m, n))</span><script type="math/tex">O(\max(m, n))</script></span>,假设<code>m</code>和<code>n</code>分别表示<code>l1</code>和<code>l2</code>的长度,上面的算法最多重复<span><span class="MathJax_Preview">\max(m, n)</span><script type="math/tex">\max(m, n)</script></span>次。</p>
+<p>空间复杂度:<span><span class="MathJax_Preview">O(\max(m, n))</span><script type="math/tex">O(\max(m, n))</script></span>,新列表的长度最多为<span><span class="MathJax_Preview">\max(m,n)+1</span><script type="math/tex">\max(m,n)+1</script></span>。</p>
+</blockquote>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    <br>
+</div>
+
+</body>
+</html>

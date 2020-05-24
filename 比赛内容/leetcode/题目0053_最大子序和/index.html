@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/leetcode/%E9%A2%98%E7%9B%AE0053_%E6%9C%80%E5%A4%A7%E5%AD%90%E5%BA%8F%E5%92%8C/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>题目0053:最大子序和 - 图像/视频算法</title>
+    <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "\u9898\u76ee0053:\u6700\u5927\u5b50\u5e8f\u548c", url: "#_top", children: [
+              {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1" },
+              {title: "\u9898\u89e3", url: "#_2" },
+          ]},
+        ];
+
+    </script>
+    <script src="../../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    
+
+    <h1 id="0053">题目0053:最大子序和<a class="headerlink" href="#0053" title="Permanent link">&para;</a></h1>
+<h2 id="_1">题目描述<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>给定一个整数数组<code>nums</code>,找到一个具有最大和的连续子数组(子数组最少包含一个元素),返回其最大和。</p>
+<p>示例:</p>
+<div class="highlight"><pre><span></span>输入: [-2,1,-3,4,-1,2,1,-5,4],
+输出: 6
+解释: 连续子数组[4,-1,2,1]的和最大,为6。
+</pre></div>
+
+<p>进阶:如果你已经实现复杂度为<code>O(n)</code>的解法,尝试使用更为精妙的分治法求解。</p>
+<h2 id="_2">题解<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>方法一:分治法</strong></li>
+</ul>
+<p>这个是使用分治法解决问题的典型的例子,并且可以用与合并排序相似的算法求解。下面是用分治法解决问题的模板：</p>
+<blockquote>
+<p>定义基本情况。</p>
+<p>将问题分解为子问题并递归地解决它们。</p>
+<p>合并子问题的解以获得原始问题的解。</p>
+</blockquote>
+<p>算法:当最大子数组有<code>n</code>个数字时:</p>
+<blockquote>
+<p>若<code>n==1</code>,返回此元素。</p>
+<p><code>left_sum</code>为最大子数组前<code>n/2</code>个元素,在索引为<code>(left + right)/2</code>的元素属于左子数组。</p>
+<p><code>right_sum</code>为最大子数组的右子数组,为最后<code>n/2</code>的元素。</p>
+<p><code>cross_sum</code>是包含左右子数组且含索引<code>(left + right)/2</code>的最大值。</p>
+</blockquote>
+<p><img alt="" src="https://pic.leetcode-cn.com/3aa2128a7ddcf1123454a6e5364792490c5edff62674f3cfd9c81cb7b5e8e522-file_1576478143567" /></p>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">cross_sum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span> 
+        <span class="k">if</span> <span class="n">left</span> <span class="o">==</span> <span class="n">right</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">nums</span><span class="p">[</span><span class="n">left</span><span class="p">]</span>
+
+        <span class="n">left_subsum</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;-inf&#39;</span><span class="p">)</span>
+        <span class="n">curr_sum</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">left</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">curr_sum</span> <span class="o">+=</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">left_subsum</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">left_subsum</span><span class="p">,</span> <span class="n">curr_sum</span><span class="p">)</span>
+
+        <span class="n">right_subsum</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;-inf&#39;</span><span class="p">)</span>
+        <span class="n">curr_sum</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">p</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">right</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">curr_sum</span> <span class="o">+=</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">right_subsum</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">right_subsum</span><span class="p">,</span> <span class="n">curr_sum</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">left_subsum</span> <span class="o">+</span> <span class="n">right_subsum</span>   
+
+    <span class="k">def</span> <span class="nf">helper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span> 
+        <span class="k">if</span> <span class="n">left</span> <span class="o">==</span> <span class="n">right</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">nums</span><span class="p">[</span><span class="n">left</span><span class="p">]</span>
+
+        <span class="n">p</span> <span class="o">=</span> <span class="p">(</span><span class="n">left</span> <span class="o">+</span> <span class="n">right</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+
+        <span class="n">left_sum</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">helper</span><span class="p">(</span><span class="n">nums</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+        <span class="n">right_sum</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">helper</span><span class="p">(</span><span class="n">nums</span><span class="p">,</span> <span class="n">p</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
+        <span class="n">cross_sum</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cross_sum</span><span class="p">(</span><span class="n">nums</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">left_sum</span><span class="p">,</span> <span class="n">right_sum</span><span class="p">,</span> <span class="n">cross_sum</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">maxSubArray</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">:</span> <span class="s1">&#39;List[int]&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;int&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">helper</span><span class="p">(</span><span class="n">nums</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+
+<p>复杂度分析:</p>
+<blockquote>
+<p>时间复杂度:<span><span class="MathJax_Preview">\mathcal{O}(N \log N)</span><script type="math/tex">\mathcal{O}(N \log N)</script></span>。</p>
+<p>空间复杂度:<span><span class="MathJax_Preview">\mathcal{O}(\log N)</span><script type="math/tex">\mathcal{O}(\log N)</script></span>,递归时栈使用的空间。</p>
+</blockquote>
+<ul>
+<li><strong>方法二:贪心</strong></li>
+</ul>
+<p>使用单个数组作为输入来查找最大(或最小)元素(或总和)的问题,贪心算法是可以在线性时间解决的方法之一。每一步都选择最佳方案,到最后就是全局最优的方案。</p>
+<p>算法:该算法通用且简单：遍历数组并在每个步骤中更新:</p>
+<blockquote>
+<p>当前元素</p>
+<p>当前元素位置的最大和</p>
+<p>迄今为止的最大和</p>
+</blockquote>
+<p><img alt="" src="https://pic.leetcode-cn.com/19a5e92ccddfcb29d709541d879a4035cd78f263adf19a74343b9ea464fb8d45-file_1576478143577" /></p>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">maxSubArray</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">:</span> <span class="s1">&#39;List[int]&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;int&#39;</span><span class="p">:</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
+        <span class="n">curr_sum</span> <span class="o">=</span> <span class="n">max_sum</span> <span class="o">=</span> <span class="n">nums</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+            <span class="n">curr_sum</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">curr_sum</span> <span class="o">+</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">max_sum</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_sum</span><span class="p">,</span> <span class="n">curr_sum</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">max_sum</span>
+</pre></div>
+
+<p>复杂度分析</p>
+<blockquote>
+<p>时间复杂度:<span><span class="MathJax_Preview">\mathcal{O}(N)</span><script type="math/tex">\mathcal{O}(N)</script></span>。只遍历一次数组。</p>
+<p>空间复杂度:<span><span class="MathJax_Preview">\mathcal{O}(1)</span><script type="math/tex">\mathcal{O}(1)</script></span>,只使用了常数空间。</p>
+</blockquote>
+<ul>
+<li><strong>方法三:动态规划(Kadane算法）</strong></li>
+</ul>
+<p>算法:在整个数组或在固定大小的滑动窗口中找到总和或最大值或最小值的问题可以通过动态规划(<code>DP</code>)在线性时间内解决。</p>
+<p>有两种标准<code>DP</code>方法适用于数组:</p>
+<blockquote>
+<p>常数空间,沿数组移动并在原数组修改。</p>
+<p>线性空间,首先沿<code>left-&gt;right</code>方向移动,然后再沿<code>right-&gt;left</code>方向移动。 合并结果。</p>
+</blockquote>
+<p>我们在这里使用第一种方法,因为可以修改数组跟踪当前位置的最大和。下一步是在知道当前位置的最大和后更新全局最大和。</p>
+<p><img alt="" src="https://pic.leetcode-cn.com/e6ca21377d5533204c3149e0b5cdcc146ada4efe1ed2294b3e0615cdb4754853-file_1576478143560" /></p>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">maxSubArray</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">:</span> <span class="s1">&#39;List[int]&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;int&#39;</span><span class="p">:</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
+        <span class="n">max_sum</span> <span class="o">=</span> <span class="n">nums</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> 
+            <span class="n">max_sum</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">max_sum</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">max_sum</span>
+</pre></div>
+
+<p>复杂度分析</p>
+<blockquote>
+<p>时间复杂度:<span><span class="MathJax_Preview">\mathcal{O}(N)</span><script type="math/tex">\mathcal{O}(N)</script></span>。只遍历了一次数组。</p>
+<p>空间复杂度:<span><span class="MathJax_Preview">\mathcal{O}(1)</span><script type="math/tex">\mathcal{O}(1)</script></span>,使用了常数的空间。</p>
+</blockquote>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    <br>
+</div>
+
+</body>
+</html>

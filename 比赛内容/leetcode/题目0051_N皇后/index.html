@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/leetcode/%E9%A2%98%E7%9B%AE0051_N%E7%9A%87%E5%90%8E/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>题目0051:N皇后 - 图像/视频算法</title>
+    <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "\u9898\u76ee0051:N\u7687\u540e", url: "#_top", children: [
+              {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1" },
+              {title: "\u9898\u89e3", url: "#_2" },
+          ]},
+        ];
+
+    </script>
+    <script src="../../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    
+
+    <h1 id="0051n">题目0051:N皇后<a class="headerlink" href="#0051n" title="Permanent link">&para;</a></h1>
+<h2 id="_1">题目描述<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p><code>n</code>皇后问题研究的是如何将<code>n</code>个皇后放置在<code>n×n</code>的棋盘上,并且使皇后彼此之间不能相互攻击。</p>
+<p><img alt="" src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/10/12/8-queens.png" /></p>
+<p>上图为<code>8</code>皇后问题的一种解法。</p>
+<p>给定一个整数<code>n</code>,返回所有不同的<code>n</code>皇后问题的解决方案。</p>
+<p>每一种解法包含一个明确的<code>n</code>皇后问题的棋子放置方案,该方案中<code>'Q'</code>和<code>'.'</code>分别代表了皇后和空位。</p>
+<p>示例:</p>
+<div class="highlight"><pre><span></span>输入: 4
+输出: [
+ [&quot;.Q..&quot;,  // 解法 1
+  &quot;...Q&quot;,
+  &quot;Q...&quot;,
+  &quot;..Q.&quot;],
+
+ [&quot;..Q.&quot;,  // 解法 2
+  &quot;Q...&quot;,
+  &quot;...Q&quot;,
+  &quot;.Q..&quot;]
+]
+</pre></div>
+
+<p>解释: <code>4</code>皇后问题存在两个不同的解法。</p>
+<p>提示:皇后,是国际象棋中的棋子,意味着国王的妻子。皇后只做一件事,那就是“吃子”。当她遇见可以吃的棋子时,就迅速冲上去吃掉棋子。当然,她横、竖、斜都可走一到七步,可进可退。</p>
+<h2 id="_2">题解<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>第一个想法是使用蛮力法,意味着生成在棋盘上放置<code>N</code>个皇后的所有可能的情况,并且检查是否保证没有皇后可以互相攻击。这意味着<span><span class="MathJax_Preview">\mathcal{O}(N^N)</span><script type="math/tex">\mathcal{O}(N^N)</script></span>的时间复杂度,因此我们必须考虑优化。</p>
+<p>下面是两个有用的编程概念。</p>
+<blockquote>
+<p>第一个叫做约束编程.</p>
+</blockquote>
+<p>它的基本含义是在放置每个皇后以后增加限制。当在棋盘上放置了一个皇后后,立即排除当前行,列和对应的两个对角线。该过程传递了约束从而有助于减少需要考虑情况数。</p>
+<p><img alt="" src="https://pic.leetcode-cn.com/e67ed217a00038ed292ae8cb89c1a8492c7a49e33ec17f633f41c4ece77d6c2c-51_pic.png" /></p>
+<blockquote>
+<p>第二个叫做回溯法.</p>
+</blockquote>
+<p>我们来想象一下,当在棋盘上放置了几个皇后且不会相互攻击。但是选择的方案不是最优的,因为无法放置下一个皇后。此时我们该怎么做?回溯。意思是回退一步,来改变最后放置皇后的位置并且接着往下放置。如果还是不行,再回溯。</p>
+<p><img alt="" src="https://pic.leetcode-cn.com/610377e670ee1d4184c0475edee789139d8fe9ebeb07df267e9c54fbd31c449e-51_backtracking_.png" /></p>
+<p>在建立算法之前，我们来考虑两个有用的细节。</p>
+<blockquote>
+<p>**一行只可能有一个皇后且一列也只可能有一个皇后:**这意味着没有必要再棋盘上考虑所有的方格,只需要按列循环即可。</p>
+<p>**对于所有的主对角线有<code>行号+列号=常数</code>,对于所有的次对角线有`行号-列号=常数:**这可以让我们标记已经在攻击范围下的对角线并且检查一个方格(行号,,列号))是否处在攻击位置。</p>
+</blockquote>
+<p>现在已经可以写回溯函数<code>backtrack(row = 0)</code>.</p>
+<ul>
+<li>从第一个<code>row = 0</code>开始.</li>
+<li>循环列并且试图在每个<code>column</code>中放置皇后.<ul>
+<li>如果方格<code>(row, column)</code>不在攻击范围内<ul>
+<li>在 (row, column) 方格上放置皇后。</li>
+<li>排除对应行,列和两个对角线的位置。</li>
+</ul>
+</li>
+<li>If 所有的行被考虑过，row == N<ul>
+<li>意味着我们找到了一个解</li>
+</ul>
+</li>
+<li>Else<ul>
+<li>继续考虑接下来的皇后放置 backtrack(row + 1).</li>
+</ul>
+</li>
+<li>回溯:将在<code>(row, column)</code>方格的皇后移除.</li>
+</ul>
+</li>
+</ul>
+<p>下面是上述算法的一个直接的实现。</p>
+<p><img alt="" src="https://pic.leetcode-cn.com/847f5a2861010344bf28836f051c46a5c62bc0f164a02ad152ef98a93e07e208-image.png" /></p>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">solveNQueens</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+        <span class="k">def</span> <span class="nf">could_place</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span>
+            <span class="k">return</span> <span class="ow">not</span> <span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">+</span> <span class="n">hill_diagonals</span><span class="p">[</span><span class="n">row</span> <span class="o">-</span> <span class="n">col</span><span class="p">]</span> <span class="o">+</span> <span class="n">dale_diagonals</span><span class="p">[</span><span class="n">row</span> <span class="o">+</span> <span class="n">col</span><span class="p">])</span>
+
+        <span class="k">def</span> <span class="nf">place_queen</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span>
+            <span class="n">queens</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">))</span>
+            <span class="n">cols</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">hill_diagonals</span><span class="p">[</span><span class="n">row</span> <span class="o">-</span> <span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">dale_diagonals</span><span class="p">[</span><span class="n">row</span> <span class="o">+</span> <span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="k">def</span> <span class="nf">remove_queen</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span>
+            <span class="n">queens</span><span class="o">.</span><span class="n">remove</span><span class="p">((</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">))</span>
+            <span class="n">cols</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">hill_diagonals</span><span class="p">[</span><span class="n">row</span> <span class="o">-</span> <span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">dale_diagonals</span><span class="p">[</span><span class="n">row</span> <span class="o">+</span> <span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">def</span> <span class="nf">add_solution</span><span class="p">():</span>
+            <span class="n">solution</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">queens</span><span class="p">):</span>
+                <span class="n">solution</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;.&#39;</span> <span class="o">*</span> <span class="n">col</span> <span class="o">+</span> <span class="s1">&#39;Q&#39;</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">col</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">solution</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">backtrack</span><span class="p">(</span><span class="n">row</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">could_place</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span>
+                    <span class="n">place_queen</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">row</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">==</span> <span class="n">n</span><span class="p">:</span>
+                        <span class="n">add_solution</span><span class="p">()</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">backtrack</span><span class="p">(</span><span class="n">row</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+                    <span class="n">remove_queen</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span>
+
+        <span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>
+        <span class="n">hill_diagonals</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">dale_diagonals</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">queens</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">backtrack</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">output</span>
+</pre></div>
+
+<p>复杂度分析</p>
+<blockquote>
+<p>时间复杂度:<span><span class="MathJax_Preview">\mathcal{O}(N!)</span><script type="math/tex">\mathcal{O}(N!)</script></span>. 放置第1个皇后有<code>N</code>种可能的方法,放置两个皇后的方法不超过<code>N(N - 2)</code>,放置3个皇后的方法不超过<code>N(N - 2)(N - 4)</code>,以此类推。总体上,时间复杂度为<span><span class="MathJax_Preview">\mathcal{O}(N!)</span><script type="math/tex">\mathcal{O}(N!)</script></span>.</p>
+<p>空间复杂度:<span><span class="MathJax_Preview">\mathcal{O}(N)</span><script type="math/tex">\mathcal{O}(N)</script></span>. 需要保存对角线和行的信息。</p>
+</blockquote>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    <br>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/leetcode/%E9%A2%98%E7%9B%AE0319_%E7%81%AF%E6%B3%A1%E5%BC%80%E5%85%B3/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>题目0319:灯泡开关 - 图像/视频算法</title>
+    <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "\u9898\u76ee0319:\u706f\u6ce1\u5f00\u5173", url: "#_top", children: [
+              {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1" },
+              {title: "\u9898\u89e3", url: "#_2" },
+          ]},
+        ];
+
+    </script>
+    <script src="../../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    
+
+    <h1 id="0319">题目0319:灯泡开关<a class="headerlink" href="#0319" title="Permanent link">&para;</a></h1>
+<h2 id="_1">题目描述<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>初始时有n个灯泡关闭。 第1轮,你打开所有的灯泡。 第2轮,每两个灯泡你关闭一次。 第3轮,每三个灯泡切换一次开关(如果关闭则开启,如果开启则关闭)。第i轮,每i个灯泡切换一次开关。 对于第n轮,你只切换最后一个灯泡的开关。 找出n轮后有多少个亮着的灯泡。</p>
+<p>示例:</p>
+<div class="highlight"><pre><span></span>输入: 3
+输出: 1 
+解释: 
+初始时, 灯泡状态 [关闭, 关闭, 关闭].
+第一轮后, 灯泡状态 [开启, 开启, 开启].
+第二轮后, 灯泡状态 [开启, 关闭, 开启].
+第三轮后, 灯泡状态 [开启, 关闭, 关闭]. 
+你应该返回 1，因为只有一个灯泡还亮着。
+</pre></div>
+
+<h2 id="_2">题解<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>显而易见,题目就是让统计整数<code>i</code>的因子个数为奇数的<code>i</code>的个数。由于因子个数函数<span><span class="MathJax_Preview">d(x)</span><script type="math/tex">d(x)</script></span>是积性函数，</p>
+<div>
+<div class="MathJax_Preview">d(x) = (1 + \alpha_{1})(1+ \alpha_{2})\cdots (1 + \alpha_{k})</div>
+<script type="math/tex; mode=display">d(x) = (1 + \alpha_{1})(1+ \alpha_{2})\cdots (1 + \alpha_{k})</script>
+</div>
+<p>其中<span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span>的素性分解为:<span><span class="MathJax_Preview">x = p_{1}^{\alpha_{1}}p_{2}^{\alpha_{2}}\cdots p_{k}^{\alpha_{k}}</span><script type="math/tex">x = p_{1}^{\alpha_{1}}p_{2}^{\alpha_{2}}\cdots p_{k}^{\alpha_{k}}</script></span>。</p>
+<p>由于<span><span class="MathJax_Preview">d(x)</span><script type="math/tex">d(x)</script></span>为奇数,所以<span><span class="MathJax_Preview">1+\alpha_{i}</span><script type="math/tex">1+\alpha_{i}</script></span>是奇数,亦即<span><span class="MathJax_Preview">\alpha_i</span><script type="math/tex">\alpha_i</script></span>是偶数。所以<span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span>是完全平方数。题目即转化为统计<code>[1 , n]</code>中完全平方数的个数。所以答案就是<span><span class="MathJax_Preview">\big\lfloor \sqrt{n} \big\rfloor</span><script type="math/tex">\big\lfloor \sqrt{n} \big\rfloor</script></span> </p>
+<p>其实<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>或者<span><span class="MathJax_Preview">O(\sqrt{n})</span><script type="math/tex">O(\sqrt{n})</script></span>O的枚举还是能过去的:</p>
+<div class="highlight"><pre><span></span><span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span><span class="n">i</span> <span class="o">*</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">;</span><span class="o">++</span><span class="n">i</span><span class="p">)</span>   <span class="o">++</span><span class="n">ans</span><span class="p">;</span>
+</pre></div>
+
+<p>下面证明因子个数函数<span><span class="MathJax_Preview">d(x)</span><script type="math/tex">d(x)</script></span>是积性函数。虽然这样的过程到处都有</p>
+<p><strong>积性函数</strong></p>
+<p>对于任意正整数<code>m,n</code>互素,有<code>F(mn) = F(m)F(n)</code>,<code>f(x)</code>的和函数</p>
+<p><span><span class="MathJax_Preview"><span><span class="MathJax_Preview">F(x) = \sum_{d | x}{f(x)}</span><script type="math/tex">F(x) = \sum_{d | x}{f(x)}</script></span></span><script type="math/tex"><span><span class="MathJax_Preview">F(x) = \sum_{d | x}{f(x)}</span><script type="math/tex">F(x) = \sum_{d | x}{f(x)}</script></span></script></span>
+我们先给出一个引理，然后通过引理证明。<strong>积性函数的和函数为积性函数</strong></p>
+<p>设积性函数<code>f(x)</code>,其和函数为<code>F(x)</code>。我们需要证明的是,若<code>(m,n) = 1</code>,那么<code>F(mn) = F(m)F(n)</code>。</p>
+<p>右边为</p>
+<div>
+<div class="MathJax_Preview">\begin{aligned} F(m)F(n) &amp;= \sum_{p | m}\sum_{q | n}f(p)f(q) \\ &amp;= \sum_{d | mn}f(pq) \\ &amp;= F(mn) \end{aligned}</div>
+<script type="math/tex; mode=display">\begin{aligned} F(m)F(n) &= \sum_{p | m}\sum_{q | n}f(p)f(q) \\ &= \sum_{d | mn}f(pq) \\ &= F(mn) \end{aligned}</script>
+</div>
+<p>证毕。</p>
+<p>而<code>f(x) = 1</code>肯定是积性的,(怎么乘都是<code>1</code>),所以<span><span class="MathJax_Preview">d(x) = \sum_{d | x}{1}</span><script type="math/tex">d(x) = \sum_{d | x}{1}</script></span>,也是积性的。这样我们就说明了因子个数函数是积性的。</p>
+<p>另一方面,若<code>p</code>是质数,则<code>d(p) = 2</code>。因为质数的因子只有<code>1</code>和它本身两个。<span><span class="MathJax_Preview">d(p^{k})</span><script type="math/tex">d(p^{k})</script></span>是多少?它的因子只有<span><span class="MathJax_Preview">1,p,p^{2},...,p^{k}</span><script type="math/tex">1,p,p^{2},...,p^{k}</script></span>共<code>k + 1</code>个。那么<span><span class="MathJax_Preview">d(x)</span><script type="math/tex">d(x)</script></span>也就不难求得。</p>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">bulbSwitch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">sqrt</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+</pre></div>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    <br>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/leetcode/%E9%A2%98%E7%9B%AE0260_%E5%8F%AA%E5%87%BA%E7%8E%B0%E4%B8%80%E6%AC%A1%E7%9A%84%E6%95%B0%E5%AD%97III/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>题目0260:只出现一次的数字III - 图像/视频算法</title>
+    <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "\u9898\u76ee0260:\u53ea\u51fa\u73b0\u4e00\u6b21\u7684\u6570\u5b57III", url: "#_top", children: [
+              {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1" },
+              {title: "\u9898\u89e3", url: "#_2" },
+          ]},
+        ];
+
+    </script>
+    <script src="../../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    
+
+    <h1 id="0260iii">题目0260:只出现一次的数字III<a class="headerlink" href="#0260iii" title="Permanent link">&para;</a></h1>
+<h2 id="_1">题目描述<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>给定一个整数数组<code>nums</code>,其中恰好有两个元素只出现一次,其余所有元素均出现两次。 找出只出现一次的那两个元素。</p>
+<p>示例:</p>
+<div class="highlight"><pre><span></span>输入: [1,2,1,3,2,5]
+输出: [3,5]
+</pre></div>
+
+<p>注意:</p>
+<blockquote>
+<p>结果输出的顺序并不重要,对于上面的例子,<code>[5, 3]</code>也是正确答案。</p>
+<p>你的算法应该具有线性时间复杂度。你能否仅使用常数空间复杂度来实现?</p>
+</blockquote>
+<h2 id="_2">题解<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>概述:</p>
+<p>使用哈希表可以在<span><span class="MathJax_Preview">\mathcal{O}(N)</span><script type="math/tex">\mathcal{O}(N)</script></span>的时间复杂度和<span><span class="MathJax_Preview">\mathcal{O}(N)</span><script type="math/tex">\mathcal{O}(N)</script></span>的空间复杂度中解决该问题。</p>
+<p>这个问题在常数的空间复杂度中解决有点困难,但可以借助两个位掩码来实现。</p>
+<p><img alt="" src="http://imgconvert.csdnimg.cn/aHR0cHM6Ly9waWMubGVldGNvZGUtY24uY29tL0ZpZ3VyZXMvMjYwL3R3bzIucG5n?x-oss-process=image/format,png" /></p>
+<ul>
+<li><strong>方法一:哈希表</strong></li>
+</ul>
+<p>建立一个值到频率的映射关系的哈希表,返回频率为<code>1</code>的数字。</p>
+<p>算法:</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
+<span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">singleNumber</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="n">hashmap</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">hashmap</span> <span class="k">if</span> <span class="n">hashmap</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+</pre></div>
+
+<p>复杂度分析:</p>
+<blockquote>
+<p>时间复杂度:<span><span class="MathJax_Preview">\mathcal{O}(N)</span><script type="math/tex">\mathcal{O}(N)</script></span>。</p>
+<p>空间复杂度:<span><span class="MathJax_Preview">\mathcal{O}(N)</span><script type="math/tex">\mathcal{O}(N)</script></span>,哈希表所使用的空间。</p>
+</blockquote>
+<ul>
+<li><strong>方法二:两个掩码</strong></li>
+</ul>
+<p>本文将使用两个按位技巧：</p>
+<ul>
+<li>使用异或运算可以帮助我们消除出现两次的数字;我们计算<code>bitmask ^= x</code>,则<code>bitmask</code>留下的就是出现奇数次的位。</li>
+</ul>
+<p><img alt="" src="http://imgconvert.csdnimg.cn/aHR0cHM6Ly9waWMubGVldGNvZGUtY24uY29tL0ZpZ3VyZXMvMjYwL3hvcjMucG5n?x-oss-process=image/format,png" /></p>
+<ul>
+<li><code>x &amp; (-x)</code>是保留位中最右边<code>1</code>,且将其余的<code>1</code>设位<code>0</code>的方法。</li>
+</ul>
+<p><img alt="" src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9waWMubGVldGNvZGUtY24uY29tL0ZpZ3VyZXMvMjYwL2lzb2xhdGUzLnBuZw?x-oss-process=image/format,png" /></p>
+<p><strong>算法:</strong></p>
+<p>首先计算<code>bitmask ^= x</code>,则<code>bitmask</code>不会保留出现两次数字的值,因为相同数字的异或值为<code>0</code>。但是<code>bitmask</code>会保留只出现一次的两个数字(<code>x</code>和<code>y</code>)之间的差异。</p>
+<p><img alt="" src="http://imgconvert.csdnimg.cn/aHR0cHM6Ly9waWMubGVldGNvZGUtY24uY29tL0ZpZ3VyZXMvMjYwL2RpZmZfbmV3LnBuZw?x-oss-process=image/format,png" /></p>
+<p>我们可以直接从<code>bitmask</code>中提取<code>x</code>和<code>y</code>吗?不能,但是我们可以用<code>bitmask</code>作为标记来分离<code>x</code>和<code>y</code>。</p>
+<p>我们通过<code>bitmask &amp; (-bitmask)</code>保留<code>bitmask</code>最右边的<code>1</code>,这个<code>1</code>要么来自<code>x</code>,要么来自<code>y</code>。</p>
+<p><img alt="" src="http://imgconvert.csdnimg.cn/aHR0cHM6Ly9waWMubGVldGNvZGUtY24uY29tL0ZpZ3VyZXMvMjYwL2lzb2xhdGUyX25ldy5wbmc?x-oss-process=image/format,png" /></p>
+<p>当我们找到了<code>x</code>,那么<code>y = bitmask^x</code>。</p>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">singleNumber</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="c1"># difference between two numbers (x and y) which were seen only once</span>
+        <span class="n">bitmask</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">nums</span><span class="p">:</span>
+            <span class="n">bitmask</span> <span class="o">^=</span> <span class="n">num</span>
+
+        <span class="c1"># rightmost 1-bit diff between x and y</span>
+        <span class="n">diff</span> <span class="o">=</span> <span class="n">bitmask</span> <span class="o">&amp;</span> <span class="p">(</span><span class="o">-</span><span class="n">bitmask</span><span class="p">)</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">nums</span><span class="p">:</span>
+            <span class="c1"># bitmask which will contain only x</span>
+            <span class="k">if</span> <span class="n">num</span> <span class="o">&amp;</span> <span class="n">diff</span><span class="p">:</span>
+                <span class="n">x</span> <span class="o">^=</span> <span class="n">num</span>
+
+        <span class="k">return</span> <span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">bitmask</span><span class="o">^</span><span class="n">x</span><span class="p">]</span>
+</pre></div>
+
+<p>复杂度分析:</p>
+<blockquote>
+<p>时间复杂度:<span><span class="MathJax_Preview">\mathcal{O}(N)</span><script type="math/tex">\mathcal{O}(N)</script></span>的时间遍历输入数组。</p>
+<p>空间复杂度:<span><span class="MathJax_Preview">\mathcal{O}(1)</span><script type="math/tex">\mathcal{O}(1)</script></span>。</p>
+</blockquote>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    <br>
+</div>
+
+</body>
+</html>

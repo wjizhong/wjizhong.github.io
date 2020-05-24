@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/leetcode/%E9%A2%98%E7%9B%AE1318_%E6%88%96%E8%BF%90%E7%AE%97%E7%9A%84%E6%9C%80%E5%B0%8F%E7%BF%BB%E8%BD%AC%E6%AC%A1%E6%95%B0/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>题目1318:或运算的最小翻转次数 - 图像/视频算法</title>
+    <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "\u9898\u76ee1318:\u6216\u8fd0\u7b97\u7684\u6700\u5c0f\u7ffb\u8f6c\u6b21\u6570", url: "#_top", children: [
+              {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1" },
+              {title: "\u9898\u89e3", url: "#_2" },
+          ]},
+        ];
+
+    </script>
+    <script src="../../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    
+
+    <h1 id="1318">题目1318:或运算的最小翻转次数<a class="headerlink" href="#1318" title="Permanent link">&para;</a></h1>
+<h2 id="_1">题目描述<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>给你三个正整数<code>a、b</code>和<code>c</code>。</p>
+<p>你可以对<code>a</code>和<code>b</code>的二进制表示进行位翻转操作,返回能够使按位或运算<code>a OR b == c</code>成立的最小翻转次数。</p>
+<p>「位翻转操作」是指将一个数的二进制表示任何单个位上的<code>1</code>变成<code>0</code>或者<code>0</code>变成<code>1</code>。</p>
+<p>示例1:</p>
+<p><img alt="" src="http://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/01/11/sample_3_1676.png" /></p>
+<div class="highlight"><pre><span></span>输入：a = 2, b = 6, c = 5
+输出：3
+解释：翻转后 a = 1 , b = 4 , c = 5 使得 a OR b == c
+</pre></div>
+
+<p>示例2:</p>
+<div class="highlight"><pre><span></span>输入：a = 4, b = 2, c = 7
+输出：1
+</pre></div>
+
+<p>示例3:</p>
+<div class="highlight"><pre><span></span>输入：a = 1, b = 2, c = 3
+输出：0
+</pre></div>
+
+<p>提示:</p>
+<blockquote>
+<p>1 &lt;= a &lt;= 10^9</p>
+<p>1 &lt;= b &lt;= 10^9</p>
+<p>1 &lt;= c &lt;= 10^9</p>
+</blockquote>
+<h2 id="_2">题解<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>本题需要用到一些位运算的知识:</p>
+<ul>
+<li>对于十进制整数<code>x</code>,我们可以用<code>x &amp; 1</code>得到<code>x</code>的二进制表示的最低位,它等价于<code>x % 2</code>:<ul>
+<li>例如当<code>x = 3</code>时,<code>x</code>的二进制表示为<code>11</code>,<code>x &amp; 1</code>的值为<code>1</code>;</li>
+<li>例如当<code>x = 6</code>时,<code>x</code>的二进制表示为<code>110</code>,<code>x &amp; 1</code>的值为<code>0</code>。</li>
+</ul>
+</li>
+<li>对于十进制整数<code>x</code>,我们可以用<code>x &amp; (1 &lt;&lt; k)</code>来判断<code>x</code>二进制表示的第<code>k</code>位(最低位为第<code>0</code>位)是否为<code>1</code>。如果该表达式的值大于零,那么第<code>k</code>位为<code>1</code>:<ul>
+<li>例如当<code>x = 3</code>时,<code>x</code>的二进制表示为<code>11</code>,<code>x &amp; (1 &lt;&lt; 1) = 11 &amp; 10 = 10 &gt; 0</code>,说明第<code>1</code>位为<code>1</code>;</li>
+<li>例如当<code>x = 5</code>时,<code>x</code>的二进制表示为<code>101</code>,<code>x &amp; (1 &lt;&lt; 1) = 101 &amp; 10 = 0</code>,说明第<code>1</code>位不为<code>1</code>。</li>
+</ul>
+</li>
+<li>对于十进制整数<code>x</code>,我们可以用<code>(x &gt;&gt; k) &amp; 1</code>得到<code>x</code>二进制表示的第<code>k</code>位(最低位为第<code>0</code>位)。如果<code>x</code>二进制表示的位数小于<code>k</code>,那么该表达式的值为零:<ul>
+<li>例如当<code>x = 3</code>时,<code>x</code>的二进制表示为<code>11</code>,<code>(x &gt;&gt; 1) &amp; 1 = 1 &amp; 1 = 1</code>,说明第<code>1</code>位为<code>1</code>;</li>
+<li>例如当<code>x = 5</code>时,<code>x</code>的二进制表示为<code>101</code>,<code>(x &gt;&gt; 1) &amp; 1 = 10 &amp; 1 = 0</code>,说明第<code>1</code>位为<code>0</code>。</li>
+<li>例如当<code>x = 6</code>时,<code>x</code>的二进制表示为<code>110</code>,<code>(x &gt;&gt; 3) &amp; 1 = 0 &amp; 1 = 0</code>,说明第<code>3</code>位为<code>0</code>。</li>
+</ul>
+</li>
+</ul>
+<p><strong>枚举+位运算</strong></p>
+<p>由于在或(OR)运算中,二进制表示的每一位都是独立的,即修改<code>a</code>或<code>b</code>二进制表示中的第<code>i</code>位,只会影响<code>a OR b</code>中第<code>i</code>位的值,因此我们可以依次枚举并考虑每一位。注意到<code>a、b</code>和<code>c</code>均小于<code>10^9</code>,它们的二进制表示最多有<code>30</code>位(包含<code>31</code>个二进制位的数最小为<code>2^30 = 1073741824</code>,已经大于<code>10^9</code>),因此我们只需要从低位到高位枚举这<code>30</code>位即可。</p>
+<p>设<code>a、b</code>和<code>c</code>二进制表示的第<code>i</code>位分别为<code>bit_a、bit_b</code>和<code>bit_c</code>,根据<code>bit_c</code>的值,会有以下两种情况:</p>
+<ul>
+<li>若<code>bit_c</code>的值为<code>0</code>,那么<code>bit_a</code>和<code>bit_b</code>必须都为<code>0</code>,需要的翻转次数为<code>bit_a + bit_b</code>;</li>
+<li>若<code>bit_c</code>的值为<code>1</code>,那么<code>bit_a</code>和<code>bit_b</code>中至少有一个为<code>1</code>,只有当它们都为<code>0</code>时,才需要<code>1</code>次翻转;</li>
+</ul>
+<p>我们将每一位的翻转次数进行累加,在枚举完所有位之后,就得到了最小翻转次数。</p>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">minFlips</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">c</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="n">ans</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">32</span><span class="p">):</span>
+            <span class="n">bit_a</span><span class="p">,</span> <span class="n">bit_b</span><span class="p">,</span> <span class="n">bit_c</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span> <span class="o">&gt;&gt;</span> <span class="n">i</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="n">b</span> <span class="o">&gt;&gt;</span> <span class="n">i</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="n">c</span> <span class="o">&gt;&gt;</span> <span class="n">i</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">bit_c</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">ans</span> <span class="o">+=</span> <span class="n">bit_a</span> <span class="o">+</span> <span class="n">bit_b</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ans</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="n">bit_a</span> <span class="o">+</span> <span class="n">bit_b</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="n">ans</span>
+</pre></div>
+
+<p>复杂度分析:</p>
+<blockquote>
+<p>时间复杂度:<span><span class="MathJax_Preview">O(\log C)</span><script type="math/tex">O(\log C)</script></span>,其中<code>C</code>为常数,在本题中,<code>C</code>的值为<code>10^9</code>。<span><span class="MathJax_Preview">O(\log C)</span><script type="math/tex">O(\log C)</script></span>等价于<code>C</code>的位数,也就是我们需要枚举的位数。</p>
+<p>空间复杂度:O(1)。</p>
+</blockquote>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    <br>
+</div>
+
+</body>
+</html>

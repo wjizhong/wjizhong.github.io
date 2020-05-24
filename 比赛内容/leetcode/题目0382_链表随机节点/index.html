@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/leetcode/%E9%A2%98%E7%9B%AE0382_%E9%93%BE%E8%A1%A8%E9%9A%8F%E6%9C%BA%E8%8A%82%E7%82%B9/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>题目0382:链表随机节点 - 图像/视频算法</title>
+    <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "\u9898\u76ee0382:\u94fe\u8868\u968f\u673a\u8282\u70b9", url: "#_top", children: [
+              {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1" },
+              {title: "\u9898\u89e3", url: "#_2" },
+          ]},
+        ];
+
+    </script>
+    <script src="../../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    
+
+    <h1 id="0382">题目0382:链表随机节点<a class="headerlink" href="#0382" title="Permanent link">&para;</a></h1>
+<h2 id="_1">题目描述<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>给定一个单链表,随机选择链表的一个节点,并返回相应的节点值。保证每个节点被选的概率一样。</p>
+<p>进阶:如果链表十分大且长度未知,如何解决这个问题?你能否使用常数级空间复杂度实现?</p>
+<p>示例:</p>
+<div class="highlight"><pre><span></span>// 初始化一个单链表 [1,2,3].
+ListNode head = new ListNode(1);
+head.next = new ListNode(2);
+head.next.next = new ListNode(3);
+Solution solution = new Solution(head);
+
+// getRandom()方法应随机返回1,2,3中的一个，保证每个元素被返回的概率相等。
+solution.getRandom();
+</pre></div>
+
+<h2 id="_2">题解<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>蓄水池抽样算法</strong></li>
+</ul>
+<p>最近经常能看到面经中出现在大数据流中的随机抽样问题,即:当内存无法加载全部数据时,如何从包含未知大小的数据流中随机选取k个数据,并且要保证每个数据被抽取到的概率相等。</p>
+<p>当<code>k = 1</code>时,即此题的情况。也就是说，我们每次只能读一个数据。</p>
+<p>假设数据流含有N个数,我们知道如果要保证所有的数被抽到的概率相等,那么每个数抽到的概率应该为<code>1/N</code>。那如何保证呢?</p>
+<p>先说方案:</p>
+<p>每次只保留一个数,当遇到第<code>i</code>个数时,以<code>1/i</code>的概率保留它,<code>(i-1)/i</code>的概率保留原来的数。</p>
+<p>举例说明:1 - 10</p>
+<blockquote>
+<p>遇到1,概率为1，保留第一个数。</p>
+<p>遇到2,概率为&frac12;,这个时候,1和2各&frac12;的概率被保留</p>
+<p>遇到3,3被保留的概率为&#8531;,(之前剩下的数假设1被保留),&#8532;的概率1被保留,(此时1被保留的总概率为&#8532; * &frac12; = &#8531;)</p>
+<p>遇到4,4被保留的概率为&frac14;,(之前剩下的数假设1被保留),&frac34;的概率1被保留,(此时1被保留的总概率为&frac34; * &#8532; * &frac12; = &frac14;)</p>
+<p>以此类推，每个数被保留的概率都是1/N。</p>
+</blockquote>
+<p>证明使用数学归纳法即可</p>
+<p><img alt="" src="http://pic.leetcode-cn.com/831bdf1ea840c47b79007f206fb9fe6f1a1effb6c5ceed15509fe0abb23ed2f9.jpg" /></p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">random</span>
+
+<span class="k">class</span> <span class="nc">ListNode</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">val</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="bp">None</span>
+
+<span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">head</span><span class="p">:</span> <span class="n">ListNode</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">head</span> <span class="o">=</span> <span class="n">head</span>
+
+    <span class="k">def</span> <span class="nf">getRandom</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">reserve</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">head</span>
+        <span class="k">while</span> <span class="n">cur</span><span class="p">:</span>
+            <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">rand</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">count</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">rand</span> <span class="o">==</span> <span class="n">count</span><span class="p">:</span>
+                <span class="n">reserve</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="n">val</span>
+            <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="n">next</span>
+        <span class="k">return</span> <span class="n">reserve</span>
+</pre></div>
+
+<p>当<code>k = m</code>时,也就是说,我们每次能读m个数据。</p>
+<p>和上面相同的道理，只不过概率在每次乘以了m而已</p>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    <br>
+</div>
+
+</body>
+</html>

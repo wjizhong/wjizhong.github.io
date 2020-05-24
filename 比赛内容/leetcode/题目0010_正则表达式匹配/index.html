@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/leetcode/%E9%A2%98%E7%9B%AE0010_%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%8C%B9%E9%85%8D/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>题目0010:正则表达式匹配 - 图像/视频算法</title>
+    <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "10.\u6b63\u5219\u8868\u8fbe\u5f0f\u5339\u914d", url: "#_top", children: [
+              {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1" },
+              {title: "\u89e3\u7b54\u6280\u5de7", url: "#_2" },
+          ]},
+        ];
+
+    </script>
+    <script src="../../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    
+
+    <h1 id="10">10.正则表达式匹配<a class="headerlink" href="#10" title="Permanent link">&para;</a></h1>
+<h2 id="_1">题目描述<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>给你一个字符串 s 和一个字符规律 p，请你来实现一个支持 '.' 和 '*' 的正则表达式匹配。</p>
+<blockquote>
+<p>'.' 匹配任意单个字符</p>
+<p>'*' 匹配零个或多个前面的那一个元素</p>
+</blockquote>
+<p>所谓匹配，是要涵盖 整个 字符串 s的，而不是部分字符串。</p>
+<p>说明:</p>
+<blockquote>
+<p>s 可能为空，且只包含从 a-z 的小写字母。</p>
+<p>p 可能为空，且只包含从 a-z 的小写字母，以及字符 . 和 *。</p>
+</blockquote>
+<ul>
+<li>示例 1:</li>
+</ul>
+<p><div class="highlight"><pre><span></span>输入:
+s = &quot;aa&quot;
+p = &quot;a&quot;
+输出: false
+解释: &quot;a&quot; 无法匹配 &quot;aa&quot; 整个字符串。
+</pre></div>
+* 示例 2:</p>
+<blockquote>
+<p>输入:</p>
+<p>s = "aa"</p>
+<p>p = "a*"</p>
+<p>输出: true</p>
+<p>解释: 因为 '*' 代表可以匹配零个或多个前面的那一个元素, 在这里前面的元素就是 'a'。因此，字符串 "aa" 可被视为 'a' 重复了一次。</p>
+</blockquote>
+<ul>
+<li>示例 3:</li>
+</ul>
+<blockquote>
+<p>输入:</p>
+<p>s = "ab"</p>
+<p>p = ".*"</p>
+<p>输出: true</p>
+<p>解释: ".*" 表示可匹配零个或多个（'*'）任意字符（'.'）。</p>
+</blockquote>
+<ul>
+<li>示例 4:</li>
+</ul>
+<blockquote>
+<p>输入:</p>
+<p>s = "aab"</p>
+<p>p = "c*a*b"</p>
+<p>输出: true</p>
+<p>解释: 因为 '*' 表示零个或多个，这里 'c' 为 0 个, 'a' 被重复一次。因此可以匹配字符串 "aab"。</p>
+</blockquote>
+<ul>
+<li>示例 5:</li>
+</ul>
+<blockquote>
+<p>输入:</p>
+<p>s = "mississippi"</p>
+<p>p = "mis*is*p*."</p>
+<p>输出: false</p>
+</blockquote>
+<h2 id="_2">解答技巧<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<h3 id="1">方法 1：回溯<a class="headerlink" href="#1" title="Permanent link">&para;</a></h3>
+<p>如果没有星号（正则表达式中的*），问题会很简单——我们只需要从左到右检查匹配串 s 是否能匹配模式串 p 的每一个字符。</p>
+<p>当模式串中有星号时，我们需要检查匹配串 s 中的不同后缀，以判断它们是否能匹配模式串剩余的部分。一个直观的解法就是用回溯的方法来体现这种关系。</p>
+<p>如果没有星号，我们的代码会像这样：</p>
+<p><div class="highlight"><pre><span></span>def match(text, pattern):
+    if not pattern: return not text
+    first_match = bool(text) and pattern[0] in {text[0], &#39;.&#39;}
+    return first_match and match(text[1:], pattern[1:])
+</pre></div>
+如果模式串中有星号，它会出现在第二个位置，即pattern[1] 。这种情况下，我们可以直接忽略模式串中这一部分，或者删除匹配串的第一个字符，前提是它能够匹配模式串当前位置字符，即pattern[0] 。如果两种操作中有任何一种使得剩下的字符串能匹配，那么初始时，匹配串和模式串就可以被匹配。</p>
+<p>class Solution {
+public:
+    bool isMatch(string s, string p) {
+        if(p.empty()) return s.empty();</p>
+<pre><code>    bool first_match = (!s.empty() &amp;&amp; ((p[0]) == (s[0]) || p[0] == "."));
+    if((p.length() &gt;=2) &amp;&amp; (p[1] =="*")){
+        return (isMatch(text,p.substr(2)) || (first_match &amp;&amp; isMatch(s.substr(1),p)));
+    }else{
+        return first_match &amp;&amp; isMatch(s.substr(1),p.substr(1));
+    }
+
+}
+</code></pre>
+<p>};
+复杂度分析</p>
+<p>时间复杂度：用 TT 和 PP 分别表示匹配串和模式串的长度。在最坏情况下，函数 match(text[i:], pattern[2j:]) 会被调用 \binom{i+j}{i}( 
+i
+i+j
+​ <br />
+ ) 次，并留下长度为 O(T - i)O(T−i) 和 O(P - 2*j)O(P−2∗j) 长度的字符串。因此，总时间为 \sum_{i = 0}^T \sum_{j = 0}^{P/2} \binom{i+j}{i} O(T+P-i-2j)∑ 
+i=0
+T
+​ <br />
+ ∑ 
+j=0
+P/2
+​ <br />
+ ( 
+i
+i+j
+​ <br />
+ )O(T+P−i−2j) 。通过本文以外的一些知识，我们可以证明它的时间复杂度为 O\big((T+P)2^{T + \frac{P}{2}}\big)O((T+P)2 
+T+ 
+2
+P
+​   </p>
+<p>) 。</p>
+<p>空间复杂度：对于 match 函数的每一次调用，我们都会产生如上所述的字符串，可能还会产生重复的字符串。如果内存没有被重复利用，那么即使只有总量为 O(T^2 + P^2)O(T 
+2
+ +P 
+2
+ ) 个不同的后缀，也会花费总共 O\big((T+P)2^{T + \frac{P}{2}}\big)O((T+P)2 
+T+ 
+2
+P
+​   </p>
+<p>) 的空间。</p>
+<p>方法 2: 动态规划
+想法</p>
+<p>因为题目拥有 最优子结构 ，一个自然的想法是将中间结果保存起来。我们通过用 \text{dp(i,j)}dp(i,j) 表示 \text{text[i:]}text[i:] 和 \text{pattern[j:]}pattern[j:] 是否能匹配。我们可以用更短的字符串匹配问题来表示原本的问题。</p>
+<p>算法</p>
+<p>我们用 [方法 1] 中同样的回溯方法，除此之外，因为函数 match(text[i:], pattern[j:]) 只会被调用一次，我们用 \text{dp(i, j)}dp(i, j) 来应对剩余相同参数的函数调用，这帮助我们节省了字符串建立操作所需要的时间，也让我们可以将中间结果进行保存。</p>
+<p>自顶向下的方法</p>
+<p>JavaPython
+enum Result {
+    TRUE, FALSE
+}</p>
+<p>class Solution {
+    Result[][] memo;</p>
+<pre><code>public boolean isMatch(String text, String pattern) {
+    memo = new Result[text.length() + 1][pattern.length() + 1];
+    return dp(0, 0, text, pattern);
+}
+
+public boolean dp(int i, int j, String text, String pattern) {
+    if (memo[i][j] != null) {
+        return memo[i][j] == Result.TRUE;
+    }
+    boolean ans;
+    if (j == pattern.length()){
+        ans = i == text.length();
+    } else{
+        boolean first_match = (i &lt; text.length() &amp;&amp;
+                               (pattern.charAt(j) == text.charAt(i) ||
+                                pattern.charAt(j) == '.'));
+
+        if (j + 1 &lt; pattern.length() &amp;&amp; pattern.charAt(j+1) == '*'){
+            ans = (dp(i, j+2, text, pattern) ||
+                   first_match &amp;&amp; dp(i+1, j, text, pattern));
+        } else {
+            ans = first_match &amp;&amp; dp(i+1, j+1, text, pattern);
+        }
+    }
+    memo[i][j] = ans ? Result.TRUE : Result.FALSE;
+    return ans;
+}
+</code></pre>
+<p>}
+自底向上的方法</p>
+<p>JavaPython
+class Solution {
+    public boolean isMatch(String text, String pattern) {
+        boolean[][] dp = new boolean[text.length() + 1][pattern.length() + 1];
+        dp[text.length()][pattern.length()] = true;</p>
+<pre><code>    for (int i = text.length(); i &gt;= 0; i--){
+        for (int j = pattern.length() - 1; j &gt;= 0; j--){
+            boolean first_match = (i &lt; text.length() &amp;&amp;
+                                   (pattern.charAt(j) == text.charAt(i) ||
+                                    pattern.charAt(j) == '.'));
+            if (j + 1 &lt; pattern.length() &amp;&amp; pattern.charAt(j+1) == '*'){
+                dp[i][j] = dp[i][j+2] || first_match &amp;&amp; dp[i+1][j];
+            } else {
+                dp[i][j] = first_match &amp;&amp; dp[i+1][j+1];
+            }
+        }
+    }
+    return dp[0][0];
+}
+</code></pre>
+<p>}
+复杂度分析</p>
+<p>时间复杂度：用 TT 和 PP 分别表示匹配串和模式串的长度。对于i=0, ... , Ti=0,...,T 和 j=0, ... , Pj=0,...,P 每一个 dp(i, j)只会被计算一次，所以后面每次调用都是 O(1)O(1) 的时间。因此，总时间复杂度为 O(TP)O(TP) 。</p>
+<p>空间复杂度：我们用到的空间仅有 O(TP)O(TP) 个 boolean 类型的缓存变量。所以，空间复杂度为 O(TP)O(TP) 。</p>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    <br>
+</div>
+
+</body>
+</html>

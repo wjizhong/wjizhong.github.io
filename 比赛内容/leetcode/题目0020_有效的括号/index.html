@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/leetcode/%E9%A2%98%E7%9B%AE0020_%E6%9C%89%E6%95%88%E7%9A%84%E6%8B%AC%E5%8F%B7/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>题目0020:有效的括号 - 图像/视频算法</title>
+    <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "\u9898\u76ee0020:\u6709\u6548\u7684\u62ec\u53f7", url: "#_top", children: [
+              {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1" },
+              {title: "\u9898\u89e3", url: "#_2" },
+          ]},
+        ];
+
+    </script>
+    <script src="../../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    
+
+    <h1 id="0020">题目0020:有效的括号<a class="headerlink" href="#0020" title="Permanent link">&para;</a></h1>
+<h2 id="_1">题目描述<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>给定一个只包括<code>'(',')','{','}','[',']'</code>的字符串,判断字符串是否有效。</p>
+<p>有效字符串需满足:</p>
+<blockquote>
+<ol>
+<li>左括号必须用相同类型的右括号闭合。</li>
+<li>左括号必须以正确的顺序闭合。</li>
+</ol>
+</blockquote>
+<p>注意空字符串可被认为是有效字符串。</p>
+<p>示例1:</p>
+<div class="highlight"><pre><span></span>输入: &quot;()&quot;
+输出: true
+</pre></div>
+
+<p>示例2:</p>
+<div class="highlight"><pre><span></span>输入: &quot;()[]{}&quot;
+输出: true
+</pre></div>
+
+<p>示例3:</p>
+<div class="highlight"><pre><span></span>输入: &quot;(]&quot;
+输出: false
+</pre></div>
+
+<p>示例4:</p>
+<div class="highlight"><pre><span></span>输入: &quot;([)]&quot;
+输出: false
+</pre></div>
+
+<p>示例5:</p>
+<div class="highlight"><pre><span></span>输入: &quot;{[]}&quot;
+输出: true
+</pre></div>
+
+<h2 id="_2">题解<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>想象一下,你正在为你的大学课设编写一个小型编译器,编译器的任务之一(或称子任务)将检测括号是否匹配。</p>
+<p>我们本文中看到的算法可用于处理编译器正在编译的程序中的所有括号,并检查是否所有括号都已配对。这将检查给定的括号字符串是否有效,是一个重要的编程问题。</p>
+<p>我们这个问题中将要处理的表达式可以包含以下三种不同类型的括号:</p>
+<blockquote>
+<p>()，</p>
+<p>{}以及</p>
+<p>[]</p>
+</blockquote>
+<p>在查看如何检查由这些括号组成的给定表达式是否有效之前,让我们看一下该问题的简化版本,在简化后的问题中,只含一种类型的括号。这么一来,我们将会遇到的表达式是</p>
+<div class="highlight"><pre><span></span>(((((()))))) -- VALID
+()()()()     -- VALID
+(((((((()    -- INVALID
+((()(())))   -- VALID
+</pre></div>
+
+<p>上我们试着用一个简单的算法来解决这一问题。</p>
+<ol>
+<li>我们从表达式的左侧开始,每次只处理一个括号。</li>
+<li>假设我们遇到一个开括号(即<code>(</code>),表达式是否无效取决于在该表达式的其余部分的某处是否有相匹配的闭括号(即<code>)</code>)。此时,我们只是增加计数器的值保持跟踪现在为止开括号的数目。<code>left += 1</code></li>
+<li>如果我们遇到一个闭括号,这可能意味着这样两种情况:
+    i. 此闭括号没有与与之对应的开括号,在这种情况下,我们的表达式无效。当<code>left == 0</code>,也就是没有未配对的左括号可用时就是这种情况。
+    ii. 我们有一些未配对的开括号可以与该闭括号配对。当<code>left &gt; 0</code>,也就是有未配对的左括号可用时就是这种情况。</li>
+<li>如果我们在<code>left == 0</code>时遇到一个闭括号(例如<code>)</code>),那么当前的表达式无效。否则,我们会减少<code>left</code>的值,也就是减少了可用的未配对的左括号的数量。</li>
+<li>继续处理字符串,直到处理完所有括号。</li>
+<li>如果最后我们仍然有未配对的左括号,这意味着表达式无效。</li>
+</ol>
+<p>在这里讨论这个特定算法是因为我们从该解决方案中获得灵感以解决原始问题。为了更好地理解我们讨论的算法,请观看下面的动画演示。</p>
+<p><img alt="" src="http://wx2.sinaimg.cn/nmw690/006HJ6Ndly1gex11w1jnyg31nu0twkfn.gif" /></p>
+<p>如果我们只是尝试对原始问题采用相同的办法,这是根本就行不通的。基于简单计数器的方法能够在上面完美运行是因为所有括号都具有相同的类型。因此,当我们遇到一个闭括号时,我们只需要假设有一个对应匹配的开括号是可用的,即假设<code>left &gt; 0</code>。</p>
+<p>但是,在我们的问题中,如果我们遇到<code>]</code>,我们真的不知道是否有相应的<code>[</code>可用。你可能会问:</p>
+<blockquote>
+<p>为什么不为不同类型的括号分别维护一个单独的计数器？</p>
+</blockquote>
+<p>这可能不起作用，因为括号的相对位置在这里也很重要。例如:</p>
+<div class="highlight"><pre><span></span>[{]
+</pre></div>
+
+<p>如果我们只是在这里维持计数器,那么只要我们遇到闭合方括号,我们就会知道此处有一个可用的未配对的开口方括号。但是,最近的未配对的开括号是一个花括号,而不是一个方括号,因此计数方法在这里被打破了。</p>
+<p><strong>方法:栈</strong></p>
+<p>关于有效括号表达式的一个有趣属性是有效表达式的子表达式也应该是有效表达式。(不是每个子表达式)例如</p>
+<p><img alt="" src="../media/leetcode/0020_SIMPLE.gif" /></p>
+<p>此外,如果仔细查看上述结构,颜色标识的单元格将标记开闭的括号对。整个表达式是有效的,而它的子表达式本身也是有效的。这为问题提供了一种递归结构。例如,考虑上图中两个绿色括号内的表达式。开括号位于索引<code>1</code>,相应闭括号位于索引<code>6</code>。</p>
+<p>如果每当我们在表达式中遇到一对匹配的括号时,我们只是从表达式中删除它,会发生什么?</p>
+<p>让我们看看下面的这个想法,从整体表达式中一次删除一个较小的表达式,因为这是一个有效的表达式,我们最后剩留下一个空字符串。</p>
+<p><img alt="" src="../media/leetcode/0020_RECURSIVE.gif" /></p>
+<p>在表示问题的递归结构时,栈数据结构可以派上用场。我们无法真正地从内到外处理这个问题,因为我们对整体结构一无所知。但是,栈可以帮助我们递归地处理这种情况,即从外部到内部。</p>
+<p>让我们看看使用栈作为该问题的中间数据结构的算法。</p>
+<p>算法:</p>
+<blockquote>
+<p>初始化栈S。</p>
+<p>一次处理表达式的每个括号。</p>
+<p>如果遇到开括号,我们只需将其推到栈上即可。这意味着我们将稍后处理它,让我们简单地转到前面的子表达式。</p>
+<p>如果我们遇到一个闭括号,那么我们检查栈顶的元素。如果栈顶的元素是一个 相同类型的左括号,那么我们将它从栈中弹出并继续处理。否则,这意味着表达式无效。</p>
+<p>如果到最后我们剩下的栈中仍然有元素，那么这意味着表达式无效。</p>
+</blockquote>
+<p>我们来看一下该算法的动画演示,然后转到实现部分。</p>
+<p><img alt="" src="../media/leetcode/0020_STACK.gif" /></p>
+<p>现在让我们看看该算法是如何实现的。</p>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Solution</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">isValid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type s: str</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># The stack to keep track of opening brackets.</span>
+        <span class="n">stack</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># Hash map for keeping track of mappings. This keeps the code very clean.</span>
+        <span class="c1"># Also makes adding more types of parenthesis easier</span>
+        <span class="n">mapping</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;)&quot;</span><span class="p">:</span> <span class="s2">&quot;(&quot;</span><span class="p">,</span> <span class="s2">&quot;}&quot;</span><span class="p">:</span> <span class="s2">&quot;{&quot;</span><span class="p">,</span> <span class="s2">&quot;]&quot;</span><span class="p">:</span> <span class="s2">&quot;[&quot;</span><span class="p">}</span>
+
+        <span class="c1"># For every bracket in the expression.</span>
+        <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">s</span><span class="p">:</span>
+
+            <span class="c1"># If the character is an closing bracket</span>
+            <span class="k">if</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">mapping</span><span class="p">:</span>
+
+                <span class="c1"># Pop the topmost element from the stack, if it is non empty</span>
+                <span class="c1"># Otherwise assign a dummy value of &#39;#&#39; to the top_element variable</span>
+                <span class="n">top_element</span> <span class="o">=</span> <span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span> <span class="k">if</span> <span class="n">stack</span> <span class="k">else</span> <span class="s1">&#39;#&#39;</span>
+
+                <span class="c1"># The mapping for the opening bracket in our hash and the top</span>
+                <span class="c1"># element of the stack don&#39;t match, return False</span>
+                <span class="k">if</span> <span class="n">mapping</span><span class="p">[</span><span class="n">char</span><span class="p">]</span> <span class="o">!=</span> <span class="n">top_element</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="bp">False</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># We have an opening bracket, simply push it onto the stack.</span>
+                <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
+
+        <span class="c1"># In the end, if the stack is empty, then we have a valid expression.</span>
+        <span class="c1"># The stack won&#39;t be empty for cases like ((()</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="n">stack</span>
+</pre></div>
+
+<p>复杂度分析</p>
+<blockquote>
+<p>时间复杂度:O(n),因为我们一次只遍历给定的字符串中的一个字符并在栈上进行O(1)的推入和弹出操作。</p>
+<p>空间复杂度:O(n),当我们将所有的开括号都推到栈上时以及在最糟糕的情况下,我们最终要把所有括号推到栈上。例如<code>((((((((((</code>。</p>
+</blockquote>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    <br>
+</div>
+
+</body>
+</html>
