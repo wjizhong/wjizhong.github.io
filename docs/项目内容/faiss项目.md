@@ -588,6 +588,7 @@ $C=C_1×C_2×\dots ×C_m$,码本大小为$k^m$。
 python代码:
 
 ```python
+# -*- coding:utf8 -*-
 import numpy as np
 from scipy.cluster.vq import vq, kmeans2
 
@@ -773,12 +774,6 @@ class DistanceTable(object):
         # Fetch distance values using codes. The following codes are
         dists = np.sum(self.dtable[range(M), codes], axis=1)
 
-        # The above line is equivalent to the followings:
-        # dists = np.zeros((N, )).astype(np.float32)
-        # for n in range(N):
-        #     for m in range(M):
-        #         dists[n] += self.dtable[m][codes[n][m]]
-
         return dists
 ```
 
@@ -786,11 +781,12 @@ class DistanceTable(object):
 
 ### 4.1 基础工具
 
-#### 4.1.1 `random.h`和`random.cpp`文件
+#### 4.1.1 random.h和random.cpp文件
+
+* **random.h文件**
 
 ```c++
 /* Random generators. Implemented here for speed and to make sequences reproducible. */
-
 #pragma once
 
 #include <random>
@@ -799,31 +795,75 @@ class DistanceTable(object):
 namespace faiss {
 
     /**************************************************
-    * Random data generation functions
-    **************************************************/
+     * Random data generation functions
+     **************************************************/
 
     /// random generator that can be used in multithreaded contexts
     struct RandomGenerator {
         std::mt19937 mt;
 
         /// random positive integer
-        int rand_int (){ return mt() & 0x7fffffff; };
+        int rand_int ();
 
         /// random int64_t
-        int64_t rand_int64 (){ return int64_t(rand_int()) | int64_t(rand_int()) << 31; };
+        int64_t rand_int64 ();
 
         /// generate random integer between 0 and max-1
-        int rand_int (int max) { return mt() % max; };
+        int rand_int (int max);
 
         /// between 0 and 1
-        float rand_float (){ return mt() / float(mt.max());};
+        float rand_float ();
+        double rand_double ();
 
-        double rand_double () { return mt() / double(mt.max()); };
-
-        explicit RandomGenerator (int64_t seed = 1234): mt((unsigned int)seed) {};
+        explicit RandomGenerator (int64_t seed = 1234);
     };
 
     /* Generate an array of uniform random floats / multi-threaded implementation */
+    void float_rand (float * x, size_t n, int64_t seed);
+    void float_randn (float * x, size_t n, int64_t seed);
+    void int64_rand (int64_t * x, size_t n, int64_t seed);
+    void byte_rand (uint8_t * x, size_t n, int64_t seed);
+    // max is actually the maximum value + 1
+    void int64_rand_max (int64_t * x, size_t n, uint64_t max, int64_t seed);
+
+    /* random permutation */
+    void rand_perm (int * perm, size_t n, int64_t seed);
+} // namespace faiss
+```
+
+* **random.cpp文件**
+
+```c++
+#include <faiss/utils/random.h>
+
+namespace faiss {
+
+    /**************************************************
+     * Random data generation functions
+     **************************************************/
+
+    RandomGenerator::RandomGenerator (int64_t seed) : mt((unsigned int)seed) {}
+
+    int RandomGenerator::rand_int () { return mt() & 0x7fffffff; }
+
+    int64_t RandomGenerator::rand_int64 () {
+        return int64_t(rand_int()) | int64_t(rand_int()) << 31;
+    }
+
+    int RandomGenerator::rand_int (int max) { return mt() % max; }
+
+    float RandomGenerator::rand_float () { return mt() / float(mt.max()); }
+
+    double RandomGenerator::rand_double () { return mt() / double(mt.max()); }
+
+
+    /***********************************************************************
+     * Random functions in this C file only exist because Torch
+     *  counterparts are slow and not multi-threaded.  Typical use is for
+     *  more than 1-100 billion values. */
+
+    /* Generate a set of random floating point values such that x[i] in [0,1]
+       multi-threading. For this reason, we rely on re-entreant functions.  */
     void float_rand (float * x, size_t n, int64_t seed) {
         // only try to parallelize on large enough arrays
         const size_t nblock = n < 1024 ? 1 : 1024;
@@ -832,19 +872,18 @@ namespace faiss {
         int a0 = rng0.rand_int (), b0 = rng0.rand_int ();
 
         #pragma omp parallel for
-        for (size_t j = 0; j < nblock; j++) {
-            RandomGenerator rng (a0 + j * b0);
+            for (size_t j = 0; j < nblock; j++) {
+                RandomGenerator rng (a0 + j * b0);
 
-            const size_t istart = j * n / nblock;
-            const size_t iend = (j + 1) * n / nblock;
+                const size_t istart = j * n / nblock;
+                const size_t iend = (j + 1) * n / nblock;
 
-            for (size_t i = istart; i < iend; i++)
-                x[i] = rng.rand_float ();
-        }
+                for (size_t i = istart; i < iend; i++)
+                    x[i] = rng.rand_float ();
+            }
     }
 
-
-    void float_randn (float * x, size_t n, int64_t seed);{
+    void float_randn (float * x, size_t n, int64_t seed) {
         // only try to parallelize on large enough arrays
         const size_t nblock = n < 1024 ? 1 : 1024;
 
@@ -878,7 +917,8 @@ namespace faiss {
             }
     }
 
-    void int64_rand (int64_t * x, size_t n, int64_t seed){
+    /* Integer versions */
+    void int64_rand (int64_t * x, size_t n, int64_t seed) {
         // only try to parallelize on large enough arrays
         const size_t nblock = n < 1024 ? 1 : 1024;
 
@@ -887,7 +927,9 @@ namespace faiss {
 
         #pragma omp parallel for
             for (size_t j = 0; j < nblock; j++) {
+
                 RandomGenerator rng (a0 + j * b0);
+
                 const size_t istart = j * n / nblock;
                 const size_t iend = (j + 1) * n / nblock;
                 for (size_t i = istart; i < iend; i++)
@@ -895,27 +937,7 @@ namespace faiss {
             }
     }
 
-    void byte_rand (uint8_t * x, size_t n, int64_t seed); {
-        // only try to parallelize on large enough arrays
-        const size_t nblock = n < 1024 ? 1 : 1024;
-
-        RandomGenerator rng0 (seed);
-        int a0 = rng0.rand_int (), b0 = rng0.rand_int ();
-
-        #pragma omp parallel for
-            for (size_t j = 0; j < nblock; j++) {
-                RandomGenerator rng (a0 + j * b0);
-                const size_t istart = j * n / nblock;
-                const size_t iend = (j + 1) * n / nblock;
-                size_t i;
-                for (i = istart; i < iend; i++)
-                    x[i] = rng.rand_int64 ();
-            }
-    }
-
-
-    // max is actually the maximum value + 1
-    void int64_rand_max (int64_t * x, size_t n, uint64_t max, int64_t seed){
+    void int64_rand_max (int64_t * x, size_t n, uint64_t max, int64_t seed) {
         // only try to parallelize on large enough arrays
         const size_t nblock = n < 1024 ? 1 : 1024;
 
@@ -926,6 +948,7 @@ namespace faiss {
             for (size_t j = 0; j < nblock; j++) {
 
                 RandomGenerator rng (a0 + j * b0);
+
                 const size_t istart = j * n / nblock;
                 const size_t iend = (j + 1) * n / nblock;
                 for (size_t i = istart; i < iend; i++)
@@ -933,9 +956,7 @@ namespace faiss {
             }
     }
 
-
-    /* random permutation */
-    void rand_perm (int * perm, size_t n, int64_t seed){
+    void rand_perm (int *perm, size_t n, int64_t seed) {
         for (size_t i = 0; i < n; i++) perm[i] = i;
 
         RandomGenerator rng (seed);
@@ -946,23 +967,43 @@ namespace faiss {
         }
     }
 
+    void byte_rand (uint8_t * x, size_t n, int64_t seed) {
+        // only try to parallelize on large enough arrays
+        const size_t nblock = n < 1024 ? 1 : 1024;
+
+        RandomGenerator rng0 (seed);
+        int a0 = rng0.rand_int (), b0 = rng0.rand_int ();
+
+        #pragma omp parallel for
+            for (size_t j = 0; j < nblock; j++) {
+
+                RandomGenerator rng (a0 + j * b0);
+
+                const size_t istart = j * n / nblock;
+                const size_t iend = (j + 1) * n / nblock;
+
+                size_t i;
+                for (i = istart; i < iend; i++)
+                    x[i] = rng.rand_int64 ();
+            }
+    }
 } // namespace faiss
-
-
-
 ```
 
-#### 4.1.2 `Heap.h`和`Heap.cpp`文件
+#### 4.1.2 Heap.h和Heap.cpp文件
+
+
+* **Heap.h文件**
 
 ```c++
-
 /*
- * C++ support for heaps. The set of functions is tailored for efficient similarity search.
+ * C++ support for heaps. The set of functions is tailored for
+ * efficient similarity search.
  *
- * There is no specific object for a heap, and the functions that operate on a signle heap are 
- * inlined, because heaps are often small. More complex functions are implemented in Heaps.cpp
+ * There is no specific object for a heap, and the functions that
+ * operate on a signle heap are inlined, because heaps are often
+ * small. More complex functions are implemented in Heaps.cpp
  */
-
 
 #ifndef FAISS_Heap_h
 #define FAISS_Heap_h
@@ -981,14 +1022,14 @@ namespace faiss {
 namespace faiss {
 
     /*******************************************************************
-    * C object: uniform handling of min and max heap
-    *******************************************************************/
+     * C object: uniform handling of min and max heap
+     *******************************************************************/
 
     /** The C object gives the type T of the values in the heap, the type
-    *  of the keys, TI and the comparison that is done: > for the minheap
-    *  and < for the maxheap. The neutral value will always be dropped in
-    *  favor of any other value in the heap.
-    */
+     *  of the keys, TI and the comparison that is done: > for the minheap
+     *  and < for the maxheap. The neutral value will always be dropped in
+     *  favor of any other value in the heap.
+     */
 
     template <typename T_, typename TI_>
     struct CMax;
@@ -996,9 +1037,9 @@ namespace faiss {
     // traits of minheaps = heaps where the minimum value is stored on top
     // useful to find the *max* values of an array
     template <typename T_, typename TI_>
-    struct CMin { 
-        typedef T_ T; 
-        typedef TI_ TI; 
+    struct CMin {
+        typedef T_ T;
+        typedef TI_ TI;
         typedef CMax<T_, TI_> Crev;
         inline static bool cmp (T a, T b) {
             return a < b;
@@ -1009,7 +1050,6 @@ namespace faiss {
             return -std::numeric_limits<T>::max();
         }
     };
-
 
     template <typename T_, typename TI_>
     struct CMax {
@@ -1024,7 +1064,6 @@ namespace faiss {
         }
     };
 
-
     /*******************************************************************
      * Basic heap ops: push and pop
      *******************************************************************/
@@ -1032,8 +1071,8 @@ namespace faiss {
     /** Pops the top element from the heap defined by bh_val[0..k-1] and
      * bh_ids[0..k-1].  on output the element at k-1 is undefined.
      */
-    template <class C> 
-    inline void heap_pop (size_t k, typename C::T * bh_val, typename C::TI * bh_ids) {
+    template <class C> inline
+    void heap_pop (size_t k, typename C::T * bh_val, typename C::TI * bh_ids) {
         bh_val--; /* Use 1-based indexing for easier node->child translation */
         bh_ids--;
         typename C::T val = bh_val[k];
@@ -1062,13 +1101,11 @@ namespace faiss {
         bh_ids[i] = bh_ids[k];
     }
 
-
-
     /** Pushes the element (val, ids) into the heap bh_val[0..k-2] and
      * bh_ids[0..k-2].  on output the element at k-1 is defined.
      */
     template <class C> inline
-    void heap_push (size_t k, typename C::T * bh_val, typename C::TI * bh_ids, typename C::T val, typename C::TI ids) {
+    void heap_push (size_t k,typename C::T * bh_val, typename C::TI * bh_ids, typename C::T val, typename C::TI ids) {
         bh_val--; /* Use 1-based indexing for easier node->child translation */
         bh_ids--;
         size_t i = k, i_father;
@@ -1084,13 +1121,12 @@ namespace faiss {
         bh_ids[i] = ids;
     }
 
-
-
     /* Partial instanciation for heaps with TI = int64_t */
     template <typename T> inline
-    void minheap_pop (size_t k, T * bh_val, int64_t * bh_ids){
+    void minheap_pop (size_t k, T * bh_val, int64_t * bh_ids) {
         heap_pop<CMin<T, int64_t> > (k, bh_val, bh_ids);
     }
+
     template <typename T> inline
     void minheap_push (size_t k, T * bh_val, int64_t * bh_ids, T val, int64_t ids) {
         heap_push<CMin<T, int64_t> > (k, bh_val, bh_ids, val, ids);
@@ -1100,21 +1136,24 @@ namespace faiss {
     void maxheap_pop (size_t k, T * bh_val, int64_t * bh_ids) {
         heap_pop<CMax<T, int64_t> > (k, bh_val, bh_ids);
     }
+
     template <typename T> inline
     void maxheap_push (size_t k, T * bh_val, int64_t * bh_ids, T val, int64_t ids) {
         heap_push<CMax<T, int64_t> > (k, bh_val, bh_ids, val, ids);
     }
 
 
+
     /*******************************************************************
      * Heap initialization
      *******************************************************************/
+
     /* Initialization phase for the heap (with unconditionnal pushes).
      * Store k0 elements in a heap containing up to k values. Note that
      * (bh_val, bh_ids) can be the same as (x, ids) */
     template <class C> inline
-    void heap_heapify (size_t k, typename C::T *  bh_val, typename C::TI *  bh_ids,
-        const typename C::T * x = nullptr,const typename C::TI * ids = nullptr, size_t k0 = 0){
+    void heap_heapify (size_t k, typename C::T *  bh_val, typename C::TI *  bh_ids, const typename C::T * x = nullptr,
+            const typename C::TI * ids = nullptr, size_t k0 = 0) {
         if (k0 > 0) assert (x);
         if (ids) {
             for (size_t i = 0; i < k0; i++)
@@ -1131,13 +1170,14 @@ namespace faiss {
     }
 
     template <typename T> inline
-    void minheap_heapify ( size_t k, T *  bh_val, int64_t * bh_ids,
-        const T * x = nullptr, const int64_t * ids = nullptr, size_t k0 = 0) {
+    void minheap_heapify (size_t k, T *  bh_val, int64_t * bh_ids, const T * x = nullptr,
+            const int64_t * ids = nullptr, size_t k0 = 0) {
         heap_heapify< CMin<T, int64_t> > (k, bh_val, bh_ids, x, ids, k0);
     }
+
     template <typename T> inline
-    void maxheap_heapify ( size_t k, T * bh_val, int64_t * bh_ids,
-         const T * x = nullptr, const int64_t * ids = nullptr, size_t k0 = 0) {
+    void maxheap_heapify (size_t k, T * bh_val, int64_t * bh_ids, const T * x = nullptr,
+            const int64_t * ids = nullptr, size_t k0 = 0) {
         heap_heapify< CMax<T, int64_t> > (k, bh_val, bh_ids, x, ids, k0);
     }
 
@@ -1149,16 +1189,15 @@ namespace faiss {
     /* Add some elements to the heap  */
     template <class C> inline
     void heap_addn (size_t k, typename C::T * bh_val, typename C::TI * bh_ids,
-                const typename C::T * x, const typename C::TI * ids, size_t n) {
+            const typename C::T * x, const typename C::TI * ids, size_t n) {
         size_t i;
         if (ids)
             for (i = 0; i < n; i++) {
                 if (C::cmp (bh_val[0], x[i])) {
                     heap_pop<C> (k, bh_val, bh_ids);
                     heap_push<C> (k, bh_val, bh_ids, x[i], ids[i]);
-                }
-        }
-        else
+            }
+        } else
             for (i = 0; i < n; i++) {
                 if (C::cmp (bh_val[0], x[i])) {
                     heap_pop<C> (k, bh_val, bh_ids);
@@ -1168,14 +1207,14 @@ namespace faiss {
     }
 
     /* Partial instanciation for heaps with TI = int64_t */
+
     template <typename T> inline
-    void minheap_addn (size_t k, T * bh_val, int64_t * bh_ids,
-                       const T * x, const int64_t * ids, size_t n) {
+    void minheap_addn (size_t k, T * bh_val, int64_t * bh_ids, const T * x, const int64_t * ids, size_t n) {
         heap_addn<CMin<T, int64_t> > (k, bh_val, bh_ids, x, ids, n);
     }
+
     template <typename T> inline
-    void maxheap_addn (size_t k, T * bh_val, int64_t * bh_ids,
-                       const T * x, const int64_t * ids, size_t n) {
+    void maxheap_addn (size_t k, T * bh_val, int64_t * bh_ids, const T * x, const int64_t * ids, size_t n) {
         heap_addn<CMax<T, int64_t> > (k, bh_val, bh_ids, x, ids, n);
     }
 
@@ -1188,6 +1227,7 @@ namespace faiss {
     template <typename C> inline
     size_t heap_reorder (size_t k, typename C::T * bh_val, typename C::TI * bh_ids) {
         size_t i, ii;
+
         for (i = 0, ii = 0; i < k; i++) {
             /* top element should be put at the end of the list */
             typename C::T val = bh_val[0];
@@ -1201,19 +1241,22 @@ namespace faiss {
         }
         /* Count the number of elements which are effectively returned */
         size_t nel = ii;
+
         memmove (bh_val, bh_val+k-ii, ii * sizeof(*bh_val));
         memmove (bh_ids, bh_ids+k-ii, ii * sizeof(*bh_ids));
+
         for (; ii < k; ii++) {
             bh_val[ii] = C::neutral();
             bh_ids[ii] = -1;
         }
         return nel;
     }
-    
+
     template <typename T> inline
     size_t minheap_reorder (size_t k, T * bh_val, int64_t * bh_ids) {
         return heap_reorder< CMin<T, int64_t> > (k, bh_val, bh_ids);
     }
+
     template <typename T> inline
     size_t maxheap_reorder (size_t k, T * bh_val, int64_t * bh_ids) {
         return heap_reorder< CMax<T, int64_t> > (k, bh_val, bh_ids);
@@ -1225,7 +1268,8 @@ namespace faiss {
      *******************************************************************/
 
     /** a template structure for a set of [min|max]-heaps it is tailored
-     * so that the actual data of the heaps can just live in compact arrays. */
+     * so that the actual data of the heaps can just live in compact arrays.
+     */
     template <typename C>
     struct HeapArray {
         typedef typename C::TI TI;
@@ -1243,11 +1287,8 @@ namespace faiss {
         TI * get_ids (size_t key) { return ids + key * k; }
 
         /// prepare all the heaps before adding
-        void heapify (){
-            #pragma omp parallel for
-                for (size_t j = 0; j < nh; j++)
-                    heap_heapify<C> (k, val + j * k, ids + j * k);
-        }
+        void heapify ();
+
         /** add nj elements to heaps i0:i0+ni, with sequential ids
          *
          * @param nj    nb of elements to add to each heap
@@ -1256,87 +1297,27 @@ namespace faiss {
          * @param i0    first heap to update
          * @param ni    nb of elements to update (-1 = use nh)
          */
-        void addn (size_t nj, const T *vin, TI j0 = 0, size_t i0 = 0, int64_t ni = -1){
-            if (ni == -1) ni = nh;
-            assert (i0 >= 0 && i0 + ni <= nh);
-            #pragma omp parallel for
-                for (size_t i = i0; i < i0 + ni; i++) {
-                    T * __restrict simi = get_val(i);
-                    TI * __restrict idxi = get_ids (i);
-                    const T *ip_line = vin + (i - i0) * nj;
-
-                    for (size_t j = 0; j < nj; j++) {
-                        T ip = ip_line [j];
-                        if (C::cmp(simi[0], ip)) {
-                            heap_pop<C> (k, simi, idxi);
-                            heap_push<C> (k, simi, idxi, ip, j + j0);
-                        }
-                    }
-        }
+        void addn (size_t nj, const T *vin, TI j0 = 0, size_t i0 = 0, int64_t ni = -1);
 
         /** same as addn
+         *
          * @param id_in     ids of the elements to add, size ni * nj
          * @param id_stride stride for id_in
          */
-        void addn_with_ids ( size_t nj, const T *vin, const TI *id_in = nullptr,
-                int64_t id_stride = 0, size_t i0 = 0, int64_t ni = -1){
-            if (id_in == nullptr) {
-                addn (nj, vin, 0, i0, ni);
-                return;
-            }
-            if (ni == -1) ni = nh;
-            assert (i0 >= 0 && i0 + ni <= nh);
-            #pragma omp parallel for
-                for (size_t i = i0; i < i0 + ni; i++) {
-                    T * __restrict simi = get_val(i);
-                    TI * __restrict idxi = get_ids (i);
-                    const T *ip_line = vin + (i - i0) * nj;
-                    const TI *id_line = id_in + (i - i0) * id_stride;
+        void addn_with_ids (size_t nj, const T *vin, const TI *id_in = nullptr,
+            int64_t id_stride = 0, size_t i0 = 0, int64_t ni = -1);
 
-                    for (size_t j = 0; j < nj; j++) {
-                        T ip = ip_line [j];
-                        if (C::cmp(simi[0], ip)) {
-                            heap_pop<C> (k, simi, idxi);
-                            heap_push<C> (k, simi, idxi, ip, id_line [j]);
-                        }
-                    }
-        }
-        
         /// reorder all the heaps
-        void reorder (){
-            #pragma omp parallel for
-                for (size_t j = 0; j < nh; j++)
-                    heap_reorder<C> (k, val + j * k, ids + j * k);
-        }
+        void reorder ();
 
         /** this is not really a heap function. It just finds the per-line
          *   extrema of each line of array D
          * @param vals_out    extreme value of each line (size nh, or NULL)
          * @param idx_out     index of extreme value (size nh or NULL)
          */
-        void per_line_extrema (T *vals_out, TI *idx_out) const{
-            #pragma omp parallel for
-                for (size_t j = 0; j < nh; j++) {
-                    int64_t imin = -1;
-                    typename C::T xval = C::Crev::neutral ();
-                    const typename C::T * x_ = val + j * k;
-                    for (size_t i = 0; i < k; i++)
-                        if (C::cmp (x_[i], xval)) {
-                            xval = x_[i];
-                            imin = i;
-                        }
-                    if (out_val)
-                        out_val[j] = xval;
+        void per_line_extrema (T *vals_out, TI *idx_out) const;
 
-                    if (out_ids) {
-                        if (ids && imin != -1)
-                            out_ids[j] = ids [j * k + imin];
-                        else
-                            out_ids[j] = imin;
-                    }
-                }
-        }
-    }
+    };
 
     /* Define useful heaps */
     typedef HeapArray<CMin<float, int64_t> > float_minheap_array_t;
@@ -1344,6 +1325,8 @@ namespace faiss {
 
     typedef HeapArray<CMax<float, int64_t> > float_maxheap_array_t;
     typedef HeapArray<CMax<int, int64_t> > int_maxheap_array_t;
+
+    // The heap templates are instanciated explicitly in Heap.cpp
 
 
     /*********************************************************************
@@ -1354,7 +1337,7 @@ namespace faiss {
      *********************************************************************/
 
     template <class C>
-    inline void indirect_heap_pop (size_t k,const typename C::T * bh_val, typename C::TI * bh_ids) {
+    inline void indirect_heap_pop ( size_t k, const typename C::T * bh_val, typename C::TI * bh_ids) {
         bh_ids--; /* Use 1-based indexing for easier node->child translation */
         typename C::T val = bh_val[bh_ids[k]];
         size_t i = 1;
@@ -1380,8 +1363,7 @@ namespace faiss {
     }
 
     template <class C>
-    inline void indirect_heap_push (size_t k,const typename C::T * bh_val, typename C::TI * bh_ids,
-                         typename C::TI id) {
+    inline void indirect_heap_push (size_t k, const typename C::T * bh_val, typename C::TI * bh_ids, typename C::TI id) {
         bh_ids--; /* Use 1-based indexing for easier node->child translation */
         typename C::T val = bh_val[id];
         size_t i = k;
@@ -1394,6 +1376,103 @@ namespace faiss {
         }
         bh_ids[i] = id;
     }
+} // namespace faiss
+
+#endif  /* FAISS_Heap_h */
+```
+
+* **Heap.cpp文件**
+
+```c++
+/* Function for soft heap */
+#include <faiss/utils/Heap.h>
+
+namespace faiss {
+
+    template <typename C>
+    void HeapArray<C>::heapify () {
+        #pragma omp parallel for
+            for (size_t j = 0; j < nh; j++)
+                heap_heapify<C> (k, val + j * k, ids + j * k);
+    }
+
+    template <typename C>
+    void HeapArray<C>::reorder () {
+        #pragma omp parallel for
+            for (size_t j = 0; j < nh; j++)
+                heap_reorder<C> (k, val + j * k, ids + j * k);
+    }
+
+    template <typename C>
+    void HeapArray<C>::addn (size_t nj, const T *vin, TI j0, size_t i0, int64_t ni) {
+        if (ni == -1) ni = nh;
+        assert (i0 >= 0 && i0 + ni <= nh);
+        #pragma omp parallel for
+            for (size_t i = i0; i < i0 + ni; i++) {
+                T * __restrict simi = get_val(i);
+                TI * __restrict idxi = get_ids (i);
+                const T *ip_line = vin + (i - i0) * nj;
+
+                for (size_t j = 0; j < nj; j++) {
+                    T ip = ip_line [j];
+                    if (C::cmp(simi[0], ip)) {
+                        heap_pop<C> (k, simi, idxi);
+                        heap_push<C> (k, simi, idxi, ip, j + j0);
+                    }
+                }
+            }
+    }
+
+    template <typename C>
+    void HeapArray<C>::addn_with_ids ( size_t nj, const T *vin, const TI *id_in, int64_t id_stride, size_t i0, int64_t ni) {
+        if (id_in == nullptr) {
+            addn (nj, vin, 0, i0, ni);
+            return;
+        }
+        if (ni == -1) ni = nh;
+        assert (i0 >= 0 && i0 + ni <= nh);
+        #pragma omp parallel for
+            for (size_t i = i0; i < i0 + ni; i++) {
+                T * __restrict simi = get_val(i);
+                TI * __restrict idxi = get_ids (i);
+                const T *ip_line = vin + (i - i0) * nj;
+                const TI *id_line = id_in + (i - i0) * id_stride;
+
+                for (size_t j = 0; j < nj; j++) {
+                    T ip = ip_line [j];
+                    if (C::cmp(simi[0], ip)) {
+                        heap_pop<C> (k, simi, idxi);
+                        heap_push<C> (k, simi, idxi, ip, id_line [j]);
+                    }
+                }
+            }
+    }
+
+
+    template <typename C>
+    void HeapArray<C>::per_line_extrema ( T * out_val, TI * out_ids) const {
+        #pragma omp parallel for
+            for (size_t j = 0; j < nh; j++) {
+                int64_t imin = -1;
+                typename C::T xval = C::Crev::neutral ();
+                const typename C::T * x_ = val + j * k;
+                for (size_t i = 0; i < k; i++)
+                    if (C::cmp (x_[i], xval)) {
+                        xval = x_[i];
+                        imin = i;
+                    }
+                if (out_val)
+                    out_val[j] = xval;
+
+                if (out_ids) {
+                    if (ids && imin != -1)
+                        out_ids[j] = ids [j * k + imin];
+                    else
+                        out_ids[j] = imin;
+                }
+            }
+    }
+
 
     // explicit instanciations
     template struct HeapArray<CMin <float, int64_t> >;
@@ -1401,10 +1480,9 @@ namespace faiss {
     template struct HeapArray<CMin <int, int64_t> >;
     template struct HeapArray<CMax <int, int64_t> >;
 
-} // namespace faiss
-
-#endif  /* FAISS_Heap_h */
+}  // END namespace fasis
 ```
+
 ### 4.1.3 `distances.h`、`distances.cpp`文件
 
 * **`distances.h`文件**

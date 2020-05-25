@@ -49,5 +49,9 @@ nav:
         - 国际象棋: 其他内容/国际象棋.html
         - 五子棋: 其他内容/五子棋.html
 
+
+markdown_extensions:
+    - pymdownx.arithmatex
+
 extra:
     history_buttons: false
