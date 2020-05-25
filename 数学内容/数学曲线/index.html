@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%95%B0%E5%AD%A6%E5%86%85%E5%AE%B9/%E6%95%B0%E5%AD%A6%E6%9B%B2%E7%BA%BF/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>数学曲线 - 图像/视频算法</title>
+    <link href="../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "\u6570\u5b66\u66f2\u7ebf", url: "#_top", children: [
+              {title: "\u8774\u8776\u66f2\u7ebf", url: "#_2" },
+              {title: "\u5fc3\u5f62\u66f2\u7ebf", url: "#_3" },
+              {title: "Mandelbrot\u96c6\u5408", url: "#mandelbrot" },
+              {title: "Newton\u5206\u5f62", url: "#newton" },
+              {title: "\u6d1b\u4f26\u8328\u5438\u5f15\u5b50", url: "#_4" },
+          ]},
+        ];
+
+    </script>
+    <script src="../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    
+
+    <h1 id="_1">数学曲线</h1>
+<h2 id="_2">蝴蝶曲线</h2>
+<div>
+<div class="MathJax_Preview">
+\begin{aligned}
+    x=\sin(t)(e^{\cos(t)}-2\cos(4t)-\sin^5(t/12)) \\
+    y=\cos(t)(e^{\cos(t)}-2\cos(4t)-\sin^5(t/12))
+\end{aligned},0\le t\le 12\pi
+</div>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    x=\sin(t)(e^{\cos(t)}-2\cos(4t)-\sin^5(t/12)) \\
+    y=\cos(t)(e^{\cos(t)}-2\cos(4t)-\sin^5(t/12))
+\end{aligned},0\le t\le 12\pi
+</script>
+</div>
+<p>极坐标:</p>
+<div>
+<div class="MathJax_Preview">r=e^{\sin(\theta)}-2\cos(4\theta)+\sin(\frac{2\theta-\pi}{24})</div>
+<script type="math/tex; mode=display">r=e^{\sin(\theta)}-2\cos(4\theta)+\sin(\frac{2\theta-\pi}{24})</script>
+</div>
+<p><code>python</code>代码:</p>
+<pre><code class="python">import numpy as np
+import matplotlib.pyplot as plt
+
+t = np.arange(0.0, 12*np.pi, 0.01)
+x = np.sin(t)*(np.e**np.cos(t) - 2*np.cos(4*t)-np.sin(t/12)**5)
+y = np.cos(t)*(np.e**np.cos(t) - 2*np.cos(4*t)-np.sin(t/12)**5)
+
+plt.figure(figsize=(8,6))
+plt.axis('off')
+plt.plot(x,y,color='blue',linewidth = '2')
+plt.savefig(&quot;butter.jpg&quot;,dpi=400)
+</code></pre>
+
+<p><img alt="" src="http://wx1.sinaimg.cn/large/006HJ6Ndly1g57uy4mht9j31400u0aug.jpg" /></p>
+<h2 id="_3">心形曲线</h2>
+<div>
+<div class="MathJax_Preview">
+(x^2+y^2-1)^3-x^2y^3=0
+</div>
+<script type="math/tex; mode=display">
+(x^2+y^2-1)^3-x^2y^3=0
+</script>
+</div>
+<p><code>python</code>程序:</p>
+<pre><code class="python">import numpy as np
+import matplotlib.pyplot as plt
+
+from matplotlib.font_manager import FontProperties
+font=FontProperties(fname='/Library/Fonts/Songti.ttc',size=10)
+
+x_coords = np.linspace(-100, 100, 500)
+y_coords = np.linspace(-100, 100, 500)
+points = [ ]
+for y in y_coords:
+    for x in x_coords:
+        if ((x*0.03)**2+(y*0.03)**2-1)**3-(x*0.03)**2*(y*0.03)**3 &lt;= 0:
+            points.append({&quot;x&quot;: x, &quot;y&quot;: y})
+heart_x = list(map(lambda point: point[&quot;x&quot;], points))
+heart_y = list(map(lambda point: point[&quot;y&quot;], points))
+
+
+plt.figure(&quot;heart&quot;, figsize=(6,15))
+plt.subplot(521)
+plt.scatter(heart_x, heart_y, s=10, alpha=0.5)
+plt.title(&quot;普通&quot;,fontproperties=font)
+plt.axis('off')
+
+cmap =[(&quot;autumn&quot;,&quot;橙色-热情洋溢&quot;),(&quot;cool&quot;,&quot;紫色-优雅宁静&quot;),(&quot;magma&quot;,&quot;晚霞-醇厚脱俗&quot;),(&quot;rainbow&quot;,&quot;彩虹-绚丽幻想&quot;),(&quot;Reds&quot;,&quot;炽热-热烈奔放&quot;),(&quot;spring&quot;,&quot;青春-充满朝气&quot;),(&quot;viridis&quot;,&quot;翡翠-平静柔和&quot;),(&quot;gist_rainbow&quot;,&quot;五彩缤纷-多姿多彩&quot;)]
+
+for i in range(len(cmap)):
+    plt.subplot(522+i)
+    plt.scatter(heart_x, heart_y, s=10, alpha=0.5, c=range(len(heart_x)), cmap=cmap[i][0])
+    plt.title(cmap[i][1],fontproperties=font)
+    plt.axis('off')
+# plt.show()
+plt.savefig(&quot;heart.jpg&quot;,dpi=400)
+</code></pre>
+
+<p><img alt="" src="http://wx3.sinaimg.cn/large/006HJ6Ndly1g57v839l5dj30u02301cz.jpg" /></p>
+<h2 id="mandelbrot"><code>Mandelbrot</code>集合</h2>
+<p>曼德博集合可以用复二次多项式来定义:</p>
+<div>
+<div class="MathJax_Preview">
+f_{c}(z)=z^{2}+c
+</div>
+<script type="math/tex; mode=display">
+f_{c}(z)=z^{2}+c
+</script>
+</div>
+<p>其中<span><span class="MathJax_Preview">c</span><script type="math/tex">c</script></span>是一个复数参数。</p>
+<p>从<span><span class="MathJax_Preview">z=0</span><script type="math/tex">z=0</script></span>开始对<span><span class="MathJax_Preview">f_{c}(z)</span><script type="math/tex">f_{c}(z)</script></span>进行迭代:</p>
+<blockquote>
+<ol>
+<li><span><span class="MathJax_Preview">z_{n+1}=z_{n}^{2}+c,n=0,1,2,...</span><script type="math/tex">z_{n+1}=z_{n}^{2}+c,n=0,1,2,...</script></span></li>
+<li><span><span class="MathJax_Preview">z_{0}=0</span><script type="math/tex">z_{0}=0</script></span></li>
+<li><span><span class="MathJax_Preview">z_{1}=z_{0}^{2}+c=c</span><script type="math/tex">z_{1}=z_{0}^{2}+c=c</script></span></li>
+<li><span><span class="MathJax_Preview">z_{2}=z_{1}^{2}+c=c^{2}+c</span><script type="math/tex">z_{2}=z_{1}^{2}+c=c^{2}+c</script></span></li>
+</ol>
+</blockquote>
+<p>每次迭代的值依序如以下序列所示:<span><span class="MathJax_Preview">(0,f_{c}(0),f_{c}(f_{c}(0)),f_{c}(f_{c}(f_{c}(0))),\ldots )</span><script type="math/tex">(0,f_{c}(0),f_{c}(f_{c}(0)),f_{c}(f_{c}(f_{c}(0))),\ldots )</script></span></p>
+<p>不同的参数<span><span class="MathJax_Preview">c</span><script type="math/tex">c</script></span>可能使序列的绝对值逐渐发散到无限大,也可能收敛在有限的区域内。曼德博集合<span><span class="MathJax_Preview">M</span><script type="math/tex">M</script></span>就是使序列不延伸至无限大的所有复数<span><span class="MathJax_Preview">c</span><script type="math/tex">c</script></span>的集合。</p>
+<p>曼德博集合有一些特性和定理,可参考:<a href="http://zh.wikipedia.org/zh-hans/%E6%9B%BC%E5%BE%B7%E5%8D%9A%E9%9B%86%E5%90%88">曼德博集合</a></p>
+<p><code>python</code>代码</p>
+<pre><code class="python">import numpy as np
+import matplotlib.pylab as plt
+
+MAXITERS,RADIUS = 200,100
+
+def color(z, i):
+    v = np.log2(i + 1 - np.log2(np.log2(abs(z)))) / 5
+    if v &lt; 1.0: return v**4, v**2.5, v
+    else:
+        v = max(0, 2-v)
+        return v, v**1.5, v**3
+
+def iterate(c):
+    z = 0j
+    for i in range(MAXITERS):
+        if z.real*z.real + z.imag*z.imag &gt; RADIUS: return color(z, i)
+        z = z*z + c
+    return 0, 0, 0
+
+xmin,xmax, ymin,ymax,width,height=-2.1, 0.8, -1.16, 1.16, 800, 640
+y, x = np.ogrid[ymin: ymax: height*1j, xmin: xmax: width*1j]
+z = x + y*1j
+R, G, B = np.asarray(np.frompyfunc(iterate, 1, 3)(z)).astype(np.float)
+img = np.uint8(np.stack((R, G, B), axis=2) * 255)
+plt.figure(&quot;Mandelbrot&quot;)
+plt.imshow(img)
+plt.axis('off')
+plt.title('Mandelbrot')
+# plt.show()
+plt.savefig(&quot;Mandelbrot.jpg&quot;,dpi=400)
+</code></pre>
+
+<p><img alt="" src="http://wx4.sinaimg.cn/large/006HJ6Ndly1g57vk83gudj31400u07eo.jpg" /></p>
+<h2 id="newton"><code>Newton</code>分形</h2>
+<p>牛顿分形就是分形的一种,它与解方程的牛顿法(跟优化中的牛顿法是不同的方法)紧密相关。假如需要求解方程<span><span class="MathJax_Preview">f(x) = 0</span><script type="math/tex">f(x) = 0</script></span>。</p>
+<p>其中,x的定义域是整个复平面。如何求解这个方程的解呢？我们可以用牛顿法。牛顿法是一种数值解法,我们首先会估算一个“比较好”的初始值<span><span class="MathJax_Preview">x_0</span><script type="math/tex">x_0</script></span>,然后使用迭代公式:</p>
+<div>
+<div class="MathJax_Preview">
+x_{n+1} = x_n - \frac{f(x_n)}{f^{'}(x_n)}
+</div>
+<script type="math/tex; mode=display">
+x_{n+1} = x_n - \frac{f(x_n)}{f^{'}(x_n)}
+</script>
+</div>
+<p>牛顿法可以确保,如果初始猜测值在根附近,那么迭代必然收敛。而且牛顿法是个二阶方法,收敛速度相当的快。下图是迭代一步的示意图</p>
+<p><img alt="" src="http://pic1.zhimg.com/80/v2-999dfa2dea9ec9df7ba991d9e0f8b25c_hd.jpg" /></p>
+<p>在<span><span class="MathJax_Preview">x_1</span><script type="math/tex">x_1</script></span>处沿着方向<span><span class="MathJax_Preview">\frac{f(x_1)}{f'(x_1)}</span><script type="math/tex">\frac{f(x_1)}{f'(x_1)}</script></span>下降,与<span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span>轴的交点即为<span><span class="MathJax_Preview">x_2</span><script type="math/tex">x_2</script></span>,循环往复就能得到方程的根。</p>
+<p>学过中学数学的我们都知道, n次方程在复数域上有<code>n</code>个根,那么用牛顿法收敛的根就可能有n个目标。牛顿法收敛到哪个根取决于迭代的起始值。根据最后的收敛结果,我们把所有收敛到同一个根的起始点画上同一种颜色,最终就形成了牛顿分形图。</p>
+<p><code>python</code>代码</p>
+<pre><code class="python">import numpy as np
+import matplotlib.pyplot as plt
+from numba import jit
+
+# define functions manually, do not use numpy's poly1d funciton!
+@jit('complex64(complex64)', nopython=True)
+def f(z):
+    # z*z*z is faster than z**3
+    # return z*z*z - 1
+    return z**5 + 0.25*z*z + 1.17
+
+@jit('complex64(complex64)', nopython=True)
+def df(z):
+    # return 3*z*z
+    return 5*z**4 + 0.5*z
+
+@jit('float64(complex64)', nopython=True)
+def iterate(z):
+    num = 0
+    while abs(f(z)) &gt; 1e-4:
+        w = z - f(z)/df(z)
+        num += np.exp(-1/abs(w-z))
+        z = w
+    return num
+
+imgsize = 600
+y, x = np.ogrid[1: -1: imgsize*2j, -1: 1: imgsize*2j]
+z = x + y * 1j
+img = np.frompyfunc(iterate, 1, 1)(z).astype(np.float)
+fig = plt.figure(figsize=(imgsize/100.0, imgsize/100.0), dpi=100)
+ax = fig.add_axes([0, 0, 1, 1], aspect=1)
+ax.axis('off')
+ax.imshow(img, cmap='hot')
+fig.savefig('newton.jpg')
+</code></pre>
+
+<p><img alt="" src="http://wx4.sinaimg.cn/large/006HJ6Ndly1g57vuwkfx8j30go0goq7r.jpg" /></p>
+<h2 id="_4">洛伦茨吸引子</h2>
+<p>含时间参数的形式:</p>
+<div>
+<div class="MathJax_Preview">
+\begin{cases}
+    &amp; \frac{dx(t)}{dt}=\sigma(y(t)-x(t)) \\
+    &amp; \frac{dy(t)}{dt}=\rho x(t)-y(t)-x(t)z(t) \\
+    &amp; \frac{dz(t)}{dt}=x(t)y(t)-\beta z(t)
+\end{cases}
+</div>
+<script type="math/tex; mode=display">
+\begin{cases}
+    & \frac{dx(t)}{dt}=\sigma(y(t)-x(t)) \\
+    & \frac{dy(t)}{dt}=\rho x(t)-y(t)-x(t)z(t) \\
+    & \frac{dz(t)}{dt}=x(t)y(t)-\beta z(t)
+\end{cases}
+</script>
+</div>
+<p><span><span class="MathJax_Preview">\sigma</span><script type="math/tex">\sigma</script></span>称为普兰特尔数,<span><span class="MathJax_Preview">\rho</span><script type="math/tex">\rho</script></span> 称为瑞利数。所有的<span><span class="MathJax_Preview">\sigma,\rho,\beta&gt;0</span><script type="math/tex">\sigma,\rho,\beta>0</script></span>,但通常<span><span class="MathJax_Preview">\sigma=10,\beta=8/3,\rho</span><script type="math/tex">\sigma=10,\beta=8/3,\rho</script></span>不定。若<span><span class="MathJax_Preview">\rho&lt;1</span><script type="math/tex">\rho<1</script></span>,则吸引子为原点,没有任何其他稳定点。<span><span class="MathJax_Preview">1≤\rho&lt;13.927</span><script type="math/tex">1≤\rho<13.927</script></span>时,螺线轨迹接近两点(这相当于存在阻尼振子),两点的位置由下列式子决定:<span><span class="MathJax_Preview">x=\pm \sqrt{b(\rho-1)},y=\pm \sqrt{b(\rho-1)}、z=\rho-1</span><script type="math/tex">x=\pm \sqrt{b(\rho-1)},y=\pm \sqrt{b(\rho-1)}、z=\rho-1</script></span> 。</p>
+<p><code>python</code>代码:</p>
+<pre><code class="python">import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib.animation import FuncAnimation
+from scipy.integrate import odeint
+from mpl_toolkits.mplot3d import Axes3D
+
+# number of particles.
+num_particles = 20
+
+# constants for Lorenz system.
+alpha, beta,gamma = 10.0, 8/3.0, 28.0
+
+def derivative(point, t):
+    # return the tangent direction at (x,y,z)
+    x, y, z = point
+    return [alpha * (y - x),x * (gamma - z) - y,x * y - beta * z]
+
+fig = plt.figure(figsize=(6.4, 4.8), dpi=100)
+ax = fig.add_axes([0, 0, 1, 1], projection='3d', xlim=(-25, 25), ylim=(-35, 35), zlim=(5, 55))
+ax.view_init(30, 0)
+ax.axis('off')
+
+lines, points = [], []
+colors = plt.cm.gist_ncar(np.linspace(0, 1, num_particles))
+
+for c in colors:
+    lines.extend(ax.plot([], [], '-', c=c))
+    points.extend(ax.plot([], [], 'o', c=c))
+
+x0 = -15 + 30 * np.random.random((num_particles, 3))
+t = np.linspace(0, 40, 10001)
+x_t = np.array([odeint(derivative, point, t) for point in x0])
+
+def init():
+    for line, point in zip(lines, points):
+        line.set_data([], [])
+        line.set_3d_properties([])
+
+        point.set_data([], [])
+        point.set_3d_properties([])
+    return lines + points
+
+def animate(i):
+    i = 2*i % x_t.shape[1]  # accelarate the animation.
+
+    for line, point, x_j in zip(lines, points, x_t):
+        x, y, z = x_j[:i].T
+        line.set_data(x, y)
+        line.set_3d_properties(z)
+
+        # note that plot() receives a list parameter so we have
+        # to write x[-1:] instead of x[-1]!
+        point.set_data(x[-1:], y[-1:])
+        point.set_3d_properties(z[-1:])
+
+    ax.view_init(30, 0.3*i)
+    fig.canvas.draw()
+    return lines + points
+
+
+anim = FuncAnimation(fig, animate, init_func=init, interval=20, frames=2000, blit=True)
+anim.save('lorenz.mp4', writer='ffmpeg', fps=30, dpi=200,bitrate=1000, codec='libx264', extra_args=['-crf', '10'])
+</code></pre>
+
+<video src="../media/000f38c7lx07vGmvENUs01041200Dbzo0E010.mp4" width="600px" controls></video>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    <br>
+</div>
+
+</body>
+</html>
