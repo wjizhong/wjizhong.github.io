@@ -303,7 +303,7 @@ print(I[-5:])
 
 > 统一数据很难索引,因为没有可用于聚类或降低维度的规律性
 > 
-> 对于自然数据，语义最近邻居通常比不相关的结果更接近。
+> 对于自然数据,语义最近邻居通常比不相关的结果更接近。
 
 * **简化索引构建**
 
@@ -324,7 +324,7 @@ res = faiss.StandardGpuResources()  # use a single GPU
 index_flat = faiss.IndexFlatL2(d)
 # make it into a gpu index
 gpu_index_flat = faiss.index_cpu_to_gpu(res, 0, index_flat)
-# 多个索引可以使用单个GPU资源对象，只要它们不发出并发查询即可。
+# 多个索引可以使用单个GPU资源对象,只要它们不发出并发查询即可。
 # 获得的GPU索引可以与CPU索引完全相同的方式使用:
 gpu_index_flat.add(xb)         # add vectors to the index
 print(gpu_index_flat.ntotal)
@@ -515,90 +515,77 @@ $$
 ![](http://img-blog.csdn.net/20151218100903780)
 
 上图中主要涉及三个过程,coarse quantizer,product quantizer和append to inverted list。
-> * coarse quantizer
 
-对数据库中的所有特征采用K-means聚类,得到粗糙量化的类中心,比如聚类成1024类,并记录每个类的样本数和各个样本所属的类别,这个类中心的个数就是inverted list的个数,把所有类中心保存到一张表中,叫coarse_cluster表,表中每项是d维。
+> * **coarse quantizer** :对数据库中的所有特征采用K-means聚类,得到粗糙量化的类中心,比如聚类成1024类,并记录每个类的样本数和各个样本所属的类别,这个类中心的个数就是inverted list的个数,把所有类中心保存到一张表中,叫`coarse_cluster`表,表中每项是d维。
 
-> * product quantizer
+> * **product quantizer** :计算y的余量$r(y)=y-q_c(y)$,用y减去y的粗糙量化的结果得到$r(y)$。r(y)维数与y一样,然后对所有r(y)的特征分成m组,采用乘积量化,每组内仍然使用k-means聚类,这时结果是一个m维数的向量,这就是上篇文章中提到的内容。把所有的乘积量化结果保存到一个表中,叫`pq_centroids`表,表中每项是m维
 
-计算y的余量$r(y)=y-q_c(y)$,用y减去y的粗糙量化的结果得到$r(y)$。r(y)维数与y一样,然后对所有r(y)的特征分成m组,采用乘积量化,每组内仍然使用k-means聚类,这时结果是一个m维数的向量,这就是上篇文章中提到的内容。把所有的乘积量化结果保存到一个表中,叫pq_centroids表,表中每项是m维
-
-> * **append to inverted list**
-
-前面的操作中记录下y在coarse_cluster表的索引i,在pq_centroids表中的索引j,那么插入inverted list时,把(id,j)插入到第i个倒排索引中,id是y的标识符,比如文件名。list的长度就是属于第i类的样本y的数目,处理不等长list有些技巧。
+> * **append to inverted list** :前面的操作中记录下y在`coarse_cluster`表的索引i,在`pq_centroids`表中的索引j,那么插入inverted list时,把(id,j)插入到第i个倒排索引中,id是y的标识符,比如文件名。list的长度就是属于第i类的样本y的数目,处理不等长list有些技巧。
 
 * **基于IVFADC的搜索**
 
 检索过程如下:
 
-![](http://img-blog.csdn.net/20151218103655086)
+<img src="http://img-blog.csdn.net/20151218103655086" style="width:60%" />
 
 主要包括四个操作:
 
-> * 粗糙量化
+> * **粗糙量化** :对查询图像x的特征进行粗糙量化,即采用KNN方法将x分到某个类或某几个类,分到几个类的话叫做multiple assignment,过程同对数据集中的y分类差不多。
 
-对查询图像x的特征进行粗糙量化,即采用KNN方法将x分到某个类或某几个类,分到几个类的话叫做multiple assignment,过程同对数据集中的y分类差不多。
+> * **计算余量** :计算x的余量r(x)。
 
-> * 计算余量
+> * **计算d(x,y)** :对r(x)分组,计算每组中r(x)的特征子集到`pq_centroids`的距离。根据ADC的技巧,计算x与y的距离可以用计算x与q(y)的距离,而q(y)就是`pq_centroids`表中的某项,因此已经得到了x到y的近似距离。
 
-计算x的余量r(x)。
-
-> * 计算d(x,y)
-
-对r(x)分组,计算每组中r(x)的特征子集到pq_centroids的距离。根据ADC的技巧,计算x与y的距离可以用计算x与q(y)的距离,而q(y)就是pq_centroids表中的某项,因此已经得到了x到y的近似距离。
-
-> * 最大堆排序
-
-堆中每个元素代表数据库中y与x的距离,堆顶元素的距离最大,只要是比堆顶元素小的元素,代替堆顶元素,调整堆,直到判断完所有的y。
+> * **最大堆排序** :堆中每个元素代表数据库中y与x的距离,堆顶元素的距离最大,只要是比堆顶元素小的元素,代替堆顶元素,调整堆,直到判断完所有的y。
 
 数学语言:
 
 $$
 \begin{aligned}
-& r(y)=y-q_c(y) \\
-& y\approx q_c(y) + q_p(r(y)) \\
-& x=q_c(x) + r(x) \\
-& \|x-y\|=\|q_c(x) + r(x) -q_c(y) -q_p(r(y))\| = \|r(x)-q_p(r(y))\|  \\
-& answer = \min_{\{y|q_c(y)=q_c(x)\}} \|x-y\|
+    & r(y)=y-q_c(y) \\
+    & y\approx q_c(y) + q_p(r(y)) \\
+    & x=q_c(x) + r(x) \\
+    & \|x-y\|=\|q_c(x) + r(x) -q_c(y) -q_p(r(y))\| = \|r(x)-q_p(r(y))\|  \\
+    & answer = \min_{\{y|q_c(y)=q_c(x)\}} \|x-y\|
 \end{aligned}
 $$
 
-![](http://img-blog.csdn.net/20151218105910378)
+<img src="http://img-blog.csdn.net/20151218105910378" style="width:40%" />
 
 * **PQ算法实例**
 
-假设有50,000张图片组成的图片集，使用 CNN 提取特征后，每张图片可以由1024维的特征表示。那么整个图片集由50000*1024的向量来表示。如下图。
+假设有50,000张图片组成的图片集,使用 CNN 提取特征后,每张图片可以由1024维的特征表示。那么整个图片集由`50000*1024`的向量来表示。如下图。
 
-![](https://i.typcdn.com/fabwrite/0u/FGZaUH_FpRdhEIdKVmqA.png)
+<img src="http://i.typcdn.com/fabwrite/0u/FGZaUH_FpRdhEIdKVmqA.png" style="width:30%" />
 
-然后我们把1024维的向量平均分成m=8个子向量，每组子向量128维。如下图。
+然后我们把1024维的向量平均分成m=8个子向量,每组子向量128维。如下图。
 
-![](https://i.typcdn.com/fabwrite/5G/GGjYfyGzybfnchgieepw.png)
+<img src="http://i.typcdn.com/fabwrite/5G/GGjYfyGzybfnchgieepw.png" style="width:30%" />
 
-对于这8组子向量的每组子向量，使用 kmeans 方法聚成k=256类。也就是说，每个子向量有256个中心点(centroids)。如下图。
+对于这8组子向量的每组子向量,使用kmeans方法聚成k=256类。也就是说,每个子向量有256个中心点(centroids)。如下图。
 
 
 ![](https://i.typcdn.com/fabwrite/NM/ZL0fPpntjxi3pzrQirdw.png)
 
-在product quantization方法中，这256个中心点构成一个码本。这些码本的笛卡尔积就是原始D维向量对应的码本。用$q_j$表示第$j$组子向量，用$C_j$表示其对应学习到的码本，那么原始D维向量对应的码本就是
+在product quantization方法中,这256个中心点构成一个码本。这些码本的笛卡尔积就是原始D维向量对应的码本。用$q_j$表示第$j$组子向量,用$C_j$表示其对应学习到的码本,那么原始D维向量对应的码本就是
 $C=C_1×C_2×\dots ×C_m$,码本大小为$k^m$。
 
-注意到每组子向量有其256个中心点，我们可以中心点的 ID 来表示每组子向量中的每个向量。中心点的ID只需要8位(=$log_2 256$)来保存即可。这样，初始一个由32位浮点数组成的1,024维向量，可以转化为8个8位整数组成。如下图。
+注意到每组子向量有其256个中心点,我们可以中心点的 ID 来表示每组子向量中的每个向量。中心点的ID只需要8位(=$log_2 256$)来保存即可。这样,初始一个由32位浮点数组成的1,024维向量,可以转化为8个8位整数组成。如下图。
 
 ![](https://i.typcdn.com/fabwrite/c5/L56k1gZ7ZumryJrAfzzw.png)
 
 
-对向量压缩后，有2种方法作相似搜索。一种是SDC(symmetric distance computation)，另一种是ADC(asymmetric distance computation)。SDC算法和ADC算法的区别在于是否要对查询向量x做量化，参见公式1和公式2。如下图所示，x是查询向量(query vector)，y是数据集中的某个向量，目标是要在数据集中找到x的相似向量。
+对向量压缩后,有2种方法作相似搜索。一种是SDC(symmetric distance computation),另一种是ADC(asymmetric distance computation)。SDC算法和ADC算法的区别在于是否要对查询向量x做量化,参见公式1和公式2。如下图所示,x是查询向量(query vector),y是数据集中的某个向量,目标是要在数据集中找到x的相似向量。
 
 ![](https://i.typcdn.com/fabwrite/9v/LJlnKOiKCtDH1DN90YKQ.png)
 
-> * SDC算法：先用PQ量化器对x和y表示为对应的中心点q(x)和q(y)，然后用公式1来近似d(x,y)。这里 q 表示 PQ量化过程。
+> * SDC算法：先用PQ量化器对x和y表示为对应的中心点q(x)和q(y),然后用公式1来近似d(x,y)。这里 q 表示 PQ量化过程。
 
 $$
 \hat{d}(x,y)=d(q(x),q(y))=\sqrt{\sum_jd(q_j(x),q_j(y))^2} 
 $$
 
-> * ADC算法：只对y表示为对应的中心点q(y)，然后用下述公式来近似d(x,y)。
+> * ADC算法：只对y表示为对应的中心点q(y),然后用下述公式来近似d(x,y)。
 
 $$
 \tilde{d}(x,y)=d(x,q(y))=\sqrt{\sum_jd(u_j(x),q_j(u_j(y)))^2}
