@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%95%B0%E5%AD%A6%E5%86%85%E5%AE%B9/%E5%BC%80%E6%99%AE%E5%8B%92%E5%AE%9A%E5%BE%8B/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>开普勒定律 - 图像/视频算法</title>
+    <link href="../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "\u5f00\u666e\u52d2\u5b9a\u5f8b", url: "#_top", children: [
+              {title: "\u5f00\u666e\u52d2\u5b9a\u5f8b", url: "#_2" },
+              {title: "\u6570\u5b66\u63a8\u5bfc", url: "#_3" },
+          ]},
+        ];
+
+    </script>
+    <script src="../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    
+
+    <h1 id="_1">开普勒定律</h1>
+<p>参考: https://zh.wikipedia.org/wiki/%E6%A4%AD%E5%9C%86</p>
+<p>https://zh.wikipedia.org/wiki/%E5%BC%80%E6%99%AE%E5%8B%92%E5%AE%9A%E5%BE%8B</p>
+<p><img alt="" src="http://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Kepler_laws_diagram.svg/400px-Kepler_laws_diagram.svg.png" /></p>
+<p>图示遵守开普勒行星运动定律的两个行星轨道。(1) 行星轨道是椭圆轨道。第一个行星的轨道焦点是f1与f2,第二个行星的轨道焦点是f1与f3。太阳的位置是在点f1。(2) A1与A2是两个面积相等的阴影区域。太阳与第一个行星的连线,扫过这两个阴影区域,所需的时间相等。(3) 各个行星绕太阳公转周期的比率为<span><span class="MathJax_Preview">a1^{3/2}:a2^{3/2}</span><script type="math/tex">a1^{3/2}:a2^{3/2}</script></span>;这里,a1与a2分别为第一个行星与第二个行星的半长轴长度。</p>
+<p>开普勒定律是由德国天文、数学家约翰尼斯·开普勒所发现、关于行星运动的定律。他于1609年在他出版的《新天文学》科学杂志上发表了关于行星运动的两条定律,又于1618年,发现了第三条定律。</p>
+<p>开普勒幸运地得到了著名丹麦天文学家第谷·布拉赫所观察与收集、且非常精确的天文资料。大约于1605年,根据布拉赫的行星位置资料,开普勒发现行星的移动遵守着三条相当简单的定律。同年年底,他撰写完成了发表文稿。但是,直到1609年,才在《新天文学》科学杂志发表,这是因为布拉赫的观察数据属于他的继承人,不能随便让别人使用,因此产生的一些法律纠纷造成了延迟。</p>
+<p>在天文学与物理学上、开普勒的定律给予亚里士多德派与托勒密派极大的挑战。他主张地球是不断地移动的;行星轨道不是圆形(epicycle)的,而是椭圆形的;行星公转的速度不等恒。这些论点,大大地动摇了当时的天文学与物理学。经过几乎一个世纪的研究,物理学家终于能够运用物理理论解释原理。牛顿应用他的第二定律和万有引力定律,在数学上严格地证明了开普勒定律,也让人了解了其中的物理意义。</p>
+<h2 id="_2">开普勒定律</h2>
+<p>开普勒的三条行星运动定律改变了整个天文学,彻底摧毁了托勒密复杂的宇宙体系,完善并简化了哥白尼的日心说。</p>
+<p><strong>开普勒第一定律:</strong> 根据开普勒第一定律,太阳位于椭圆轨道的一个焦点。开普勒的第一定律,也称为椭圆定律、轨道定律:每一个行星都沿各自的椭圆轨道环绕太阳,而太阳则处在椭圆的一个焦点中。</p>
+<p><strong>开普勒第二定律</strong>根据开普勒第二定律,在同样时间间隔内,行星绕着太阳公转所扫过的面积相等。开普勒第二定律,也称为等面积定律:在相等时间内,太阳和运动着的行星的连线所扫过的面积都是相等的。</p>
+<p>这一定律实际揭示了行星绕太阳公转的角动量守恒。用公式表示为</p>
+<div>
+<div class="MathJax_Preview">
+S_{{AB}}=S_{{CD}}=S_{{EK}} 。
+</div>
+<script type="math/tex; mode=display">
+S_{{AB}}=S_{{CD}}=S_{{EK}} 。
+</script>
+</div>
+<p><strong>开普勒第三定律:</strong> 根据开普勒第三定律,行星绕着太阳公转的周期平方和它们的椭圆轨道的半长轴立方成正比。开普勒第三定律,也称为周期定律:各个行星绕太阳公转周期的平方和它们的椭圆轨道的半长轴的立方成正比。</p>
+<p>由这一定律不难导出:行星与太阳之间的引力与半径的平方成反比。这是艾萨克·牛顿的万有引力定律的一个重要基础。用公式表示为</p>
+<p>$$
+{\frac  {\tau ^{2}}{a^{3}}}=K ;
+$$
+这里,<span><span class="MathJax_Preview">a</span><script type="math/tex">a</script></span>是行星公转轨道半长轴,<span><span class="MathJax_Preview">\tau</span><script type="math/tex">\tau</script></span>是行星公转周期,<span><span class="MathJax_Preview">K</span><script type="math/tex">K</script></span>是常数。</p>
+<h2 id="_3">数学推导</h2>
+<p>开普勒定律描述的是行星围绕太阳的运动,牛顿定律可以更广义地描述几个粒子因万有引力相互吸引而形成的运动。假设只有两个粒子,其中一个粒子超轻于另外一个粒子,则轻的粒子会绕着重的粒子运动,就好似行星根据开普勒定律绕著太阳运动。另外,牛顿定律还可计算出关于其它方面的解答,行星轨道可以呈抛物线运动或双曲线运动。这是开普勒定律所无法预测到的结果。在一个粒子并不超轻于另外一个粒子的状况下,依照<a href="https://zh.wikipedia.org/wiki/%E4%BA%8C%E9%AB%94%E5%95%8F%E9%A1%8C">广义二体问题</a>的解答,每一个粒子会绕着它们的共同质心运动。这也是开普勒定律无法预测到的。</p>
+<p>开普勒定律使用几何语言将行星的坐标及时间跟轨道参数相连结。牛顿第二定律是一个微分方程。开普勒定律的推导涉及一些解析微分方程的技巧。在推导开普勒第一定律之前,必须先推导出开普勒第二定律,因为开普勒第一定律需要用到开普勒第二定律里的一些计算结果。</p>
+<ul>
+<li><strong>开普勒第二定律推导</strong></li>
+</ul>
+<p>牛顿万有引力定律表明,任意两个粒子由通过连线方向的力相互吸引。该引力的的大小与它们的质量乘积成正比,与它们距离的平方成反比。由于太阳超重于行星,可以假设太阳是固定的。用方程表示,</p>
+<div>
+<div class="MathJax_Preview">
+{\boldsymbol  {F}}=-G{\frac  {mM}{r^{2}}}\ {\hat  {{\boldsymbol  {r}}}} ;
+</div>
+<script type="math/tex; mode=display">
+{\boldsymbol  {F}}=-G{\frac  {mM}{r^{2}}}\ {\hat  {{\boldsymbol  {r}}}} ;
+</script>
+</div>
+<p>这里,<span><span class="MathJax_Preview">{\boldsymbol  {F}}</span><script type="math/tex">{\boldsymbol  {F}}</script></span>是太阳作用于行星的万有引力,<span><span class="MathJax_Preview">m</span><script type="math/tex">m</script></span>是行星的质量,<span><span class="MathJax_Preview">M</span><script type="math/tex">M</script></span>是太阳的质量,<span><span class="MathJax_Preview">{\boldsymbol  {r}}</span><script type="math/tex">{\boldsymbol  {r}}</script></span>是行星相对于太阳的位移矢量,<span><span class="MathJax_Preview">\hat{\boldsymbol{r}}</span><script type="math/tex">\hat{\boldsymbol{r}}</script></span>是<span><span class="MathJax_Preview">{\boldsymbol {r}}</span><script type="math/tex">{\boldsymbol {r}}</script></span>的单位矢量。</p>
+<p>牛顿第二定律表明,物体受力后所产生的加速度<span><span class="MathJax_Preview">{\ddot  {{\boldsymbol {r}}}}</span><script type="math/tex">{\ddot  {{\boldsymbol {r}}}}</script></span>,和其所受的合力<span><span class="MathJax_Preview">{\boldsymbol {F}}</span><script type="math/tex">{\boldsymbol {F}}</script></span> 成正比,和其质量<span><span class="MathJax_Preview">m</span><script type="math/tex">m</script></span>成反比,以方程表示:</p>
+<div>
+<div class="MathJax_Preview">
+{\boldsymbol  {F}}=m{\ddot  {{\boldsymbol  {r}}}} 。
+</div>
+<script type="math/tex; mode=display">
+{\boldsymbol  {F}}=m{\ddot  {{\boldsymbol  {r}}}} 。
+</script>
+</div>
+<p>合并这两个方程,</p>
+<div>
+<div class="MathJax_Preview">
+{\ddot  {{\boldsymbol  {r}}}}=-G{\frac  {M}{r^{2}}}\ {\hat  {{\boldsymbol  {r}}}} \tag{1}
+</div>
+<script type="math/tex; mode=display">
+{\ddot  {{\boldsymbol  {r}}}}=-G{\frac  {M}{r^{2}}}\ {\hat  {{\boldsymbol  {r}}}} \tag{1}
+</script>
+</div>
+<p>思考位置矢量<span><span class="MathJax_Preview">{\boldsymbol  {r}}=r{\hat  {{\boldsymbol  {r}}}}</span><script type="math/tex">{\boldsymbol  {r}}=r{\hat  {{\boldsymbol  {r}}}}</script></span>,对于时间<span><span class="MathJax_Preview">t</span><script type="math/tex">t</script></span>微分一次可得到速度矢量,再微分一次则可得到加速度矢量:</p>
+<div>
+<div class="MathJax_Preview">
+\begin{aligned}
+&amp; {\dot  {{\boldsymbol  {r}}}}={\dot  {r}}{\hat  {{\boldsymbol  {r}}}}+r{\dot  {\theta }}{\hat  {{\boldsymbol  {\theta }}}} \\
+&amp; {\ddot  {{\boldsymbol  {r}}}}=\left({\ddot  {r}}{\hat  {{\boldsymbol  {r}}}}+{\dot  {r}}{\frac  {{\mathrm  {d}}{\hat  {{\boldsymbol  {r}}}}}{{\mathrm  {d}}t}}\right)+\left({\dot  {r}}{\dot  {\theta }}{\hat  {{\boldsymbol  {\theta }}}}+r{\ddot  {\theta }}{\hat  {{\boldsymbol  {\theta }}}}+r{\dot  {\theta }}{\frac  {{\mathrm  {d}}{\hat  {{\boldsymbol  {\theta }}}}}{{\mathrm  {d}}t}}\right)=({\ddot  {r}}-r{\dot  {\theta }}^{2}){\hat  {{\boldsymbol  {r}}}}+(r{\ddot  {\theta }}+2{\dot  {r}}{\dot  {\theta }}){\hat  {{\boldsymbol  {\theta }}}} 
+\end{aligned} \tag{2}
+</div>
+<script type="math/tex; mode=display">
+\begin{aligned}
+& {\dot  {{\boldsymbol  {r}}}}={\dot  {r}}{\hat  {{\boldsymbol  {r}}}}+r{\dot  {\theta }}{\hat  {{\boldsymbol  {\theta }}}} \\
+& {\ddot  {{\boldsymbol  {r}}}}=\left({\ddot  {r}}{\hat  {{\boldsymbol  {r}}}}+{\dot  {r}}{\frac  {{\mathrm  {d}}{\hat  {{\boldsymbol  {r}}}}}{{\mathrm  {d}}t}}\right)+\left({\dot  {r}}{\dot  {\theta }}{\hat  {{\boldsymbol  {\theta }}}}+r{\ddot  {\theta }}{\hat  {{\boldsymbol  {\theta }}}}+r{\dot  {\theta }}{\frac  {{\mathrm  {d}}{\hat  {{\boldsymbol  {\theta }}}}}{{\mathrm  {d}}t}}\right)=({\ddot  {r}}-r{\dot  {\theta }}^{2}){\hat  {{\boldsymbol  {r}}}}+(r{\ddot  {\theta }}+2{\dot  {r}}{\dot  {\theta }}){\hat  {{\boldsymbol  {\theta }}}} 
+\end{aligned} \tag{2}
+</script>
+</div>
+<p>在这里,用到了单位矢量微分方程:</p>
+<div>
+<div class="MathJax_Preview">
+\begin{aligned}
+&amp; {\frac  {{\mathrm  {d}}{\hat  {{\boldsymbol  {r}}}}}{{\mathrm  {d}}t}}={\dot  {\theta }}{\hat  {{\boldsymbol  {\theta }}}} , \\
+&amp; {\frac  {{\mathrm  {d}}{\hat  {{\boldsymbol  {\theta }}}}}{{\mathrm  {d}}t}}=-{\dot  {\theta }}{\hat  {{\boldsymbol  {r}}}} 。
+\end{aligned}
+</div>
+<script type="math/tex; mode=display">
+\begin{aligned}
+& {\frac  {{\mathrm  {d}}{\hat  {{\boldsymbol  {r}}}}}{{\mathrm  {d}}t}}={\dot  {\theta }}{\hat  {{\boldsymbol  {\theta }}}} , \\
+& {\frac  {{\mathrm  {d}}{\hat  {{\boldsymbol  {\theta }}}}}{{\mathrm  {d}}t}}=-{\dot  {\theta }}{\hat  {{\boldsymbol  {r}}}} 。
+\end{aligned}
+</script>
+</div>
+<p>合并方程(1)与(2),可以得到矢量运动方程:</p>
+<p>$$
+({\ddot  {r}}-r{\dot  {\theta }}^{2}){\hat  {{\boldsymbol  {r}}}}+(r{\ddot  {\theta }}+2{\dot  {r}}{\dot  {\theta }}){\hat  {{\boldsymbol  {\theta }}}}=-{\frac  {GM}{r^{2}}}{\hat  {{\boldsymbol  {r}}}}
+$$
+取各个分量,可以得到两个常微分方程,一个是关于径向加速度,另一个是关于切向加速度:</p>
+<div>
+<div class="MathJax_Preview">
+\begin{aligned}
+&amp; {\ddot  {r}}-r{\dot  {\theta }}^{2}=-{\frac  {GM}{r^{2}}}  \\
+&amp; r{\ddot  {\theta }}+2{\dot  {r}}{\dot  {\theta }}=0 
+\end{aligned}
+</div>
+<script type="math/tex; mode=display">
+\begin{aligned}
+& {\ddot  {r}}-r{\dot  {\theta }}^{2}=-{\frac  {GM}{r^{2}}}  \\
+& r{\ddot  {\theta }}+2{\dot  {r}}{\dot  {\theta }}=0 
+\end{aligned}
+</script>
+</div>
+<p>导引开普勒第二定律只需切向加速度方程。试想行星的角动量<span><span class="MathJax_Preview">\ell =mr^{2}{\dot  {\theta }}</span><script type="math/tex">\ell =mr^{2}{\dot  {\theta }}</script></span>。由于行星的质量是常数,角动量对于时间的导数为</p>
+<div>
+<div class="MathJax_Preview">
+{\dot  {\ell }}=mr(2{\dot  {r}}{\dot  {\theta }}+r{\ddot  {\theta }})=0 。
+</div>
+<script type="math/tex; mode=display">
+{\dot  {\ell }}=mr(2{\dot  {r}}{\dot  {\theta }}+r{\ddot  {\theta }})=0 。
+</script>
+</div>
+<p>角动量<span><span class="MathJax_Preview">\ell</span><script type="math/tex">\ell</script></span>也是一个运动常数,即使距离<span><span class="MathJax_Preview">r</span><script type="math/tex">r</script></span>与角速度<span><span class="MathJax_Preview">{\dot  {\theta }}</span><script type="math/tex">{\dot  {\theta }}</script></span>都可能会随时间变化。</p>
+<p>从时间<span><span class="MathJax_Preview">t_{1}</span><script type="math/tex">t_{1}</script></span>到时间<span><span class="MathJax_Preview">t_{2}</span><script type="math/tex">t_{2}</script></span>扫过的区域<span><span class="MathJax_Preview">\Delta A</span><script type="math/tex">\Delta A</script></span>,</p>
+<div>
+<div class="MathJax_Preview">
+\Delta A=\int _{{t_{1}}}^{{t_{2}}}{\frac  {1}{2}}\cdot r\cdot r{\dot  \theta }\cdot {\mathrm  {d}}t=\int _{{t_{1}}}^{{t_{2}}}{\frac  {\ell }{2m}}{\mathrm  {d}}t={\frac  {\ell }{2m}}\cdot (t_{2}-t_{1}) 。
+</div>
+<script type="math/tex; mode=display">
+\Delta A=\int _{{t_{1}}}^{{t_{2}}}{\frac  {1}{2}}\cdot r\cdot r{\dot  \theta }\cdot {\mathrm  {d}}t=\int _{{t_{1}}}^{{t_{2}}}{\frac  {\ell }{2m}}{\mathrm  {d}}t={\frac  {\ell }{2m}}\cdot (t_{2}-t_{1}) 。
+</script>
+</div>
+<p>行星太阳连线扫过的区域面积相依于间隔时间<span><span class="MathJax_Preview">t_{2}-t_{1}</span><script type="math/tex">t_{2}-t_{1}</script></span>。所以,开普勒第二定律是正确的。</p>
+<ul>
+<li><strong>开普勒第一定律推导</strong></li>
+</ul>
+<p>设定<span><span class="MathJax_Preview">u={\frac  {1}{r}}</span><script type="math/tex">u={\frac  {1}{r}}</script></span>。这样,角速度是</p>
+<div>
+<div class="MathJax_Preview">
+{\dot  {\theta }}={\frac  {\ell }{mr^{2}}}={\frac  {\ell u^{2}}{m}} 。
+</div>
+<script type="math/tex; mode=display">
+{\dot  {\theta }}={\frac  {\ell }{mr^{2}}}={\frac  {\ell u^{2}}{m}} 。
+</script>
+</div>
+<p>对时间微分和对角度微分有如下关系：</p>
+<div>
+<div class="MathJax_Preview">
+{\frac  {{\mathrm  {d}}}{{\mathrm  {d}}t}}={\dot  {\theta }}{\frac  {{\mathrm  {d}}}{{\mathrm  {d}}\theta }}={\frac  {\ell u^{2}}{m}}{\frac  {{\mathrm  {d}}}{{\mathrm  {d}}\theta }} 。
+</div>
+<script type="math/tex; mode=display">
+{\frac  {{\mathrm  {d}}}{{\mathrm  {d}}t}}={\dot  {\theta }}{\frac  {{\mathrm  {d}}}{{\mathrm  {d}}\theta }}={\frac  {\ell u^{2}}{m}}{\frac  {{\mathrm  {d}}}{{\mathrm  {d}}\theta }} 。
+</script>
+</div>
+<p>根据上述关系,径向距离<span><span class="MathJax_Preview">r={\frac  {1}{u}}</span><script type="math/tex">r={\frac  {1}{u}}</script></span>对时间的导数为:</p>
+<div>
+<div class="MathJax_Preview">
+{\dot  {r}}={\frac  {\ell u^{2}}{m}}{\frac  {{\mathrm  {d}}}{{\mathrm  {d}}\theta }}{\frac  {1}{u}}=-{\frac  {\ell u^{2}}{m}}{\frac  {1}{u^{2}}}{\frac  {{\mathrm  {d}}u}{{\mathrm  {d}}\theta }}=-{\frac  {\ell }{m}}{\frac  {{\mathrm  {d}}u}{{\mathrm  {d}}\theta }} 。
+</div>
+<script type="math/tex; mode=display">
+{\dot  {r}}={\frac  {\ell u^{2}}{m}}{\frac  {{\mathrm  {d}}}{{\mathrm  {d}}\theta }}{\frac  {1}{u}}=-{\frac  {\ell u^{2}}{m}}{\frac  {1}{u^{2}}}{\frac  {{\mathrm  {d}}u}{{\mathrm  {d}}\theta }}=-{\frac  {\ell }{m}}{\frac  {{\mathrm  {d}}u}{{\mathrm  {d}}\theta }} 。
+</script>
+</div>
+<p>再求一次导数:</p>
+<div>
+<div class="MathJax_Preview">
+{\ddot  {r}}={\frac  {\ell u^{2}}{m}}{\frac  {{\mathrm  {d}}{\dot  {r}}}{{\mathrm  {d}}\theta }}={\frac  {\ell u^{2}}{m}}{\frac  {{\mathrm  {d}}}{{\mathrm  {d}}\theta }}(-{\frac  {\ell }{m}}{\frac  {{\mathrm  {d}}u}{{\mathrm  {d}}\theta }})=-{\frac  {\ell ^{2}u^{2}}{m^{2}}}{\frac  {{\mathrm  {d}}^{2}u}{{\mathrm  {d}}\theta ^{2}}} 。
+</div>
+<script type="math/tex; mode=display">
+{\ddot  {r}}={\frac  {\ell u^{2}}{m}}{\frac  {{\mathrm  {d}}{\dot  {r}}}{{\mathrm  {d}}\theta }}={\frac  {\ell u^{2}}{m}}{\frac  {{\mathrm  {d}}}{{\mathrm  {d}}\theta }}(-{\frac  {\ell }{m}}{\frac  {{\mathrm  {d}}u}{{\mathrm  {d}}\theta }})=-{\frac  {\ell ^{2}u^{2}}{m^{2}}}{\frac  {{\mathrm  {d}}^{2}u}{{\mathrm  {d}}\theta ^{2}}} 。
+</script>
+</div>
+<p>代入径向运动方程(3),<span><span class="MathJax_Preview">{\ddot  {r}}-r{\dot  {\theta }}^{2}=-{\frac  {GM}{r^{2}}}</span><script type="math/tex">{\ddot  {r}}-r{\dot  {\theta }}^{2}=-{\frac  {GM}{r^{2}}}</script></span>,</p>
+<div>
+<div class="MathJax_Preview">
+-{\frac  {\ell ^{2}u^{2}}{m^{2}}}{\frac  {{\mathrm  {d}}^{2}u}{{\mathrm  {d}}\theta ^{2}}}-{\frac  {\ell ^{2}u^{3}}{m^{2}}}=-GMu^{2} 。
+</div>
+<script type="math/tex; mode=display">
+-{\frac  {\ell ^{2}u^{2}}{m^{2}}}{\frac  {{\mathrm  {d}}^{2}u}{{\mathrm  {d}}\theta ^{2}}}-{\frac  {\ell ^{2}u^{3}}{m^{2}}}=-GMu^{2} 。
+</script>
+</div>
+<p>将此方程除以<span><span class="MathJax_Preview">-{\frac  {\ell ^{2}u^{2}}{m^{2}}}</span><script type="math/tex">-{\frac  {\ell ^{2}u^{2}}{m^{2}}}</script></span>,则可得到一个简单的常系数非齐次线性全微分方程来描述行星轨道:</p>
+<div>
+<div class="MathJax_Preview">
+{\frac  {{\mathrm  {d}}^{2}u}{{\mathrm  {d}}\theta ^{2}}}+u={\frac  {GMm^{2}}{\ell ^{2}}} 。
+</div>
+<script type="math/tex; mode=display">
+{\frac  {{\mathrm  {d}}^{2}u}{{\mathrm  {d}}\theta ^{2}}}+u={\frac  {GMm^{2}}{\ell ^{2}}} 。
+</script>
+</div>
+<p>为了解这个微分方程,先列出一个特解</p>
+<div>
+<div class="MathJax_Preview">
+u={\frac  {GMm^{2}}{\ell ^{2}}} 。
+</div>
+<script type="math/tex; mode=display">
+u={\frac  {GMm^{2}}{\ell ^{2}}} 。
+</script>
+</div>
+<p>再求解剩余的常系数齐次线性全微分方程,</p>
+<div>
+<div class="MathJax_Preview">
+{\frac  {{\mathrm  {d}}^{2}u}{{\mathrm  {d}}\theta ^{2}}}+u=0 。
+</div>
+<script type="math/tex; mode=display">
+{\frac  {{\mathrm  {d}}^{2}u}{{\mathrm  {d}}\theta ^{2}}}+u=0 。
+</script>
+</div>
+<p>它的解为</p>
+<div>
+<div class="MathJax_Preview">
+u=C\ \cos(\theta -\theta _{0}) ;
+</div>
+<script type="math/tex; mode=display">
+u=C\ \cos(\theta -\theta _{0}) ;
+</script>
+</div>
+<p>这里,<span><span class="MathJax_Preview">C</span><script type="math/tex">C</script></span>与<span><span class="MathJax_Preview">\theta _{0}</span><script type="math/tex">\theta _{0}</script></span>是常数。合并特解和与齐次方程解,可以得到通解</p>
+<div>
+<div class="MathJax_Preview">
+u={\frac  {GMm^{2}}{\ell ^{2}}}+C\ \cos(\theta -\theta _{0}) 。
+</div>
+<script type="math/tex; mode=display">
+u={\frac  {GMm^{2}}{\ell ^{2}}}+C\ \cos(\theta -\theta _{0}) 。
+</script>
+</div>
+<p>选择坐标轴,让<span><span class="MathJax_Preview">\theta _{0}=0</span><script type="math/tex">\theta _{0}=0</script></span>。代回<span><span class="MathJax_Preview">u={\frac  {1}{r}}</span><script type="math/tex">u={\frac  {1}{r}}</script></span>,</p>
+<div>
+<div class="MathJax_Preview">
+{\frac  {1}{r}}={\frac  {GMm^{2}}{\ell ^{2}}}(1+e\ \cos {\theta }) ;
+</div>
+<script type="math/tex; mode=display">
+{\frac  {1}{r}}={\frac  {GMm^{2}}{\ell ^{2}}}(1+e\ \cos {\theta }) ;
+</script>
+</div>
+<p>其中,<span><span class="MathJax_Preview">e=C\ell ^{2}/GMm^{2}</span><script type="math/tex">e=C\ell ^{2}/GMm^{2}</script></span>是离心率。</p>
+<p>这是圆锥曲线的极坐标方程,坐标系的原点是圆锥曲线的焦点之一。假若<span><span class="MathJax_Preview">0&lt;e&lt;1</span><script type="math/tex">0<e<1</script></span>,则<span><span class="MathJax_Preview">r</span><script type="math/tex">r</script></span>所描述的是椭圆轨道。这证明了开普勒第一定律。</p>
+<ul>
+<li><strong>开普勒第三定律推导</strong></li>
+</ul>
+<p>在建立牛顿万有引力定律的概念与数学架构上,开普勒第三定律是牛顿依据的重要线索之一。假若接受牛顿运动定律。试想一个虚拟行星环绕着太阳公转,行星的移动轨道恰巧呈圆形,轨道半径为<span><span class="MathJax_Preview">r</span><script type="math/tex">r</script></span>。那么,太阳作用于行星的万有引力为<span><span class="MathJax_Preview">F={\frac  {mv^{2}}{r}}</span><script type="math/tex">F={\frac  {mv^{2}}{r}}</script></span>。行星移动速度为<span><span class="MathJax_Preview">v={\frac  {2\pi r}{\tau }}</span><script type="math/tex">v={\frac  {2\pi r}{\tau }}</script></span>。依照开普勒第三定律,这速度<span><span class="MathJax_Preview">v</span><script type="math/tex">v</script></span>与半径的平方根<span><span class="MathJax_Preview">{\sqrt  {r}}</span><script type="math/tex">{\sqrt  {r}}</script></span>成反比。所以,万有引力<span><span class="MathJax_Preview">F\propto {\frac  {1}{r^{2}}}</span><script type="math/tex">F\propto {\frac  {1}{r^{2}}}</script></span>。猜想这大概是牛顿发现万有引力定律的思路,但这个猜想无法被证实,因为在他的计算本里,并没有找到任何关于这方面的证据。</p>
+<p>开普勒第一定律阐明,行星环绕太阳的轨道是椭圆形的。椭圆的面积是<span><span class="MathJax_Preview">\pi ab</span><script type="math/tex">\pi ab</script></span>;这里,<span><span class="MathJax_Preview">a</span><script type="math/tex">a</script></span>与<span><span class="MathJax_Preview">b</span><script type="math/tex">b</script></span>分别为椭圆的半长轴与半短轴。在开普勒第二定律推导里,行星－太阳连线扫过区域速度<span><span class="MathJax_Preview">{\frac  {{\mathrm  {d}}A}{{\mathrm  {d}}t}}</span><script type="math/tex">{\frac  {{\mathrm  {d}}A}{{\mathrm  {d}}t}}</script></span>为</p>
+<div>
+<div class="MathJax_Preview">
+{\frac  {{\mathrm  {d}}A}{{\mathrm  {d}}t}}={\frac  {\ell }{2m}} 。
+</div>
+<script type="math/tex; mode=display">
+{\frac  {{\mathrm  {d}}A}{{\mathrm  {d}}t}}={\frac  {\ell }{2m}} 。
+</script>
+</div>
+<p>所以,行星公转周期<span><span class="MathJax_Preview">\tau</span><script type="math/tex">\tau</script></span>为</p>
+<div>
+<div class="MathJax_Preview">
+\tau ={\frac  {2m\pi ab}{\ell }} 
+\tag{5}
+</div>
+<script type="math/tex; mode=display">
+\tau ={\frac  {2m\pi ab}{\ell }} 
+\tag{5}
+</script>
+</div>
+<p>关于此行星环绕太阳,椭圆的半长轴<span><span class="MathJax_Preview">a</span><script type="math/tex">a</script></span>,半短轴<span><span class="MathJax_Preview">b</span><script type="math/tex">b</script></span>与近拱距<span><span class="MathJax_Preview">r_{A}</span><script type="math/tex">r_{A}</script></span>(近拱点A与引力中心之间的距离),远拱距<span><span class="MathJax_Preview">r_{B}</span><script type="math/tex">r_{B}</script></span>(远拱点 B 与引力中心之间的距离)的关系分别为</p>
+<div>
+<div class="MathJax_Preview">
+a={\frac {r_{A}+r_{B}}{2}} \tag{6}
+</div>
+<script type="math/tex; mode=display">
+a={\frac {r_{A}+r_{B}}{2}} \tag{6}
+</script>
+</div>
+<div>
+<div class="MathJax_Preview">
+b={\sqrt  {r_{A}\ r_{B}}} \tag{7}
+</div>
+<script type="math/tex; mode=display">
+b={\sqrt  {r_{A}\ r_{B}}} \tag{7}
+</script>
+</div>
+<p>如果想要知道半长轴与半短轴,必须先求得近拱距与远拱距。依据能量守恒定律,</p>
+<div>
+<div class="MathJax_Preview">
+E={\frac  {1}{2}}m{\dot  {r}}^{2}+{\frac  {1}{2}}mr^{2}{\dot  {\theta }}^{2}-G{\frac  {mM}{r}} 
+</div>
+<script type="math/tex; mode=display">
+E={\frac  {1}{2}}m{\dot  {r}}^{2}+{\frac  {1}{2}}mr^{2}{\dot  {\theta }}^{2}-G{\frac  {mM}{r}} 
+</script>
+</div>
+<p>在近拱点A与远拱点B,径向速度都等于零:</p>
+<div>
+<div class="MathJax_Preview">
+{\dot  {r}}=0 
+</div>
+<script type="math/tex; mode=display">
+{\dot  {r}}=0 
+</script>
+</div>
+<p>所以,</p>
+<div>
+<div class="MathJax_Preview">
+E={\frac  {1}{2}}mr^{2}{\dot  {\theta }}^{2}-G{\frac  {mM}{r}}={\frac  {\ell ^{2}}{2mr^{2}}}-G{\frac  {mM}{r}}
+</div>
+<script type="math/tex; mode=display">
+E={\frac  {1}{2}}mr^{2}{\dot  {\theta }}^{2}-G{\frac  {mM}{r}}={\frac  {\ell ^{2}}{2mr^{2}}}-G{\frac  {mM}{r}}
+</script>
+</div>
+<p>稍为加以编排,可以得到<span><span class="MathJax_Preview">r</span><script type="math/tex">r</script></span>的一元二次方程：</p>
+<div>
+<div class="MathJax_Preview">
+r^{2}+{\frac  {GmM}{E}}r-{\frac  {\ell ^{2}}{2mE}}=0
+</div>
+<script type="math/tex; mode=display">
+r^{2}+{\frac  {GmM}{E}}r-{\frac  {\ell ^{2}}{2mE}}=0
+</script>
+</div>
+<p>其两个根分别为椭圆轨道的近拱距<span><span class="MathJax_Preview">r_{A}</span><script type="math/tex">r_{A}</script></span>与远拱距<span><span class="MathJax_Preview">r_{B}</span><script type="math/tex">r_{B}</script></span>。</p>
+<div>
+<div class="MathJax_Preview">
+r_{A}=-{\frac {{\frac {GmM}{E}}-{\sqrt {\left({\frac {GmM}{E}}\right)^{2}+{\frac {2\ell ^{2}}{mE}}}}}{2}}
+</div>
+<script type="math/tex; mode=display">
+r_{A}=-{\frac {{\frac {GmM}{E}}-{\sqrt {\left({\frac {GmM}{E}}\right)^{2}+{\frac {2\ell ^{2}}{mE}}}}}{2}}
+</script>
+</div>
+<div>
+<div class="MathJax_Preview">
+r_{B}=-{\frac {{\frac {GmM}{E}}+{\sqrt {\left({\frac {GmM}{E}}\right)^{2}+{\frac {2\ell ^{2}}{mE}}}}}{2}}
+</div>
+<script type="math/tex; mode=display">
+r_{B}=-{\frac {{\frac {GmM}{E}}+{\sqrt {\left({\frac {GmM}{E}}\right)^{2}+{\frac {2\ell ^{2}}{mE}}}}}{2}}
+</script>
+</div>
+<p>代入方程(6)与(7),</p>
+<div>
+<div class="MathJax_Preview">
+a=-{\frac  {GmM}{2E}}
+</div>
+<script type="math/tex; mode=display">
+a=-{\frac  {GmM}{2E}}
+</script>
+</div>
+<div>
+<div class="MathJax_Preview">
+b={\frac  {\ell }{{\sqrt  {-2mE}}}}={\frac  {\ell }{m}}{\frac  {{\sqrt  {a}}}{{\sqrt  {GM}}}}
+</div>
+<script type="math/tex; mode=display">
+b={\frac  {\ell }{{\sqrt  {-2mE}}}}={\frac  {\ell }{m}}{\frac  {{\sqrt  {a}}}{{\sqrt  {GM}}}}
+</script>
+</div>
+<p>代入方程(5),周期的方程为</p>
+<div>
+<div class="MathJax_Preview">
+\tau ={\frac  {2\pi a^{{3/2}}}{{\sqrt  {GM}}}}
+</div>
+<script type="math/tex; mode=display">
+\tau ={\frac  {2\pi a^{{3/2}}}{{\sqrt  {GM}}}}
+</script>
+</div>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    <br>
+</div>
+
+</body>
+</html>

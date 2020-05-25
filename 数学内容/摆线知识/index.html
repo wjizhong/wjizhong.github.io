@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%95%B0%E5%AD%A6%E5%86%85%E5%AE%B9/%E6%91%86%E7%BA%BF%E7%9F%A5%E8%AF%86/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>摆线知识 - 图像/视频算法</title>
+    <link href="../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "\u6446\u7ebf\u7684\u90a3\u4e9b\u4e8b\u513f", url: "#_top", children: [
+          ]},
+        ];
+
+    </script>
+    <script src="../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    
+
+    <h1 id="_1">摆线的那些事儿</h1>
+<p>圆形是我们学习数学以来最先接触的特殊图形——它没法被分解成有限个三角形。我们如果在一个滚轮的边上一定点放置一支笔,然后让滚轮沿着墙壁滚动,就能够在墙上画出摆线(<code>Cycloid</code>)的图像:</p>
+<p><img alt="" src="https://pic3.zhimg.com/v2-dcb650852f34aed235ddb97986194386_b.webp" /></p>
+<p>不妨再用几何的方法来得到其参数方程:</p>
+<p><img alt="" src="https://pic4.zhimg.com/80/v2-dd16bdbc65b7554aa01fc259a0381ae7_1440w.jpg" /></p>
+<p>经过一定的分析，我们最终可以得到一组方程来描述摆线(其中<code>a</code>为圆的半径):</p>
+<div>
+<div class="MathJax_Preview">\left\{ \begin{aligned} x&amp;=a(\theta-\sin\theta) \\ y&amp;=a(1-\cos\theta) \end{aligned} \right.</div>
+<script type="math/tex; mode=display">\left\{ \begin{aligned} x&=a(\theta-\sin\theta) \\ y&=a(1-\cos\theta) \end{aligned} \right.</script>
+</div>
+<ul>
+<li><strong>摆线的基本性质</strong></li>
+</ul>
+<p>根据三角函数的性质以及摆线的绘制过程,我们知道<span><span class="MathJax_Preview">0\le\theta\le2\pi</span><script type="math/tex">0\le\theta\le2\pi</script></span>内(即滚轮旋转一周)的曲线构成摆线的一个弧。所以我们可以根据这个性质来求出摆线一个周期的弧长。</p>
+<p>第一步:计算弧微分</p>
+<div>
+<div class="MathJax_Preview">{\mathrm{d}x\over\mathrm{d}\theta}=a(1-\cos\theta) \\ {\mathrm{d}y\over\mathrm{d}\theta}=a\sin\theta</div>
+<script type="math/tex; mode=display">{\mathrm{d}x\over\mathrm{d}\theta}=a(1-\cos\theta) \\ {\mathrm{d}y\over\mathrm{d}\theta}=a\sin\theta</script>
+</div>
+<p>根据勾股定理<span><span class="MathJax_Preview">(\mathrm{d}s)^2=(\mathrm{d}x)^2+(\mathrm{d}y)^2</span><script type="math/tex">(\mathrm{d}s)^2=(\mathrm{d}x)^2+(\mathrm{d}y)^2</script></span>,我们得到:</p>
+<div>
+<div class="MathJax_Preview">\begin{aligned} {\mathrm{d}s\over\mathrm{d}\theta} &amp;=\sqrt{a^2(1-\cos\theta)^2+a^2\sin^2\theta} \\ &amp;=a\sqrt{(1-\cos\theta)^2+\sin^2\theta} \\ &amp;=a\sqrt{1-2\cos\theta+\cos^2\theta+\sin^2\theta} \\ &amp;=a\sqrt{1-2\cos\theta+1} \\ &amp;=a\sqrt{2-2(1-2\sin^2(\theta/2))} \\ &amp;=a\sqrt{4\sin^2(\theta/2)} \\ &amp;=2a\sin\left(\theta\over2\right) \end{aligned}</div>
+<script type="math/tex; mode=display">\begin{aligned} {\mathrm{d}s\over\mathrm{d}\theta} &=\sqrt{a^2(1-\cos\theta)^2+a^2\sin^2\theta} \\ &=a\sqrt{(1-\cos\theta)^2+\sin^2\theta} \\ &=a\sqrt{1-2\cos\theta+\cos^2\theta+\sin^2\theta} \\ &=a\sqrt{1-2\cos\theta+1} \\ &=a\sqrt{2-2(1-2\sin^2(\theta/2))} \\ &=a\sqrt{4\sin^2(\theta/2)} \\ &=2a\sin\left(\theta\over2\right) \end{aligned}</script>
+</div>
+<p>由于我们theta的取值范围内正弦函数不会取负值，因此我们可以放心的去掉绝对值符号。</p>
+<p>第二步:计算曲线积分</p>
+<div>
+<div class="MathJax_Preview">\int_C\mathrm{d}s=\int_0^{2\pi}2a\sin\left(\theta\over2\right)\mathrm{d}\theta=\left.-4a\cos\left(\theta\over2\right)\right|^{2\pi}_0=8a</div>
+<script type="math/tex; mode=display">\int_C\mathrm{d}s=\int_0^{2\pi}2a\sin\left(\theta\over2\right)\mathrm{d}\theta=\left.-4a\cos\left(\theta\over2\right)\right|^{2\pi}_0=8a</script>
+</div>
+<p>因此,一个滚轮转动一周形成摆线的弧长刚好是滚轮半径的八倍。</p>
+<ul>
+<li><strong>摆线的首次亮相——最速降线问题</strong></li>
+</ul>
+<p><img alt="" src="https://pic2.zhimg.com/v2-7ada36a782280b4a144915339352c03d_b.webp" /></p>
+<p>最速降线问题,即找到两个定点间连接的曲线,使得物体能够在重力作用下花最短的时间到达终点。早在<code>1696</code>年,著名数学家约翰·伯努利(<code>Johann Bernoulli</code>)就提出了这个问题。当时欧洲各地的数学家都使用了不同的方法来求解这个问题。然而,伯努利本人提出这个挑战的初衷是为了凸显自己方法的高明从而体现他自己很聪明。他本人花了近两个星期找到这个方法。然而他向欧洲发表这个问题后仅仅一天,已经退休牛顿就给出了他的解法。牛顿在后来的书信里曾说道:"我不喜欢让外国人嘲弄我的数学能力"。后来,伯努利的学生欧拉(Leonard Euler)不仅给出了最速降线问题的另一种解法,还设计了欧拉—拉格朗日方程(<code>Euler—Lagrange equation</code>)来解决类似的问题。本节中我将着重讲述伯努利和欧拉的解法。</p>
+<p><strong>费马原理与斯涅尔定律</strong></p>
+<p>在直接进入最速降线问题的推导前,我们需要提及费马原理(<code>Fermat's principle</code>),即在两点间,光总是选择耗时最短的路径。利用这个原理,我们可以研究一下光的折射性质:</p>
+<p><img alt="" src="https://pic2.zhimg.com/80/v2-e3b3709a7d7783ddb2b921759a6ddb95_1440w.jpg" /></p>
+<p>现在我们想研究一下入射角与折射角的关系。不同于求证光的反射定律,我们需要用上述的费马原理来求解<span><span class="MathJax_Preview">\alpha</span><script type="math/tex">\alpha</script></span>与<span><span class="MathJax_Preview">\beta</span><script type="math/tex">\beta</script></span>的关系。假设光在白色区域内的传播速度为<span><span class="MathJax_Preview">v_1</span><script type="math/tex">v_1</script></span>,而它在蓝色区域的传播速度为<span><span class="MathJax_Preview">v_2</span><script type="math/tex">v_2</script></span>,现在我们要找到合适的<span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span>,使得光沿着红色路线的传播时间最少(即找到最快传播路径)。</p>
+<p>本篇文章将使用微积分里优化函数的方法来求解。根据勾股定理,我们不难得出:</p>
+<div>
+<div class="MathJax_Preview">l_1=\sqrt{x^2+a^2} \\ l_2=\sqrt{(d-x)^2+b^2}</div>
+<script type="math/tex; mode=display">l_1=\sqrt{x^2+a^2} \\ l_2=\sqrt{(d-x)^2+b^2}</script>
+</div>
+<p>现在,我们再列出要优化的时间函数:</p>
+<div>
+<div class="MathJax_Preview">T={l_1\over v_1}+{l_2\over v_2}={\sqrt{x^2+a^2}\over v_1}+{\sqrt{(x-d)^2+b^2}\over v_2}</div>
+<script type="math/tex; mode=display">T={l_1\over v_1}+{l_2\over v_2}={\sqrt{x^2+a^2}\over v_1}+{\sqrt{(x-d)^2+b^2}\over v_2}</script>
+</div>
+<p>现在对<span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span>求导,得到:</p>
+<div>
+<div class="MathJax_Preview">{\mathrm{d}T\over\mathrm{d}x}={x\over v_1\sqrt{x^2+a^2}}-{d-x\over v_2\sqrt{(d-x)^2+b^2}}</div>
+<script type="math/tex; mode=display">{\mathrm{d}T\over\mathrm{d}x}={x\over v_1\sqrt{x^2+a^2}}-{d-x\over v_2\sqrt{(d-x)^2+b^2}}</script>
+</div>
+<p>我们知道,当导数为<code>0</code>或未定义时,函数取极值。然而在在<code>T</code>函数的定义域内,函数只在导数为<code>0</code>时达到最小值。因此,我们能够列出这样的方程来求解<span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span>:</p>
+<div>
+<div class="MathJax_Preview">{x\over v_1\sqrt{x^2+a^2}}-{d-x\over v_2\sqrt{(d-x)^2+b^2}}=0 \\ {x\over v_1\sqrt{x^2+a^2}}={d-x\over v_2\sqrt{(d-x)^2+b^2}}</div>
+<script type="math/tex; mode=display">{x\over v_1\sqrt{x^2+a^2}}-{d-x\over v_2\sqrt{(d-x)^2+b^2}}=0 \\ {x\over v_1\sqrt{x^2+a^2}}={d-x\over v_2\sqrt{(d-x)^2+b^2}}</script>
+</div>
+<p>根据原图,我们不难得出<span><span class="MathJax_Preview">\sin\alpha={x\over\sqrt{x^2+a^2}}</span><script type="math/tex">\sin\alpha={x\over\sqrt{x^2+a^2}}</script></span>,<span><span class="MathJax_Preview">\cos\alpha={d-x\over\sqrt{(d-x)^2+b^2}}</span><script type="math/tex">\cos\alpha={d-x\over\sqrt{(d-x)^2+b^2}}</script></span>。因此,代入到原式,我们就得到了入射角<span><span class="MathJax_Preview">\alpha</span><script type="math/tex">\alpha</script></span>与折射角<span><span class="MathJax_Preview">\beta</span><script type="math/tex">\beta</script></span>的关系:</p>
+<div>
+<div class="MathJax_Preview">{\sin\alpha\over v_1}={\sin\beta\over v_2} \Rightarrow{\sin\alpha\over\sin\beta}={v_1\over v_2}</div>
+<script type="math/tex; mode=display">{\sin\alpha\over v_1}={\sin\beta\over v_2} \Rightarrow{\sin\alpha\over\sin\beta}={v_1\over v_2}</script>
+</div>
+<p>因此,入射角与折射角的正弦比刚好等于两种介质下的光速比,这个结论又叫做斯涅尔定律(<code>Snell's law</code>)。虽然斯涅尔定律是一个光学定律,但是在力学中它依然适用。</p>
+<p><strong>伯努利解法——用斯涅尔定律求解最速降线</strong></p>
+<p>我们设物体最初距离地面的高度为<span><span class="MathJax_Preview">h</span><script type="math/tex">h</script></span>,而物体的当前速度和高度分别为<span><span class="MathJax_Preview">v=v(t)</span><script type="math/tex">v=v(t)</script></span>和<span><span class="MathJax_Preview">y=y(t)</span><script type="math/tex">y=y(t)</script></span>。根据(理想状态下)机械能守恒,我们可以对物体的速度和当前高度建立如下关系:</p>
+<div>
+<div class="MathJax_Preview">{1\over2}mv^2+mgy=mgh</div>
+<script type="math/tex; mode=display">{1\over2}mv^2+mgy=mgh</script>
+</div>
+<p>由于物体的质量恒不为<code>0</code>,所以我们可以直接让等式两侧与之相除:</p>
+<div>
+<div class="MathJax_Preview">{1\over2}v^2+gy=gh</div>
+<script type="math/tex; mode=display">{1\over2}v^2+gy=gh</script>
+</div>
+<p>根据基本代数操作,我们不难得出物体速度关于其纵坐标的表达式:</p>
+<div>
+<div class="MathJax_Preview">v=\sqrt{2g(h-y)}</div>
+<script type="math/tex; mode=display">v=\sqrt{2g(h-y)}</script>
+</div>
+<p>根据幂函数的性质,物体的纵坐标其速度一一对应。如果我们把每个纵坐标都当作一个不同的介质而每个不同的介质下的光速都为<span><span class="MathJax_Preview">\sqrt{2g(h-y)}</span><script type="math/tex">\sqrt{2g(h-y)}</script></span>,我们可以把最速降线问题理解成光在多个不同介质下的传播问题。根据费马原理,光总是沿着耗时最短的路径传播,所以我们如果用光学的原则求解出耗时最短的传播路径,就可以得到最速降线问题的答案。</p>
+<p><img alt="" src="https://pic1.zhimg.com/80/v2-b59ab27f82624502bfecd3fe72cce178_1440w.jpg" /></p>
+<p>如果我们把物体的运动空间用平行于<code>x</code>轴的直线进行分割,就可以发现当"光线"从第<code>j</code>个区间穿越到第<code>j+1</code>个区间进行折射时,折射角满足斯涅尔定律。因此:</p>
+<div>
+<div class="MathJax_Preview">{\sin\alpha_j\over v_j}={\sin\alpha'_j\over v_{j+1}}</div>
+<script type="math/tex; mode=display">{\sin\alpha_j\over v_j}={\sin\alpha'_j\over v_{j+1}}</script>
+</div>
+<p>由于我们所做的发现均垂直于<code>x</code>轴(即平行于<code>y</code>轴),所以这些法线都相互平行。于是,根据两直线平行,内错角相等的原则,我们得到<span><span class="MathJax_Preview">\alpha'_j=\alpha_{j+1}</span><script type="math/tex">\alpha'_j=\alpha_{j+1}</script></span>,因此,我们可以把上述等式进行这样的拓展:</p>
+<div>
+<div class="MathJax_Preview">{\sin\alpha_1\over v_1}={\sin\alpha_2\over v_2}=\dots={\sin\alpha_j\over v_j}={\sin\alpha_{j+1}\over v_{j+1}}=\dots={\sin\alpha_N\over v_N}=C</div>
+<script type="math/tex; mode=display">{\sin\alpha_1\over v_1}={\sin\alpha_2\over v_2}=\dots={\sin\alpha_j\over v_j}={\sin\alpha_{j+1}\over v_{j+1}}=\dots={\sin\alpha_N\over v_N}=C</script>
+</div>
+<p>因此每一个区间内入射角的正弦于区间内的传播速度成正比,而比例常数设为<code>C</code>。因此,我们可以再把速度关于<code>y</code>的表达式代入,得到:</p>
+<div>
+<div class="MathJax_Preview">{\sin\alpha\over\sqrt{2g(h-y)}}=C</div>
+<script type="math/tex; mode=display">{\sin\alpha\over\sqrt{2g(h-y)}}=C</script>
+</div>
+<p>经过一定代数操作,我们可以得到<code>y</code>关于<span><span class="MathJax_Preview">\sin\alpha</span><script type="math/tex">\sin\alpha</script></span>的表达式:</p>
+<div>
+<div class="MathJax_Preview">\begin{aligned} {\sin^2\alpha\over2g(h-y)}&amp;=C^2 \\ {\sin^2\alpha\over2gC^2}&amp;=h-y \\ y&amp;=-{\sin^2\alpha\over2gC^2}+h \end{aligned}</div>
+<script type="math/tex; mode=display">\begin{aligned} {\sin^2\alpha\over2g(h-y)}&=C^2 \\ {\sin^2\alpha\over2gC^2}&=h-y \\ y&=-{\sin^2\alpha\over2gC^2}+h \end{aligned}</script>
+</div>
+<p>现在我们再来看一看入射角于物体坐标微小变化的关系:</p>
+<p><img alt="" src="https://pic2.zhimg.com/v2-9cff3fe7aa631201bcca3a24ee34fc21_b.jpg" /></p>
+<p>我们不难发现<span><span class="MathJax_Preview">{\mathrm{d}x\over\mathrm{d}y}=\tan\alpha</span><script type="math/tex">{\mathrm{d}x\over\mathrm{d}y}=\tan\alpha</script></span>,因此我们可以通过<span><span class="MathJax_Preview">\alpha</span><script type="math/tex">\alpha</script></span>构造一个最速降线的参数方程。现在我们先让<code>y</code>对<span><span class="MathJax_Preview">\alpha</span><script type="math/tex">\alpha</script></span>求导,得到下式:</p>
+<div>
+<div class="MathJax_Preview">{\mathrm{d}y\over\mathrm{d}\alpha}=-{\sin\alpha\cos\alpha\over gC^2}</div>
+<script type="math/tex; mode=display">{\mathrm{d}y\over\mathrm{d}\alpha}=-{\sin\alpha\cos\alpha\over gC^2}</script>
+</div>
+<p>根据链式法则,我们可以得到<code>x</code>关于<span><span class="MathJax_Preview">\alpha</span><script type="math/tex">\alpha</script></span>的微分方程:</p>
+<div>
+<div class="MathJax_Preview">{\mathrm{d}x\over\mathrm{d}\alpha}={\mathrm{d}x\over\mathrm{d}y}{\mathrm{d}y\over\mathrm{d}\alpha}=\tan\alpha\cdot\left(-{\sin\alpha\cos\alpha\over gC^2}\right)=-{\sin^2\alpha\over gC^2}</div>
+<script type="math/tex; mode=display">{\mathrm{d}x\over\mathrm{d}\alpha}={\mathrm{d}x\over\mathrm{d}y}{\mathrm{d}y\over\mathrm{d}\alpha}=\tan\alpha\cdot\left(-{\sin\alpha\cos\alpha\over gC^2}\right)=-{\sin^2\alpha\over gC^2}</script>
+</div>
+<p>现在两侧积分,我们可以得到:</p>
+<div>
+<div class="MathJax_Preview">\begin{aligned} x&amp;=-{1\over gC^2}\int\sin^2\alpha\mathrm{d}\alpha \\ &amp;=-{1\over4gC^2}\int(2-2\cos2\alpha)\mathrm{d}\alpha \\ &amp;=-{1\over4gC^2}(2\alpha-\sin2\alpha)+x_0 \end{aligned}</div>
+<script type="math/tex; mode=display">\begin{aligned} x&=-{1\over gC^2}\int\sin^2\alpha\mathrm{d}\alpha \\ &=-{1\over4gC^2}\int(2-2\cos2\alpha)\mathrm{d}\alpha \\ &=-{1\over4gC^2}(2\alpha-\sin2\alpha)+x_0 \end{aligned}</script>
+</div>
+<p>现在我们可以将<code>y</code>的表达式改写,得到:</p>
+<div>
+<div class="MathJax_Preview">y=-{1\over4gC^2}(1-\cos2\alpha)+h</div>
+<script type="math/tex; mode=display">y=-{1\over4gC^2}(1-\cos2\alpha)+h</script>
+</div>
+<p>为了美观,我们可以更换自变量<span><span class="MathJax_Preview">\theta=2\alpha</span><script type="math/tex">\theta=2\alpha</script></span>,得到最速降线最后的参数方程:</p>
+<div>
+<div class="MathJax_Preview">\left\{ \begin{aligned} x&amp;=-{1\over4gC^2}(\theta-\sin\theta)+x_0 \\ y&amp;=-{1\over4gC^2}(1-\cos\theta)+h \end{aligned} \right.</div>
+<script type="math/tex; mode=display">\left\{ \begin{aligned} x&=-{1\over4gC^2}(\theta-\sin\theta)+x_0 \\ y&=-{1\over4gC^2}(1-\cos\theta)+h \end{aligned} \right.</script>
+</div>
+<p>我们不难发现最速降线的参数方程画出的图像刚刚好就是翻转后的摆线:</p>
+<p><img alt="" src="https://pic4.zhimg.com/v2-a0ad86024efb0781c26331333e11ca87_b.jpg" /></p>
+<p>因此,最速降线的答案就是摆线。以上便是伯努利的解法,现在我们再来看看他的学生——欧拉——的解法。</p>
+<p><strong>欧拉的解法——变分法</strong></p>
+<p>我们先来看一下什么是泛函(<code>functional</code>)。泛函一般指从一个空间到数域的映射。</p>
+<p>对于一个实变函数<span><span class="MathJax_Preview">f</span><script type="math/tex">f</script></span>,<span><span class="MathJax_Preview">f\mapsto f(x_0)</span><script type="math/tex">f\mapsto f(x_0)</script></span>就是一个基本的泛函,它把函数空间映射到了实数域。而另外一种常见泛函则由积分构成:</p>
+<div>
+<div class="MathJax_Preview">J[y]=\int_{x_0}^{x_1}F(x,y,y')\mathrm{d}x</div>
+<script type="math/tex; mode=display">J[y]=\int_{x_0}^{x_1}F(x,y,y')\mathrm{d}x</script>
+</div>
+<p>或许读者看到这里会有些摸不着头脑,但是我们这些内容会为后面的求解提供铺垫。现在我们来看一看泛函极值问题:找到一个满足<span><span class="MathJax_Preview">y(x_0)=y_0,y(x_1)=y_1</span><script type="math/tex">y(x_0)=y_0,y(x_1)=y_1</script></span>的<span><span class="MathJax_Preview">y</span><script type="math/tex">y</script></span>,使得泛函<span><span class="MathJax_Preview">J[y]=\int_{x_0}^{x_1}F(x,y,y')\mathrm{d}x</span><script type="math/tex">J[y]=\int_{x_0}^{x_1}F(x,y,y')\mathrm{d}x</script></span>取得极值。</p>
+<p>在传统的单变量微积分里的优化问题中,我们一般都会通过寻找导数的零点来寻找函数的极值。在泛函里我们会寻找变分(<code>variation</code>)的零点来求得泛函的极值。如果我们假设<code>y</code>就是最终满足泛函达到极值的函数,而<span><span class="MathJax_Preview">u=y+\eta</span><script type="math/tex">u=y+\eta</script></span>表示的是<code>y</code>领域内的函数(其中<span><span class="MathJax_Preview">\eta(x_0)=\eta(x_1)=0</span><script type="math/tex">\eta(x_0)=\eta(x_1)=0</script></span>以便于所有的<code>u</code>满足<code>y</code>的边界条件)。则:</p>
+<div>
+<div class="MathJax_Preview">\delta J\equiv J[y+\eta]-J[y]=\int_{x_0}^{x_1}\left[F(x,y+\eta,y'+\eta')-F(x,y,y')\right]\mathrm{d}x</div>
+<script type="math/tex; mode=display">\delta J\equiv J[y+\eta]-J[y]=\int_{x_0}^{x_1}\left[F(x,y+\eta,y'+\eta')-F(x,y,y')\right]\mathrm{d}x</script>
+</div>
+<p>对于足够"微小"的<code>y</code>,我们可以用泛函核<span><span class="MathJax_Preview">F</span><script type="math/tex">F</script></span>在<span><span class="MathJax_Preview">F(x,y,y')</span><script type="math/tex">F(x,y,y')</script></span>附近的一阶泰勒展开来"估计"<span><span class="MathJax_Preview">F(x,y+\eta,y'+\eta)</span><script type="math/tex">F(x,y+\eta,y'+\eta)</script></span>:</p>
+<div>
+<div class="MathJax_Preview">\begin{aligned} \delta J&amp;=\int_{x_0}^{x_1}\left[F(x,y,y')+\nabla F\cdot(0,\eta,\eta')-F(x,y,y')\right]\mathrm{d}x \\ &amp;=\int_{x_0}^{x_1}\nabla F\cdot(0,\eta,\eta')\mathrm{d}x \\ &amp;=\int_{x_0}^{x_1}\left[{\partial F\over\partial y}\eta+{\partial F\over\partial y'}\eta'\right]\mathrm{d}x \end{aligned}</div>
+<script type="math/tex; mode=display">\begin{aligned} \delta J&=\int_{x_0}^{x_1}\left[F(x,y,y')+\nabla F\cdot(0,\eta,\eta')-F(x,y,y')\right]\mathrm{d}x \\ &=\int_{x_0}^{x_1}\nabla F\cdot(0,\eta,\eta')\mathrm{d}x \\ &=\int_{x_0}^{x_1}\left[{\partial F\over\partial y}\eta+{\partial F\over\partial y'}\eta'\right]\mathrm{d}x \end{aligned}</script>
+</div>
+<p>现在我们对被积函数里的第二项进行分部积分,得:</p>
+<div>
+<div class="MathJax_Preview">\delta J=\int_{x_0}^{x_1}{\partial F\over\partial y}\eta\mathrm{d}x+\left[{\partial F\over\partial y'}\eta\right]^{x_1}_{x_0}-\int_{x_0}^{x_1}\eta{\mathrm{d}\over\mathrm{d}x}{\partial F\over\partial y}\mathrm{d}x</div>
+<script type="math/tex; mode=display">\delta J=\int_{x_0}^{x_1}{\partial F\over\partial y}\eta\mathrm{d}x+\left[{\partial F\over\partial y'}\eta\right]^{x_1}_{x_0}-\int_{x_0}^{x_1}\eta{\mathrm{d}\over\mathrm{d}x}{\partial F\over\partial y}\mathrm{d}x</script>
+</div>
+<p>根据<span><span class="MathJax_Preview">\eta</span><script type="math/tex">\eta</script></span>满足<span><span class="MathJax_Preview">\eta(x_0)=\eta(x_1)=0</span><script type="math/tex">\eta(x_0)=\eta(x_1)=0</script></span>的性质,我们可以得到泛函<span><span class="MathJax_Preview">J</span><script type="math/tex">J</script></span>变分的最简形式:</p>
+<div>
+<div class="MathJax_Preview">\delta J=\int_{x_0}^{x_1}\eta\left[{\partial F\over\partial y}-{\mathrm{d}\over\mathrm{d}x}{\partial F\over\partial y'}\right]\mathrm{d}x</div>
+<script type="math/tex; mode=display">\delta J=\int_{x_0}^{x_1}\eta\left[{\partial F\over\partial y}-{\mathrm{d}\over\mathrm{d}x}{\partial F\over\partial y'}\right]\mathrm{d}x</script>
+</div>
+<p>由于在<span><span class="MathJax_Preview">J[y]</span><script type="math/tex">J[y]</script></span>处取得极值,所以根据"直觉",我们可以得到<span><span class="MathJax_Preview">\delta J=0</span><script type="math/tex">\delta J=0</script></span>。我们也不难能看出(变分法基本引理),<span><span class="MathJax_Preview">\delta J=0</span><script type="math/tex">\delta J=0</script></span>当且仅当被积函数里<span><span class="MathJax_Preview">\eta</span><script type="math/tex">\eta</script></span>的系数在区间内恒为<code>0</code>。因此,我们不严谨地推导出了:</p>
+<div>
+<div class="MathJax_Preview">{\partial F\over\partial y}-{\mathrm{d}\over\mathrm{d}x}{\partial F\over\partial y'}=0</div>
+<script type="math/tex; mode=display">{\partial F\over\partial y}-{\mathrm{d}\over\mathrm{d}x}{\partial F\over\partial y'}=0</script>
+</div>
+<p>即大名鼎鼎的欧拉—拉格朗日方程(<code>Euler—Lagrange equation</code>),简称<code>E-L</code>方程。知乎有很多其它的推导过程,但是它们大多数都设<span><span class="MathJax_Preview">u=y+\varepsilon\eta</span><script type="math/tex">u=y+\varepsilon\eta</script></span>然后求泛函对<span><span class="MathJax_Preview">\varepsilon</span><script type="math/tex">\varepsilon</script></span>的全微分。虽然这样更加的严谨,但是作者个人最容易理解的推导还是以上<span><span class="MathJax_Preview">u=y+\eta</span><script type="math/tex">u=y+\eta</script></span>的方法。</p>
+<p>虽然<code>E-L</code>方程可以解决大多数泛函极值问题,但是对于满足<span><span class="MathJax_Preview">{\partial F\over\partial x}=0</span><script type="math/tex">{\partial F\over\partial x}=0</script></span>的泛函,直接代入<code>E-L</code>方程会比较产生比较复杂的微分方程。因此,我们决定再简化一下难度,对<code>E-L</code>方程进行移项:</p>
+<div>
+<div class="MathJax_Preview">{\partial F\over\partial y}={\mathrm{d}\over\mathrm{d}x}{\partial F\over\partial y'}</div>
+<script type="math/tex; mode=display">{\partial F\over\partial y}={\mathrm{d}\over\mathrm{d}x}{\partial F\over\partial y'}</script>
+</div>
+<p>对两侧乘上<code>y'</code>并积分,得到:</p>
+<div>
+<div class="MathJax_Preview">\begin{aligned} \int{\partial F\over\partial y}y'\mathrm{d}x&amp;=\int y'{\mathrm{d}\over\mathrm{d}x}{\partial F\over\partial y'}\mathrm{d}x \\ \int{\partial F\over\partial y}y'\mathrm{d}x&amp;=y'{\partial F\over\partial y'}-\int{\partial F\over\partial y'}y''\mathrm{d}x \\ \int\left[{\partial F\over\partial y}y'+{\partial F\over\partial y'}y''\right]\mathrm{d}x&amp;=y'{\partial F\over\partial y'}+C \\ \int{\mathrm{d}F\over\mathrm{d}x}\mathrm{d}x&amp;=y'{\partial F\over\partial y'}+C \\ F-y'{\partial F\over\partial y}&amp;=C \\ \end{aligned}</div>
+<script type="math/tex; mode=display">\begin{aligned} \int{\partial F\over\partial y}y'\mathrm{d}x&=\int y'{\mathrm{d}\over\mathrm{d}x}{\partial F\over\partial y'}\mathrm{d}x \\ \int{\partial F\over\partial y}y'\mathrm{d}x&=y'{\partial F\over\partial y'}-\int{\partial F\over\partial y'}y''\mathrm{d}x \\ \int\left[{\partial F\over\partial y}y'+{\partial F\over\partial y'}y''\right]\mathrm{d}x&=y'{\partial F\over\partial y'}+C \\ \int{\mathrm{d}F\over\mathrm{d}x}\mathrm{d}x&=y'{\partial F\over\partial y'}+C \\ F-y'{\partial F\over\partial y}&=C \\ \end{aligned}</script>
+</div>
+<p>因此,我们可以在优化满足<span><span class="MathJax_Preview">F=F(y,y')</span><script type="math/tex">F=F(y,y')</script></span>的泛函使用我们得到的结论,即贝尔特拉米等式(<code>Beltrami's identity</code>)。我们已经将所有需要的工具准备完毕,现在可以开始进入最速降线问题的求解了。</p>
+<p><strong>用变分法求解最速降线问题</strong></p>
+<p>由于我们要找到一个曲线,使得物体沿曲线路径滑落的时间最短,我们需要设计一个描述时间的泛函:</p>
+<div>
+<div class="MathJax_Preview">T=\int_C{\mathrm{d}s\over v}</div>
+<script type="math/tex; mode=display">T=\int_C{\mathrm{d}s\over v}</script>
+</div>
+<p>利用弧微分公式和前面提到的能量守恒,我们不难得出:</p>
+<div>
+<div class="MathJax_Preview">{\mathrm{d}s}=\sqrt{1+y'^2}\mathrm{d}x \\ v=\sqrt{2g(h-y)}</div>
+<script type="math/tex; mode=display">{\mathrm{d}s}=\sqrt{1+y'^2}\mathrm{d}x \\ v=\sqrt{2g(h-y)}</script>
+</div>
+<p>因此,我们的得到了这样的时间泛函:</p>
+<div>
+<div class="MathJax_Preview">T=\int_{x_0}^{x_1}\underbrace{\sqrt{1+y'^2}\over\sqrt{2g(h-y)}}_F\mathrm{d}x</div>
+<script type="math/tex; mode=display">T=\int_{x_0}^{x_1}\underbrace{\sqrt{1+y'^2}\over\sqrt{2g(h-y)}}_F\mathrm{d}x</script>
+</div>
+<p>因此,我们的最速降线问题变成变分问题,即找到一个满足边界条件的<code>y</code>,使得泛函T取得极值。由于泛函<code>T</code>的核<code>F</code>满足<span><span class="MathJax_Preview">{\partial F\over\partial x}=0</span><script type="math/tex">{\partial F\over\partial x}=0</script></span>,所以我们可以使用更加方便的贝尔特拉米等式来求解。首先,我们求<code>F</code>关于<code>y'</code>的偏导数:</p>
+<div>
+<div class="MathJax_Preview">{\partial F\over\partial y'}={y'\over\sqrt{2g(h-y)}\sqrt{1+y'^2}}</div>
+<script type="math/tex; mode=display">{\partial F\over\partial y'}={y'\over\sqrt{2g(h-y)}\sqrt{1+y'^2}}</script>
+</div>
+<p>代入到贝尔特拉米等式,得到:</p>
+<div>
+<div class="MathJax_Preview">\begin{aligned} F-y'{\partial F\over\partial y'}&amp;=C \\ {\sqrt{1+y'^2}\over\sqrt{2g(h-y)}}-{y'^2\over\sqrt{2g(h-y}\sqrt{1+y'^2}}&amp;=C \\ {1+y'^2-y'^2\over\sqrt{2g(h-y)}\sqrt{1+y'^2}}&amp;=C \\ {1\over\sqrt{2g(h-y)}\sqrt{1+y'^2}}&amp;=C \end{aligned}</div>
+<script type="math/tex; mode=display">\begin{aligned} F-y'{\partial F\over\partial y'}&=C \\ {\sqrt{1+y'^2}\over\sqrt{2g(h-y)}}-{y'^2\over\sqrt{2g(h-y}\sqrt{1+y'^2}}&=C \\ {1+y'^2-y'^2\over\sqrt{2g(h-y)}\sqrt{1+y'^2}}&=C \\ {1\over\sqrt{2g(h-y)}\sqrt{1+y'^2}}&=C \end{aligned}</script>
+</div>
+<p>此时,我们如果令<span><span class="MathJax_Preview">y'\equiv{\mathrm{d}y\over\mathrm{d}x}=\cot\alpha</span><script type="math/tex">y'\equiv{\mathrm{d}y\over\mathrm{d}x}=\cot\alpha</script></span>,则根据三角恒等式<span><span class="MathJax_Preview">\csc^2\alpha=1+\cot^2\alpha</span><script type="math/tex">\csc^2\alpha=1+\cot^2\alpha</script></span>,原式变成:</p>
+<div>
+<div class="MathJax_Preview">{\sin\alpha\over\sqrt{2g(h-y)}}=C</div>
+<script type="math/tex; mode=display">{\sin\alpha\over\sqrt{2g(h-y)}}=C</script>
+</div>
+<p>我们可以发现这个方程和我们用斯涅尔定律得出的方程完全一样,所以其实伯努利和欧拉的方法都能够说明最速降线问题的答案是摆线。然而,摆线的故事才刚刚开始。摆线不仅是最速降线问题的答案,还是等时降落问题(<code>Tautochrone problem</code>)的解。</p>
+<p><strong>摆线与等时降落问题——弹簧与硬核的阿贝尔</strong></p>
+<p>等时降落问题,即找到一个合适的曲线,使得物体从曲线的任何位置受重力作用(理想状态下无摩擦)滑落到终点的时间不变。</p>
+<p><img alt="" src="https://pic4.zhimg.com/v2-c7d43aee2176d4c7460a04b0870a651b_b.webp" /></p>
+<p>当然,在我们有头绪之前。我们先来研究研究弹簧振子的简单调谐运动(<code>Simple harmonic motion</code>)。其中弹簧振子的位置<code>x</code>满足如下微分方程:</p>
+<div>
+<div class="MathJax_Preview">{\mathrm{d}^2x\over\mathrm{d}t^2}+\omega^2x=0</div>
+<script type="math/tex; mode=display">{\mathrm{d}^2x\over\mathrm{d}t^2}+\omega^2x=0</script>
+</div>
+<p>我们设初始条件:<span><span class="MathJax_Preview">x(0)=x_0,\left.\mathrm{d}x\over\mathrm{d}t\right|_{t=0}=0</span><script type="math/tex">x(0)=x_0,\left.\mathrm{d}x\over\mathrm{d}t\right|_{t=0}=0</script></span>,即物体的初速度为<code>0</code>而初始位置为<span><span class="MathJax_Preview">x_0</span><script type="math/tex">x_0</script></span>。因此,在我们对微分方程进行拉氏变换时能够得到:</p>
+<div>
+<div class="MathJax_Preview">\begin{aligned} s^2\mathcal{L}\{x\}-sx_0+\omega^2\mathcal{L}\{x\}&amp;=0 \\ \mathcal{L}\{x\}&amp;={sx_0\over s^2+\omega^2} \\ \mathcal{L}\{x\}&amp;=x_0\mathcal{L}\{\cos(\omega t)\} \\ x&amp;=x_0\cos(\omega t) \end{aligned}</div>
+<script type="math/tex; mode=display">\begin{aligned} s^2\mathcal{L}\{x\}-sx_0+\omega^2\mathcal{L}\{x\}&=0 \\ \mathcal{L}\{x\}&={sx_0\over s^2+\omega^2} \\ \mathcal{L}\{x\}&=x_0\mathcal{L}\{\cos(\omega t)\} \\ x&=x_0\cos(\omega t) \end{aligned}</script>
+</div>
+<p>根据余弦函数的性质,我们不难发现<code>x</code>的第一个零点在<span><span class="MathJax_Preview">t={\pi\over2\omega}</span><script type="math/tex">t={\pi\over2\omega}</script></span>,而且这个零点与<span><span class="MathJax_Preview">x_0</span><script type="math/tex">x_0</script></span>的值无关。这意味着(理想状态下)无论<span><span class="MathJax_Preview">x_0</span><script type="math/tex">x_0</script></span>多大,<span><span class="MathJax_Preview">{\pi\over2\omega}</span><script type="math/tex">{\pi\over2\omega}</script></span>秒后<code>x</code>总能回到<code>0</code>。意思就是说无论你把弹簧拉到多长,弹簧总能够在指定时间后回到原点。</p>
+<p><strong>利用简谐运动求解等时降落问题</strong></p>
+<p>我们引入广义坐标<code>s</code>来描述示意图终点与物体当前位置间曲线的弧长,则根据等时降落曲线满足:<code>s</code>变成<code>0</code>的耗时与<span><span class="MathJax_Preview">s_0</span><script type="math/tex">s_0</script></span>无关,这意味着<code>s</code>可能会满足简谐运动方程,即:</p>
+<div>
+<div class="MathJax_Preview">{\mathrm{d}^2s\over\mathrm{d}t^2}=-\omega^2s</div>
+<script type="math/tex; mode=display">{\mathrm{d}^2s\over\mathrm{d}t^2}=-\omega^2s</script>
+</div>
+<p>现在我们在来看看作用在物体上的加速度。</p>
+<p><img alt="" src="https://pic2.zhimg.com/v2-364d0290df569581fdf3edeb2ec27a6d_b.jpg" /></p>
+<p>由于蓝色部分的分量刚好被约束抵消,所以物体在曲线上的加速度刚好等于<span><span class="MathJax_Preview">-g\sin\theta</span><script type="math/tex">-g\sin\theta</script></span>,因此我们不难发现<span><span class="MathJax_Preview">{\mathrm{d}^2s\over\mathrm{d}t^2}=-g\sin\theta</span><script type="math/tex">{\mathrm{d}^2s\over\mathrm{d}t^2}=-g\sin\theta</script></span>。再代入到<code>s</code>满足的简谐运动方程,我们得到了等时降落曲线的微分方程:</p>
+<div>
+<div class="MathJax_Preview">-g\sin\theta=-\omega^2s</div>
+<script type="math/tex; mode=display">-g\sin\theta=-\omega^2s</script>
+</div>
+<p>现在我们对等式两侧两侧微分，则</p>
+<div>
+<div class="MathJax_Preview">g\cos\theta\mathrm{d}\theta=\omega^2\mathrm{d}s \Rightarrow\mathrm{d}s={g\cos\theta\over\omega^2}\mathrm{d}\theta</div>
+<script type="math/tex; mode=display">g\cos\theta\mathrm{d}\theta=\omega^2\mathrm{d}s \Rightarrow\mathrm{d}s={g\cos\theta\over\omega^2}\mathrm{d}\theta</script>
+</div>
+<p>读者可以根据上图<span><span class="MathJax_Preview">\theta</span><script type="math/tex">\theta</script></span>以及三角函数本身的定义推出一下面两个式子:</p>
+<div>
+<div class="MathJax_Preview">\begin{aligned} \mathrm{d}x&amp;=\cos\theta\mathrm{d}s \\ \mathrm{d}y&amp;=\sin\theta\mathrm{d}s \end{aligned}</div>
+<script type="math/tex; mode=display">\begin{aligned} \mathrm{d}x&=\cos\theta\mathrm{d}s \\ \mathrm{d}y&=\sin\theta\mathrm{d}s \end{aligned}</script>
+</div>
+<p>分别将以上两个等式代入到原来的微分方程中,我们可以得到两个方程:</p>
+<div>
+<div class="MathJax_Preview">\left\{ \begin{aligned} \mathrm{d}x&amp;={g\over\omega^2}\cos^2\theta\mathrm{d}\theta \\ \mathrm{d}y&amp;={g\over\omega^2}\sin\theta\cos\theta\mathrm{d}\theta \end{aligned} \right.</div>
+<script type="math/tex; mode=display">\left\{ \begin{aligned} \mathrm{d}x&={g\over\omega^2}\cos^2\theta\mathrm{d}\theta \\ \mathrm{d}y&={g\over\omega^2}\sin\theta\cos\theta\mathrm{d}\theta \end{aligned} \right.</script>
+</div>
+<p>现在对两侧分别进行积分,得到:</p>
+<div>
+<div class="MathJax_Preview">\begin{aligned} x&amp;={g\over\omega^2}\int\cos^2\theta\mathrm{d}\theta \\ &amp;={g\over4\omega^2}\int(2+2\cos2\theta)\mathrm{d}\theta \\ &amp;={g\over4\omega^2}(2\theta+\sin2\theta)+x_0 \end{aligned}</div>
+<script type="math/tex; mode=display">\begin{aligned} x&={g\over\omega^2}\int\cos^2\theta\mathrm{d}\theta \\ &={g\over4\omega^2}\int(2+2\cos2\theta)\mathrm{d}\theta \\ &={g\over4\omega^2}(2\theta+\sin2\theta)+x_0 \end{aligned}</script>
+</div>
+<p>以及</p>
+<div>
+<div class="MathJax_Preview">\begin{aligned} y&amp;={g\over\omega^2}\int\sin\theta\cos\theta\mathrm{d}\theta \\ &amp;={g\over2\omega^2}\sin^2\theta+y_0 \\ &amp;={g\over4\omega^2}(1-\cos2\theta)+y_0 \end{aligned}</div>
+<script type="math/tex; mode=display">\begin{aligned} y&={g\over\omega^2}\int\sin\theta\cos\theta\mathrm{d}\theta \\ &={g\over2\omega^2}\sin^2\theta+y_0 \\ &={g\over4\omega^2}(1-\cos2\theta)+y_0 \end{aligned}</script>
+</div>
+<p>依照上面最速降线的传统,我们可以进行换元:<span><span class="MathJax_Preview">\phi=2\theta</span><script type="math/tex">\phi=2\theta</script></span>,则我们得到的等时降落曲线方程为:</p>
+<div>
+<div class="MathJax_Preview">\left\{ \begin{aligned} x&amp;={1\over4g\omega^2}(\phi+\sin\phi)+x_0 \\ y&amp;={1\over4g\omega^2}(1-\cos\phi)+y_0 \end{aligned} \right.</div>
+<script type="math/tex; mode=display">\left\{ \begin{aligned} x&={1\over4g\omega^2}(\phi+\sin\phi)+x_0 \\ y&={1\over4g\omega^2}(1-\cos\phi)+y_0 \end{aligned} \right.</script>
+</div>
+<p>因此,我们利用简谐运动方程发现(翻转后的)摆线是等时降落问题的答案。这就是等时降落问题的一个传统解法,但是阿贝尔用却能量守恒给出了一个更加硬核的解答。</p>
+<p><strong>阿贝尔的硬核解法——积分方程法</strong></p>
+<p>与简谐运动方程法一样,阿贝尔也采用了同样的广义坐标<code>s</code>。现在把<code>s</code>代入到机械能守恒方程里(<code>h</code>为物体初始位置的纵坐标),得到(符号是因为物体下滑时<code>s</code>单调递减):</p>
+<div>
+<div class="MathJax_Preview">{1\over2}m\left(\mathrm{d}s\over\mathrm{d}t\right)^2+mgy=mgh \Rightarrow{\mathrm{d}s\over\mathrm{d}t}=-\sqrt{2g(h-y)}</div>
+<script type="math/tex; mode=display">{1\over2}m\left(\mathrm{d}s\over\mathrm{d}t\right)^2+mgy=mgh \Rightarrow{\mathrm{d}s\over\mathrm{d}t}=-\sqrt{2g(h-y)}</script>
+</div>
+<p>根据问题的定义,我们知道等时降落问题的曲线满足物体降落时间与出发位置无关,即曲线满足<span><span class="MathJax_Preview">\int_{y=h}^{y=0}\mathrm{d}t=T</span><script type="math/tex">\int_{y=h}^{y=0}\mathrm{d}t=T</script></span>(<code>T</code>为常数)。利用链式法则,我们发现<span><span class="MathJax_Preview">\mathrm{d}t={\mathrm{d}t\over\mathrm{d}s}{\mathrm{d}s\over\mathrm{d}y}\mathrm{d}y=-{1\over\sqrt{2g}\sqrt{h-y}}{\mathrm{d}s\over\mathrm{d}y}\mathrm{d}y</span><script type="math/tex">\mathrm{d}t={\mathrm{d}t\over\mathrm{d}s}{\mathrm{d}s\over\mathrm{d}y}\mathrm{d}y=-{1\over\sqrt{2g}\sqrt{h-y}}{\mathrm{d}s\over\mathrm{d}y}\mathrm{d}y</script></span>,所以最后代入到原来的积分式,得到:</p>
+<div>
+<div class="MathJax_Preview">\sqrt{2g}T=\int_0^h(h-y)^{-1/2}{\mathrm{d}s\over\mathrm{d}y}\mathrm{d}y</div>
+<script type="math/tex; mode=display">\sqrt{2g}T=\int_0^h(h-y)^{-1/2}{\mathrm{d}s\over\mathrm{d}y}\mathrm{d}y</script>
+</div>
+<p>于是我们得到了著名的阿贝尔积分方程(<code>Abel integral equation</code>)。在上一篇文章里,我使用分数阶微积分的方法求解了这个方程,但这次我打算使用拉普拉斯变换来求解:</p>
+<div>
+<div class="MathJax_Preview">\mathcal{L}\{\sqrt{2g}T\}=\mathcal{L}\left\{\int_0^h(h-y)^{-1/2}{\mathrm{d}s\over\mathrm{d}y}\mathrm{d}y\right\}</div>
+<script type="math/tex; mode=display">\mathcal{L}\{\sqrt{2g}T\}=\mathcal{L}\left\{\int_0^h(h-y)^{-1/2}{\mathrm{d}s\over\mathrm{d}y}\mathrm{d}y\right\}</script>
+</div>
+<p>我们不难发现等式右侧刚好是一个卷积,因此根据卷积定理(<code>Convolution theorem</code>),右侧可以改写成两个拉氏变换的乘积:</p>
+<p><span><span class="MathJax_Preview"><span><span class="MathJax_Preview">\mathcal{L}\{\sqrt{2g}T\}=\mathcal{L}\{y^{-1/2}\}\mathcal{L}\left\{\mathrm{d}s\over\mathrm{d}y\right\}</span><script type="math/tex">\mathcal{L}\{\sqrt{2g}T\}=\mathcal{L}\{y^{-1/2}\}\mathcal{L}\left\{\mathrm{d}s\over\mathrm{d}y\right\}</script></span></span><script type="math/tex"><span><span class="MathJax_Preview">\mathcal{L}\{\sqrt{2g}T\}=\mathcal{L}\{y^{-1/2}\}\mathcal{L}\left\{\mathrm{d}s\over\mathrm{d}y\right\}</span><script type="math/tex">\mathcal{L}\{\sqrt{2g}T\}=\mathcal{L}\{y^{-1/2}\}\mathcal{L}\left\{\mathrm{d}s\over\mathrm{d}y\right\}</script></span></script></span>
+[公式]</p>
+<p>再利用前期文章中总结出来的拉氏变换性质<span><span class="MathJax_Preview">\mathcal{L}\{t^a\}={\Gamma(a+1)\over s^{a+1}}</span><script type="math/tex">\mathcal{L}\{t^a\}={\Gamma(a+1)\over s^{a+1}}</script></span>,我们得到:</p>
+<div>
+<div class="MathJax_Preview">\begin{aligned} {\sqrt{2g}T\over s}&amp;={\Gamma(1/2)\over s^{1/2}}\mathcal{L}\left\{\mathrm{d}s\over\mathrm{d}y\right\} \\ \mathcal{L}\left\{\mathrm{d}s\over\mathrm{d}y\right\}&amp;={\sqrt{2g}T\over s^{1/2}}{1\over\Gamma(1/2)} \\ \mathcal{L}\left\{\mathrm{d}s\over\mathrm{d}y\right\}&amp;={\sqrt{2g}T\over\Gamma^2(1/2)}\mathcal{L}\{y^{-1/2}\} \\ {\mathrm{d}s\over\mathrm{d}y}&amp;={\sqrt{2g}T\over\pi\sqrt{y}} \end{aligned}</div>
+<script type="math/tex; mode=display">\begin{aligned} {\sqrt{2g}T\over s}&={\Gamma(1/2)\over s^{1/2}}\mathcal{L}\left\{\mathrm{d}s\over\mathrm{d}y\right\} \\ \mathcal{L}\left\{\mathrm{d}s\over\mathrm{d}y\right\}&={\sqrt{2g}T\over s^{1/2}}{1\over\Gamma(1/2)} \\ \mathcal{L}\left\{\mathrm{d}s\over\mathrm{d}y\right\}&={\sqrt{2g}T\over\Gamma^2(1/2)}\mathcal{L}\{y^{-1/2}\} \\ {\mathrm{d}s\over\mathrm{d}y}&={\sqrt{2g}T\over\pi\sqrt{y}} \end{aligned}</script>
+</div>
+<p>对等式两侧平方,得到<span><span class="MathJax_Preview">\left(\mathrm{d}s\over\mathrm{d}y\right)^2={2gT^2\over\pi^2y}</span><script type="math/tex">\left(\mathrm{d}s\over\mathrm{d}y\right)^2={2gT^2\over\pi^2y}</script></span>。根据弧微分公式<span><span class="MathJax_Preview">(\mathrm{d}s)^2=(\mathrm{d}x)^2+(\mathrm{d}y)^2</span><script type="math/tex">(\mathrm{d}s)^2=(\mathrm{d}x)^2+(\mathrm{d}y)^2</script></span>,倘若我们设<span><span class="MathJax_Preview">{\mathrm{d}x\over\mathrm{d}y}</span><script type="math/tex">{\mathrm{d}x\over\mathrm{d}y}</script></span>为<span><span class="MathJax_Preview">\cot\theta</span><script type="math/tex">\cot\theta</script></span>,则<span><span class="MathJax_Preview">\left(\mathrm{d}s\over\mathrm{d}y\right)^2=\csc^2\theta</span><script type="math/tex">\left(\mathrm{d}s\over\mathrm{d}y\right)^2=\csc^2\theta</script></span>。这意味着以下方程是成立的:</p>
+<div>
+<div class="MathJax_Preview">\csc^2\theta={2gT^2\over\pi^2y} \Rightarrow y={2gT^2\over\pi^2}\sin^2\theta={gT^2\over\pi^2}(1-\cos2\theta)</div>
+<script type="math/tex; mode=display">\csc^2\theta={2gT^2\over\pi^2y} \Rightarrow y={2gT^2\over\pi^2}\sin^2\theta={gT^2\over\pi^2}(1-\cos2\theta)</script>
+</div>
+<p>现在我们以及得到等时降落曲线方程的一半了,另一半可以通过对<span><span class="MathJax_Preview">{\mathrm{d}x\over\mathrm{d}\theta}</span><script type="math/tex">{\mathrm{d}x\over\mathrm{d}\theta}</script></span>的积分求得:</p>
+<div>
+<div class="MathJax_Preview">{\mathrm{d}x\over\mathrm{d}\theta}={\mathrm{d}x\over\mathrm{d}y}{\mathrm{d}y\over\mathrm{d}\theta}=\cot\theta{4gT^2\over\pi^2}\sin\theta\cos\theta={4gT^2\over\pi^2}\cos^2\theta</div>
+<script type="math/tex; mode=display">{\mathrm{d}x\over\mathrm{d}\theta}={\mathrm{d}x\over\mathrm{d}y}{\mathrm{d}y\over\mathrm{d}\theta}=\cot\theta{4gT^2\over\pi^2}\sin\theta\cos\theta={4gT^2\over\pi^2}\cos^2\theta</script>
+</div>
+<div>
+<div class="MathJax_Preview">x={4gT^2\over\pi^2}\int\cos^2\theta\mathrm{d}\theta={gT^2\over\pi^2}(2\theta+\sin2\theta)+x_0</div>
+<script type="math/tex; mode=display">x={4gT^2\over\pi^2}\int\cos^2\theta\mathrm{d}\theta={gT^2\over\pi^2}(2\theta+\sin2\theta)+x_0</script>
+</div>
+<p>依照传统,我们通过<span><span class="MathJax_Preview">\phi=2\theta</span><script type="math/tex">\phi=2\theta</script></span>换元能得到等时降落曲线简洁的参数方程:</p>
+<div>
+<div class="MathJax_Preview">\left\{ \begin{aligned} x&amp;={gT^2\over\pi^2}(\phi+\sin\phi)+x_0 \\ y&amp;={gT^2\over\pi^2}(1-\cos\phi) \end{aligned} \right.</div>
+<script type="math/tex; mode=display">\left\{ \begin{aligned} x&={gT^2\over\pi^2}(\phi+\sin\phi)+x_0 \\ y&={gT^2\over\pi^2}(1-\cos\phi) \end{aligned} \right.</script>
+</div>
+<p>我们不难发现,两种方法都可以说明等时降落问题的答案,如同最速降线问题,都是摆线。</p>
+<p>参考地址:https://zhuanlan.zhihu.com/p/126421949</p>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    <br>
+</div>
+
+</body>
+</html>
