@@ -357,7 +357,7 @@ print(I[-5:])                  # neighbors of the 5 last queries
 
 ![](http://upload-images.jianshu.io/upload_images/5617720-56b8280f2c78029b.png?imageMogr2/auto-orient/strip|imageView2/2/w/569/format/webp)
 
-## 二、faiss原理及示例分析
+## 二、faiss原理
 
 ### 2.1 faiss核心算法实现
 
@@ -381,22 +381,21 @@ faiss对一些基础的算法提供了非常高效的失效
 
 ### 2.3 组件分析
 
-`Faiss`中最常用的是索引`Index`,而后是`PCA`降维、`PQ`乘积量化,这里针对`Index`和`PQ`进行说明,`PCA`降维从流程上都可以理解。
+Faiss中最常用的是索引Index,而后是PCA降维、PQ乘积量化,这里针对Index和PQ进行说明,PCA降维从流程上都可以理解。
 
-#### 2.3.1 索引`Index`
+#### 2.3.1 索引Index
 
-`Faiss`中有两个基础索引类`Index`、`IndexBinary`,下面我们先从类图进行分析。下面给出`Index`和`IndexBinary`的类图如下所示:
+faiss中有两个基础索引类Index、IndexBinary,下面我们先从类图进行分析。下面给出Index和IndexBinary的类图如下所示:
 
-![](http://img2018.cnblogs.com/blog/1408825/201903/1408825-20190320225730601-1447506992.png)
+<img src="http://img2018.cnblogs.com/blog/1408825/201903/1408825-20190320225730601-1447506992.png" style="width:40%" />
 
-![](http://img2018.cnblogs.com/blog/1408825/201903/1408825-20190320225751231-231723243.png)
+<img src="http://img2018.cnblogs.com/blog/1408825/201903/1408825-20190320225751231-231723243.png" style="width:40%" />
 
-`Faiss`提供了针对不同场景下应用对`Index`的封装类,这里我们针对`Index`基类进行说明。
+Faiss提供了针对不同场景下应用对Index的封装类,这里我们针对Index基类进行说明。
 
-![](http://img2018.cnblogs.com/blog/1408825/201903/1408825-20190320225820995-299814548.png)
+<img src="http://img2018.cnblogs.com/blog/1408825/201903/1408825-20190320225820995-299814548.png" style="width:80%" />
 
-
-基础索引的说明参考:[`Faiss indexes`](http://github.com/facebookresearch/faiss/wiki/Faiss-indexes)涉及方法解释、参数说明以及推荐试用的工厂方法创建时的标识等。
+基础索引的说明参考:[Faiss indexes](http://github.com/facebookresearch/faiss/wiki/Faiss-indexes)涉及方法解释、参数说明以及推荐试用的工厂方法创建时的标识等。
 
 索引的创建提供了工厂方法,可以通过字符串灵活的创建不同的索引。
 
@@ -404,13 +403,13 @@ faiss对一些基础的算法提供了非常高效的失效
 index = faiss.index_factory(d,"PCA32,IVF100,PQ8 ")
 ```
 
-该字符串的含义为:使用`PCA`算法将向量降维到`32`维,划分成`100`个`nprobe`(搜索空间),通过`PQ`算法将每个向量压缩成`8bit`。其他的字符串可以参考上文给出的`Faiss indexes`链接中给出的标识。
+该字符串的含义为:使用PCA算法将向量降维到32维,划分成100个nprobe(搜索空间),通过PQ算法将每个向量压缩成8bit。其他的字符串可以参考上文给出的Faiss indexes链接中给出的标识。
 
 * **索引说明**
 
-此部分对索引`id`进行说明,此部分的理解是基于`PQ`量化及`Faiss`创建不同的索引时选择的量化器而来,可能会稍有偏差,不影响对`Faiss`的使用操作。
+此部分对索引id进行说明,此部分的理解是基于PQ量化及Faiss创建不同的索引时选择的量化器而来,可能会稍有偏差,不影响对Faiss的使用操作。
 
-默认情况,`Faiss`会为每个输入的向量记录一个次序`id`,也可以为向量指定任意我们需要的`id`。部分索引类(`IndexIVFFlat`/`IndexPQ`/`IndexIVFPQ`等)有`add_with_ids`方法,可以为每个向量对应一个`64-bit`的`id`,搜索的时候返回此`id`。此段中说明的`id`从我的角度理解就是索引。(备注:`id`是`long`型数据,所有的索引`id`类型在`Index`基类中已经定义,参考类图中标注,`typedef long idx_t;    ///< all indices are this type`)
+默认情况,Faiss会为每个输入的向量记录一个次序id,也可以为向量指定任意我们需要的id。部分索引类(IndexIVFFlat/IndexPQ/IndexIVFPQ等)有`add_with_ids`方法,可以为每个向量对应一个64-bit的id,搜索的时候返回此id。此段中说明的id从我的角度理解就是索引。(备注:id是long型数据,所有的索引id类型在Index基类中已经定义,参考类图中标注,`typedef long idx_t;    ///< all indices are this type`)
 
 示例:
 
@@ -469,39 +468,31 @@ print(I[-5:]) # neighbors of the 5 last queries
 
 * **索引选择**
 
-此部分没做实践验证,对`Faiss`给的部分说明进行翻译过来作为后续我们使用的一个参考。
+此部分没做实践验证,对Faiss给的部分说明进行翻译过来作为后续我们使用的一个参考。
 
-如果关心返回精度,可以使用`IndexFlatL2`,该索引能确保返回精确结果。一般将其作为`baseline`与其他索引方式对比,以便在精度和时间开销之间做权衡。不支持`add_with_ids`,如果需要,可以用“`IDMap`”给予任意定义`id`。
+如果关心返回精度,可以使用IndexFlatL2,该索引能确保返回精确结果。一般将其作为baseline与其他索引方式对比,以便在精度和时间开销之间做权衡。不支持`add_with_ids`,如果需要,可以用“IDMap”给予任意定义id。
 
-如果关注内存开销,可以使用"..., Flat“的索引,"..."是聚类操作,聚类之后将每个向量映射到相应的`bucket`。该索引类型并不会保存压缩之后的数据,而是保存原始数据,所以内存开销与原始数据一致。通过`nprobe`参数控制速度/精度。
+如果关注内存开销,可以使用"..., Flat“的索引,"..."是聚类操作,聚类之后将每个向量映射到相应的bucket。该索引类型并不会保存压缩之后的数据,而是保存原始数据,所以内存开销与原始数据一致。通过nprobe参数控制速度/精度。
 
-对内存开销比较关心的话,可以在聚类的基础上使用`PQ`成绩量化进行处理。
+对内存开销比较关心的话,可以在聚类的基础上使用PQ成绩量化进行处理。
 
 * **检索数据恢复**
 
-`Faiss`检索返回的是数据的索引及数据的计算距离,在检索获得的索引后需要根据索引将原始数据取出。
+Faiss检索返回的是数据的索引及数据的计算距离,在检索获得的索引后需要根据索引将原始数据取出。
 
-`Faiss`提供了两种方式,一种是一条一条的进行恢复,一种是批量恢复。
+Faiss提供了两种方式,一种是一条一条的进行恢复,一种是批量恢复。
 
-给定`id`,可以使用`reconstruct`进行单条取出数据;可以使用`reconstruct_n`方法从`index`中回批量复出原始向量(备注:该方法从给的示例看是恢复连续的数据(`0,10`),如果索引是离散的话恢复数据暂时还没做实践)。
+给定id,可以使用reconstruct进行单条取出数据;可以使用`reconstruct_n`方法从index中回批量复出原始向量(备注:该方法从给的示例看是恢复连续的数据(0,10),如果索引是离散的话恢复数据暂时还没做实践)。
 
-上述方法支持`IndexFlat`,`IndexIVFFlat`(需要与`make_direct_map`结合),`IndexIVFPQ`(需要与`make_direct_map`结合)等几类索引类型。
+上述方法支持IndexFlat,IndexIVFFlat(需要与`make_direct_map`结合),IndexIVFPQ(需要与`make_direct_map`结合)等几类索引类型。
 
-#### 2.3.2 `PCA`降维
+#### 2.3.2 Product quantization(乘积量化PQ)
 
-具体的算法参考:[主成分分析](https://wjizhong.github.io/%E4%BC%A0%E7%BB%9F%E7%AE%97%E6%B3%95/%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90/)和[PCA降维算法详解以及代码示例](https://blog.csdn.net/watkinsong/article/details/38536463?utm_source=tuicool&utm_medium=referral)。
+Faiss中使用的乘积量化是Faiss的作者在2011年发表的论文,参考:[Product Quantization for Nearest Neighbor Search](https://hal.inria.fr/file/index/docid/514462/filename/paper_hal.pdf)
 
-PCA通过数据压缩减少内存或者硬盘的使用以及数据降维加快机器学习的速度。从数据存储的角度,图片处理中通过PCA可以将图片从高维空间(p维)转换到低维空间(q维,其中p\>q),其具体操作便是是将高维空间中的图片向量(n\*p)乘以一个转换矩阵(p\*q),得到一个低维空间中的向量(n\*q)。
+PQ算法可以理解为首先把原始的向量空间分解为m个低维向量空间的笛卡尔积,并对分解得到的低维向量空间分别做量化。即是把原始D维向量(比如D=128)分成m组(比如m=4),每组就是D∗=D/m维的子向量(比如D∗=D/m=128/4=32),各自用kmeans算法学习到一个码本,然后这些码本的笛卡尔积就是原始D维向量对应的码本。用qj表示第j组子向量,用Cj表示其对应学习到的码本,那么原始D维向量对应的码本就是C=C1×C2×…×Cm。用k∗表示子向量的聚类中心点数或者说码本大小,那么原始D维向量对应的聚类中心点数或者说码本大小就是`k=(k*)m`。
 
-为了使得在整个降维的过程中信息丢失最少,我们需要对待转换图片进行分析计算得到相应的转换矩阵(p\*q)。也就是说这个降维中乘以的转换矩阵是与待转换图片息息相关的。回到我们的Faiss中来,假设我期望使用PCA预处理来减少Index中的存储空间,那在整个处理流程中,除了输入搜索图库外,我必须多输入一个转换矩阵,但是这个转换矩阵是与图库息息相关的,是可以由图库数据计算出来的。如果把这个转换矩阵看成一个参数的话,我们可以发现,在Faiss的一些预处理中,我们会引入一些参数,这些参数又无法一开始由人工来指定,只能通过喂样本来训练出来,所以Index中需要有这样的一个train()函数来为这种参数的训练提供输入训练样本的接口。
-
-#### 2.3.3 `Product quantization`(乘积量化`PQ`)
-
-`Faiss`中使用的乘积量化是Faiss的作者在2011年发表的论文,参考:[`Product Quantization for Nearest Neighbor Search`](https://hal.inria.fr/file/index/docid/514462/filename/paper_hal.pdf)
-
-`PQ`算法可以理解为首先把原始的向量空间分解为`m`个低维向量空间的笛卡尔积,并对分解得到的低维向量空间分别做量化。即是把原始`D`维向量(比如`D=128`)分成`m`组(比如`m=4`),每组就是`D∗=D/m`维的子向量(比如`D∗=D/m=128/4=32`),各自用`kmeans`算法学习到一个码本,然后这些码本的笛卡尔积就是原始`D`维向量对应的码本。用`qj`表示第`j`组子向量,用`Cj`表示其对应学习到的码本,那么原始`D`维向量对应的码本就是`C=C1×C2×…×Cm`。用`k∗`表示子向量的聚类中心点数或者说码本大小,那么原始`D`维向量对应的聚类中心点数或者说码本大小就是`k=(k*)m`。
-
-示例参考[实例理解`product quantization`算法](http://www.fabwrite.com/productquantization)。
+示例参考[实例理解product quantization算法](http://www.fabwrite.com/productquantization)。
 
 * **检索和距离的关系—ADC**
 
@@ -513,7 +504,7 @@ $$
 
 示意图如下:
 
-![](http://img-blog.csdn.net/20151218095829175)
+<img src="http://img-blog.csdn.net/20151218095829175" style="width:30%" />
 
 把求x与y的距离用x与q(y)的距离代替,q(y)是y量化后的结果。这样做之所以可行,论文中有详细推到,主要是两个原因:1）MSE越小,说明量化器的精度越高;2）三角形两边之和大于第三边,两边只差小于第三边。由于只是对y做量化,对x未量化,这是不对称的,这就是ADC(Asymmetric distance computation)中Asymmetric的含义,如果对y也量化,对x也量化,就是对称的。
 
