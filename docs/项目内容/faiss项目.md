@@ -1483,6 +1483,172 @@ namespace faiss {
 }  // END namespace fasis
 ```
 
+### 4.1.3 WorkerThread.h和WorkerThread.cpp文件
+
+* **WorkerThread.h文件**
+
+```c++
+#pragma once
+
+#include <condition_variable>
+#include <future>
+#include <deque>
+#include <thread>
+
+namespace faiss {
+
+    class WorkerThread {
+        public:
+            WorkerThread();
+
+            /// Stops and waits for the worker thread to exit, flushing all pending lambdas
+            ~WorkerThread();
+
+            /// Request that the worker thread stop itself
+            void stop();
+
+            /// Blocking waits in the current thread for the worker thread to stop
+            void waitForThreadExit();
+
+            /// Adds a lambda to run on the worker thread; returns a future that
+            /// can be used to block on its completion.
+            /// Future status is `true` if the lambda was run in the worker
+            /// thread; `false` if it was not run, because the worker thread is
+            /// exiting or has exited.
+            std::future<bool> add(std::function<void()> f);
+
+        private:
+            void startThread();
+            void threadMain();
+            void threadLoop();
+
+            /// Thread that all queued lambdas are run on
+            std::thread thread_;
+
+            /// Mutex for the queue and exit status
+            std::mutex mutex_;
+
+            /// Monitor for the exit status and the queue
+            std::condition_variable monitor_;
+
+            /// Whether or not we want the thread to exit
+            bool wantStop_;
+
+            /// Queue of pending lambdas to call
+            std::deque<std::pair<std::function<void()>, std::promise<bool>>> queue_;
+    };
+} // namespace
+```
+
+* **WorkerThread.cpp文件**
+
+```c++
+#include <faiss/utils/WorkerThread.h>
+#include <faiss/impl/FaissAssert.h>
+#include <exception>
+
+namespace faiss {
+
+    namespace {
+        // Captures any exceptions thrown by the lambda and returns them via the promise
+        void runCallback(std::function<void()>& fn, std::promise<bool>& promise) {
+            try {
+                fn();
+                promise.set_value(true);
+            } catch (...) {
+                promise.set_exception(std::current_exception());
+            }
+        }
+    } // namespace
+
+    WorkerThread::WorkerThread() : wantStop_(false) {
+        startThread();
+
+        // Make sure that the thread has started before continuing
+        add([](){}).get();
+    }
+
+    WorkerThread::~WorkerThread() {
+        stop();
+        waitForThreadExit();
+    }
+
+    void WorkerThread::startThread() {
+        thread_ = std::thread([this](){ threadMain(); });
+    }
+
+    void WorkerThread::stop() {
+        std::lock_guard<std::mutex> guard(mutex_);
+
+        wantStop_ = true;
+        monitor_.notify_one();
+    }
+
+    std::future<bool> WorkerThread::add(std::function<void()> f) {
+        std::lock_guard<std::mutex> guard(mutex_);
+
+        if (wantStop_) {
+            // The timer thread has been stopped, or we want to stop; we can't schedule anything else
+            std::promise<bool> p;
+            auto fut = p.get_future();
+
+            // did not execute
+            p.set_value(false);
+            return fut;
+        }
+
+        auto pr = std::promise<bool>();
+        auto fut = pr.get_future();
+
+        queue_.emplace_back(std::make_pair(std::move(f), std::move(pr)));
+
+        // Wake up our thread
+        monitor_.notify_one();
+        return fut;
+    }
+
+    void WorkerThread::threadMain() {
+        threadLoop();
+
+        // Call all pending tasks
+        FAISS_ASSERT(wantStop_);
+
+        // flush all pending operations
+        for (auto& f : queue_) {
+            runCallback(f.first, f.second);
+        }
+    }
+
+    void WorkerThread::threadLoop() {
+        while (true) {
+            std::pair<std::function<void()>, std::promise<bool>> data;
+            {
+                std::unique_lock<std::mutex> lock(mutex_);
+
+                while (!wantStop_ && queue_.empty()) {
+                    monitor_.wait(lock);
+                }
+
+                if (wantStop_) {
+                    return;
+                }
+
+                data = std::move(queue_.front());
+                queue_.pop_front();
+            }
+            runCallback(data.first, data.second);
+        }
+    }
+
+    void WorkerThread::waitForThreadExit() {
+        try {
+            thread_.join();
+        } catch (...) {
+        }
+    }
+} // namespace
+```
+
 ### 4.1.3 `distances.h`、`distances.cpp`文件
 
 * **`distances.h`文件**
