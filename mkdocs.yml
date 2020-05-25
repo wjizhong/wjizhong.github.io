@@ -48,27 +48,6 @@ nav:
         - 推箱子: 其他内容/推箱子.html
         - 国际象棋: 其他内容/国际象棋.html
         - 五子棋: 其他内容/五子棋.html
-markdown_extensions:
-    - toc:
-        permalink: true
-    - footnotes
-    - meta
-    - def_list
-    - pymdownx.arithmatex
-    - pymdownx.betterem:
-        smart_enable: all
-    - pymdownx.caret
-    - pymdownx.critic
-    - pymdownx.details
-    - pymdownx.inlinehilite
-    - pymdownx.emoji:
-        emoji_generator: !!python/name:pymdownx.emoji.to_png
-    - pymdownx.magiclink
-    - pymdownx.mark
-    - pymdownx.smartsymbols
-    - pymdownx.superfences
-    - pymdownx.tasklist
-    - pymdownx.tilde
 
 extra:
     history_buttons: false
