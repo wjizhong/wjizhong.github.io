@@ -60,9 +60,9 @@ markdown_extensions:
     - pymdownx.caret
     - pymdownx.critic
     - pymdownx.details
+    - pymdownx.inlinehilite
     - pymdownx.emoji:
         emoji_generator: !!python/name:pymdownx.emoji.to_png
-    - pymdownx.inlinehilite
     - pymdownx.magiclink
     - pymdownx.mark
     - pymdownx.smartsymbols
