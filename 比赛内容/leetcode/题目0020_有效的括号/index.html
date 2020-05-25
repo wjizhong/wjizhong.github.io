@@ -34,7 +34,7 @@
         var pageToc = [
           {title: "\u9898\u76ee0020:\u6709\u6548\u7684\u62ec\u53f7", url: "#_top", children: [
               {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1" },
-              {title: "\u9898\u89e3", url: "#_2" },
+              {title: "\u89e3\u7b54\u6280\u5de7", url: "#_2" },
           ]},
         ];
 
@@ -111,7 +111,7 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 输出: true
 </pre></div>
 
-<h2 id="_2">题解<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<h2 id="_2">解答技巧<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
 <p>想象一下,你正在为你的大学课设编写一个小型编译器,编译器的任务之一(或称子任务)将检测括号是否匹配。</p>
 <p>我们本文中看到的算法可用于处理编译器正在编译的程序中的所有括号,并检查是否所有括号都已配对。这将检查给定的括号字符串是否有效,是一个重要的编程问题。</p>
 <p>我们这个问题中将要处理的表达式可以包含以下三种不同类型的括号:</p>
@@ -152,11 +152,11 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>如果我们只是在这里维持计数器,那么只要我们遇到闭合方括号,我们就会知道此处有一个可用的未配对的开口方括号。但是,最近的未配对的开括号是一个花括号,而不是一个方括号,因此计数方法在这里被打破了。</p>
 <p><strong>方法:栈</strong></p>
 <p>关于有效括号表达式的一个有趣属性是有效表达式的子表达式也应该是有效表达式。(不是每个子表达式)例如</p>
-<p><img alt="" src="../media/leetcode/0020_SIMPLE.gif" /></p>
+<p><img alt="" src="../../static/images/leetcode/0020_SIMPLE.gif" /></p>
 <p>此外,如果仔细查看上述结构,颜色标识的单元格将标记开闭的括号对。整个表达式是有效的,而它的子表达式本身也是有效的。这为问题提供了一种递归结构。例如,考虑上图中两个绿色括号内的表达式。开括号位于索引<code>1</code>,相应闭括号位于索引<code>6</code>。</p>
 <p>如果每当我们在表达式中遇到一对匹配的括号时,我们只是从表达式中删除它,会发生什么?</p>
 <p>让我们看看下面的这个想法,从整体表达式中一次删除一个较小的表达式,因为这是一个有效的表达式,我们最后剩留下一个空字符串。</p>
-<p><img alt="" src="../media/leetcode/0020_RECURSIVE.gif" /></p>
+<p><img alt="" src="../../static/images/leetcode/0020_RECURSIVE.gif" /></p>
 <p>在表示问题的递归结构时,栈数据结构可以派上用场。我们无法真正地从内到外处理这个问题,因为我们对整体结构一无所知。但是,栈可以帮助我们递归地处理这种情况,即从外部到内部。</p>
 <p>让我们看看使用栈作为该问题的中间数据结构的算法。</p>
 <p>算法:</p>
@@ -168,7 +168,7 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>如果到最后我们剩下的栈中仍然有元素，那么这意味着表达式无效。</p>
 </blockquote>
 <p>我们来看一下该算法的动画演示,然后转到实现部分。</p>
-<p><img alt="" src="../media/leetcode/0020_STACK.gif" /></p>
+<p><img alt="" src="../../static/images/leetcode/0020_STACK.gif" /></p>
 <p>现在让我们看看该算法是如何实现的。</p>
 <div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Solution</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">isValid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
