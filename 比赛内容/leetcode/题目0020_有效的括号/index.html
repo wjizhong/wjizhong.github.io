@@ -75,8 +75,8 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 
     
 
-    <h1 id="0020">题目0020:有效的括号<a class="headerlink" href="#0020" title="Permanent link">&para;</a></h1>
-<h2 id="_1">题目描述<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+    <h1 id="0020">题目0020:有效的括号</h1>
+<h2 id="_1">题目描述</h2>
 <p>给定一个只包括<code>'(',')','{','}','[',']'</code>的字符串,判断字符串是否有效。</p>
 <p>有效字符串需满足:</p>
 <blockquote>
@@ -87,31 +87,31 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </blockquote>
 <p>注意空字符串可被认为是有效字符串。</p>
 <p>示例1:</p>
-<div class="highlight"><pre><span></span>输入: &quot;()&quot;
+<pre><code>输入: &quot;()&quot;
 输出: true
-</pre></div>
+</code></pre>
 
 <p>示例2:</p>
-<div class="highlight"><pre><span></span>输入: &quot;()[]{}&quot;
+<pre><code>输入: &quot;()[]{}&quot;
 输出: true
-</pre></div>
+</code></pre>
 
 <p>示例3:</p>
-<div class="highlight"><pre><span></span>输入: &quot;(]&quot;
+<pre><code>输入: &quot;(]&quot;
 输出: false
-</pre></div>
+</code></pre>
 
 <p>示例4:</p>
-<div class="highlight"><pre><span></span>输入: &quot;([)]&quot;
+<pre><code>输入: &quot;([)]&quot;
 输出: false
-</pre></div>
+</code></pre>
 
 <p>示例5:</p>
-<div class="highlight"><pre><span></span>输入: &quot;{[]}&quot;
+<pre><code>输入: &quot;{[]}&quot;
 输出: true
-</pre></div>
+</code></pre>
 
-<h2 id="_2">解答技巧<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<h2 id="_2">解答技巧</h2>
 <p>想象一下,你正在为你的大学课设编写一个小型编译器,编译器的任务之一(或称子任务)将检测括号是否匹配。</p>
 <p>我们本文中看到的算法可用于处理编译器正在编译的程序中的所有括号,并检查是否所有括号都已配对。这将检查给定的括号字符串是否有效,是一个重要的编程问题。</p>
 <p>我们这个问题中将要处理的表达式可以包含以下三种不同类型的括号:</p>
@@ -121,11 +121,11 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>[]</p>
 </blockquote>
 <p>在查看如何检查由这些括号组成的给定表达式是否有效之前,让我们看一下该问题的简化版本,在简化后的问题中,只含一种类型的括号。这么一来,我们将会遇到的表达式是</p>
-<div class="highlight"><pre><span></span>(((((()))))) -- VALID
+<pre><code>(((((()))))) -- VALID
 ()()()()     -- VALID
 (((((((()    -- INVALID
 ((()(())))   -- VALID
-</pre></div>
+</code></pre>
 
 <p>上我们试着用一个简单的算法来解决这一问题。</p>
 <ol>
@@ -146,8 +146,8 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>为什么不为不同类型的括号分别维护一个单独的计数器？</p>
 </blockquote>
 <p>这可能不起作用，因为括号的相对位置在这里也很重要。例如:</p>
-<div class="highlight"><pre><span></span>[{]
-</pre></div>
+<pre><code>[{]
+</code></pre>
 
 <p>如果我们只是在这里维持计数器,那么只要我们遇到闭合方括号,我们就会知道此处有一个可用的未配对的开口方括号。但是,最近的未配对的开括号是一个花括号,而不是一个方括号,因此计数方法在这里被打破了。</p>
 <p><strong>方法:栈</strong></p>
@@ -170,42 +170,42 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>我们来看一下该算法的动画演示,然后转到实现部分。</p>
 <p><img alt="" src="../../static/images/leetcode/0020_STACK.gif" /></p>
 <p>现在让我们看看该算法是如何实现的。</p>
-<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Solution</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">isValid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        :type s: str</span>
-<span class="sd">        :rtype: bool</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<pre><code class="python">class Solution(object):
+    def isValid(self, s):
+        &quot;&quot;&quot;
+        :type s: str
+        :rtype: bool
+        &quot;&quot;&quot;
 
-        <span class="c1"># The stack to keep track of opening brackets.</span>
-        <span class="n">stack</span> <span class="o">=</span> <span class="p">[]</span>
+        # The stack to keep track of opening brackets.
+        stack = []
 
-        <span class="c1"># Hash map for keeping track of mappings. This keeps the code very clean.</span>
-        <span class="c1"># Also makes adding more types of parenthesis easier</span>
-        <span class="n">mapping</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;)&quot;</span><span class="p">:</span> <span class="s2">&quot;(&quot;</span><span class="p">,</span> <span class="s2">&quot;}&quot;</span><span class="p">:</span> <span class="s2">&quot;{&quot;</span><span class="p">,</span> <span class="s2">&quot;]&quot;</span><span class="p">:</span> <span class="s2">&quot;[&quot;</span><span class="p">}</span>
+        # Hash map for keeping track of mappings. This keeps the code very clean.
+        # Also makes adding more types of parenthesis easier
+        mapping = {&quot;)&quot;: &quot;(&quot;, &quot;}&quot;: &quot;{&quot;, &quot;]&quot;: &quot;[&quot;}
 
-        <span class="c1"># For every bracket in the expression.</span>
-        <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">s</span><span class="p">:</span>
+        # For every bracket in the expression.
+        for char in s:
 
-            <span class="c1"># If the character is an closing bracket</span>
-            <span class="k">if</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">mapping</span><span class="p">:</span>
+            # If the character is an closing bracket
+            if char in mapping:
 
-                <span class="c1"># Pop the topmost element from the stack, if it is non empty</span>
-                <span class="c1"># Otherwise assign a dummy value of &#39;#&#39; to the top_element variable</span>
-                <span class="n">top_element</span> <span class="o">=</span> <span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span> <span class="k">if</span> <span class="n">stack</span> <span class="k">else</span> <span class="s1">&#39;#&#39;</span>
+                # Pop the topmost element from the stack, if it is non empty
+                # Otherwise assign a dummy value of '#' to the top_element variable
+                top_element = stack.pop() if stack else '#'
 
-                <span class="c1"># The mapping for the opening bracket in our hash and the top</span>
-                <span class="c1"># element of the stack don&#39;t match, return False</span>
-                <span class="k">if</span> <span class="n">mapping</span><span class="p">[</span><span class="n">char</span><span class="p">]</span> <span class="o">!=</span> <span class="n">top_element</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="bp">False</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="c1"># We have an opening bracket, simply push it onto the stack.</span>
-                <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
+                # The mapping for the opening bracket in our hash and the top
+                # element of the stack don't match, return False
+                if mapping[char] != top_element:
+                    return False
+            else:
+                # We have an opening bracket, simply push it onto the stack.
+                stack.append(char)
 
-        <span class="c1"># In the end, if the stack is empty, then we have a valid expression.</span>
-        <span class="c1"># The stack won&#39;t be empty for cases like ((()</span>
-        <span class="k">return</span> <span class="ow">not</span> <span class="n">stack</span>
-</pre></div>
+        # In the end, if the stack is empty, then we have a valid expression.
+        # The stack won't be empty for cases like ((()
+        return not stack
+</code></pre>
 
 <p>复杂度分析</p>
 <blockquote>

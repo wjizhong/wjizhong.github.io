@@ -75,12 +75,12 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 
     
 
-    <h1 id="0382">题目0382:链表随机节点<a class="headerlink" href="#0382" title="Permanent link">&para;</a></h1>
-<h2 id="_1">题目描述<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+    <h1 id="0382">题目0382:链表随机节点</h1>
+<h2 id="_1">题目描述</h2>
 <p>给定一个单链表,随机选择链表的一个节点,并返回相应的节点值。保证每个节点被选的概率一样。</p>
 <p>进阶:如果链表十分大且长度未知,如何解决这个问题?你能否使用常数级空间复杂度实现?</p>
 <p>示例:</p>
-<div class="highlight"><pre><span></span>// 初始化一个单链表 [1,2,3].
+<pre><code>// 初始化一个单链表 [1,2,3].
 ListNode head = new ListNode(1);
 head.next = new ListNode(2);
 head.next.next = new ListNode(3);
@@ -88,9 +88,9 @@ Solution solution = new Solution(head);
 
 // getRandom()方法应随机返回1,2,3中的一个，保证每个元素被返回的概率相等。
 solution.getRandom();
-</pre></div>
+</code></pre>
 
-<h2 id="_2">题解<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<h2 id="_2">题解</h2>
 <ul>
 <li><strong>蓄水池抽样算法</strong></li>
 </ul>
@@ -102,37 +102,37 @@ solution.getRandom();
 <p>举例说明:1 - 10</p>
 <blockquote>
 <p>遇到1,概率为1，保留第一个数。</p>
-<p>遇到2,概率为&frac12;,这个时候,1和2各&frac12;的概率被保留</p>
-<p>遇到3,3被保留的概率为&#8531;,(之前剩下的数假设1被保留),&#8532;的概率1被保留,(此时1被保留的总概率为&#8532; * &frac12; = &#8531;)</p>
-<p>遇到4,4被保留的概率为&frac14;,(之前剩下的数假设1被保留),&frac34;的概率1被保留,(此时1被保留的总概率为&frac34; * &#8532; * &frac12; = &frac14;)</p>
+<p>遇到2,概率为1/2,这个时候,1和2各1/2的概率被保留</p>
+<p>遇到3,3被保留的概率为1/3,(之前剩下的数假设1被保留),2/3的概率1被保留,(此时1被保留的总概率为2/3 * 1/2 = 1/3)</p>
+<p>遇到4,4被保留的概率为1/4,(之前剩下的数假设1被保留),3/4的概率1被保留,(此时1被保留的总概率为3/4 * 2/3 * 1/2 = 1/4)</p>
 <p>以此类推，每个数被保留的概率都是1/N。</p>
 </blockquote>
 <p>证明使用数学归纳法即可</p>
 <p><img alt="" src="http://pic.leetcode-cn.com/831bdf1ea840c47b79007f206fb9fe6f1a1effb6c5ceed15509fe0abb23ed2f9.jpg" /></p>
-<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">random</span>
+<pre><code class="python">import random
 
-<span class="k">class</span> <span class="nc">ListNode</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">val</span> <span class="o">=</span> <span class="n">x</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="bp">None</span>
+class ListNode:
+    def __init__(self, x):
+        self.val = x
+        self.next = None
 
-<span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+class Solution:
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">head</span><span class="p">:</span> <span class="n">ListNode</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">head</span> <span class="o">=</span> <span class="n">head</span>
+    def __init__(self, head: ListNode):
+        self.head = head
 
-    <span class="k">def</span> <span class="nf">getRandom</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">reserve</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">cur</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">head</span>
-        <span class="k">while</span> <span class="n">cur</span><span class="p">:</span>
-            <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="n">rand</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">count</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">rand</span> <span class="o">==</span> <span class="n">count</span><span class="p">:</span>
-                <span class="n">reserve</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="n">val</span>
-            <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="n">next</span>
-        <span class="k">return</span> <span class="n">reserve</span>
-</pre></div>
+    def getRandom(self) -&gt; int:
+        count = 0
+        reserve = 0
+        cur = self.head
+        while cur:
+            count += 1
+            rand = random.randint(1,count)
+            if rand == count:
+                reserve = cur.val
+            cur = cur.next
+        return reserve
+</code></pre>
 
 <p>当<code>k = m</code>时,也就是说,我们每次能读m个数据。</p>
 <p>和上面相同的道理，只不过概率在每次乘以了m而已</p>

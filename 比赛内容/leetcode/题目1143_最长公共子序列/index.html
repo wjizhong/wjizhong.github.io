@@ -75,28 +75,28 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 
     
 
-    <h1 id="1143">题目1143:最长公共子序列<a class="headerlink" href="#1143" title="Permanent link">&para;</a></h1>
-<h2 id="_1">题目描述<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+    <h1 id="1143">题目1143:最长公共子序列</h1>
+<h2 id="_1">题目描述</h2>
 <p>给定两个字符串<code>text1</code>和<code>text2</code>,返回这两个字符串的最长公共子序列的长度。</p>
 <p>一个字符串的子序列是指这样一个新的字符串:它是由原字符串在不改变字符的相对顺序的情况下删除某些字符(也可以不删除任何字符)后组成的新字符串。例如,"ace"是"abcde"的子序列,但"aec"不是"abcde"的子序列。两个字符串的<code>公共子序列</code>是这两个字符串所共同拥有的子序列。</p>
 <p>若这两个字符串没有公共子序列,则返回0。</p>
 <p>示例 1:</p>
-<div class="highlight"><pre><span></span>输入:text1 = &quot;abcde&quot;, text2 = &quot;ace&quot; 
+<pre><code>输入:text1 = &quot;abcde&quot;, text2 = &quot;ace&quot; 
 输出:3  
 解释:最长公共子序列是&quot;ace&quot;,它的长度为3。
-</pre></div>
+</code></pre>
 
 <p>示例2:</p>
-<div class="highlight"><pre><span></span>输入:text1 = &quot;abc&quot;, text2 = &quot;abc&quot;
+<pre><code>输入:text1 = &quot;abc&quot;, text2 = &quot;abc&quot;
 输出:3
 解释:最长公共子序列是&quot;abc&quot;,它的长度为3。
-</pre></div>
+</code></pre>
 
 <p>示例3:</p>
-<div class="highlight"><pre><span></span>输入:text1 = &quot;abc&quot;, text2 = &quot;def&quot;
+<pre><code>输入:text1 = &quot;abc&quot;, text2 = &quot;def&quot;
 输出:0
 解释:两个字符串没有公共子序列,返回0。
-</pre></div>
+</code></pre>
 
 <p>提示:</p>
 <blockquote>
@@ -104,7 +104,7 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>1 &lt;= text2.length &lt;= 1000</p>
 <p>输入的字符串只含有小写英文字符。</p>
 </blockquote>
-<h2 id="_2">题解<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<h2 id="_2">题解</h2>
 <ul>
 <li><strong>动态规划思路</strong></li>
 </ul>
@@ -121,39 +121,39 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p><img alt="" src="https://pic.leetcode-cn.com/416b6347372edfba27b298e225a2b90cfcb8efe5dac8ffb79fced89e996005e8-file_1578114778851" /></p>
 <p>这个<code>在</code>和<code>不在</code>就是选择,关键是,应该如何选择呢?这个需要动点脑筋:如果某个字符应该在<code>lcs</code>中,那么这个字符肯定同时存在于<code>s1</code>和<code>s2</code>中,因为<code>lcs</code>是最长公共子序列嘛。所以本题的思路是这样:</p>
 <p>用两个指针<code>i</code>和<code>j</code>从后往前遍历<code>s1</code>和<code>s2</code>,如果<code>s1[i]==s2[j]</code>,那么这个字符一定在<code>lcs</code>中;否则的话,<code>s1[i]</code>和<code>s2[j]</code>这两个字符至少有一个不在<code>lcs</code>中,需要丢弃一个。先看一下递归解法,比较容易理解:</p>
-<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">longestCommonSubsequence</span><span class="p">(</span><span class="n">str1</span><span class="p">,</span> <span class="n">str2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-    <span class="k">def</span> <span class="nf">dp</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
-        <span class="c1"># 空串的base case</span>
-        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">or</span> <span class="n">j</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-            <span class="k">return</span> <span class="mi">0</span>
-        <span class="k">if</span> <span class="n">str1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">str2</span><span class="p">[</span><span class="n">j</span><span class="p">]:</span>
-            <span class="c1"># 这边找到一个lcs的元素,继续往前找</span>
-            <span class="k">return</span> <span class="n">dp</span><span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># 谁能让lcs最长,就听谁的</span>
-            <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">dp</span><span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">j</span><span class="p">),</span> <span class="n">dp</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+<pre><code class="python">def longestCommonSubsequence(str1, str2) -&gt; int:
+    def dp(i, j):
+        # 空串的base case
+        if i == -1 or j == -1:
+            return 0
+        if str1[i] == str2[j]:
+            # 这边找到一个lcs的元素,继续往前找
+            return dp(i - 1, j - 1) + 1
+        else:
+            # 谁能让lcs最长,就听谁的
+            return max(dp(i-1, j), dp(i, j-1))
 
-    <span class="c1"># i和j初始化为最后一个索引</span>
-    <span class="k">return</span> <span class="n">dp</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">str1</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">str2</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-</pre></div>
+    # i和j初始化为最后一个索引
+    return dp(len(str1)-1, len(str2)-1)
+</code></pre>
 
 <p>对于第一种情况,找到一个<code>lcs</code>中的字符,同时将<code>i</code>,<code>j</code>向前移动一位,并给<code>lcs</code>的长度加一;对于后者,则尝试两种情况,取更大的结果。</p>
 <p>其实这段代码就是暴力解法,我们可以通过备忘录或者<code>DP table</code>来优化时间复杂度,比如通过前文描述的<code>DP table</code>来解决:</p>
-<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">longestCommonSubsequence</span><span class="p">(</span><span class="n">str1</span><span class="p">,</span> <span class="n">str2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-    <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">str1</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">str2</span><span class="p">)</span>
-    <span class="c1"># 构建DP table和base case</span>
-    <span class="n">dp</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
-    <span class="c1"># 进行状态转移</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">str1</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">str2</span><span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]:</span>
-                <span class="c1"># 找到一个lcs中的字符</span>
-                <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">],</span> <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<pre><code class="python">def longestCommonSubsequence(str1, str2) -&gt; int:
+    m, n = len(str1), len(str2)
+    # 构建DP table和base case
+    dp = [[0] * (n + 1) for _ in range(m + 1)]
+    # 进行状态转移
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            if str1[i - 1] == str2[j - 1]:
+                # 找到一个lcs中的字符
+                dp[i][j] = 1 + dp[i-1][j-1]
+            else:
+                dp[i][j] = max(dp[i-1][j], dp[i][j-1])
 
-    <span class="k">return</span> <span class="n">dp</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-</pre></div>
+    return dp[-1][-1]
+</code></pre>
 
 <p>第四步,空间压缩</p>
 <p>从<code>i</code>的角度来看, 只与前一行有关,其他行无关。可以根据此进行空间压缩,准备一个<code>dp n+1</code>的长度,其实的0位置存放一个空字符串</p>
@@ -165,23 +165,23 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p><code>tmp</code>:表示是当前<code>dp[j]</code>(<code>dp[i][j]</code>)正上方的数,相当于<code>dp[i- 1][j]</code></p>
 <p><code>dp[j-1]</code>:表示是当前<code>dp[j]</code>(<code>dp[i][j]</code>)左边的数,相当于<code>dp[i][j-1]</code>每一轮结束后,<code>last</code>的值都向前滚动一个,变成正上方的数,也就是<code>tmp</code></p>
 </blockquote>
-<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
-    <span class="k">def</span> <span class="nf">longestCommonSubsequence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text1</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">text2</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">text1</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">text2</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">m</span><span class="o">==</span><span class="mi">0</span> <span class="ow">or</span> <span class="n">n</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="n">dp</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">tmp</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">m</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">):</span>
-            <span class="n">last</span> <span class="o">=</span><span class="mi">0</span>
-            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">):</span>
-                <span class="n">tmp</span> <span class="o">=</span> <span class="n">dp</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
-                <span class="k">if</span> <span class="n">text1</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">text2</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
-                    <span class="n">dp</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">=</span><span class="n">last</span><span class="o">+</span><span class="mi">1</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">dp</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span> <span class="n">dp</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]);</span>
-                <span class="n">last</span> <span class="o">=</span> <span class="n">tmp</span><span class="p">;</span>
-        <span class="k">return</span> <span class="n">dp</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
-</pre></div>
+<pre><code class="python">class Solution:
+    def longestCommonSubsequence(self, text1: str, text2: str) -&gt; int:
+        m, n = len(text1), len(text2)
+        if m==0 or n==0: return 0;
+        dp = [0]*(n+1)
+        tmp = 0
+        for i in range(1,m+1,1):
+            last =0
+            for j in range(1,n+1,1):
+                tmp = dp[j]
+                if text1[i-1] == text2[j-1]:
+                    dp[j]=last+1
+                else:
+                    dp[j]=max(tmp, dp[j-1]);
+                last = tmp;
+        return dp[n]
+</code></pre>
 
   <br>
     <style>

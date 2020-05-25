@@ -75,70 +75,64 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 
     
 
-    <h1 id="300">题目300:最长上升子序列<a class="headerlink" href="#300" title="Permanent link">&para;</a></h1>
-<h2 id="_1">题目描述<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+    <h1 id="300">题目300:最长上升子序列</h1>
+<h2 id="_1">题目描述</h2>
 <p>给定一个无序的整数数组，找到其中最长上升子序列的长度。</p>
 <p>示例:</p>
-<div class="highlight"><pre><span></span>输入: [10,9,2,5,3,7,101,18]
+<pre><code>输入: [10,9,2,5,3,7,101,18]
 输出: 4 
 解释: 最长的上升子序列是 [2,3,7,101]，它的长度是 4。
-</pre></div>
+</code></pre>
 
 <p>说明:可能会有多种最长上升子序列的组合,你只需要输出对应的长度即可。你算法的时间复杂度应该为O(n2)。</p>
 <p>进阶: 你能将算法的时间复杂度降低到O(nlog n)吗?</p>
-<h2 id="_2">官方题解<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<h2 id="_2">官方题解</h2>
 <p><strong>动态规划</strong></p>
-<p>定义<code>dp[i]</code>为考虑前<code>i</code>个元素,以第<code>i</code>个数字结尾的最长上升子序列的长度,注意<span><span class="MathJax_Preview">\textit{nums}[i]</span><script type="math/tex">\textit{nums}[i]</script></span>必须被选取。</p>
-<p>我们从小到大计算<code>dp[]</code>数组的值,在计算<code>dp[i]</code>之前,我们已经计算出<span><span class="MathJax_Preview">dp[0 \ldots i-1]</span><script type="math/tex">dp[0 \ldots i-1]</script></span>的值,则状态转移方程为:</p>
-<div>
-<div class="MathJax_Preview">dp[i] = \text{max}(dp[j]) + 1, \text{其中} \, 0 \leq j &lt; i \, \text{且} \, \textit{num}[j]&lt;\textit{num}[i]</div>
-<script type="math/tex; mode=display">dp[i] = \text{max}(dp[j]) + 1, \text{其中} \, 0 \leq j < i \, \text{且} \, \textit{num}[j]<\textit{num}[i]</script>
-</div>
-<p>即考虑往<span><span class="MathJax_Preview">dp[0 \ldots i-1]</span><script type="math/tex">dp[0 \ldots i-1]</script></span>中最长的上升子序列后面再加一个<span><span class="MathJax_Preview">\textit{nums}[i]</span><script type="math/tex">\textit{nums}[i]</script></span>。由于<span><span class="MathJax_Preview">dp[j]</span><script type="math/tex">dp[j]</script></span>代表<span><span class="MathJax_Preview">\textit{nums}[0 \ldots j]</span><script type="math/tex">\textit{nums}[0 \ldots j]</script></span>中以<span><span class="MathJax_Preview">\textit{nums}[j]</span><script type="math/tex">\textit{nums}[j]</script></span>结尾的最长上升子序列,所以如果能从<span><span class="MathJax_Preview">dp[j]</span><script type="math/tex">dp[j]</script></span>这个状态转移过来,那么<span><span class="MathJax_Preview">\textit{nums}[i]</span><script type="math/tex">\textit{nums}[i]</script></span>必然要大于<span><span class="MathJax_Preview">\textit{nums}[j]</span><script type="math/tex">\textit{nums}[j]</script></span>,才能将<span><span class="MathJax_Preview">\textit{nums}[i]</span><script type="math/tex">\textit{nums}[i]</script></span>放在<span><span class="MathJax_Preview">\textit{nums}[j]</span><script type="math/tex">\textit{nums}[j]</script></span>后面以形成更长的上升子序列。</p>
-<p>最后,整个数组的最长上升子序列即所有<span><span class="MathJax_Preview">dp[i]</span><script type="math/tex">dp[i]</script></span>中的最大值。</p>
-<div>
-<div class="MathJax_Preview">\text{LIS}_{\textit{length}}= \text{max}(dp[i]), \text{其中} \, 0\leq i &lt; n</div>
-<script type="math/tex; mode=display">\text{LIS}_{\textit{length}}= \text{max}(dp[i]), \text{其中} \, 0\leq i < n</script>
-</div>
+<p>定义<code>dp[i]</code>为考虑前<code>i</code>个元素,以第<code>i</code>个数字结尾的最长上升子序列的长度,注意$\textit{nums}[i]$必须被选取。</p>
+<p>我们从小到大计算<code>dp[]</code>数组的值,在计算<code>dp[i]</code>之前,我们已经计算出$dp[0 \ldots i-1]$的值,则状态转移方程为:</p>
+<p>$$dp[i] = \text{max}(dp[j]) + 1, \text{其中} \, 0 \leq j &lt; i \, \text{且} \, \textit{num}[j]&lt;\textit{num}[i]$$</p>
+<p>即考虑往$dp[0 \ldots i-1]$中最长的上升子序列后面再加一个$\textit{nums}[i]$。由于$dp[j]$代表$\textit{nums}[0 \ldots j]$中以$\textit{nums}[j]$结尾的最长上升子序列,所以如果能从$dp[j]$这个状态转移过来,那么$\textit{nums}[i]$必然要大于$\textit{nums}[j]$,才能将$\textit{nums}[i]$放在$\textit{nums}[j]$后面以形成更长的上升子序列。</p>
+<p>最后,整个数组的最长上升子序列即所有$dp[i]$中的最大值。</p>
+<p>$$\text{LIS}_{\textit{length}}= \text{max}(dp[i]), \text{其中} \, 0\leq i &lt; n$$</p>
 <p>以下动画演示了该方法:</p>
 <p><img alt="" src="https://pic.leetcode-cn.com/Figures/300_LISSlide1.PNG" /></p>
-<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
-    <span class="k">public</span><span class="o">:</span>
-        <span class="kt">int</span> <span class="n">lengthOfLIS</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">nums</span><span class="p">)</span> <span class="p">{</span>
-            <span class="kt">int</span> <span class="n">n</span><span class="o">=</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-            <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">dp</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-            <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
-                <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-                <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">i</span><span class="p">;</span> <span class="o">++</span><span class="n">j</span><span class="p">)</span> <span class="p">{</span>
-                    <span class="k">if</span> <span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="p">{</span>
-                        <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">dp</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
-                    <span class="p">}</span>
-                <span class="p">}</span>
-            <span class="p">}</span>
-            <span class="k">return</span> <span class="o">*</span><span class="n">max_element</span><span class="p">(</span><span class="n">dp</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">dp</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
-        <span class="p">}</span>
-<span class="p">};</span>
-</pre></div>
+<pre><code class="c++">class Solution {
+    public:
+        int lengthOfLIS(vector&lt;int&gt;&amp; nums) {
+            int n=(int)nums.size();
+            if (n == 0) return 0;
+            vector&lt;int&gt; dp(n, 0);
+            for (int i = 0; i &lt; n; ++i) {
+                dp[i] = 1;
+                for (int j = 0; j &lt; i; ++j) {
+                    if (nums[j] &lt; nums[i]) {
+                        dp[i] = max(dp[i], dp[j] + 1);
+                    }
+                }
+            }
+            return *max_element(dp.begin(), dp.end());
+        }
+};
+</code></pre>
 
 <p>复杂度分析</p>
 <blockquote>
-<p>时间复杂度:<span><span class="MathJax_Preview">O(n^2)</span><script type="math/tex">O(n^2)</script></span>,其中<code>n</code>为数组<span><span class="MathJax_Preview">\textit{nums}</span><script type="math/tex">\textit{nums}</script></span>的长度。动态规划的状态数为<code>n</code>,计算状态<span><span class="MathJax_Preview">dp[i]</span><script type="math/tex">dp[i]</script></span>时,需要<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>的时间遍历<span><span class="MathJax_Preview">dp[0 \ldots i-1]</span><script type="math/tex">dp[0 \ldots i-1]</script></span>的所有状态,所以总时间复杂度为<span><span class="MathJax_Preview">O(n^2)</span><script type="math/tex">O(n^2)</script></span>。</p>
-<p>空间复杂度:<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>,需要额外使用长度为<code>n</code>的<code>dp</code>数组。</p>
+<p>时间复杂度:$O(n^2)$,其中<code>n</code>为数组$\textit{nums}$的长度。动态规划的状态数为<code>n</code>,计算状态$dp[i]$时,需要$O(n)$的时间遍历$dp[0 \ldots i-1]$的所有状态,所以总时间复杂度为$O(n^2)$。</p>
+<p>空间复杂度:$O(n)$,需要额外使用长度为<code>n</code>的<code>dp</code>数组。</p>
 </blockquote>
 <ul>
 <li><strong>贪心+二分查找</strong></li>
 </ul>
 <p>考虑一个简单的贪心,如果我们要使上升子序列尽可能的长,则我们需要让序列上升得尽可能慢,因此我们希望每次在上升子序列最后加上的那个数尽可能的小。</p>
-<p>基于上面的贪心思路,我们维护一个数组<span><span class="MathJax_Preview">d[i]</span><script type="math/tex">d[i]</script></span>,表示长度为<code>i</code>的最长上升子序列的末尾元素的最小值,用<span><span class="MathJax_Preview">\textit{len}</span><script type="math/tex">\textit{len}</script></span>记录目前最长上升子序列的长度,起始时<code>len</code>为<code>1</code>,<span><span class="MathJax_Preview">d[1] = \textit{nums}[0]</span><script type="math/tex">d[1] = \textit{nums}[0]</script></span>。</p>
-<p>同时我们可以注意到<code>d[i]</code>是关于<code>i</code>单调递增的。因为如果<span><span class="MathJax_Preview">d[j] \geq d[i]</span><script type="math/tex">d[j] \geq d[i]</script></span>且<span><span class="MathJax_Preview">j &lt; i</span><script type="math/tex">j < i</script></span>,我们考虑从长度为<code>i</code>的最长上升子序列的末尾删除<code>i-j</code>个元素,那么这个序列长度变为<code>j</code>,且第<code>j</code>个元素<code>x</code>(末尾元素)必然小于<span><span class="MathJax_Preview">d[i]</span><script type="math/tex">d[i]</script></span>也就小于<span><span class="MathJax_Preview">d[j]</span><script type="math/tex">d[j]</script></span>。那么我们就找到了一个长度为<code>j</code>的最长上升子序列,并且末尾元素比<span><span class="MathJax_Preview">d[j]</span><script type="math/tex">d[j]</script></span>小,从而产生了矛盾。因此数组<span><span class="MathJax_Preview">d[]</span><script type="math/tex">d[]</script></span>的单调性得证。</p>
-<p>我们依次遍历数组<span><span class="MathJax_Preview">\textit{nums}[]</span><script type="math/tex">\textit{nums}[]</script></span>中的每个元素,并更新数组<span><span class="MathJax_Preview">d[]</span><script type="math/tex">d[]</script></span>和<code>len</code>的值。如果<span><span class="MathJax_Preview">\textit{nums}[i] &gt; d[\textit{len}]</span><script type="math/tex">\textit{nums}[i] > d[\textit{len}]</script></span>则更新<code>len = len + 1</code>,否则在<span><span class="MathJax_Preview">d[1 \ldots len]</span><script type="math/tex">d[1 \ldots len]</script></span>中找满足<span><span class="MathJax_Preview">d[i - 1] &lt; \textit{nums}[j] &lt; d[i]</span><script type="math/tex">d[i - 1] < \textit{nums}[j] < d[i]</script></span>的下标<code>i</code>,并更新<span><span class="MathJax_Preview">d[i] = \textit{nums}[j]</span><script type="math/tex">d[i] = \textit{nums}[j]</script></span>。</p>
+<p>基于上面的贪心思路,我们维护一个数组$d[i]$,表示长度为<code>i</code>的最长上升子序列的末尾元素的最小值,用$\textit{len}$记录目前最长上升子序列的长度,起始时<code>len</code>为<code>1</code>,$d[1] = \textit{nums}[0]$。</p>
+<p>同时我们可以注意到<code>d[i]</code>是关于<code>i</code>单调递增的。因为如果$d[j] \geq d[i]$且$j &lt; i$,我们考虑从长度为<code>i</code>的最长上升子序列的末尾删除<code>i-j</code>个元素,那么这个序列长度变为<code>j</code>,且第<code>j</code>个元素<code>x</code>(末尾元素)必然小于$d[i]$也就小于$d[j]$。那么我们就找到了一个长度为<code>j</code>的最长上升子序列,并且末尾元素比$d[j]$小,从而产生了矛盾。因此数组$d[]$的单调性得证。</p>
+<p>我们依次遍历数组$\textit{nums}[]$中的每个元素,并更新数组$d[]$和<code>len</code>的值。如果$\textit{nums}[i] &gt; d[\textit{len}]$则更新<code>len = len + 1</code>,否则在$d[1 \ldots len]$中找满足$d[i - 1] &lt; \textit{nums}[j] &lt; d[i]$的下标<code>i</code>,并更新$d[i] = \textit{nums}[j]$。</p>
 <p>根据<code>d</code>数组的单调性,我们可以使用二分查找寻找下标<code>i</code>,优化时间复杂度。</p>
 <p>最后整个算法流程为:</p>
-<p>设当前已求出的最长上升子序列的长度为<span><span class="MathJax_Preview">\textit{len}</span><script type="math/tex">\textit{len}</script></span>(初始时为<code>1</code>),从前往后遍历数组<span><span class="MathJax_Preview">\textit{nums}</span><script type="math/tex">\textit{nums}</script></span>,在遍历到<span><span class="MathJax_Preview">\textit{nums}[i]</span><script type="math/tex">\textit{nums}[i]</script></span>时:</p>
+<p>设当前已求出的最长上升子序列的长度为$\textit{len}$(初始时为<code>1</code>),从前往后遍历数组$\textit{nums}$,在遍历到$\textit{nums}[i]$时:</p>
 <blockquote>
-<p>如果<span><span class="MathJax_Preview">\textit{nums}[i] &gt; d[\textit{len}]</span><script type="math/tex">\textit{nums}[i] > d[\textit{len}]</script></span>,则直接加入到<code>d</code>数组末尾,并更新<span><span class="MathJax_Preview">\textit{len} = \textit{len} + 1</span><script type="math/tex">\textit{len} = \textit{len} + 1</script></span>;</p>
-<p>否则,在<code>d</code>数组中二分查找,找到第一个比<span><span class="MathJax_Preview">\textit{nums}[i]</span><script type="math/tex">\textit{nums}[i]</script></span>小的数<span><span class="MathJax_Preview">d[k]</span><script type="math/tex">d[k]</script></span>,并更新<span><span class="MathJax_Preview">d[k + 1] = \textit{nums}[i]</span><script type="math/tex">d[k + 1] = \textit{nums}[i]</script></span>。</p>
+<p>如果$\textit{nums}[i] &gt; d[\textit{len}]$,则直接加入到<code>d</code>数组末尾,并更新$\textit{len} = \textit{len} + 1$;</p>
+<p>否则,在<code>d</code>数组中二分查找,找到第一个比$\textit{nums}[i]$小的数$d[k]$,并更新$d[k + 1] = \textit{nums}[i]$。</p>
 </blockquote>
 <p>以输入序列<code>[0, 8, 4, 12, 2]</code>为例:</p>
 <blockquote>
@@ -149,37 +143,37 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>第五步插入<code>2</code>,<code>d = [0, 2, 12]</code>。</p>
 <p>最终得到最大递增子序列长度为<code>3</code>。</p>
 </blockquote>
-<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
-<span class="k">public</span><span class="o">:</span>
-    <span class="kt">int</span> <span class="n">lengthOfLIS</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">nums</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kt">int</span> <span class="n">len</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">d</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-        <span class="n">d</span><span class="p">[</span><span class="n">len</span><span class="p">]</span> <span class="o">=</span> <span class="n">nums</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
-        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">d</span><span class="p">[</span><span class="n">len</span><span class="p">])</span> <span class="n">d</span><span class="p">[</span><span class="o">++</span><span class="n">len</span><span class="p">]</span> <span class="o">=</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
-            <span class="k">else</span><span class="p">{</span>
-                <span class="kt">int</span> <span class="n">l</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="n">len</span><span class="p">,</span> <span class="n">pos</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// 如果找不到说明所有的数都比 nums[i] 大，此时要更新 d[1]，所以这里将 pos 设为 0</span>
-                <span class="k">while</span> <span class="p">(</span><span class="n">l</span> <span class="o">&lt;=</span> <span class="n">r</span><span class="p">)</span> <span class="p">{</span>
-                    <span class="kt">int</span> <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">l</span> <span class="o">+</span> <span class="n">r</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">;</span>
-                    <span class="k">if</span> <span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="p">{</span>
-                        <span class="n">pos</span> <span class="o">=</span> <span class="n">mid</span><span class="p">;</span>
-                        <span class="n">l</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
-                    <span class="p">}</span>
-                    <span class="k">else</span> <span class="n">r</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
-                <span class="p">}</span>
-                <span class="n">d</span><span class="p">[</span><span class="n">pos</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-        <span class="k">return</span> <span class="n">len</span><span class="p">;</span>
-    <span class="p">}</span>
-<span class="p">};</span>
-</pre></div>
+<pre><code class="c++">class Solution {
+public:
+    int lengthOfLIS(vector&lt;int&gt;&amp; nums) {
+        int len = 1, n = (int)nums.size();
+        if (n == 0) return 0;
+        vector&lt;int&gt; d(n + 1, 0);
+        d[len] = nums[0];
+        for (int i = 1; i &lt; n; ++i) {
+            if (nums[i] &gt; d[len]) d[++len] = nums[i];
+            else{
+                int l = 1, r = len, pos = 0; // 如果找不到说明所有的数都比 nums[i] 大，此时要更新 d[1]，所以这里将 pos 设为 0
+                while (l &lt;= r) {
+                    int mid = (l + r) &gt;&gt; 1;
+                    if (d[mid] &lt; nums[i]) {
+                        pos = mid;
+                        l = mid + 1;
+                    }
+                    else r = mid - 1;
+                }
+                d[pos + 1] = nums[i];
+            }
+        }
+        return len;
+    }
+};
+</code></pre>
 
 <p>复杂度分析</p>
 <blockquote>
-<p>时间复杂度:<span><span class="MathJax_Preview">O(n\log n)</span><script type="math/tex">O(n\log n)</script></span>。数组<span><span class="MathJax_Preview">\textit{nums}</span><script type="math/tex">\textit{nums}</script></span>的长度为<code>n</code>,我们依次用数组中的元素去更新<code>d</code>数组,而更新<code>d</code>数组时需要进行<span><span class="MathJax_Preview">O(\log n)</span><script type="math/tex">O(\log n)</script></span>的二分搜索,所以总时间复杂度为<span><span class="MathJax_Preview">O(n\log n)</span><script type="math/tex">O(n\log n)</script></span>。</p>
-<p>空间复杂度:<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>,需要额外使用长度为<code>n</code>的<code>d</code>数组。</p>
+<p>时间复杂度:$O(n\log n)$。数组$\textit{nums}$的长度为<code>n</code>,我们依次用数组中的元素去更新<code>d</code>数组,而更新<code>d</code>数组时需要进行$O(\log n)$的二分搜索,所以总时间复杂度为$O(n\log n)$。</p>
+<p>空间复杂度:$O(n)$,需要额外使用长度为<code>n</code>的<code>d</code>数组。</p>
 </blockquote>
 
   <br>

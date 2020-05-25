@@ -75,12 +75,12 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 
     
 
-    <h1 id="0398">题目0398:随机数索引<a class="headerlink" href="#0398" title="Permanent link">&para;</a></h1>
-<h2 id="_1">题目描述<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+    <h1 id="0398">题目0398:随机数索引</h1>
+<h2 id="_1">题目描述</h2>
 <p>给定一个可能含有重复元素的整数数组,要求随机输出给定的数字的索引。 您可以假设给定的数字一定存在于数组中。</p>
 <p>注意:数组大小可能非常大。使用太多额外空间的解决方案将不会通过测试。</p>
 <p>示例:</p>
-<div class="highlight"><pre><span></span>int[] nums = new int[] {1,2,3,3,3};
+<pre><code>int[] nums = new int[] {1,2,3,3,3};
 Solution solution = new Solution(nums);
 
 // pick(3) 应该返回索引 2,3 或者 4。每个索引的返回概率应该相等。
@@ -88,28 +88,28 @@ solution.pick(3);
 
 // pick(1) 应该返回 0。因为只有nums[0]等于1。
 solution.pick(1);
-</pre></div>
+</code></pre>
 
-<h2 id="_2">题解<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<h2 id="_2">题解</h2>
 <ul>
 <li><strong>暴力法</strong></li>
 </ul>
-<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+<pre><code class="python">class Solution:
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">nums</span> <span class="o">=</span> <span class="n">nums</span>
+    def __init__(self, nums: List[int]):
+        self.nums = nums
 
-    <span class="k">def</span> <span class="nf">pick</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nums</span><span class="p">))</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="n">target</span><span class="p">]</span>        
-        <span class="k">return</span> <span class="n">index</span><span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">index</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)]</span>
-</pre></div>
+    def pick(self, target: int) -&gt; int:
+        index = [i for i in range(len(self.nums)) if self.nums[i]==target]        
+        return index[random.randint(0,len(index)-1)]
+</code></pre>
 
 <ul>
 <li><strong>蓄水池方法</strong></li>
 </ul>
 <p>首先从最简单的例子出发:数据流只有一个数据。我们接收数据,发现数据流结束了,直接返回该数据,该数据返回的概率为1。</p>
 <p>看来很简单,那么我们试试难一点的情况:假设数据流里有两个数据。我们读到了第一个数据,这次我们不能直接返回该数据,因为数据流没有结束。我们继续读取第二个数据,发现数据流结束了。因此我们只要保证以相同的概率返回第一个或者第二个数据就可以满足题目要求。因此我们生成一个0到1的随机数R,如果R小于0.5,我们就返回第一个数据,如果R大于0.5,返回第二个数据。</p>
-<p>接着我们继续分析有三个数据的数据流的情况。为了方便,我们按顺序给流中的数据命名为1、2、3。我们陆续收到了数据1、2和前面的例子一样,我们只能保存一个数据,所以必须淘汰1和2中的一个。应该如何淘汰呢?不妨和上面例子一样,我们按照二分之一的概率淘汰一个,例如我们淘汰了2。继续读取流中的数据3,发现数据流结束了,我们知道在长度为3的数据流中,如果返回数据3的概率为&#8531;,那么才有可能保证选择的正确性。也就是说,目前我们手里有1,3两个数据,我们通过一次随机选择,以&#8531;的概率留下数据3,以&#8532;的概率留下数据1。那么数据1被最终留下的概率是多少呢?</p>
+<p>接着我们继续分析有三个数据的数据流的情况。为了方便,我们按顺序给流中的数据命名为1、2、3。我们陆续收到了数据1、2和前面的例子一样,我们只能保存一个数据,所以必须淘汰1和2中的一个。应该如何淘汰呢?不妨和上面例子一样,我们按照二分之一的概率淘汰一个,例如我们淘汰了2。继续读取流中的数据3,发现数据流结束了,我们知道在长度为3的数据流中,如果返回数据3的概率为1/3,那么才有可能保证选择的正确性。也就是说,目前我们手里有1,3两个数据,我们通过一次随机选择,以1/3的概率留下数据3,以2/3的概率留下数据1。那么数据1被最终留下的概率是多少呢?</p>
 <blockquote>
 <p>数据1被留下: <code>(1/2）(2/3) = 1/3</code></p>
 <p>数据2被留下概率:<code>(1/2）(2/3) = 1/3</code></p>
@@ -118,20 +118,20 @@ solution.pick(1);
 <p>这个方法可以满足题目要求,所有数据被留下返回的概率一样!</p>
 <p>因此,我们做一下推论:假设当前正要读取第n个数据,则我们以1/n的概率留下该数据,否则留下前n-1个数据中的一个。
 以这种方法选择,所有数据流中数据被选择的概率一样。</p>
-<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
+<pre><code class="python">class Solution:
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">nums</span> <span class="o">=</span> <span class="n">nums</span>
+    def __init__(self, nums: List[int]):
+        self.nums = nums
 
-    <span class="k">def</span> <span class="nf">pick</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nums</span><span class="p">)):</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">target</span><span class="p">:</span>
-                <span class="n">n</span> <span class="o">=</span><span class="n">n</span> <span class="o">+</span><span class="mi">1</span>
-                <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">%</span><span class="n">n</span><span class="o">==</span><span class="mi">0</span> <span class="p">:</span>
-                    <span class="n">index</span> <span class="o">=</span> <span class="n">i</span>
-        <span class="k">return</span> <span class="n">index</span>
-</pre></div>
+    def pick(self, target: int) -&gt; int:
+        n = 0
+        for i in range(len(self.nums)):
+            if self.nums[i] == target:
+                n =n +1
+                if random.randint(0,n-1)%n==0 :
+                    index = i
+        return index
+</code></pre>
 
   <br>
     <style>

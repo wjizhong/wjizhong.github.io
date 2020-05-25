@@ -75,17 +75,17 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 
     
 
-    <h1 id="0053">题目0053:最大子序和<a class="headerlink" href="#0053" title="Permanent link">&para;</a></h1>
-<h2 id="_1">题目描述<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+    <h1 id="0053">题目0053:最大子序和</h1>
+<h2 id="_1">题目描述</h2>
 <p>给定一个整数数组<code>nums</code>,找到一个具有最大和的连续子数组(子数组最少包含一个元素),返回其最大和。</p>
 <p>示例:</p>
-<div class="highlight"><pre><span></span>输入: [-2,1,-3,4,-1,2,1,-5,4],
+<pre><code>输入: [-2,1,-3,4,-1,2,1,-5,4],
 输出: 6
 解释: 连续子数组[4,-1,2,1]的和最大,为6。
-</pre></div>
+</code></pre>
 
 <p>进阶:如果你已经实现复杂度为<code>O(n)</code>的解法,尝试使用更为精妙的分治法求解。</p>
-<h2 id="_2">题解<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<h2 id="_2">题解</h2>
 <ul>
 <li><strong>方法一:分治法</strong></li>
 </ul>
@@ -103,45 +103,45 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p><code>cross_sum</code>是包含左右子数组且含索引<code>(left + right)/2</code>的最大值。</p>
 </blockquote>
 <p><img alt="" src="https://pic.leetcode-cn.com/3aa2128a7ddcf1123454a6e5364792490c5edff62674f3cfd9c81cb7b5e8e522-file_1576478143567" /></p>
-<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
-    <span class="k">def</span> <span class="nf">cross_sum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span> 
-        <span class="k">if</span> <span class="n">left</span> <span class="o">==</span> <span class="n">right</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">nums</span><span class="p">[</span><span class="n">left</span><span class="p">]</span>
+<pre><code class="python">class Solution:
+    def cross_sum(self, nums, left, right, p): 
+        if left == right:
+            return nums[left]
 
-        <span class="n">left_subsum</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;-inf&#39;</span><span class="p">)</span>
-        <span class="n">curr_sum</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">left</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
-            <span class="n">curr_sum</span> <span class="o">+=</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-            <span class="n">left_subsum</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">left_subsum</span><span class="p">,</span> <span class="n">curr_sum</span><span class="p">)</span>
+        left_subsum = float('-inf')
+        curr_sum = 0
+        for i in range(p, left - 1, -1):
+            curr_sum += nums[i]
+            left_subsum = max(left_subsum, curr_sum)
 
-        <span class="n">right_subsum</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;-inf&#39;</span><span class="p">)</span>
-        <span class="n">curr_sum</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">p</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">right</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-            <span class="n">curr_sum</span> <span class="o">+=</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-            <span class="n">right_subsum</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">right_subsum</span><span class="p">,</span> <span class="n">curr_sum</span><span class="p">)</span>
+        right_subsum = float('-inf')
+        curr_sum = 0
+        for i in range(p + 1, right + 1):
+            curr_sum += nums[i]
+            right_subsum = max(right_subsum, curr_sum)
 
-        <span class="k">return</span> <span class="n">left_subsum</span> <span class="o">+</span> <span class="n">right_subsum</span>   
+        return left_subsum + right_subsum   
 
-    <span class="k">def</span> <span class="nf">helper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span> 
-        <span class="k">if</span> <span class="n">left</span> <span class="o">==</span> <span class="n">right</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">nums</span><span class="p">[</span><span class="n">left</span><span class="p">]</span>
+    def helper(self, nums, left, right): 
+        if left == right:
+            return nums[left]
 
-        <span class="n">p</span> <span class="o">=</span> <span class="p">(</span><span class="n">left</span> <span class="o">+</span> <span class="n">right</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+        p = (left + right) // 2
 
-        <span class="n">left_sum</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">helper</span><span class="p">(</span><span class="n">nums</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
-        <span class="n">right_sum</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">helper</span><span class="p">(</span><span class="n">nums</span><span class="p">,</span> <span class="n">p</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
-        <span class="n">cross_sum</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cross_sum</span><span class="p">(</span><span class="n">nums</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+        left_sum = self.helper(nums, left, p)
+        right_sum = self.helper(nums, p + 1, right)
+        cross_sum = self.cross_sum(nums, left, right, p)
 
-        <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">left_sum</span><span class="p">,</span> <span class="n">right_sum</span><span class="p">,</span> <span class="n">cross_sum</span><span class="p">)</span>
+        return max(left_sum, right_sum, cross_sum)
 
-    <span class="k">def</span> <span class="nf">maxSubArray</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">:</span> <span class="s1">&#39;List[int]&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;int&#39;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">helper</span><span class="p">(</span><span class="n">nums</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-</pre></div>
+    def maxSubArray(self, nums: 'List[int]') -&gt; 'int':
+        return self.helper(nums, 0, len(nums) - 1)
+</code></pre>
 
 <p>复杂度分析:</p>
 <blockquote>
-<p>时间复杂度:<span><span class="MathJax_Preview">\mathcal{O}(N \log N)</span><script type="math/tex">\mathcal{O}(N \log N)</script></span>。</p>
-<p>空间复杂度:<span><span class="MathJax_Preview">\mathcal{O}(\log N)</span><script type="math/tex">\mathcal{O}(\log N)</script></span>,递归时栈使用的空间。</p>
+<p>时间复杂度:$\mathcal{O}(N \log N)$。</p>
+<p>空间复杂度:$\mathcal{O}(\log N)$,递归时栈使用的空间。</p>
 </blockquote>
 <ul>
 <li><strong>方法二:贪心</strong></li>
@@ -154,22 +154,22 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>迄今为止的最大和</p>
 </blockquote>
 <p><img alt="" src="https://pic.leetcode-cn.com/19a5e92ccddfcb29d709541d879a4035cd78f263adf19a74343b9ea464fb8d45-file_1576478143577" /></p>
-<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
-    <span class="k">def</span> <span class="nf">maxSubArray</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">:</span> <span class="s1">&#39;List[int]&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;int&#39;</span><span class="p">:</span>
-        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
-        <span class="n">curr_sum</span> <span class="o">=</span> <span class="n">max_sum</span> <span class="o">=</span> <span class="n">nums</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<pre><code class="python">class Solution:
+    def maxSubArray(self, nums: 'List[int]') -&gt; 'int':
+        n = len(nums)
+        curr_sum = max_sum = nums[0]
 
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-            <span class="n">curr_sum</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">curr_sum</span> <span class="o">+</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-            <span class="n">max_sum</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_sum</span><span class="p">,</span> <span class="n">curr_sum</span><span class="p">)</span>
+        for i in range(1, n):
+            curr_sum = max(nums[i], curr_sum + nums[i])
+            max_sum = max(max_sum, curr_sum)
 
-        <span class="k">return</span> <span class="n">max_sum</span>
-</pre></div>
+        return max_sum
+</code></pre>
 
 <p>复杂度分析</p>
 <blockquote>
-<p>时间复杂度:<span><span class="MathJax_Preview">\mathcal{O}(N)</span><script type="math/tex">\mathcal{O}(N)</script></span>。只遍历一次数组。</p>
-<p>空间复杂度:<span><span class="MathJax_Preview">\mathcal{O}(1)</span><script type="math/tex">\mathcal{O}(1)</script></span>,只使用了常数空间。</p>
+<p>时间复杂度:$\mathcal{O}(N)$。只遍历一次数组。</p>
+<p>空间复杂度:$\mathcal{O}(1)$,只使用了常数空间。</p>
 </blockquote>
 <ul>
 <li><strong>方法三:动态规划(Kadane算法）</strong></li>
@@ -182,22 +182,22 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </blockquote>
 <p>我们在这里使用第一种方法,因为可以修改数组跟踪当前位置的最大和。下一步是在知道当前位置的最大和后更新全局最大和。</p>
 <p><img alt="" src="https://pic.leetcode-cn.com/e6ca21377d5533204c3149e0b5cdcc146ada4efe1ed2294b3e0615cdb4754853-file_1576478143560" /></p>
-<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
-    <span class="k">def</span> <span class="nf">maxSubArray</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">:</span> <span class="s1">&#39;List[int]&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;int&#39;</span><span class="p">:</span>
-        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
-        <span class="n">max_sum</span> <span class="o">=</span> <span class="n">nums</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> 
-            <span class="n">max_sum</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">max_sum</span><span class="p">)</span>
+<pre><code class="python">class Solution:
+    def maxSubArray(self, nums: 'List[int]') -&gt; 'int':
+        n = len(nums)
+        max_sum = nums[0]
+        for i in range(1, n):
+            if nums[i - 1] &gt; 0:
+                nums[i] += nums[i - 1] 
+            max_sum = max(nums[i], max_sum)
 
-        <span class="k">return</span> <span class="n">max_sum</span>
-</pre></div>
+        return max_sum
+</code></pre>
 
 <p>复杂度分析</p>
 <blockquote>
-<p>时间复杂度:<span><span class="MathJax_Preview">\mathcal{O}(N)</span><script type="math/tex">\mathcal{O}(N)</script></span>。只遍历了一次数组。</p>
-<p>空间复杂度:<span><span class="MathJax_Preview">\mathcal{O}(1)</span><script type="math/tex">\mathcal{O}(1)</script></span>,使用了常数的空间。</p>
+<p>时间复杂度:$\mathcal{O}(N)$。只遍历了一次数组。</p>
+<p>空间复杂度:$\mathcal{O}(1)$,使用了常数的空间。</p>
 </blockquote>
 
   <br>

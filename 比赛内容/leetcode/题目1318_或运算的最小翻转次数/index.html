@@ -75,27 +75,27 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 
     
 
-    <h1 id="1318">题目1318:或运算的最小翻转次数<a class="headerlink" href="#1318" title="Permanent link">&para;</a></h1>
-<h2 id="_1">题目描述<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+    <h1 id="1318">题目1318:或运算的最小翻转次数</h1>
+<h2 id="_1">题目描述</h2>
 <p>给你三个正整数<code>a、b</code>和<code>c</code>。</p>
 <p>你可以对<code>a</code>和<code>b</code>的二进制表示进行位翻转操作,返回能够使按位或运算<code>a OR b == c</code>成立的最小翻转次数。</p>
 <p>「位翻转操作」是指将一个数的二进制表示任何单个位上的<code>1</code>变成<code>0</code>或者<code>0</code>变成<code>1</code>。</p>
 <p>示例1:</p>
 <p><img alt="" src="http://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/01/11/sample_3_1676.png" /></p>
-<div class="highlight"><pre><span></span>输入：a = 2, b = 6, c = 5
+<pre><code>输入：a = 2, b = 6, c = 5
 输出：3
 解释：翻转后 a = 1 , b = 4 , c = 5 使得 a OR b == c
-</pre></div>
+</code></pre>
 
 <p>示例2:</p>
-<div class="highlight"><pre><span></span>输入：a = 4, b = 2, c = 7
+<pre><code>输入：a = 4, b = 2, c = 7
 输出：1
-</pre></div>
+</code></pre>
 
 <p>示例3:</p>
-<div class="highlight"><pre><span></span>输入：a = 1, b = 2, c = 3
+<pre><code>输入：a = 1, b = 2, c = 3
 输出：0
-</pre></div>
+</code></pre>
 
 <p>提示:</p>
 <blockquote>
@@ -103,7 +103,7 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>1 &lt;= b &lt;= 10^9</p>
 <p>1 &lt;= c &lt;= 10^9</p>
 </blockquote>
-<h2 id="_2">题解<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<h2 id="_2">题解</h2>
 <p>本题需要用到一些位运算的知识:</p>
 <ul>
 <li>对于十进制整数<code>x</code>,我们可以用<code>x &amp; 1</code>得到<code>x</code>的二进制表示的最低位,它等价于<code>x % 2</code>:<ul>
@@ -131,21 +131,21 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <li>若<code>bit_c</code>的值为<code>1</code>,那么<code>bit_a</code>和<code>bit_b</code>中至少有一个为<code>1</code>,只有当它们都为<code>0</code>时,才需要<code>1</code>次翻转;</li>
 </ul>
 <p>我们将每一位的翻转次数进行累加,在枚举完所有位之后,就得到了最小翻转次数。</p>
-<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Solution</span><span class="p">:</span>
-    <span class="k">def</span> <span class="nf">minFlips</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">c</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="n">ans</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">32</span><span class="p">):</span>
-            <span class="n">bit_a</span><span class="p">,</span> <span class="n">bit_b</span><span class="p">,</span> <span class="n">bit_c</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span> <span class="o">&gt;&gt;</span> <span class="n">i</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="n">b</span> <span class="o">&gt;&gt;</span> <span class="n">i</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="n">c</span> <span class="o">&gt;&gt;</span> <span class="n">i</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">1</span>
-            <span class="k">if</span> <span class="n">bit_c</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">ans</span> <span class="o">+=</span> <span class="n">bit_a</span> <span class="o">+</span> <span class="n">bit_b</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">ans</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="n">bit_a</span> <span class="o">+</span> <span class="n">bit_b</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
-        <span class="k">return</span> <span class="n">ans</span>
-</pre></div>
+<pre><code class="python">class Solution:
+    def minFlips(self, a: int, b: int, c: int) -&gt; int:
+        ans = 0
+        for i in range(32):
+            bit_a, bit_b, bit_c = (a &gt;&gt; i) &amp; 1, (b &gt;&gt; i) &amp; 1, (c &gt;&gt; i) &amp; 1
+            if bit_c == 0:
+                ans += bit_a + bit_b
+            else:
+                ans += int(bit_a + bit_b) == 0
+        return ans
+</code></pre>
 
 <p>复杂度分析:</p>
 <blockquote>
-<p>时间复杂度:<span><span class="MathJax_Preview">O(\log C)</span><script type="math/tex">O(\log C)</script></span>,其中<code>C</code>为常数,在本题中,<code>C</code>的值为<code>10^9</code>。<span><span class="MathJax_Preview">O(\log C)</span><script type="math/tex">O(\log C)</script></span>等价于<code>C</code>的位数,也就是我们需要枚举的位数。</p>
+<p>时间复杂度:$O(\log C)$,其中<code>C</code>为常数,在本题中,<code>C</code>的值为<code>10^9</code>。$O(\log C)$等价于<code>C</code>的位数,也就是我们需要枚举的位数。</p>
 <p>空间复杂度:O(1)。</p>
 </blockquote>
 

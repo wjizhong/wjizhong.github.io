@@ -77,9 +77,9 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 
     
 
-    <h1 id="_1">计算机概论<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
-<h2 id="_2">一、计算机设备<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
-<h3 id="11-cpu">1.1 CPU<a class="headerlink" href="#11-cpu" title="Permanent link">&para;</a></h3>
+    <h1 id="_1">计算机概论</h1>
+<h2 id="_2">一、计算机设备</h2>
+<h3 id="11-cpu">1.1 CPU</h3>
 <p>CPU的全称是Central Processing Unit,它是你的电脑中最硬核的组件。CPU是能够让你的计算机叫计算机的核心组件,但是它却不能代表你的电脑,CPU与计算机的关系就相当于大脑和人的关系。它是一种小型的计算机芯片,它嵌入在台式机、笔记本电脑或者平板电脑的主板上。通过在单个计算机芯片上放置数十亿个微型晶体管来构建CPU。这些晶体管使它能够执行运行存储在系统内存中的程序所需的计算,也就是说CPU决定了你电脑的计算能力。</p>
 <p><img alt="" src="http://pic3.zhimg.com/80/v2-770bccc2c2c7b9bec2687e0bf0112f32_hd.jpg" /></p>
 <p>CPU的核心是从程序或应用程序获取指令并执行计算。此过程可以分为三个关键阶段:提取、解码和执行。CPU从系统的RAM中提取指令,然后解码该指令的实际内容,然后再由CPU的相关部分执行该指令。</p>
@@ -120,10 +120,10 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </ul>
 </blockquote>
 <p>首先来看一段用汇编语言表示的代码清单</p>
-<div class="highlight"><pre><span></span><span class="n">mov</span> <span class="n">eax</span><span class="p">,</span> <span class="n">dword</span> <span class="n">ptr</span> <span class="p">[</span><span class="n">ebp</span><span class="o">-</span><span class="mi">8</span><span class="p">]</span>      <span class="cm">/* 把数值从内存复制到eax */</span>
-<span class="n">add</span> <span class="n">eax</span><span class="p">,</span> <span class="n">dword</span> <span class="n">ptr</span> <span class="p">[</span><span class="n">ebp</span><span class="o">-</span><span class="mi">0</span><span class="n">Ch</span><span class="p">]</span>    <span class="cm">/* 把eax的数值和内存的数值相加 */</span>
-<span class="n">mov</span> <span class="n">dword</span> <span class="n">ptr</span> <span class="p">[</span><span class="n">ebp</span><span class="o">-</span><span class="mi">4</span><span class="p">],</span> <span class="n">eax</span>      <span class="cm">/* 把eax的数值(上一步的结果)存储在内存中 */</span>
-</pre></div>
+<pre><code class="c">mov eax, dword ptr [ebp-8]      /* 把数值从内存复制到eax */
+add eax, dword ptr [ebp-0Ch]    /* 把eax的数值和内存的数值相加 */
+mov dword ptr [ebp-4], eax      /* 把eax的数值(上一步的结果)存储在内存中 */
+</code></pre>
 
 <p>这是采用汇编语言(assembly)编写程序的一部分。汇编语言采用助记符(memonic)来编写程序,每一个原本是电信号的机器语言指令会有一个与其对应的助记符,例如mov,add分别是数据的存储(move)和相加(addition)的简写。汇编语言和机器语言是一一对应的,这一点和高级语言有很大的不同,通常我们将汇编语言编写的程序转换为机器语言的过程称为汇编;反之,机器语言转化为汇编语言的过程称为反汇编。</p>
 <p>汇编语言能够帮助你理解计算机做了什么工作,机器语言级别的程序是通过寄存器来处理的,上面代码中的eax,ebp都是表示的寄存器,是CPU内部寄存器的名称,所以可以说CPU是一系列寄存器的集合体。在内存中的存储通过地址编号来表示,而寄存器的种类则通过名字来区分。</p>
@@ -191,8 +191,8 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p><strong>访问取数阶段</strong> 根据指令的需要,有可能需要从内存中提取数据,此阶段的任务是:根据指令地址码,得到操作数在主存中的地址,并从主存中读取该操作数用于运算
 <strong>结果写回阶段</strong> 作为最后一个阶段,结果写回(Write Back,WB)阶段把执行指令阶段的运行结果数据"写回"到某种存储形式:结果数据经常被写到CPU的内部寄存器中,以便被后续的指令快速地存取;</p>
 </blockquote>
-<h2 id="_3">二、互联网知识<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
-<h3 id="21">2.1 统一资源标识符<a class="headerlink" href="#21" title="Permanent link">&para;</a></h3>
+<h2 id="_3">二、互联网知识</h2>
+<h3 id="21">2.1 统一资源标识符</h3>
 <p>在计算机术语中,统一资源标识符(Uniform Resource Identifier,缩写URI)是一个用于标识某一互联网资源名称的字符串。该种标识允许用户对网络中(一般指万维网)的资源通过特定的协议进行交互操作。URI的最常见的形式是统一资源定位符(Uniform Resource Locator,缩写为URL),经常指定为非正式的网址。更罕见的用法是统一资源名称(URN),其目的是通过提供一种途径,用于在特定的名字空间资源的标识,以补充网址。</p>
 <p><strong>与URL和URN的关系:</strong></p>
 <p><img alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/URI_Euler_Diagram_no_lone_URIs.svg/360px-URI_Euler_Diagram_no_lone_URIs.svg.png" /></p>
@@ -201,8 +201,8 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p><strong>技术观点:</strong> URL是一种URI,它标识一个互联网资源,并指定对其进行操作或获取该资源的方法。可能通过对主要访问手段的描述,也可能通过网络“位置”进行标识。例如,<code>http://www.wikipedia.org/</code>这个URL,标识一个特定资源(首页)并表示该资源的某种形式(例如以编码字符表示的,首页的HTML代码)是可以通过HTTP协议从www.wikipedia.org这个网络主机获得的。URN是基于某名字空间通过名称指定资源的URI。人们可以通过URN来指出某个资源,而无需指出其位置和获得方式。资源无需是基于互联网的。例如,URN urn:ISBN 0-395-36341-1指定标识系统(即国际标准书号ISBN)和某资源在该系统中的唯一表示的URI。它可以允许人们在不指出其位置和获得方式的情况下谈论这本书。</p>
 <p><strong>文法:</strong> URI文法由URI协议名(例如"http","ftp","mailto"或"file"),一个冒号,和协议对应的内容所构成。特定的协议定义了协议内容的语法和语义,而所有的协议都必须遵循一定的URI文法通用规则,亦即为某些专门目的保留部分特殊字符。URI文法同时也就各种原因对协议内容加以其他的限制,例如,保证各种分层协议之间的协同性。百分号编码也为URI提供附加信息。</p>
 <p>通用URI的格式如下:</p>
-<div class="highlight"><pre><span></span><span class="nx">scheme</span><span class="o">:</span><span class="p">[</span><span class="c1">//[user[:password]@]host[:port]][/path][?query][#fragment]</span>
-</pre></div>
+<pre><code class="js">scheme:[//[user[:password]@]host[:port]][/path][?query][#fragment]
+</code></pre>
 
 <p><a href="https://www.ietf.org/rfc/rfc1738.txt">URL</a>被冒号分成了两部分,前面是scheme(方案),后面是scheme的描述部分。</p>
 <p>scheme只能由以下元素组成:a-z(不区分大小写),数字,字符(加号+,句号.,连字符-)。shceme目前有这些类型:</p>
@@ -258,8 +258,8 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </table>
 <p>当然,上述的scheme大部分是应用非常广泛的,我们可以自定义scheme,只要解析器支持即可,比如我们公司就根据URL设计了一条App跳转专用的URL,方便服务器分发跳转路径。</p>
 <p>scheme的描述部分也可以拆解成以下的结构:</p>
-<div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="nx">user</span><span class="o">&gt;:&lt;</span><span class="nx">password</span><span class="o">&gt;</span><span class="err">@</span><span class="o">&lt;</span><span class="nx">host</span><span class="o">&gt;:&lt;</span><span class="nx">port</span><span class="o">&gt;</span><span class="err">/&lt;url-path&gt;</span>
-</pre></div>
+<pre><code class="js">&lt;user&gt;:&lt;password&gt;@&lt;host&gt;:&lt;port&gt;/&lt;url-path&gt;
+</code></pre>
 
 <p>根据方案的不同,这些部分是可以部分省略的,比如http通常不需要user和password。我们来依次看这些组成部分:</p>
 <table>
@@ -299,26 +299,26 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>URI引用可取用的格式包括完整URI,URI中协议特定的部分,或其后附部分——甚至是空字符串。一个可选的片段标识符以#开头,可出现在URI引用的结尾。引用中,#之前的部分间接标识一个资源,而片段标识符则标识资源的某个部分。</p>
 <p>为从URI引用获得URI,软件将URI引用与一个绝对"基址"基于一个固定算法合并,并转换为"绝对"形式。系统将URI引用视作相对于基址URI,虽然在绝对引用的情况下基址并无意义。基址URI一般标识包含URI引用的文档,但仍可被文档内包含的声明,或外部数据传输协议所包括的声明改写。若基址URI包括一个片段标识符,则该标识符在合并过程中被忽略。如果在URI引用中出现片段标识符,则在合并过程中被保留。</p>
 <p>网络文档标记语言时常使用URI引用指向其它资源,如外部文档或同一逻辑文档的其他部分等。在HTML中,img元素的src属性值是URI引用,a或link元素的href属性值亦如是。在XML中,在一个DTD中的SYSTEM关键字之后出现的系统描述符是一个无片段的URI引用。在XSLT中,xsl:import元素/指令的href属性值是一个URI引用,document()函数的第一个参数与之相仿。</p>
-<div class="highlight"><pre><span></span><span class="err">#</span> <span class="nx">绝对URI</span>
-<span class="nx">http</span><span class="o">:</span><span class="c1">//example.org/absolute/URI/with/absolute/path/to/resource.txt</span>
-<span class="nx">ftp</span><span class="o">:</span><span class="c1">//example.org/resource.txt</span>
-<span class="nx">urn</span><span class="o">:</span><span class="nx">issn</span><span class="o">:</span><span class="mi">1535</span><span class="o">-</span><span class="mi">3613</span>
-<span class="err">#</span> <span class="nx">URI引用</span>
-<span class="nx">http</span><span class="o">:</span><span class="c1">//en.wikipedia.org/wiki/URI#Examples_of_URI_references (&quot;http&quot; 指定协议名, &quot;en.wikipedia.org&quot;是“典据”, &quot;/wiki/URI&quot;是指向英文维基页面的“路径”,而&quot;#Examples_of_URI_references&quot;是指向英文维基页面相应片段的“片段”。)</span>
-<span class="nx">http</span><span class="o">:</span><span class="c1">//example.org/absolute/URI/with/absolute/path/to/resource.txt</span>
-<span class="c1">//example.org/scheme-relative/URI/with/absolute/path/to/resource.txt</span>
-<span class="err">/relative/URI/with/absolute/path/to/resource.txt</span>
-<span class="nx">relative</span><span class="o">/</span><span class="nx">path</span><span class="o">/</span><span class="nx">to</span><span class="o">/</span><span class="nx">resource</span><span class="p">.</span><span class="nx">txt</span>
-<span class="p">..</span><span class="o">/</span><span class="p">..</span><span class="o">/</span><span class="p">..</span><span class="o">/</span><span class="nx">resource</span><span class="p">.</span><span class="nx">txt</span>
-<span class="p">.</span><span class="o">/</span><span class="nx">resource</span><span class="p">.</span><span class="nx">txt</span><span class="err">#</span><span class="nx">frag01</span>
-<span class="nx">resource</span><span class="p">.</span><span class="nx">txt</span>
-<span class="err">#</span><span class="nx">frag01</span>
-<span class="p">(</span><span class="nx">空字符串</span><span class="p">)</span>
-</pre></div>
+<pre><code class="js"># 绝对URI
+http://example.org/absolute/URI/with/absolute/path/to/resource.txt
+ftp://example.org/resource.txt
+urn:issn:1535-3613
+# URI引用
+http://en.wikipedia.org/wiki/URI#Examples_of_URI_references (&quot;http&quot; 指定协议名, &quot;en.wikipedia.org&quot;是“典据”, &quot;/wiki/URI&quot;是指向英文维基页面的“路径”,而&quot;#Examples_of_URI_references&quot;是指向英文维基页面相应片段的“片段”。)
+http://example.org/absolute/URI/with/absolute/path/to/resource.txt
+//example.org/scheme-relative/URI/with/absolute/path/to/resource.txt
+/relative/URI/with/absolute/path/to/resource.txt
+relative/path/to/resource.txt
+../../../resource.txt
+./resource.txt#frag01
+resource.txt
+#frag01
+(空字符串)
+</code></pre>
 
 <p><strong>URI解析:</strong> "解析"一个URI意味着将一个相对URI引用转换为绝对形式,或者通过尝试获取一个可解引URI或一个URI引用所代表的资源来解引用这个URI。文档处理软件的"解析"部分通常同时提供这两种功能。</p>
 <p>一个URI引用可以是一个同文档引用:一个指向包含URI引用自身的文档的引用。文档处理软件可有效地使用其当前的文档资源来完成对于同文档引用的解析而不需要重新获取一份资源。这只是一个建议——文档处理软件自然可以选用另外的方法来决定是否获取新资源。</p>
-<h3 id="22-tcpip">2.2 TCP/IP模型<a class="headerlink" href="#22-tcpip" title="Permanent link">&para;</a></h3>
+<h3 id="22-tcpip">2.2 TCP/IP模型</h3>
 <p>TCP/IP协议模型(Transmission Control Protocol/Internet Protocol),包含了一系列构成互联网基础的网络协议,是Internet的核心协议。</p>
 <p>基于TCP/IP的参考模型将协议分成四个层次,它们分别是链路层、网络层、传输层和应用层。下图表示TCP/IP模型与OSI模型各层的对照关系。</p>
 <p><img alt="" src="https://pic4.zhimg.com/80/v2-d6a75e961a9d13228f57691662a5d3ab_1440w.jpg" /></p>
@@ -450,8 +450,8 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>当发送方连续收到三个重复确认,就执行“乘法减小”算法,把慢开始门限ssthresh减半。</p>
 <p>与慢开始不同之处是现在不执行慢开始算法(即拥塞窗口cwnd现在不设置为1),而是把cwnd值设置为 慢开始门限ssthresh减半后的数值,然后开始执行拥塞避免算法(“加法增大”),使拥塞窗口缓慢地线性增大。</p>
 </blockquote>
-<h2 id="_4">三、时间协议<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
-<h3 id="31">3.1 格式标示符<a class="headerlink" href="#31" title="Permanent link">&para;</a></h3>
+<h2 id="_4">三、时间协议</h2>
+<h3 id="31">3.1 格式标示符</h3>
 <p>常见的时间格式标识符:</p>
 <table>
 <thead>
@@ -531,11 +531,11 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </tr>
 <tr>
 <td align="left">%k</td>
-<td>小时,填充空格,如(0/&frac12;/..23);相当于<code>%_H</code></td>
+<td>小时,填充空格,如(0/1/2/..23);相当于<code>%_H</code></td>
 </tr>
 <tr>
 <td align="left">%l</td>
-<td>小时,填充空格(&frac12;/3/..12);相当于<code>%_I</code></td>
+<td>小时,填充空格(1/2/3/..12);相当于<code>%_I</code></td>
 </tr>
 <tr>
 <td align="left">%m</td>
@@ -587,7 +587,7 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </tr>
 <tr>
 <td align="left">%u</td>
-<td>星期中的第几天(&frac12;/..7);1是星期一</td>
+<td>星期中的第几天(1/2/..7);1是星期一</td>
 </tr>
 <tr>
 <td align="left">%U</td>
@@ -643,87 +643,87 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </tr>
 </tbody>
 </table>
-<h3 id="32-date">3.2 date命令<a class="headerlink" href="#32-date" title="Permanent link">&para;</a></h3>
+<h3 id="32-date">3.2 date命令</h3>
 <ul>
 <li><strong>显示当前时间和按指定格式显示时间</strong></li>
 </ul>
-<div class="highlight"><pre><span></span>date +<span class="s2">&quot;%Y/%m/%d %H:%m:%S&quot;</span>
-</pre></div>
+<pre><code class="shell">date +&quot;%Y/%m/%d %H:%m:%S&quot;
+</code></pre>
 
 <ul>
 <li><strong>时间解析,将输入的字符串解析为时间</strong></li>
 </ul>
-<div class="highlight"><pre><span></span>date -d <span class="s2">&quot;20170305&quot;</span>  //解析日期, 输出:Sun Mar  <span class="m">5</span> <span class="m">00</span>:00:00 CST <span class="m">2017</span>。
-date -d <span class="s2">&quot;03/05/2017&quot;</span>
-date -d <span class="s2">&quot;2017/03/05 11:12:13&quot;</span> // 解析日期和时间, 输出: Sun Mar  <span class="m">5</span> <span class="m">11</span>:12:13 CST <span class="m">2017</span>。
-date -d <span class="s2">&quot;2017-03-05 21:12:17&quot;</span> +<span class="s2">&quot;%s&quot;</span> // 将输入时间转为时间戳,输出:1488719537。
-date -d <span class="s2">&quot;2017-03-05 21:12:17&quot;</span> +<span class="s2">&quot;%Y/%m/%d %H:%M:%S&quot;</span>  // 时间格式转换,将输入日期转换为自定义格式。
-</pre></div>
+<pre><code class="shell">date -d &quot;20170305&quot;  //解析日期, 输出:Sun Mar  5 00:00:00 CST 2017。
+date -d &quot;03/05/2017&quot;
+date -d &quot;2017/03/05 11:12:13&quot; // 解析日期和时间, 输出: Sun Mar  5 11:12:13 CST 2017。
+date -d &quot;2017-03-05 21:12:17&quot; +&quot;%s&quot; // 将输入时间转为时间戳,输出:1488719537。
+date -d &quot;2017-03-05 21:12:17&quot; +&quot;%Y/%m/%d %H:%M:%S&quot;  // 时间格式转换,将输入日期转换为自定义格式。
+</code></pre>
 
 <ul>
 <li><strong>时间数字、时间整数、时间戳转字符串和数字和字符串时间转换</strong></li>
 </ul>
-<div class="highlight"><pre><span></span>date --date @1488899583    // 将从1970-01-01 <span class="m">00</span>:00:00 UTC开始的秒数,转为字符串时间
-date --date @<span class="s2">&quot;1488899583&quot;</span>  // 同上,即时间戳转字符串,或者整数秒转字符串时间。
-date +<span class="s2">&quot;%s&quot;</span>                 // 日期转时间戳,日期转整数。
-</pre></div>
+<pre><code class="shell">date --date @1488899583    // 将从1970-01-01 00:00:00 UTC开始的秒数,转为字符串时间
+date --date @&quot;1488899583&quot;  // 同上,即时间戳转字符串,或者整数秒转字符串时间。
+date +&quot;%s&quot;                 // 日期转时间戳,日期转整数。
+</code></pre>
 
 <ul>
 <li><strong>设置当前时间</strong></li>
 </ul>
-<div class="highlight"><pre><span></span>date -s <span class="s2">&quot;2017/05/08 23:28:13&quot;</span>   // 设置日期和时间
-date -s <span class="s2">&quot;2017/05/08&quot;</span> // 设置日期<span class="o">(</span>注意,时间会同时被设置为00:00:00,慎用<span class="o">)</span>。
-date -s <span class="s2">&quot;23:28:13&quot;</span>   // 设置时间。
-</pre></div>
+<pre><code class="shell">date -s &quot;2017/05/08 23:28:13&quot;   // 设置日期和时间
+date -s &quot;2017/05/08&quot; // 设置日期(注意,时间会同时被设置为00:00:00,慎用)。
+date -s &quot;23:28:13&quot;   // 设置时间。
+</code></pre>
 
 <ul>
 <li><strong>时间运算</strong></li>
 </ul>
-<div class="highlight"><pre><span></span>// 时间加减运算
+<pre><code class="shell">// 时间加减运算
 // 直接用-d命令结合year/month/week/day/hour/minute/second, 单复数都行
-date -d <span class="s2">&quot;+1 days&quot;</span> // 明天,当前时间加1天。
-date -d <span class="s2">&quot;+2 days&quot;</span> // 后天,当前时间加2天。
-date -d <span class="s2">&quot;+10 days&quot;</span> +<span class="s2">&quot;%Y%m%d %H:%M:%S&quot;</span> // 当前时间加10天,并按指定格式输出。
-date -d <span class="s2">&quot;-1 days&quot;</span> // 昨天,当前时间减1天。
-date -d <span class="s2">&quot;-2 days&quot;</span> // 前天,当前时间减2天。
-date -d <span class="s2">&quot;2017/03/05 +1 days&quot;</span>    // 指定日期加1天。
-date -d <span class="s2">&quot;2017/03/05 -1 days&quot;</span>    // 指定日期减1天。
-date -d <span class="s2">&quot;2017/03/08 +600 seconds&quot;</span> // 指定日期加600秒。
-date -d <span class="s2">&quot;2017/03/08 -600 seconds&quot;</span> // 指定日期减600秒。
-date -d <span class="s2">&quot;2017/03/08 +600 minutes&quot;</span> // 指定日期加600分钟。
-date -d <span class="s2">&quot;2017/03/08 -600 minutes&quot;</span> // 指定日期减600分钟。
-date -d <span class="s2">&quot;2017/03/08 +10 year&quot;</span>     // 指定日期加10年。
-date -d <span class="s2">&quot;Tue Mar 10 14:12:13 CST 2015  +1 days&quot;</span> // 指定日期时间,加一天。
-date -d <span class="s2">&quot;15:21:11 03/18/2017  -1 days&quot;</span>  // 指定日期时间,减一天。注：时间放在日期的后面目前似乎不可用。
-</pre></div>
+date -d &quot;+1 days&quot; // 明天,当前时间加1天。
+date -d &quot;+2 days&quot; // 后天,当前时间加2天。
+date -d &quot;+10 days&quot; +&quot;%Y%m%d %H:%M:%S&quot; // 当前时间加10天,并按指定格式输出。
+date -d &quot;-1 days&quot; // 昨天,当前时间减1天。
+date -d &quot;-2 days&quot; // 前天,当前时间减2天。
+date -d &quot;2017/03/05 +1 days&quot;    // 指定日期加1天。
+date -d &quot;2017/03/05 -1 days&quot;    // 指定日期减1天。
+date -d &quot;2017/03/08 +600 seconds&quot; // 指定日期加600秒。
+date -d &quot;2017/03/08 -600 seconds&quot; // 指定日期减600秒。
+date -d &quot;2017/03/08 +600 minutes&quot; // 指定日期加600分钟。
+date -d &quot;2017/03/08 -600 minutes&quot; // 指定日期减600分钟。
+date -d &quot;2017/03/08 +10 year&quot;     // 指定日期加10年。
+date -d &quot;Tue Mar 10 14:12:13 CST 2015  +1 days&quot; // 指定日期时间,加一天。
+date -d &quot;15:21:11 03/18/2017  -1 days&quot;  // 指定日期时间,减一天。注：时间放在日期的后面目前似乎不可用。
+</code></pre>
 
 <p>数字可以用next,last代替,明天,昨天也可以tomorrow，yesterday来制定</p>
 <ul>
 <li><strong>时间相关代码模版</strong></li>
 </ul>
-<div class="highlight"><pre><span></span><span class="c1"># 根据时间运行程序</span>
-<span class="nv">startdate</span><span class="o">=</span><span class="m">2018090314</span>
-<span class="nv">enddate</span><span class="o">=</span><span class="m">2018083022</span>
-<span class="k">for</span> i in <span class="sb">`</span>seq <span class="m">1</span> <span class="m">300</span><span class="sb">`</span><span class="p">;</span> <span class="k">do</span>
-    <span class="k">if</span> <span class="o">[[</span> <span class="nv">$startdate</span> -lt <span class="nv">$enddate</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
-        <span class="nb">break</span>
-    <span class="k">fi</span>
+<pre><code class="shell"># 根据时间运行程序
+startdate=2018090314
+enddate=2018083022
+for i in `seq 1 300`; do
+    if [[ $startdate -lt $enddate ]]; then
+        break
+    fi
 
-    <span class="c1"># 拼接成YYYYmmdd HH的格式,否则使用下个命令中+%s,会无法转换</span>
-    <span class="nv">startdate</span><span class="o">=</span><span class="si">${</span><span class="nv">startdate</span><span class="p">:</span><span class="nv">0</span><span class="p">:</span><span class="nv">4</span><span class="si">}</span><span class="s2">&quot;-&quot;</span><span class="si">${</span><span class="nv">startdate</span><span class="p">:</span><span class="nv">4</span><span class="p">:</span><span class="nv">2</span><span class="si">}</span><span class="s2">&quot;-&quot;</span><span class="si">${</span><span class="nv">startdate</span><span class="p">:</span><span class="nv">6</span><span class="p">:</span><span class="nv">2</span><span class="si">}</span><span class="s2">&quot; &quot;</span><span class="si">${</span><span class="nv">startdate</span><span class="p">:</span><span class="nv">8</span><span class="p">:</span><span class="nv">2</span><span class="si">}</span>
-    <span class="c1"># 转换成时间戳,+%s为时间格式</span>
-    <span class="nv">startdate</span><span class="o">=</span><span class="k">$(</span>date +%s -d <span class="s2">&quot;</span><span class="nv">$startdate</span><span class="s2">&quot;</span><span class="k">)</span>
-    <span class="c1"># 每次执行后,开始日期减一个小时</span>
-    <span class="nv">startdate</span><span class="o">=</span><span class="k">$((</span><span class="nv">$startdate</span><span class="o">-</span><span class="m">1</span><span class="o">*</span><span class="m">60</span><span class="o">*</span><span class="m">60</span><span class="k">))</span>
-    <span class="c1"># 时间戳转正常格式时间</span>
-    <span class="nv">startdate</span><span class="o">=</span><span class="k">$(</span>date +%Y%m%d%H -d <span class="s2">&quot;1970-01-01 UTC </span><span class="nv">$startdate</span><span class="s2"> seconds&quot;</span><span class="k">)</span>
-    <span class="c1"># 执行程序</span>
-    <span class="nb">echo</span> <span class="si">${</span><span class="nv">startdate</span><span class="si">}</span>
-<span class="k">done</span>
-</pre></div>
+    # 拼接成YYYYmmdd HH的格式,否则使用下个命令中+%s,会无法转换
+    startdate=${startdate:0:4}&quot;-&quot;${startdate:4:2}&quot;-&quot;${startdate:6:2}&quot; &quot;${startdate:8:2}
+    # 转换成时间戳,+%s为时间格式
+    startdate=$(date +%s -d &quot;$startdate&quot;)
+    # 每次执行后,开始日期减一个小时
+    startdate=$(($startdate-1*60*60))
+    # 时间戳转正常格式时间
+    startdate=$(date +%Y%m%d%H -d &quot;1970-01-01 UTC $startdate seconds&quot;)
+    # 执行程序
+    echo ${startdate}
+done
+</code></pre>
 
-<h3 id="33-python">3.3 python函数<a class="headerlink" href="#33-python" title="Permanent link">&para;</a></h3>
-<h4 id="331-time">3.3.1 time模块<a class="headerlink" href="#331-time" title="Permanent link">&para;</a></h4>
+<h3 id="33-python">3.3 python函数</h3>
+<h4 id="331-time">3.3.1 time模块</h4>
 <p>time模块中时间表现的格式主要有三种：</p>
 <blockquote>
 <ul>
@@ -731,18 +731,18 @@ date -d <span class="s2">&quot;15:21:11 03/18/2017  -1 days&quot;</span>  // 指
 <li><strong><code>struct_time</code>时间元组</strong> 共有九个元素组。</li>
 </ul>
 </blockquote>
-<div class="highlight"><pre><span></span><span class="n">struct_time元组元素结构</span>
-    <span class="err">属性</span>                            <span class="err">值</span>
-    <span class="n">tm_year</span><span class="err">（年）</span>                  <span class="err">比如</span><span class="mi">2011</span>
-    <span class="n">tm_mon</span><span class="err">（月）</span>                   <span class="mi">1</span> <span class="o">-</span> <span class="mi">12</span>
-    <span class="n">tm_mday</span><span class="err">（日）</span>                  <span class="mi">1</span> <span class="o">-</span> <span class="mi">31</span>
-    <span class="n">tm_hour</span><span class="err">（时）</span>                  <span class="mi">0</span> <span class="o">-</span> <span class="mi">23</span>
-    <span class="n">tm_min</span><span class="err">（分）</span>                   <span class="mi">0</span> <span class="o">-</span> <span class="mi">59</span>
-    <span class="n">tm_sec</span><span class="err">（秒）</span>                   <span class="mi">0</span> <span class="o">-</span> <span class="mi">61</span>
-    <span class="n">tm_wday</span><span class="err">（</span><span class="n">weekday</span><span class="err">）</span>             <span class="mi">0</span> <span class="o">-</span> <span class="mi">6</span><span class="err">（</span><span class="mi">0</span><span class="err">表示周日）</span>
-    <span class="n">tm_yday</span><span class="err">（一年中的第几天）</span>        <span class="mi">1</span> <span class="o">-</span> <span class="mi">366</span>
-    <span class="n">tm_isdst</span><span class="err">（是否是夏令时）</span>        <span class="err">默认为</span><span class="o">-</span><span class="mi">1</span>
-</pre></div>
+<pre><code class="python">struct_time元组元素结构
+    属性                            值
+    tm_year（年）                  比如2011
+    tm_mon（月）                   1 - 12
+    tm_mday（日）                  1 - 31
+    tm_hour（时）                  0 - 23
+    tm_min（分）                   0 - 59
+    tm_sec（秒）                   0 - 61
+    tm_wday（weekday）             0 - 6（0表示周日）
+    tm_yday（一年中的第几天）        1 - 366
+    tm_isdst（是否是夏令时）        默认为-1
+</code></pre>
 
 <blockquote>
 <ul>
@@ -753,338 +753,339 @@ date -d <span class="s2">&quot;15:21:11 03/18/2017  -1 days&quot;</span>  // 指
 <li><strong>时间格式转换图</strong></li>
 </ul>
 <p><img alt="" src="http://images2015.cnblogs.com/blog/996085/201610/996085-20161026171443546-488752980.png" /></p>
-<div class="highlight"><pre><span></span><span class="c1"># 代码转化示例</span>
-<span class="kn">import</span> <span class="nn">time</span>
+<pre><code class="python"># 代码转化示例
+import time
 
-<span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>       <span class="c1"># 生成timestamp : 1545018718.573361</span>
-<span class="n">time</span><span class="o">.</span><span class="n">localtime</span><span class="p">()</span>  <span class="c1"># 生成struct_time : time.struct_time(tm_year=2018, tm_mon=12, tm_mday=17, tm_hour=11, tm_min=56, tm_sec=8, tm_wday=0, tm_yday=351, tm_isdst=0)</span>
-<span class="n">time</span><span class="o">.</span><span class="n">mktime</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">localtime</span><span class="p">())</span>    <span class="c1"># struct_time to timestamp</span>
-<span class="n">time</span><span class="o">.</span><span class="n">localtime</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span>      <span class="c1"># timestamp to struct_time 本地时间</span>
+time.time()       # 生成timestamp : 1545018718.573361
+time.localtime()  # 生成struct_time : time.struct_time(tm_year=2018, tm_mon=12, tm_mday=17, tm_hour=11, tm_min=56, tm_sec=8, tm_wday=0, tm_yday=351, tm_isdst=0)
+time.mktime(time.localtime())    # struct_time to timestamp
+time.localtime(time.time())      # timestamp to struct_time 本地时间
 
-<span class="c1"># 格林威治时间</span>
-<span class="n">time</span><span class="o">.</span><span class="n">gmtime</span><span class="p">()</span>
-<span class="n">time</span><span class="o">.</span><span class="n">gmtime</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span>
-<span class="n">time</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="s1">&#39;2011-05-05 16:37:06&#39;</span><span class="p">,</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> </span><span class="si">%X</span><span class="s1">&#39;</span><span class="p">)</span> <span class="c1"># format_time to struct_time</span>
+# 格林威治时间
+time.gmtime()
+time.gmtime(time.time())
+time.strptime('2011-05-05 16:37:06', '%Y-%m-%d %X') # format_time to struct_time
 
-<span class="c1"># 生成format_time 以及struct_time to format_time</span>
-<span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> </span><span class="si">%X</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> </span><span class="si">%X</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">time</span><span class="o">.</span><span class="n">localtime</span><span class="p">())</span>
+# 生成format_time 以及struct_time to format_time
+time.strftime(&quot;%Y-%m-%d %X&quot;)
+time.strftime(&quot;%Y-%m-%d %X&quot;,time.localtime())
 
-<span class="c1"># 生成固定格式的时间表示格式</span>
-<span class="n">time</span><span class="o">.</span><span class="n">asctime</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">localtime</span><span class="p">())</span>
-<span class="n">time</span><span class="o">.</span><span class="n">ctime</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span>
-<span class="c1"># Wed Oct 26 16:45:08 2016</span>
-</pre></div>
+# 生成固定格式的时间表示格式
+time.asctime(time.localtime())
+time.ctime(time.time())
+# Wed Oct 26 16:45:08 2016
+</code></pre>
 
-<h4 id="332-datetime">3.3.2 datetime模块<a class="headerlink" href="#332-datetime" title="Permanent link">&para;</a></h4>
+<h4 id="332-datetime">3.3.2 datetime模块</h4>
 <p>datatime模块重新封装了time模块,提供更多接口,提供的类有:date,time,datetime,timedelta,tzinfo。</p>
 <ul>
 <li><strong>date类:datetime.date(year, month, day)</strong></li>
 </ul>
 <p>静态方法和字段:</p>
-<p><div class="highlight"><pre><span></span><span class="n">date</span><span class="o">.</span><span class="n">max</span><span class="err">、</span><span class="n">date</span><span class="o">.</span><span class="n">min</span><span class="p">:</span><span class="n">date对象所能表示的最大</span><span class="err">、最小日期</span><span class="p">;</span>
-<span class="n">date</span><span class="o">.</span><span class="n">resolution</span><span class="p">:</span><span class="n">date对象表示日期的最小单位</span><span class="err">。这里是天。</span>
-<span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">():</span><span class="err">返回一个表示当前本地日期的</span><span class="n">date对象</span><span class="p">;</span>
-<span class="n">date</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">timestamp</span><span class="p">):</span><span class="err">根据给定的时间戮，返回一个</span><span class="n">date对象</span><span class="p">;</span>
-</pre></div>
-方法和属性:</p>
-<div class="highlight"><pre><span></span><span class="n">d1</span> <span class="o">=</span> <span class="n">date</span><span class="p">(</span><span class="mi">2011</span><span class="p">,</span><span class="mo">06</span><span class="p">,</span><span class="mo">03</span><span class="p">)</span> <span class="c1"># date对象</span>
-<span class="n">d1</span><span class="o">.</span><span class="n">year</span><span class="err">、</span><span class="n">date</span><span class="o">.</span><span class="n">month</span><span class="err">、</span><span class="n">date</span><span class="o">.</span><span class="n">day</span><span class="p">:</span><span class="err">年、月、日</span><span class="p">;</span>
-<span class="n">d1</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">):</span><span class="err">生成一个新的日期对象，用参数指定的年，月，日代替原有对象中的属性。（原有对象仍保持不变）</span>
-<span class="n">d1</span><span class="o">.</span><span class="n">timetuple</span><span class="p">():</span><span class="err">返回日期对应的</span><span class="n">time</span><span class="o">.</span><span class="n">struct_time对象</span><span class="p">;</span>
-<span class="n">d1</span><span class="o">.</span><span class="n">weekday</span><span class="p">():</span><span class="err">返回</span><span class="n">weekday</span><span class="err">，如果是星期一，返回</span><span class="mi">0</span><span class="p">;</span><span class="err">如果是星期</span><span class="mi">2</span><span class="err">，返回</span><span class="mi">1</span><span class="err">，以此类推</span><span class="p">;</span>
-<span class="n">d1</span><span class="o">.</span><span class="n">isoweekday</span><span class="p">():</span><span class="err">返回</span><span class="n">weekday</span><span class="err">，如果是星期一，返回</span><span class="mi">1</span><span class="p">;</span><span class="err">如果是星期</span><span class="mi">2</span><span class="err">，返回</span><span class="mi">2</span><span class="err">，以此类推</span><span class="p">;</span>
-<span class="n">d1</span><span class="o">.</span><span class="n">isocalendar</span><span class="p">():</span><span class="err">返回格式如</span><span class="p">(</span><span class="n">year</span><span class="err">，</span><span class="n">month</span><span class="err">，</span><span class="n">day</span><span class="p">)</span><span class="err">的元组</span><span class="p">;</span>
-<span class="n">d1</span><span class="o">.</span><span class="n">isoformat</span><span class="p">():</span><span class="err">返回格式如</span><span class="s1">&#39;YYYY-MM-DD’的字符串;</span>
-<span class="n">d1</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">fmt</span><span class="p">):</span><span class="err">和</span><span class="n">time模块format相同</span><span class="err">。</span>
-</pre></div>
+<pre><code class="python">date.max、date.min:date对象所能表示的最大、最小日期;
+date.resolution:date对象表示日期的最小单位。这里是天。
+date.today():返回一个表示当前本地日期的date对象;
+date.fromtimestamp(timestamp):根据给定的时间戮，返回一个date对象;
+</code></pre>
+
+<p>方法和属性:</p>
+<pre><code class="python">d1 = date(2011,06,03) # date对象
+d1.year、date.month、date.day:年、月、日;
+d1.replace(year, month, day):生成一个新的日期对象，用参数指定的年，月，日代替原有对象中的属性。（原有对象仍保持不变）
+d1.timetuple():返回日期对应的time.struct_time对象;
+d1.weekday():返回weekday，如果是星期一，返回0;如果是星期2，返回1，以此类推;
+d1.isoweekday():返回weekday，如果是星期一，返回1;如果是星期2，返回2，以此类推;
+d1.isocalendar():返回格式如(year，month，day)的元组;
+d1.isoformat():返回格式如'YYYY-MM-DD’的字符串;
+d1.strftime(fmt):和time模块format相同。
+</code></pre>
 
 <ul>
 <li><strong>time类:datetime.time(hour[,minute[,second[,microsecond[,tzinfo]]]])</strong></li>
 </ul>
 <p>静态方法和字段:</p>
-<div class="highlight"><pre><span></span><span class="n">time</span><span class="o">.</span><span class="n">min</span><span class="err">、</span><span class="n">time</span><span class="o">.</span><span class="n">max</span><span class="p">:</span><span class="n">time类所能表示的最小</span><span class="err">、最大时间。其中</span><span class="p">,</span><span class="n">time</span><span class="o">.</span><span class="n">min</span> <span class="o">=</span> <span class="n">time</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">time</span><span class="o">.</span><span class="n">max</span> <span class="o">=</span> <span class="n">time</span><span class="p">(</span><span class="mi">23</span><span class="p">,</span> <span class="mi">59</span><span class="p">,</span> <span class="mi">59</span><span class="p">,</span> <span class="mi">999999</span><span class="p">);</span>
-<span class="n">time</span><span class="o">.</span><span class="n">resolution</span><span class="p">:</span><span class="err">时间的最小单位</span><span class="p">,</span><span class="err">这里是</span><span class="mi">1</span><span class="err">微秒</span><span class="p">;</span>
-</pre></div>
+<pre><code class="python">time.min、time.max:time类所能表示的最小、最大时间。其中,time.min = time(0, 0, 0, 0), time.max = time(23, 59, 59, 999999);
+time.resolution:时间的最小单位,这里是1微秒;
+</code></pre>
 
 <p>方法和属性:</p>
-<div class="highlight"><pre><span></span><span class="n">t1</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">time</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">23</span><span class="p">,</span><span class="mi">15</span><span class="p">)</span><span class="c1">#time对象</span>
-<span class="n">t1</span><span class="o">.</span><span class="n">hour</span><span class="err">、</span><span class="n">t1</span><span class="o">.</span><span class="n">minute</span><span class="err">、</span><span class="n">t1</span><span class="o">.</span><span class="n">second</span><span class="err">、</span><span class="n">t1</span><span class="o">.</span><span class="n">microsecond</span><span class="p">:</span><span class="err">时、分、秒、微秒</span><span class="p">;</span>
-<span class="n">t1</span><span class="o">.</span><span class="n">tzinfo</span><span class="p">:</span><span class="err">时区信息</span><span class="p">;</span>
-<span class="n">t1</span><span class="o">.</span><span class="n">replace</span><span class="p">([</span> <span class="n">hour</span><span class="p">[</span> <span class="p">,</span> <span class="n">minute</span><span class="p">[</span> <span class="p">,</span> <span class="n">second</span><span class="p">[</span> <span class="p">,</span> <span class="n">microsecond</span><span class="p">[</span> <span class="p">,</span> <span class="n">tzinfo</span><span class="p">]</span> <span class="p">]</span> <span class="p">]</span> <span class="p">]</span> <span class="p">]</span> <span class="p">):</span><span class="err">创建一个新的时间对象</span><span class="p">,</span><span class="err">用参数指定的时、分、秒、微秒代替原有对象中的属性（原有对象仍保持不变）</span><span class="p">;</span>
-<span class="n">t1</span><span class="o">.</span><span class="n">isoformat</span><span class="p">():</span><span class="err">返回型如</span><span class="s2">&quot;HH:MM:SS&quot;</span><span class="err">格式的字符串表示</span><span class="p">;</span>
-<span class="n">t1</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">fmt</span><span class="p">):</span><span class="err">同</span><span class="n">time模块中的format</span><span class="p">;</span>
-</pre></div>
+<pre><code class="python">t1 = datetime.time(10,23,15)#time对象
+t1.hour、t1.minute、t1.second、t1.microsecond:时、分、秒、微秒;
+t1.tzinfo:时区信息;
+t1.replace([ hour[ , minute[ , second[ , microsecond[ , tzinfo] ] ] ] ] ):创建一个新的时间对象,用参数指定的时、分、秒、微秒代替原有对象中的属性（原有对象仍保持不变）;
+t1.isoformat():返回型如&quot;HH:MM:SS&quot;格式的字符串表示;
+t1.strftime(fmt):同time模块中的format;
+</code></pre>
 
 <ul>
 <li><strong>datetime类</strong></li>
 </ul>
 <p>datetime相当于date和time结合起来。</p>
-<div class="highlight"><pre><span></span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">day</span><span class="p">[,</span><span class="n">hour</span><span class="p">[,</span><span class="n">minute</span><span class="p">[,</span><span class="n">second</span><span class="p">[,</span><span class="n">microsecond</span><span class="p">[,</span><span class="n">tzinfo</span><span class="p">]]]]])</span>
-</pre></div>
+<pre><code class="python">datetime.datetime(year,month,day[,hour[,minute[,second[,microsecond[,tzinfo]]]]])
+</code></pre>
 
 <p>静态方法和字段:</p>
-<div class="highlight"><pre><span></span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="err">：返回一个表示当前本地时间的</span><span class="n">datetime对象</span><span class="err">；</span>
-<span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">([</span><span class="n">tz</span><span class="p">])</span><span class="err">：返回一个表示当前本地时间的</span><span class="n">datetime对象</span><span class="err">，如果提供了参数</span><span class="n">tz</span><span class="err">，则获取</span><span class="n">tz参数所指时区的本地时间</span><span class="err">；</span>
-<span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span><span class="err">：返回一个当前</span><span class="n">utc时间的datetime对象</span><span class="err">；</span><span class="c1">#格林威治时间</span>
-<span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">timestamp</span><span class="p">[,</span> <span class="n">tz</span><span class="p">])</span><span class="err">：根据时间戮创建一个</span><span class="n">datetime对象</span><span class="err">，参数</span><span class="n">tz指定时区信息</span><span class="err">；</span>
-<span class="n">datetime</span><span class="o">.</span><span class="n">utcfromtimestamp</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span><span class="err">：根据时间戮创建一个</span><span class="n">datetime对象</span><span class="err">；</span>
-<span class="n">datetime</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="n">time</span><span class="p">)</span><span class="err">：根据</span><span class="n">date和time</span><span class="err">，创建一个</span><span class="n">datetime对象</span><span class="err">；</span>
-<span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">date_string</span><span class="p">,</span> <span class="n">format</span><span class="p">)</span><span class="err">：将格式字符串转换为</span><span class="n">datetime对象</span><span class="err">；</span>
-</pre></div>
+<pre><code class="python">datetime.today()：返回一个表示当前本地时间的datetime对象；
+datetime.now([tz])：返回一个表示当前本地时间的datetime对象，如果提供了参数tz，则获取tz参数所指时区的本地时间；
+datetime.utcnow()：返回一个当前utc时间的datetime对象；#格林威治时间
+datetime.fromtimestamp(timestamp[, tz])：根据时间戮创建一个datetime对象，参数tz指定时区信息；
+datetime.utcfromtimestamp(timestamp)：根据时间戮创建一个datetime对象；
+datetime.combine(date, time)：根据date和time，创建一个datetime对象；
+datetime.strptime(date_string, format)：将格式字符串转换为datetime对象；
+</code></pre>
 
 <p>方法和属性:</p>
-<div class="highlight"><pre><span></span><span class="n">dt</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="c1"># datetime对象</span>
-<span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="err">、</span><span class="n">month</span><span class="err">、</span><span class="n">day</span><span class="err">、</span><span class="n">hour</span><span class="err">、</span><span class="n">minute</span><span class="err">、</span><span class="n">second</span><span class="err">、</span><span class="n">microsecond</span><span class="err">、</span><span class="n">tzinfo</span><span class="err">：</span>
-<span class="n">dt</span><span class="o">.</span><span class="n">date</span><span class="p">()</span><span class="err">：获取</span><span class="n">date对象</span><span class="err">；</span>
-<span class="n">dt</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="err">：获取</span><span class="n">time对象</span><span class="err">；</span>
-<span class="n">dt</span><span class="o">.</span><span class="n">replace</span> <span class="p">([</span> <span class="n">year</span><span class="p">[</span> <span class="p">,</span> <span class="n">month</span><span class="p">[</span> <span class="p">,</span> <span class="n">day</span><span class="p">[</span> <span class="p">,</span> <span class="n">hour</span><span class="p">[</span> <span class="p">,</span> <span class="n">minute</span><span class="p">[</span> <span class="p">,</span> <span class="n">second</span><span class="p">[</span> <span class="p">,</span> <span class="n">microsecond</span><span class="p">[</span> <span class="p">,</span> <span class="n">tzinfo</span><span class="p">]</span> <span class="p">]</span> <span class="p">]</span> <span class="p">]</span> <span class="p">]</span> <span class="p">]</span> <span class="p">]</span> <span class="p">])</span><span class="err">：</span>
-<span class="n">dt</span><span class="o">.</span><span class="n">timetuple</span> <span class="p">()</span>
-<span class="n">dt</span><span class="o">.</span><span class="n">utctimetuple</span> <span class="p">()</span>
-<span class="n">dt</span><span class="o">.</span><span class="n">toordinal</span> <span class="p">()</span>
-<span class="n">dt</span><span class="o">.</span><span class="n">weekday</span> <span class="p">()</span>
-<span class="n">dt</span><span class="o">.</span><span class="n">isocalendar</span> <span class="p">()</span>
-<span class="n">dt</span><span class="o">.</span><span class="n">isoformat</span> <span class="p">([</span> <span class="n">sep</span><span class="p">]</span> <span class="p">)</span>
-<span class="n">dt</span><span class="o">.</span><span class="n">ctime</span> <span class="p">()</span><span class="err">：返回一个日期时间的</span><span class="n">C格式字符串</span><span class="err">，等效于</span><span class="n">time</span><span class="o">.</span><span class="n">ctime</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">mktime</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">timetuple</span><span class="p">()))</span><span class="err">；</span>
-<span class="n">dt</span><span class="o">.</span><span class="n">strftime</span> <span class="p">(</span><span class="n">format</span><span class="p">)</span>
-</pre></div>
+<pre><code class="python">dt=datetime.now() # datetime对象
+dt.year、month、day、hour、minute、second、microsecond、tzinfo：
+dt.date()：获取date对象；
+dt.time()：获取time对象；
+dt.replace ([ year[ , month[ , day[ , hour[ , minute[ , second[ , microsecond[ , tzinfo] ] ] ] ] ] ] ])：
+dt.timetuple ()
+dt.utctimetuple ()
+dt.toordinal ()
+dt.weekday ()
+dt.isocalendar ()
+dt.isoformat ([ sep] )
+dt.ctime ()：返回一个日期时间的C格式字符串，等效于time.ctime(time.mktime(dt.timetuple()))；
+dt.strftime (format)
+</code></pre>
 
 <ul>
 <li><strong>timedelta类,时间加减</strong></li>
 </ul>
 <p>在模板和tuple之间,有一个%号分隔,它代表了格式化操作。使用<code>timedelta</code>可以很方便的在日期上做天days,小时hour,分钟,秒,毫秒,微妙的时间计算,如果要计算月份则需要另外的办法。</p>
-<div class="highlight"><pre><span></span><span class="kn">from</span>  <span class="nn">datetime</span> <span class="kn">import</span> <span class="o">*</span>
+<pre><code class="python">from  datetime import *
 
-<span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
-<span class="c1">#日期减一天</span>
-<span class="n">dt1</span> <span class="o">=</span> <span class="n">dt</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="c1">#昨天</span>
-<span class="n">dt2</span> <span class="o">=</span> <span class="n">dt</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="c1">#昨天</span>
-<span class="n">dt3</span> <span class="o">=</span> <span class="n">dt</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="c1">#明天</span>
-<span class="n">delta_obj</span> <span class="o">=</span> <span class="n">dt3</span><span class="o">-</span><span class="n">dt</span>
-<span class="k">print</span> <span class="nb">type</span><span class="p">(</span><span class="n">delta_obj</span><span class="p">),</span><span class="n">delta_obj</span>       <span class="c1"># &lt;type &#39;datetime.timedelta&#39;&gt; 1 day, 0:00:00</span>
-<span class="k">print</span> <span class="n">delta_obj</span><span class="o">.</span><span class="n">days</span> <span class="p">,</span><span class="n">delta_obj</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>      <span class="c1"># 1 86400.0</span>
-</pre></div>
+dt = datetime.now()
+#日期减一天
+dt1 = dt + timedelta(days=-1)#昨天
+dt2 = dt - timedelta(days=1)#昨天
+dt3 = dt + timedelta(days=1)#明天
+delta_obj = dt3-dt
+print type(delta_obj),delta_obj       # &lt;type 'datetime.timedelta'&gt; 1 day, 0:00:00
+print delta_obj.days ,delta_obj.total_seconds()      # 1 86400.0
+</code></pre>
 
 <ul>
 <li><strong>tzinfo时区类</strong></li>
 </ul>
-<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">tzinfo</span><span class="p">,</span><span class="n">timedelta</span>
+<pre><code class="python">from datetime import datetime, tzinfo,timedelta
 
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">tzinfo是关于时区信息的类</span>
-<span class="sd">tzinfo是一个抽象类，所以不能直接被实例化</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="k">class</span> <span class="nc">UTC</span><span class="p">(</span><span class="n">tzinfo</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;UTC&quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">offset</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_offset</span> <span class="o">=</span> <span class="n">offset</span>
+&quot;&quot;&quot;
+tzinfo是关于时区信息的类
+tzinfo是一个抽象类，所以不能直接被实例化
+&quot;&quot;&quot;
+class UTC(tzinfo):
+    &quot;&quot;&quot;UTC&quot;&quot;&quot;
+    def __init__(self,offset = 0):
+        self._offset = offset
 
-    <span class="k">def</span> <span class="nf">utcoffset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_offset</span><span class="p">)</span>
+    def utcoffset(self, dt):
+        return timedelta(hours=self._offset)
 
-    <span class="k">def</span> <span class="nf">tzname</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;UTC +</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_offset</span>
+    def tzname(self, dt):
+        return &quot;UTC +%s&quot; % self._offset
 
-    <span class="k">def</span> <span class="nf">dst</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_offset</span><span class="p">)</span>
+    def dst(self, dt):
+        return timedelta(hours=self._offset)
 
-<span class="c1"># 北京时间</span>
-<span class="n">beijing</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2011</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">tzinfo</span> <span class="o">=</span> <span class="n">UTC</span><span class="p">(</span><span class="mi">8</span><span class="p">))</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;beijing time:&quot;</span><span class="p">,</span><span class="n">beijing</span><span class="p">)</span>
-<span class="c1"># 曼谷时间</span>
-<span class="n">bangkok</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2011</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">tzinfo</span> <span class="o">=</span> <span class="n">UTC</span><span class="p">(</span><span class="mi">7</span><span class="p">))</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;bangkok time&quot;</span><span class="p">,</span><span class="n">bangkok</span><span class="p">)</span>
-<span class="c1"># 北京时间转成曼谷时间</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;beijing-time to bangkok-time:&quot;</span><span class="p">,</span><span class="n">beijing</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">UTC</span><span class="p">(</span><span class="mi">7</span><span class="p">)))</span>
+# 北京时间
+beijing = datetime(2011,11,11,0,0,0,tzinfo = UTC(8))
+print(&quot;beijing time:&quot;,beijing)
+# 曼谷时间
+bangkok = datetime(2011,11,11,0,0,0,tzinfo = UTC(7))
+print(&quot;bangkok time&quot;,bangkok)
+# 北京时间转成曼谷时间
+print(&quot;beijing-time to bangkok-time:&quot;,beijing.astimezone(UTC(7)))
 
-<span class="c1"># 计算时间差时也会考虑时区的问题</span>
-<span class="n">timespan</span> <span class="o">=</span> <span class="n">beijing</span> <span class="o">-</span> <span class="n">bangkok</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;时差:&quot;</span><span class="p">,</span><span class="n">timespan</span><span class="p">)</span>
-</pre></div>
+# 计算时间差时也会考虑时区的问题
+timespan = beijing - bangkok
+print(&quot;时差:&quot;,timespan)
+</code></pre>
 
-<h4 id="333-calendar">3.3.3 calendar模块<a class="headerlink" href="#333-calendar" title="Permanent link">&para;</a></h4>
+<h4 id="333-calendar">3.3.3 calendar模块</h4>
 <p>calendar模块定义了Calendar类,它封装了值的计算,比如计算给定月份或年份中周的日期。此外,TextCalendar和HTMLCalendar类可以生成预格式化的输出。</p>
 <ul>
 <li><strong>格式化示例</strong></li>
 </ul>
 <p>prmonth()方法是很简单,可以生成一个月的格式化文本输出。</p>
-<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">calendar</span>
-<span class="n">c</span> <span class="o">=</span> <span class="n">calendar</span><span class="o">.</span><span class="n">TextCalendar</span><span class="p">(</span><span class="n">calendar</span><span class="o">.</span><span class="n">SUNDAY</span><span class="p">)</span>
-<span class="n">c</span><span class="o">.</span><span class="n">prmonth</span><span class="p">(</span><span class="mi">2017</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
-<span class="c1"># 输出</span>
-<span class="c1">#      July 2017</span>
-<span class="c1"># Su Mo Tu We Th Fr Sa</span>
-<span class="c1">#                    1</span>
-<span class="c1">#  2  3  4  5  6  7  8</span>
-<span class="c1">#  9 10 11 12 13 14 15</span>
-<span class="c1"># 16 17 18 19 20 21 22</span>
-<span class="c1"># 23 24 25 26 27 28 29</span>
-<span class="c1"># 30 31</span>
-</pre></div>
+<pre><code class="python">import calendar
+c = calendar.TextCalendar(calendar.SUNDAY)
+c.prmonth(2017, 7)
+# 输出
+#      July 2017
+# Su Mo Tu We Th Fr Sa
+#                    1
+#  2  3  4  5  6  7  8
+#  9 10 11 12 13 14 15
+# 16 17 18 19 20 21 22
+# 23 24 25 26 27 28 29
+# 30 31
+</code></pre>
 
 <p>根据TextCalendar美国惯例,该示例配置为在周日开始周。默认是使用星期一开始一周的欧洲惯例。可以使用HTMLCalendar和formatmonth()生成类似HTML的表格。呈现的输出看起来与纯文本大致相同,但是用HTML标记包装。每个表格单元格都有一个与星期几相对应的类属性,因此HTML可以通过CSS设置样式。</p>
 <p>要以不同于其中一个可用默认值的格式生成输出,请使用calendar计算日期并将值组织为周和月范围,然后迭代结果。Calendar模块的weekheader(),monthcalendar()和yeardays2calendar()方法对此特别有用。</p>
 <p>调用yeardays2calendar()会生成一系列“月份行”列表。每个列表包括月份作为另一个周列表。这几周是由日期编号(1-31)和工作日编号(0-6)组成的元组列表。超出月份的天数为0。</p>
-<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">calendar</span>
-<span class="kn">import</span> <span class="nn">pprint</span>
+<pre><code class="python">import calendar
+import pprint
 
-<span class="n">cal</span> <span class="o">=</span> <span class="n">calendar</span><span class="o">.</span><span class="n">Calendar</span><span class="p">(</span><span class="n">calendar</span><span class="o">.</span><span class="n">SUNDAY</span><span class="p">)</span>
-<span class="n">cal_data</span> <span class="o">=</span> <span class="n">cal</span><span class="o">.</span><span class="n">yeardays2calendar</span><span class="p">(</span><span class="mi">2017</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s1">&#39;len(cal_data)      :&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">cal_data</span><span class="p">))</span>
+cal = calendar.Calendar(calendar.SUNDAY)
+cal_data = cal.yeardays2calendar(2017, 3)
+print('len(cal_data)      :', len(cal_data))
 
-<span class="n">top_months</span> <span class="o">=</span> <span class="n">cal_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="k">print</span><span class="p">(</span><span class="s1">&#39;len(top_months)    :&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">top_months</span><span class="p">))</span>
+top_months = cal_data[0]
+print('len(top_months)    :', len(top_months))
 
-<span class="n">first_month</span> <span class="o">=</span> <span class="n">top_months</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="k">print</span><span class="p">(</span><span class="s1">&#39;len(first_month)   :&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">first_month</span><span class="p">))</span>
+first_month = top_months[0]
+print('len(first_month)   :', len(first_month))
 
-<span class="k">print</span><span class="p">(</span><span class="s1">&#39;first_month:&#39;</span><span class="p">)</span>
-<span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">first_month</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">65</span><span class="p">)</span>
+print('first_month:')
+pprint.pprint(first_month, width=65)
 
-<span class="c1"># 输出</span>
-<span class="c1"># len(cal_data)      : 4</span>
-<span class="c1"># len(top_months)    : 3</span>
-<span class="c1"># len(first_month)   : 5</span>
-<span class="c1"># first_month:</span>
-<span class="c1"># [[(1, 6), (2, 0), (3, 1), (4, 2), (5, 3), (6, 4), (7, 5)],</span>
-<span class="c1">#  [(8, 6), (9, 0), (10, 1), (11, 2), (12, 3), (13, 4), (14, 5)],</span>
-<span class="c1">#  [(15, 6), (16, 0), (17, 1), (18, 2), (19, 3), (20, 4), (21, 5)],</span>
-<span class="c1">#  [(22, 6), (23, 0), (24, 1), (25, 2), (26, 3), (27, 4), (28, 5)],</span>
-<span class="c1">#  [(29, 6), (30, 0), (31, 1), (0, 2), (0, 3), (0, 4), (0, 5)]]</span>
-</pre></div>
+# 输出
+# len(cal_data)      : 4
+# len(top_months)    : 3
+# len(first_month)   : 5
+# first_month:
+# [[(1, 6), (2, 0), (3, 1), (4, 2), (5, 3), (6, 4), (7, 5)],
+#  [(8, 6), (9, 0), (10, 1), (11, 2), (12, 3), (13, 4), (14, 5)],
+#  [(15, 6), (16, 0), (17, 1), (18, 2), (19, 3), (20, 4), (21, 5)],
+#  [(22, 6), (23, 0), (24, 1), (25, 2), (26, 3), (27, 4), (28, 5)],
+#  [(29, 6), (30, 0), (31, 1), (0, 2), (0, 3), (0, 4), (0, 5)]]
+</code></pre>
 
 <p>相当于使用formatyear()。</p>
-<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">calendar</span>
+<pre><code class="python">import calendar
 
-<span class="n">cal</span> <span class="o">=</span> <span class="n">calendar</span><span class="o">.</span><span class="n">TextCalendar</span><span class="p">(</span><span class="n">calendar</span><span class="o">.</span><span class="n">SUNDAY</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">cal</span><span class="o">.</span><span class="n">formatyear</span><span class="p">(</span><span class="mi">2017</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+cal = calendar.TextCalendar(calendar.SUNDAY)
+print(cal.formatyear(2017, 2, 1, 1, 3))
 
-<span class="c1"># 输出</span>
-<span class="c1">#                               2017</span>
-<span class="c1">#</span>
-<span class="c1">#       January               February               March</span>
-<span class="c1"># Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa</span>
-<span class="c1">#  1  2  3  4  5  6  7            1  2  3  4            1  2  3  4</span>
-<span class="c1">#  8  9 10 11 12 13 14   5  6  7  8  9 10 11   5  6  7  8  9 10 11</span>
-<span class="c1"># 15 16 17 18 19 20 21  12 13 14 15 16 17 18  12 13 14 15 16 17 18</span>
-<span class="c1"># 22 23 24 25 26 27 28  19 20 21 22 23 24 25  19 20 21 22 23 24 25</span>
-<span class="c1"># 29 30 31              26 27 28              26 27 28 29 30 31</span>
-<span class="c1">#</span>
-<span class="c1">#        April                  May                   June</span>
-<span class="c1"># Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa</span>
-<span class="c1">#                    1      1  2  3  4  5  6               1  2  3</span>
-<span class="c1">#  2  3  4  5  6  7  8   7  8  9 10 11 12 13   4  5  6  7  8  9 10</span>
-<span class="c1">#  9 10 11 12 13 14 15  14 15 16 17 18 19 20  11 12 13 14 15 16 17</span>
-<span class="c1"># 16 17 18 19 20 21 22  21 22 23 24 25 26 27  18 19 20 21 22 23 24</span>
-<span class="c1"># 23 24 25 26 27 28 29  28 29 30 31           25 26 27 28 29 30</span>
-<span class="c1"># 30</span>
-<span class="c1">#</span>
-<span class="c1">#         July                 August              September</span>
-<span class="c1"># Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa</span>
-<span class="c1">#                    1         1  2  3  4  5                  1  2</span>
-<span class="c1">#  2  3  4  5  6  7  8   6  7  8  9 10 11 12   3  4  5  6  7  8  9</span>
-<span class="c1">#  9 10 11 12 13 14 15  13 14 15 16 17 18 19  10 11 12 13 14 15 16</span>
-<span class="c1"># 16 17 18 19 20 21 22  20 21 22 23 24 25 26  17 18 19 20 21 22 23</span>
-<span class="c1"># 23 24 25 26 27 28 29  27 28 29 30 31        24 25 26 27 28 29 30</span>
-<span class="c1"># 30 31</span>
-<span class="c1">#</span>
-<span class="c1">#       October               November              December</span>
-<span class="c1"># Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa</span>
-<span class="c1">#  1  2  3  4  5  6  7            1  2  3  4                  1  2</span>
-<span class="c1">#  8  9 10 11 12 13 14   5  6  7  8  9 10 11   3  4  5  6  7  8  9</span>
-<span class="c1"># 15 16 17 18 19 20 21  12 13 14 15 16 17 18  10 11 12 13 14 15 16</span>
-<span class="c1"># 22 23 24 25 26 27 28  19 20 21 22 23 24 25  17 18 19 20 21 22 23</span>
-<span class="c1"># 29 30 31              26 27 28 29 30        24 25 26 27 28 29 30</span>
-<span class="c1">#                                             31</span>
-</pre></div>
+# 输出
+#                               2017
+#
+#       January               February               March
+# Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa
+#  1  2  3  4  5  6  7            1  2  3  4            1  2  3  4
+#  8  9 10 11 12 13 14   5  6  7  8  9 10 11   5  6  7  8  9 10 11
+# 15 16 17 18 19 20 21  12 13 14 15 16 17 18  12 13 14 15 16 17 18
+# 22 23 24 25 26 27 28  19 20 21 22 23 24 25  19 20 21 22 23 24 25
+# 29 30 31              26 27 28              26 27 28 29 30 31
+#
+#        April                  May                   June
+# Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa
+#                    1      1  2  3  4  5  6               1  2  3
+#  2  3  4  5  6  7  8   7  8  9 10 11 12 13   4  5  6  7  8  9 10
+#  9 10 11 12 13 14 15  14 15 16 17 18 19 20  11 12 13 14 15 16 17
+# 16 17 18 19 20 21 22  21 22 23 24 25 26 27  18 19 20 21 22 23 24
+# 23 24 25 26 27 28 29  28 29 30 31           25 26 27 28 29 30
+# 30
+#
+#         July                 August              September
+# Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa
+#                    1         1  2  3  4  5                  1  2
+#  2  3  4  5  6  7  8   6  7  8  9 10 11 12   3  4  5  6  7  8  9
+#  9 10 11 12 13 14 15  13 14 15 16 17 18 19  10 11 12 13 14 15 16
+# 16 17 18 19 20 21 22  20 21 22 23 24 25 26  17 18 19 20 21 22 23
+# 23 24 25 26 27 28 29  27 28 29 30 31        24 25 26 27 28 29 30
+# 30 31
+#
+#       October               November              December
+# Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa
+#  1  2  3  4  5  6  7            1  2  3  4                  1  2
+#  8  9 10 11 12 13 14   5  6  7  8  9 10 11   3  4  5  6  7  8  9
+# 15 16 17 18 19 20 21  12 13 14 15 16 17 18  10 11 12 13 14 15 16
+# 22 23 24 25 26 27 28  19 20 21 22 23 24 25  17 18 19 20 21 22 23
+# 29 30 31              26 27 28 29 30        24 25 26 27 28 29 30
+#                                             31
+</code></pre>
 
 <p>day_name,day_abbr,month_name和month_abbr模块主要用于生产定制格式化输出(即包括在HTML输出链接)。它们会针对当前区域自动化配置。</p>
 <ul>
 <li><strong>区域设置</strong></li>
 </ul>
 <p>如果想生成非默认区域的格式化日历,可以使用LocaleTextCalendar或LocaleHTMLCalendar。</p>
-<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">calendar</span>
+<pre><code class="python">import calendar
 
-<span class="n">c</span> <span class="o">=</span> <span class="n">calendar</span><span class="o">.</span><span class="n">LocaleTextCalendar</span><span class="p">(</span><span class="n">locale</span><span class="o">=</span><span class="s1">&#39;en_US&#39;</span><span class="p">)</span>
-<span class="n">c</span><span class="o">.</span><span class="n">prmonth</span><span class="p">(</span><span class="mi">2017</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
-<span class="k">print</span><span class="p">()</span>
-<span class="n">c</span> <span class="o">=</span> <span class="n">calendar</span><span class="o">.</span><span class="n">LocaleTextCalendar</span><span class="p">(</span><span class="n">locale</span><span class="o">=</span><span class="s1">&#39;fr_FR&#39;</span><span class="p">)</span>
-<span class="n">c</span><span class="o">.</span><span class="n">prmonth</span><span class="p">(</span><span class="mi">2017</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
+c = calendar.LocaleTextCalendar(locale='en_US')
+c.prmonth(2017, 7)
+print()
+c = calendar.LocaleTextCalendar(locale='fr_FR')
+c.prmonth(2017, 7)
 
-<span class="c1"># 输出</span>
-<span class="c1">#      July 2017</span>
-<span class="c1"># Mo Tu We Th Fr Sa Su</span>
-<span class="c1">#                 1  2</span>
-<span class="c1">#  3  4  5  6  7  8  9</span>
-<span class="c1"># 10 11 12 13 14 15 16</span>
-<span class="c1"># 17 18 19 20 21 22 23</span>
-<span class="c1"># 24 25 26 27 28 29 30</span>
-<span class="c1"># 31</span>
-<span class="c1">#</span>
-<span class="c1">#     juillet 2017</span>
-<span class="c1"># Lu Ma Me Je Ve Sa Di</span>
-<span class="c1">#                 1  2</span>
-<span class="c1">#  3  4  5  6  7  8  9</span>
-<span class="c1"># 10 11 12 13 14 15 16</span>
-<span class="c1"># 17 18 19 20 21 22 23</span>
-<span class="c1"># 24 25 26 27 28 29 30</span>
-<span class="c1"># 31</span>
-</pre></div>
+# 输出
+#      July 2017
+# Mo Tu We Th Fr Sa Su
+#                 1  2
+#  3  4  5  6  7  8  9
+# 10 11 12 13 14 15 16
+# 17 18 19 20 21 22 23
+# 24 25 26 27 28 29 30
+# 31
+#
+#     juillet 2017
+# Lu Ma Me Je Ve Sa Di
+#                 1  2
+#  3  4  5  6  7  8  9
+# 10 11 12 13 14 15 16
+# 17 18 19 20 21 22 23
+# 24 25 26 27 28 29 30
+# 31
+</code></pre>
 
 <p>一周的第一天不是语言环境设置的一部分,而且这个值就是该类的一个参数,就像TextCalendar一样。</p>
 <ul>
 <li><strong>计算日期</strong></li>
 </ul>
 <p>虽然日历模块主要侧重于以各种格式打印完整日历,但它还提供了以其他方式处理日期的有用功能,例如计算重复事件的日期。例如,Python亚特兰大用户组在每个月的第二个星期四开会。要计算一年的会议日期,请使用monthcalendar()。</p>
-<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">calendar</span>
-<span class="kn">import</span> <span class="nn">pprint</span>
+<pre><code class="python">import calendar
+import pprint
 
-<span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">calendar</span><span class="o">.</span><span class="n">monthcalendar</span><span class="p">(</span><span class="mi">2017</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+pprint.pprint(calendar.monthcalendar(2017, 7))
 
-<span class="c1"># 输出</span>
-<span class="c1"># [[0, 0, 0, 0, 0, 1, 2],</span>
-<span class="c1">#  [3, 4, 5, 6, 7, 8, 9],</span>
-<span class="c1">#  [10, 11, 12, 13, 14, 15, 16],</span>
-<span class="c1">#  [17, 18, 19, 20, 21, 22, 23],</span>
-<span class="c1">#  [24, 25, 26, 27, 28, 29, 30],</span>
-<span class="c1">#  [31, 0, 0, 0, 0, 0, 0]]</span>
-</pre></div>
+# 输出
+# [[0, 0, 0, 0, 0, 1, 2],
+#  [3, 4, 5, 6, 7, 8, 9],
+#  [10, 11, 12, 13, 14, 15, 16],
+#  [17, 18, 19, 20, 21, 22, 23],
+#  [24, 25, 26, 27, 28, 29, 30],
+#  [31, 0, 0, 0, 0, 0, 0]]
+</code></pre>
 
 <p>0值是与给定月份重叠的一周中的时间,是另一个月的一部分。一周的第一天默认为星期一,可以通过调用setfirstweekday()来更改,但由于日历模块包含用于索引返回的日期范围的常量monthcalendar(),因此在这种情况下跳过该步骤更方便。要计算一年的小组会议日期,假设它们总是在每个月的第二个星期四,查看monthcalendar()输出来查找星期四。本月的第一周和最后一周填充0值作为前一个月或后一个月天数的占位符。例如,如果一个月在星期五开始,则星期四位置第一周的值将为0。</p>
-<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">calendar</span>
-<span class="kn">import</span> <span class="nn">sys</span>
+<pre><code class="python">import calendar
+import sys
 
-<span class="n">year</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-<span class="c1"># Show every month</span>
-<span class="k">for</span> <span class="n">month</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">13</span><span class="p">):</span>
-    <span class="c1"># Compute the dates for each week that overlaps the month</span>
-    <span class="n">c</span> <span class="o">=</span> <span class="n">calendar</span><span class="o">.</span><span class="n">monthcalendar</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">)</span>
-    <span class="n">first_week</span> <span class="o">=</span> <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">second_week</span> <span class="o">=</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">third_week</span> <span class="o">=</span> <span class="n">c</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+year = int(sys.argv[1])
+# Show every month
+for month in range(1, 13):
+    # Compute the dates for each week that overlaps the month
+    c = calendar.monthcalendar(year, month)
+    first_week = c[0]
+    second_week = c[1]
+    third_week = c[2]
 
-    <span class="c1"># If there is a Thursday in the first week, the second Thursday is # in the second week.</span>
-    <span class="c1"># Otherwise, the second Thursday must be in the third week.</span>
-    <span class="k">if</span> <span class="n">first_week</span><span class="p">[</span><span class="n">calendar</span><span class="o">.</span><span class="n">THURSDAY</span><span class="p">]:</span>
-        <span class="n">meeting_date</span> <span class="o">=</span> <span class="n">second_week</span><span class="p">[</span><span class="n">calendar</span><span class="o">.</span><span class="n">THURSDAY</span><span class="p">]</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">meeting_date</span> <span class="o">=</span> <span class="n">third_week</span><span class="p">[</span><span class="n">calendar</span><span class="o">.</span><span class="n">THURSDAY</span><span class="p">]</span>
-    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;{:&gt;3}: {:&gt;2}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">calendar</span><span class="o">.</span><span class="n">month_abbr</span><span class="p">[</span><span class="n">month</span><span class="p">],</span> <span class="n">meeting_date</span><span class="p">))</span>
+    # If there is a Thursday in the first week, the second Thursday is # in the second week.
+    # Otherwise, the second Thursday must be in the third week.
+    if first_week[calendar.THURSDAY]:
+        meeting_date = second_week[calendar.THURSDAY]
+    else:
+        meeting_date = third_week[calendar.THURSDAY]
+    print('{:&gt;3}: {:&gt;2}'.format(calendar.month_abbr[month], meeting_date))
 
-<span class="c1"># 输出</span>
-<span class="c1"># Jan: 12</span>
-<span class="c1"># Feb:  9</span>
-<span class="c1"># Mar:  9</span>
-<span class="c1"># Apr: 13</span>
-<span class="c1"># May: 11</span>
-<span class="c1"># Jun:  8</span>
-<span class="c1"># Jul: 13</span>
-<span class="c1"># Aug: 10</span>
-<span class="c1"># Sep: 14</span>
-<span class="c1"># Oct: 12</span>
-<span class="c1"># Nov:  9</span>
-<span class="c1"># Dec: 14</span>
-</pre></div>
+# 输出
+# Jan: 12
+# Feb:  9
+# Mar:  9
+# Apr: 13
+# May: 11
+# Jun:  8
+# Jul: 13
+# Aug: 10
+# Sep: 14
+# Oct: 12
+# Nov:  9
+# Dec: 14
+</code></pre>
 
 <ul>
 <li><strong>其他可能有用的函数列表</strong></li>
@@ -1101,7 +1102,7 @@ date -d <span class="s2">&quot;15:21:11 03/18/2017  -1 days&quot;</span>  // 指
 <tr>
 <td align="left">1</td>
 <td>calendar.calendar(year,w=2,l=1,c=6)</td>
-<td>返回一个多行字符串格式的year年年历,3个月一行,间隔距离为c。每日宽度间隔为w字符,每行长度为21*W+18+2*C,l是每星期行数</td>
+<td>返回一个多行字符串格式的year年年历,3个月一行,间隔距离为c。每日宽度间隔为w字符,每行长度为21<em>W+18+2</em>C,l是每星期行数</td>
 </tr>
 <tr>
 <td align="left">2</td>
@@ -1160,8 +1161,8 @@ date -d <span class="s2">&quot;15:21:11 03/18/2017  -1 days&quot;</span>  // 指
 </tr>
 </tbody>
 </table>
-<h2 id="_5">四、邮件协议<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
-<h3 id="41-pop3">4.1 POP3协议<a class="headerlink" href="#41-pop3" title="Permanent link">&para;</a></h3>
+<h2 id="_5">四、邮件协议</h2>
+<h3 id="41-pop3">4.1 POP3协议</h3>
 <p>POP3全称为Post Office Protocol version3,即邮局协议第3版。它被用户代理用来邮件服务器取得邮件。POP3采用的也是C/S通信模型,采用的是一问一答式的方式,你向服务器发送一个命令,服务器必然会回复一个信息对应的RFC文档为RFC1939。</p>
 <ul>
 <li><strong>通信过程</strong></li>
@@ -1303,52 +1304,52 @@ date -d <span class="s2">&quot;15:21:11 03/18/2017  -1 days&quot;</span>  // 指
 <ul>
 <li><strong>shell样例</strong></li>
 </ul>
-<div class="highlight"><pre><span></span>openssl s_client -crlf -connect mail.staff.sina.com.cn:995   <span class="c1"># SSL连接(995端口)</span>
-telnet mail.staff.sina.com.cn <span class="m">110</span> <span class="o">(</span>非SSL加密<span class="o">)</span>
-</pre></div>
+<pre><code class="sh">openssl s_client -crlf -connect mail.staff.sina.com.cn:995   # SSL连接(995端口)
+telnet mail.staff.sina.com.cn 110 (非SSL加密)
+</code></pre>
 
 <ul>
 <li><strong>python代码</strong></li>
 </ul>
-<div class="highlight"><pre><span></span>import poplib, getpass
-popserver, <span class="nv">user</span> <span class="o">=</span> <span class="s1">&#39;mail.staff.sina.com.cn&#39;</span>, <span class="s1">&#39;jizhong1&#39;</span>
-<span class="nv">passwd</span> <span class="o">=</span> getpass.getpass<span class="o">(</span><span class="s2">&quot;Email passwd for user %s: &quot;</span> % user<span class="o">)</span>
-<span class="nv">server</span> <span class="o">=</span> poplib.POP3_SSL<span class="o">(</span>popserver<span class="o">)</span>    <span class="c1"># server = poplib.POP3(popserver)</span>
-print<span class="o">(</span>server.user<span class="o">(</span>user<span class="o">))</span>
-print<span class="o">(</span>server.pass_<span class="o">(</span>passwd<span class="o">))</span>
+<pre><code class="sh">import poplib, getpass
+popserver, user = 'mail.staff.sina.com.cn', 'jizhong1'
+passwd = getpass.getpass(&quot;Email passwd for user %s: &quot; % user)
+server = poplib.POP3_SSL(popserver)    # server = poplib.POP3(popserver)
+print(server.user(user))
+print(server.pass_(passwd))
 try:
-    print<span class="o">(</span>server.getwelcome<span class="o">())</span>
-    msgCount, <span class="nv">msgBytes</span> <span class="o">=</span> server.stat<span class="o">()</span>
-    print<span class="o">(</span><span class="s1">&#39;There are {} mail messages in {}MB.&#39;</span>.format<span class="o">(</span>msgCount, msgBytes / <span class="m">1024</span>. / <span class="m">1024</span>.<span class="o">))</span>
-    <span class="k">for</span> i in range<span class="o">(</span><span class="m">1</span>, <span class="m">10</span><span class="o">)</span>:
-        hdr, messages, <span class="nv">octes</span> <span class="o">=</span> server.retr<span class="o">(</span>i<span class="o">)</span>
-        print<span class="o">(</span><span class="s2">&quot;Email {} has {} bytes.&quot;</span>.format<span class="o">(</span>hdr,octes<span class="o">))</span>
+    print(server.getwelcome())
+    msgCount, msgBytes = server.stat()
+    print('There are {} mail messages in {}MB.'.format(msgCount, msgBytes / 1024. / 1024.))
+    for i in range(1, 10):
+        hdr, messages, octes = server.retr(i)
+        print(&quot;Email {} has {} bytes.&quot;.format(hdr,octes))
 finally:
-    server.quit<span class="o">()</span>
-</pre></div>
+    server.quit()
+</code></pre>
 
-<h3 id="42-mime">4.2 MIME消息格式<a class="headerlink" href="#42-mime" title="Permanent link">&para;</a></h3>
+<h3 id="42-mime">4.2 MIME消息格式</h3>
 <p>MIME,英文全称为“MultipurposeInternetMailExtensions”,即多用途互联网邮件扩展,是目前互联网电子邮件普遍遵循的邮件技术规范。在MIME出现之前,互联网电子邮件主要遵循由RFC822所制定的标准,电子邮件一般只用来传递基本的ASCII码文本信息,MIME在RFC822的基础上对电子邮件规范做了大量的扩展,引入了新的格式规范和编码方式,在MIME的支持下,图像、声音、动画等二进制文件都可方便的通过电子邮件来进行传递,极大地丰富了电子邮件的功能,而且扩展了很多基于MIME的应用。目前互联网上使用的基本都是遵循MIME规范的电子邮件。从编码方式来说,MIME定义了两种编码方法Base64与QP(Quote-Printable)。</p>
 <p>电子邮件的分析和读取一般都通过专用的邮件软件来实现,比如Outlook、Foxmail,但这种第三方软件无法和开发者自己的系统整合,通过对MIME邮件格式的分析,我们可以在自己的应用程序中实现对MIME邮件所含信息的读取。</p>
 <p>总体来说,MIME消息由消息头和消息体两大部分组成。这里,分别称为邮件头、邮件体</p>
-<h4 id="421-mime">4.2.1 MIME邮件头<a class="headerlink" href="#421-mime" title="Permanent link">&para;</a></h4>
+<h4 id="421-mime">4.2.1 MIME邮件头</h4>
 <p>邮件头包含了发件人、收件人、主题、时间、MIME版本、邮件内容的类型等重要信息。每条信息称为一个域,域的基本格式:{域名}:{内容},域由域名后面跟":"再加上域的信息内容构成,一条域在邮件中占一行或者多行,域的首行左侧不能有空白字符,比如空格或者制表符,占用多行的域其后续行则必须以空白字符开头。域的信息内容中还可以包含属性,属性之间以";"分隔,属性的格式如下:{属性名称}="{属性值}"。</p>
 <p>一个消息头的例子:</p>
-<div class="highlight"><pre><span></span>Received: from SINA-HUB02 <span class="o">(</span><span class="m">10</span>.210.97.52<span class="o">)</span> by SINA-HUB02.staff.sina.com.cn
- <span class="o">(</span><span class="m">10</span>.210.97.52<span class="o">)</span> with Microsoft SMTP Server id <span class="m">14</span>.3.123.3<span class="p">;</span> Thu, <span class="m">6</span> Jul <span class="m">2017</span>
- <span class="m">00</span>:00:54 +0800
+<pre><code class="sh">Received: from SINA-HUB02 (10.210.97.52) by SINA-HUB02.staff.sina.com.cn
+ (10.210.97.52) with Microsoft SMTP Server id 14.3.123.3; Thu, 6 Jul 2017
+ 00:00:54 +0800
 From: &lt;myhr@staff.sina.com.cn&gt;
 To: &lt;jizhong1@staff.weibo.com&gt;
-Date: Thu, <span class="m">6</span> Jul <span class="m">2017</span> <span class="m">00</span>:00:54 +0800
-Subject: <span class="o">=</span>?utf-8?B?5qyi6L+O5oKo5Yqg5YWl5b6u5Y2a77yM5Y+C5LiO5YWs5Y+45pyq5p2l55qE5Y+R5bGV77yB?<span class="o">=</span>
-Content-Type: text/html<span class="p">;</span> <span class="nv">charset</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span>
+Date: Thu, 6 Jul 2017 00:00:54 +0800
+Subject: =?utf-8?B?5qyi6L+O5oKo5Yqg5YWl5b6u5Y2a77yM5Y+C5LiO5YWs5Y+45pyq5p2l55qE5Y+R5bGV77yB?=
+Content-Type: text/html; charset=&quot;utf-8&quot;
 Content-Transfer-Encoding: base64
 Message-ID: &lt;dc9de56f-c7d8-439a-9cc7-8d75bb0f2996@SINA-HUB02.staff.sina.com.cn&gt;
 Return-Path: myhr@staff.sina.com.cn
 X-MS-Exchange-Organization-AuthSource: SINA-HUB02.staff.sina.com.cn
 X-MS-Exchange-Organization-AuthAs: Anonymous
-MIME-Version: <span class="m">1</span>.0
-</pre></div>
+MIME-Version: 1.0
+</code></pre>
 
 <p>常见的标准域名和含义如下:</p>
 <table>
@@ -1432,7 +1433,7 @@ MIME-Version: <span class="m">1</span>.0
 </tr>
 </tbody>
 </table>
-<h4 id="422">4.2.2 邮件体<a class="headerlink" href="#422" title="Permanent link">&para;</a></h4>
+<h4 id="422">4.2.2 邮件体</h4>
 <ul>
 <li><strong>MIME段头信息</strong></li>
 </ul>
@@ -1476,22 +1477,22 @@ MIME-Version: <span class="m">1</span>.0
 <li><strong>multipart类型</strong></li>
 </ul>
 <p>multipart类型是MIME邮件的精髓。邮件体被分为多个段,每个段又包含段头和段体两部分,这两部分之间也以空行分隔。常见的multipart类型有三种:multipart/mixed, multipart/related和multipart/alternative。从它们的名称,不难推知这些类型各自的含义和用处。它们之间的层次关系可归纳为下图所示:</p>
-<div class="highlight"><pre><span></span>  +------------------------- multipart/mixed -----------------------------+
-  <span class="p">|</span>                                                                       <span class="p">|</span>
-  <span class="p">|</span>   +----------------- multipart/related -------------------+           <span class="p">|</span>
-  <span class="p">|</span>   <span class="p">|</span>                                                       <span class="p">|</span>           <span class="p">|</span>
-  <span class="p">|</span>   <span class="p">|</span>   +----- multipart/alternative ------+   +----------+ <span class="p">|</span> +------+  <span class="p">|</span>
-  <span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>                                  <span class="p">|</span>   <span class="p">|</span> 内嵌资源 <span class="p">|</span> <span class="p">|</span> <span class="p">|</span> 附件 <span class="p">|</span>  <span class="p">|</span>
-  <span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span> +------------+ +------------+    <span class="p">|</span>   +----------+ <span class="p">|</span> +------+  <span class="p">|</span>
-  <span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span> <span class="p">|</span> 纯文本正文 <span class="p">|</span> <span class="p">|</span> 超文本正文 <span class="p">|</span>    <span class="p">|</span>                <span class="p">|</span>           <span class="p">|</span>
-  <span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span> +------------+ +------------+    <span class="p">|</span>   +----------+ <span class="p">|</span> +------+  <span class="p">|</span>
-  <span class="p">|</span>   <span class="p">|</span>   <span class="p">|</span>                                  <span class="p">|</span>   <span class="p">|</span> 内嵌资源 <span class="p">|</span> <span class="p">|</span> <span class="p">|</span> 附件 <span class="p">|</span>  <span class="p">|</span>
-  <span class="p">|</span>   <span class="p">|</span>   +----------------------------------+   +----------+ <span class="p">|</span> +------+  <span class="p">|</span>
-  <span class="p">|</span>   <span class="p">|</span>                                                       <span class="p">|</span>           <span class="p">|</span>
-  <span class="p">|</span>   +-------------------------------------------------------+           <span class="p">|</span>
-  <span class="p">|</span>                                                                       <span class="p">|</span>
+<pre><code class="sh">  +------------------------- multipart/mixed -----------------------------+
+  |                                                                       |
+  |   +----------------- multipart/related -------------------+           |
+  |   |                                                       |           |
+  |   |   +----- multipart/alternative ------+   +----------+ | +------+  |
+  |   |   |                                  |   | 内嵌资源 | | | 附件 |  |
+  |   |   | +------------+ +------------+    |   +----------+ | +------+  |
+  |   |   | | 纯文本正文 | | 超文本正文 |    |                |           |
+  |   |   | +------------+ +------------+    |   +----------+ | +------+  |
+  |   |   |                                  |   | 内嵌资源 | | | 附件 |  |
+  |   |   +----------------------------------+   +----------+ | +------+  |
+  |   |                                                       |           |
+  |   +-------------------------------------------------------+           |
+  |                                                                       |
   +-----------------------------------------------------------------------+
-</pre></div>
+</code></pre>
 
 <p>可以看出,如果要在邮件中要添加附件就必须将整封邮件的MIME类型定义为multipart/mixed;如果要在HTML格式的正文中引用内嵌资源,那就要定义multipart/related类型的MIME消息;如果普通文本内容与HTML文本内容共存,那就要定义multipart/alternative类型的MIME消息。</p>
 <p><strong>注意:如果整封邮件中只有普通文本内容与HTML文本内容,那么整封邮件的MIME类型则应定义为multipart/alternative;如果整封邮件中包含有HTML文本内容和内嵌资源,但不包含附件,那么整封邮件的MIME类型则应定义为multipart/related。</strong></p>
@@ -1520,7 +1521,7 @@ MIME-Version: <span class="m">1</span>.0
 </ul>
 </blockquote>
 <p>subtype用于指定type的详细形式。"type/subtype"配对的集合和与此相关的参数。下面是最经常用到的一些MIME类型:</p>
-<div class="highlight"><pre><span></span>text/html(HTML 文档);
+<pre><code>text/html(HTML 文档);
 text/plain(纯文本);
 text/css(CSS 样式表);
 image/gif(GIF 图像);
@@ -1529,13 +1530,13 @@ application/x-javascript(JavaScript 脚本);
 application/x-shockwave-flash(Flash);
 application/x- www-form-urlencoded(使用 HTTP 的 POST 方法提交的表单);
 multipart/form-data(同上,但主要用于表单提交时伴随文件上传的场合)。
-</pre></div>
+</code></pre>
 
 <p>更详细的内容请查看:<a href="http://tool.oschina.net/commons"><code>HTTP Content-type</code></a></p>
 <p>一封最复杂的电子邮件的基本情况为:含有邮件正文和邮件附件,邮件正文可以同时使用HTML格式和普通文本格式表示,并且HTML格式的正文中又引用了其他的内嵌资源。对于这种最复杂的电子邮件,可以采用如图所示的MIME消息结构进行描述。</p>
 <p>在Content-type头字段中除了可以定义消息体的MIME类型外,还可以在MIME类型后面包含相应的属性,属性以“属性名=属性值”的形式出现,属性与MIME类型之间采用分号(;)分隔,如下所示:</p>
-<div class="highlight"><pre><span></span>Content-Type:multipart/mixed<span class="p">;</span><span class="nv">boundary</span><span class="o">=</span><span class="s2">&quot;----=_NextPart_000_0050_01C&quot;</span>
-</pre></div>
+<pre><code class="sh">Content-Type:multipart/mixed;boundary=&quot;----=_NextPart_000_0050_01C&quot;
+</code></pre>
 
 <p><a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Complete_list_of_MIME_types">常用的属性如表</a>所示:</p>
 <table>
@@ -1577,8 +1578,8 @@ multipart/form-data(同上,但主要用于表单提交时伴随文件上传的�
 <li><strong>Content-Disposition字段</strong></li>
 </ul>
 <p>Content-Disposition头字段用于指定邮件阅读程序处理数据内容的方式,有inline和attachment两种标准方式,inline表示直接处理,而attachment表示当做附件处理。如果将Content-Disposition设置为attachment,在其后还可以指定filename 属性,如下所示:</p>
-<div class="highlight"><pre><span></span>Content-Disposition: attachment; filename=&quot;1.bmp&quot;
-</pre></div>
+<pre><code>Content-Disposition: attachment; filename=&quot;1.bmp&quot;
+</code></pre>
 
 <p>上面的MIME头字段表示MIME消息体的内容为邮件附件,附件名"1.bmp"。</p>
 <ul>
@@ -1596,111 +1597,111 @@ multipart/form-data(同上,但主要用于表单提交时伴随文件上传的�
 <li><strong>Content-Base</strong></li>
 </ul>
 <p>Content-Base头字段用于为内嵌资源设置一个基准路径,只有这样,Content-Location头字段中设置的URI才可以采用相对地址。例如,假设将一个表示内嵌图片的MIME消息的Content-Base和Content-Location头字段设置为如下形式:</p>
-<div class="highlight"><pre><span></span>Content-Base: http://www.it315.org/images/
+<pre><code class="sh">Content-Base: http://www.it315.org/images/
 Content-Location: it315logo.gif
-</pre></div>
+</code></pre>
 
 <p>那么,内嵌资源的完整路径就是Content-Base头字段设置的基准路径与Content-Location头字段设置的相对路径相加的结果,在HTML正文中就可以使用如下HTML语句来引用该图片资源:<code>&lt;img src="http://www.it315.org/images/it315logo.gif"&gt;</code></p>
-<h4 id="423-python">4.2.3 python代码<a class="headerlink" href="#423-python" title="Permanent link">&para;</a></h4>
-<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span>
-<span class="kn">import</span> <span class="nn">poplib</span><span class="o">,</span> <span class="nn">email</span><span class="o">,</span> <span class="nn">getpass</span>
-<span class="kn">from</span> <span class="nn">email.parser</span> <span class="kn">import</span> <span class="n">Parser</span>
-<span class="kn">from</span> <span class="nn">email.header</span> <span class="kn">import</span> <span class="n">decode_header</span>
-<span class="kn">from</span> <span class="nn">email.utils</span> <span class="kn">import</span> <span class="n">parseaddr</span>
+<h4 id="423-python">4.2.3 python代码</h4>
+<pre><code class="python">import os, sys
+import poplib, email, getpass
+from email.parser import Parser
+from email.header import decode_header
+from email.utils import parseaddr
 
-<span class="c1"># 邮件的Subject或者Email中包含的名字都是经过编码后的str,要正常显示,就必须decode</span>
-<span class="k">def</span> <span class="nf">decode_str</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
-    <span class="n">value</span><span class="p">,</span> <span class="n">charset</span> <span class="o">=</span> <span class="n">decode_header</span><span class="p">(</span><span class="n">s</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">charset</span><span class="p">:</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">charset</span><span class="p">)</span>
-        <span class="k">except</span><span class="p">:</span>
-            <span class="k">pass</span>
-    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">==</span> <span class="nb">unicode</span><span class="p">:</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf8&quot;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">value</span>
+# 邮件的Subject或者Email中包含的名字都是经过编码后的str,要正常显示,就必须decode
+def decode_str(s):
+    value, charset = decode_header(s)[0]
+    if charset:
+        try:
+            value = value.decode(charset)
+        except:
+            pass
+    if type(value) == unicode:
+        value = value.encode(&quot;utf8&quot;)
+    return value
 
-<span class="c1"># 解析邮件内容</span>
-<span class="k">def</span> <span class="nf">parse_mail</span><span class="p">(</span><span class="n">msg_content</span><span class="p">,</span> <span class="n">UIDL</span><span class="o">=</span><span class="s2">&quot;0001&quot;</span><span class="p">):</span>
-    <span class="n">temp_download_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DOWNLOAD_PATH</span><span class="p">,</span><span class="n">UIDL</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">temp_download_path</span><span class="p">):</span><span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">temp_download_path</span><span class="p">)</span>
+# 解析邮件内容
+def parse_mail(msg_content, UIDL=&quot;0001&quot;):
+    temp_download_path = os.path.join(DOWNLOAD_PATH,UIDL)
+    if not os.path.exists(temp_download_path):os.mkdir(temp_download_path)
 
-    <span class="n">msg</span> <span class="o">=</span> <span class="n">Parser</span><span class="p">()</span><span class="o">.</span><span class="n">parsestr</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\r\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">msg_content</span><span class="p">))</span>
+    msg = Parser().parsestr(b&quot;\r\n&quot;.join(msg_content))
 
-    <span class="c1"># 获取header 相关的信息</span>
-    <span class="n">headers</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-    <span class="k">for</span> <span class="n">header</span> <span class="ow">in</span> <span class="n">headers</span><span class="p">:</span>
-        <span class="n">item</span><span class="p">,</span> <span class="n">content</span> <span class="o">=</span> <span class="n">header</span>
-        <span class="k">if</span> <span class="n">item</span> <span class="o">==</span> <span class="s2">&quot;Subject&quot;</span> <span class="ow">or</span> <span class="n">item</span> <span class="o">==</span> <span class="s2">&quot;Thread-Index&quot;</span> <span class="ow">or</span> <span class="n">item</span> <span class="o">==</span> <span class="s2">&quot;Thread-Topic&quot;</span><span class="p">:</span>
-            <span class="n">value</span> <span class="o">=</span> <span class="n">decode_str</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
-            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;{} : {}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
-        <span class="k">elif</span> <span class="n">item</span> <span class="o">==</span> <span class="s2">&quot;From&quot;</span> <span class="ow">or</span> <span class="n">item</span> <span class="o">==</span> <span class="s2">&quot;To&quot;</span> <span class="ow">or</span> <span class="n">item</span> <span class="o">==</span> <span class="s2">&quot;CC&quot;</span><span class="p">:</span>
-            <span class="n">value</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="n">item_addr_list</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">item_addr</span> <span class="ow">in</span> <span class="n">item_addr_list</span><span class="p">:</span>
-                <span class="n">hdr</span><span class="p">,</span> <span class="n">addr</span> <span class="o">=</span><span class="n">parseaddr</span><span class="p">(</span><span class="n">item_addr</span><span class="p">)</span>
-                <span class="n">name</span> <span class="o">=</span> <span class="n">decode_str</span><span class="p">(</span><span class="n">hdr</span><span class="p">)</span>
-                <span class="n">value</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;{}&lt;{}&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">addr</span><span class="p">))</span>
-            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;{} : {}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">value</span><span class="p">)))</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;{} : {}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">decode_str</span><span class="p">(</span><span class="n">content</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">)))</span>
+    # 获取header 相关的信息
+    headers = msg.items()
+    for header in headers:
+        item, content = header
+        if item == &quot;Subject&quot; or item == &quot;Thread-Index&quot; or item == &quot;Thread-Topic&quot;:
+            value = decode_str(content)
+            print(&quot;{} : {}\n&quot;.format(item, value))
+        elif item == &quot;From&quot; or item == &quot;To&quot; or item == &quot;CC&quot;:
+            value = []
+            item_addr_list = content.split(&quot;,&quot;)
+            for item_addr in item_addr_list:
+                hdr, addr =parseaddr(item_addr)
+                name = decode_str(hdr)
+                value.append(&quot;{}&lt;{}&gt;&quot;.format(name, addr))
+            print(&quot;{} : {}\n&quot;.format(item, &quot;,&quot;.join(value)))
+        else:
+            print(&quot;{} : {}\n&quot;.format(item, decode_str(content).replace(&quot;\r\n&quot;,&quot;&quot;)))
 
-    <span class="c1"># 获取邮件内容</span>
-    <span class="n">ct</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="k">for</span> <span class="n">par</span> <span class="ow">in</span> <span class="n">msg</span><span class="o">.</span><span class="n">walk</span><span class="p">():</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="n">par</span><span class="o">.</span><span class="n">get_filename</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">name</span><span class="p">:</span>           <span class="c1"># 是否为附件</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="n">decode_str</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="n">par</span><span class="o">.</span><span class="n">get_payload</span><span class="p">(</span><span class="n">decode</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="c1"># 注意一定要用wb来打开文件,因为附件一般都是二进制文件</span>
-                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">temp_download_path</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
-                    <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="k">print</span><span class="p">(</span><span class="s1">&#39;ERROR: {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)))</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># 不是附件,是文本内容</span>
-            <span class="n">body</span> <span class="o">=</span> <span class="n">par</span><span class="o">.</span><span class="n">get_payload</span><span class="p">(</span><span class="n">decode</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span> <span class="c1"># 解码出文本内容,直接输出来就可以了。</span>
-            <span class="n">content_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">temp_download_path</span><span class="p">,</span> <span class="s2">&quot;content_{}.txt&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ct</span><span class="p">))</span>
+    # 获取邮件内容
+    ct = 1
+    for par in msg.walk():
+        name = par.get_filename()
+        if name:           # 是否为附件
+            name = decode_str(name)
+            data = par.get_payload(decode=True)
+            try:
+                # 注意一定要用wb来打开文件,因为附件一般都是二进制文件
+                with open(os.path.join(temp_download_path, name) , &quot;w&quot;) as fp:
+                    fp.write(data)
+            except Exception as e:
+                print('ERROR: {}'.format(str(e)))
+        else:
+            # 不是附件,是文本内容
+            body = par.get_payload(decode=True) # 解码出文本内容,直接输出来就可以了。
+            content_file = os.path.join(temp_download_path, &quot;content_{}.txt&quot;.format(ct))
 
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">content_file</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">body</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-                    <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">decode_str</span><span class="p">(</span><span class="n">body</span><span class="p">))</span>
-                    <span class="n">ct</span> <span class="o">+=</span> <span class="mi">1</span>
+            with open(content_file, &quot;wb&quot;) as fp:
+                if body is not None:
+                    fp.write(decode_str(body))
+                    ct += 1
 
-<span class="k">def</span> <span class="nf">get_mails</span><span class="p">(</span><span class="n">popserver</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">server</span> <span class="o">=</span> <span class="n">poplib</span><span class="o">.</span><span class="n">POP3_SSL</span><span class="p">(</span><span class="n">popserver</span><span class="p">)</span>
-        <span class="n">server</span><span class="o">.</span><span class="n">user</span><span class="p">(</span><span class="n">username</span><span class="p">)</span>
-        <span class="n">server</span><span class="o">.</span><span class="n">pass_</span><span class="p">(</span><span class="n">password</span><span class="p">)</span>
-        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">server</span><span class="o">.</span><span class="n">getwelcome</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;+OK&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)))</span>
+def get_mails(popserver, username, password):
+    try:
+        server = poplib.POP3_SSL(popserver)
+        server.user(username)
+        server.pass_(password)
+        print(&quot;{}&quot;.format(server.getwelcome().replace(&quot;+OK&quot;, &quot;&quot;)))
 
-        <span class="c1"># 获取邮件数量以及大小</span>
-        <span class="n">msgCount</span><span class="p">,</span> <span class="n">msgBytes</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="n">stat</span><span class="p">()</span>
-        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Get {} mails costing storage {} Mb.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">msgCount</span><span class="p">,</span> <span class="n">msgBytes</span> <span class="o">/</span> <span class="mf">1024.</span> <span class="o">/</span> <span class="mf">1024.</span><span class="p">))</span>
+        # 获取邮件数量以及大小
+        msgCount, msgBytes = server.stat()
+        print('Get {} mails costing storage {} Mb.'.format(msgCount, msgBytes / 1024. / 1024.))
 
-        <span class="c1"># 获取前十封邮件</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">msgCount</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        # 获取前十封邮件
+        for i in range(1, msgCount+1):
 
-            <span class="c1"># 获取邮件的标识符和邮件大小</span>
-            <span class="n">status</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">UIDL</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="n">uidl</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
-            <span class="n">status</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">SIZE</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+            # 获取邮件的标识符和邮件大小
+            status, index, UIDL = server.uidl(i).split(&quot; &quot;)
+            status, index, SIZE = server.list(i).split(&quot; &quot;)
 
-            <span class="c1"># 获取邮件的内容(状态, 内容, 大小)</span>
-            <span class="n">hdr</span><span class="p">,</span> <span class="n">messages</span><span class="p">,</span> <span class="n">octes</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="n">retr</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
-            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Mail index({}):uidl ({}) and size ({})&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">UIDL</span><span class="p">,</span> <span class="n">SIZE</span><span class="p">))</span>
-            <span class="n">parse_mail</span><span class="p">(</span><span class="n">messages</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">UIDL</span><span class="p">))</span>
-    <span class="k">finally</span><span class="p">:</span>
-        <span class="n">server</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
-
-
+            # 获取邮件的内容(状态, 内容, 大小)
+            hdr, messages, octes = server.retr(i)
+            print(&quot;Mail index({}):uidl ({}) and size ({})&quot;.format(i, UIDL, SIZE))
+            parse_mail(messages, str(UIDL))
+    finally:
+        server.quit()
 
 
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="n">popserver</span><span class="p">,</span> <span class="n">user</span> <span class="o">=</span> <span class="s1">&#39;mail.staff.sina.com.cn&#39;</span><span class="p">,</span> <span class="s1">&#39;jizhong1&#39;</span>
-    <span class="n">passwd</span> <span class="o">=</span> <span class="n">getpass</span><span class="o">.</span><span class="n">getpass</span><span class="p">(</span><span class="s2">&quot;Email passwd for user </span><span class="si">%s</span><span class="s2">: &quot;</span> <span class="o">%</span> <span class="n">user</span><span class="p">)</span>
-    <span class="n">get_mails</span><span class="p">(</span><span class="n">popserver</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">passwd</span><span class="p">)</span>
-</pre></div>
+
+
+if __name__ == &quot;__main__&quot;:
+    popserver, user = 'mail.staff.sina.com.cn', 'jizhong1'
+    passwd = getpass.getpass(&quot;Email passwd for user %s: &quot; % user)
+    get_mails(popserver, user, passwd)
+</code></pre>
 
 <p>官方的MIME信息是由<code>Internet Engineering Task Force (IETF)</code>在下面的文档中提供的:</p>
 <blockquote>
@@ -1713,12 +1714,12 @@ Content-Location: it315logo.gif
 <li>RFC-2049 MIME Part 5: Conformance Criteria and Examples</li>
 </ul>
 </blockquote>
-<h3 id="43-smtp">4.3 SMTP格式<a class="headerlink" href="#43-smtp" title="Permanent link">&para;</a></h3>
+<h3 id="43-smtp">4.3 SMTP格式</h3>
 <p>SMTP(Simple Mail Transfer Protocol,简单邮件传输协议)即简单邮件传输协议,它是一组用于由源地址到目的地址传送邮件的规则,由它来控制信件的中转方式。它定义了邮件客户端与SMTP服务器之间,以及两台SMTP服务器之间发送邮件的通信规则。SMTP协议属于TCP/IP协议族,通信双方采用一问一答的命令/响应形式进行对话,且定了对话的规则和所有命令/响应的语法格式。</p>
-<h4 id="431">4.3.1 用户代理<a class="headerlink" href="#431" title="Permanent link">&para;</a></h4>
+<h4 id="431">4.3.1 用户代理</h4>
 <p>用户代理UA(User Agent)是用户与电子邮件系统的交互接口,一般来说它就是我们PC机上的一个程序。Windows上常见的用户代理是Foxmail和Outlook Express。</p>
 <p>用户代理提供一个好的用户界面,它提取用户在其界面填写的各项信息,生成一封符合SMTP等邮件标准的邮件,然后采用SMTP协议将邮件发送到发送端邮件服务器。</p>
-<h4 id="432">4.3.2 邮件服务器<a class="headerlink" href="#432" title="Permanent link">&para;</a></h4>
+<h4 id="432">4.3.2 邮件服务器</h4>
 <p>邮件服务器是电子邮件系统的核心,它用来发送和接收邮件。邮件服务器不同于普通PC的是它几乎是全天工作的,所以它可以在任何时候为用户提供服务,很多ISP都提供免费的邮件服务器,如126提供smtp.126.com邮件服务器。邮件服务器向其它邮件服务器转发邮件也是采用SMTP协议。</p>
 <p>一般情况下,一封邮件的发送和接收过程如下:</p>
 <blockquote>
@@ -1750,7 +1751,7 @@ Content-Location: it315logo.gif
 <li>结束此次发送,用QUIT命令退出</li>
 </ol>
 </blockquote>
-<h4 id="433-smtp">4.3.3 SMTP常见命令和响应<a class="headerlink" href="#433-smtp" title="Permanent link">&para;</a></h4>
+<h4 id="433-smtp">4.3.3 SMTP常见命令和响应</h4>
 <ul>
 <li><strong>SMTP常见的命令</strong></li>
 </ul>
@@ -1905,114 +1906,114 @@ Content-Location: it315logo.gif
 </tr>
 </tbody>
 </table>
-<h4 id="434-python">4.3.4 python发送邮件<a class="headerlink" href="#434-python" title="Permanent link">&para;</a></h4>
+<h4 id="434-python">4.3.4 python发送邮件</h4>
 <p>在Python程序中,经常使用SMTP来发送邮件。支持的库有:smtplib和email, smtplib负责发送邮件,email负责构造邮件。</p>
 <ul>
 <li><strong>简单的例子</strong></li>
 </ul>
-<div class="highlight"><pre><span></span><span class="c1"># 首先构造邮件:</span>
-<span class="kn">from</span> <span class="nn">email.mime.text</span> <span class="kn">import</span> <span class="n">MIMEText</span>
-<span class="n">msg</span> <span class="o">=</span> <span class="n">MIMEText</span><span class="p">(</span><span class="s1">&#39;hello, send by Python...&#39;</span><span class="p">,</span> <span class="s1">&#39;plain&#39;</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
-<span class="n">msg</span><span class="p">[</span><span class="s2">&quot;from&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;hello@sina.cn&quot;</span>     <span class="c1"># 邮件的发件人</span>
+<pre><code class="python"># 首先构造邮件:
+from email.mime.text import MIMEText
+msg = MIMEText('hello, send by Python...', 'plain', 'utf-8')
+msg[&quot;from&quot;] = &quot;hello@sina.cn&quot;     # 邮件的发件人
 
-<span class="c1"># 使用smtplib发送邮件</span>
-<span class="kn">import</span> <span class="nn">smtplib</span>
-<span class="c1"># smtpObject = smtplib.SMTP(host, port)</span>
-<span class="c1"># smtpObject = smtplib.SMTP_SSL(host, port)        # 有的服务器禁用25端口,此时用加密的SMTP</span>
-<span class="n">smtpObject</span> <span class="o">=</span> <span class="n">smtplib</span><span class="o">.</span><span class="n">SMTP</span><span class="p">(</span><span class="s2">&quot;smtp.sina.cn&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span>  <span class="c1"># 连接smtp服务器, port 是端口号,一般是25, SSL为465</span>
-<span class="c1"># smtp.login(user, password)      # 登陆账号: user 为账号, password为账号对应的密码</span>
-<span class="n">smtpObject</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="s2">&quot;hello&quot;</span><span class="p">)</span>
-<span class="c1"># smtpObject.sendmail(sender, receivers_list, msg)</span>
-<span class="n">smtpObject</span><span class="o">.</span><span class="n">sendmail</span><span class="p">(</span><span class="s2">&quot;hello@sina.cn&quot;</span><span class="p">,[</span><span class="s2">&quot;jzwang@whu.edu.cn&quot;</span><span class="p">,],</span> <span class="n">msg</span><span class="o">.</span><span class="n">as_string</span><span class="p">())</span>
-<span class="n">smtpObject</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
-</pre></div>
+# 使用smtplib发送邮件
+import smtplib
+# smtpObject = smtplib.SMTP(host, port)
+# smtpObject = smtplib.SMTP_SSL(host, port)        # 有的服务器禁用25端口,此时用加密的SMTP
+smtpObject = smtplib.SMTP(&quot;smtp.sina.cn&quot;, port=25)  # 连接smtp服务器, port 是端口号,一般是25, SSL为465
+# smtp.login(user, password)      # 登陆账号: user 为账号, password为账号对应的密码
+smtpObject.login(&quot;hello&quot;, &quot;hello&quot;)
+# smtpObject.sendmail(sender, receivers_list, msg)
+smtpObject.sendmail(&quot;hello@sina.cn&quot;,[&quot;jzwang@whu.edu.cn&quot;,], msg.as_string())
+smtpObject.quit()
+</code></pre>
 
 <ul>
 <li><strong>邮件的头部信息</strong></li>
 </ul>
 <p>从发送的邮件可以看到:主题没有和收件人没有显示。这是因为邮件主题、如何显示发件人、收件人等信息并不是通过SMTP协议发给MTA(Mail Transport Agent),而是包含在发给MTA的文本中的,所以,必须把From、To和Subject添加到·MIMEText·中,才是一封完整的邮件:</p>
-<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">email.header</span> <span class="kn">import</span> <span class="n">Header</span>
-<span class="kn">from</span> <span class="nn">email.mime.text</span> <span class="kn">import</span> <span class="n">MIMEText</span>
-<span class="kn">from</span> <span class="nn">email.utils</span> <span class="kn">import</span> <span class="n">parseaddr</span><span class="p">,</span> <span class="n">formataddr</span>
-<span class="k">def</span> <span class="nf">_format_addr</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
-    <span class="n">name</span><span class="p">,</span> <span class="n">addr</span> <span class="o">=</span> <span class="n">parseaddr</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">formataddr</span><span class="p">((</span> \
-        <span class="n">Header</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span> \
-        <span class="n">addr</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">)</span> <span class="k">else</span> <span class="n">addr</span><span class="p">))</span>
+<pre><code class="python">from email.header import Header
+from email.mime.text import MIMEText
+from email.utils import parseaddr, formataddr
+def _format_addr(s):
+    name, addr = parseaddr(s)
+    return formataddr(( \
+        Header(name, 'utf-8').encode(), \
+        addr.encode('utf-8') if isinstance(addr, unicode) else addr))
 
-<span class="n">msg</span> <span class="o">=</span> <span class="n">MIMEText</span><span class="p">(</span><span class="s1">&#39;hello, send by Python...&#39;</span><span class="p">,</span> <span class="s1">&#39;plain&#39;</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
-<span class="n">msg</span><span class="p">[</span><span class="s1">&#39;From&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;18515546516@sina.cn&quot;</span>
-<span class="c1"># msg[&#39;To&#39;] = _format_addr(u&#39;纪中 &lt;jizhong1@staff.weibo.com&gt;&#39;) + &quot;,jzwang@whu.edu.cn&quot;</span>
-<span class="n">msg</span><span class="p">[</span><span class="s2">&quot;to&quot;</span><span class="p">]</span><span class="o">=</span><span class="s2">&quot;jzwang@whu.edu.cn,jizhong1@staff.weibo.com&quot;</span>
-<span class="n">msg</span><span class="p">[</span><span class="s1">&#39;Subject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Header</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;来自SMTP的问候……&#39;</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
-</pre></div>
+msg = MIMEText('hello, send by Python...', 'plain', 'utf-8')
+msg['From'] = &quot;18515546516@sina.cn&quot;
+# msg['To'] = _format_addr(u'纪中 &lt;jizhong1@staff.weibo.com&gt;') + &quot;,jzwang@whu.edu.cn&quot;
+msg[&quot;to&quot;]=&quot;jzwang@whu.edu.cn,jizhong1@staff.weibo.com&quot;
+msg['Subject'] = Header(u'来自SMTP的问候……', 'utf-8').encode()
+</code></pre>
 
-<p>我们编写了一个函数_format_addr()来格式化一个邮件地址。注意不能简单地传入name \&lt;<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#97;&#100;&#100;&#114;&#64;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#111;&#109;">&#97;&#100;&#100;&#114;&#64;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#111;&#109;</a>>,因为如果包含中文,需要通过Header对象进行编码。msg['To']接收的是字符串而不是list,如果有多个邮件地址,用,分隔即可。</p>
+<p>我们编写了一个函数_format_addr()来格式化一个邮件地址。注意不能简单地传入name \&lt;addr@example.com>,因为如果包含中文,需要通过Header对象进行编码。msg['To']接收的是字符串而不是list,如果有多个邮件地址,用,分隔即可。</p>
 <p>有时候在发送邮件时候,我们希望某几个人是收的,其他有些人只是知道有这种情况而已,这时需要邮件的抄送功能,这也是在邮件头部信息中体现的:</p>
-<div class="highlight"><pre><span></span><span class="n">cc</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;bb@bbb.com&#39;</span><span class="p">,</span> <span class="s1">&#39;cc@ccc.com&#39;</span><span class="p">]</span>
-<span class="n">message</span><span class="p">[</span><span class="s1">&#39;Cc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Header</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cc</span><span class="p">),</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>   <span class="c1"># 抄送</span>
-<span class="n">message</span><span class="p">[</span><span class="s1">&#39;Bcc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Header</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cc</span><span class="p">),</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>  <span class="c1"># 密送</span>
-</pre></div>
+<pre><code class="python">cc = ['bb@bbb.com', 'cc@ccc.com']
+message['Cc'] = Header(','.join(cc), 'utf-8')   # 抄送
+message['Bcc'] = Header(','.join(cc), 'utf-8')  # 密送
+</code></pre>
 
 <ul>
 <li><strong>带有附件</strong></li>
 </ul>
 <p>带附件的邮件可以看做包含若干部分的邮件:文本和各个附件本身,所以,可以构造一个MIMEMultipart对象代表邮件本身,然后往里面加上一个MIMEText作为邮件正文,再继续往里面加上表示附件的MIMEBase对象即可:</p>
-<div class="highlight"><pre><span></span><span class="n">msg</span> <span class="o">=</span> <span class="n">email</span><span class="o">.</span><span class="n">mime</span><span class="o">.</span><span class="n">multipart</span><span class="o">.</span><span class="n">MIMEMultipart</span><span class="p">()</span>
-<span class="n">msg</span><span class="p">[</span><span class="s1">&#39;from&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sendAddr</span>
-<span class="n">msg</span><span class="p">[</span><span class="s1">&#39;to&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">recipientAddrs</span>
-<span class="n">msg</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">subject</span>
-<span class="n">msg</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">email</span><span class="o">.</span><span class="n">mime</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">MIMEText</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="s1">&#39;plain&#39;</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
-<span class="c1"># 添加附件,添加rar文件</span>
-<span class="n">part</span> <span class="o">=</span> <span class="n">MIMEApplication</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./test.rar&#39;</span><span class="p">,</span><span class="s1">&#39;rb&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
-<span class="n">part</span><span class="o">.</span><span class="n">add_header</span><span class="p">(</span><span class="s1">&#39;Content-Disposition&#39;</span><span class="p">,</span> <span class="s1">&#39;attachment&#39;</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;test.rar&quot;</span><span class="p">)</span>
-<span class="n">part</span><span class="o">.</span><span class="n">add_header</span><span class="p">(</span><span class="s1">&#39;Content-ID&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;0&gt;&#39;</span><span class="p">)</span>       <span class="c1"># 定义内容ID</span>
-<span class="n">part</span><span class="o">.</span><span class="n">add_header</span><span class="p">(</span><span class="s1">&#39;X-Attachment-Id&#39;</span><span class="p">,</span> <span class="s1">&#39;0&#39;</span><span class="p">)</span>
-<span class="n">msg</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">part</span><span class="p">)</span>
-<span class="n">smtp</span><span class="o">.</span><span class="n">sendmail</span><span class="p">(</span><span class="n">sendAddr</span><span class="p">,</span> <span class="n">recipientAddrs</span><span class="p">,</span> <span class="n">msg</span><span class="o">.</span><span class="n">to_string</span><span class="p">())</span>
-<span class="n">smtp</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
-</pre></div>
+<pre><code class="python">msg = email.mime.multipart.MIMEMultipart()
+msg['from'] = sendAddr
+msg['to'] = recipientAddrs
+msg['subject'] = subject
+msg.attach(email.mime.text.MIMEText(content, 'plain', 'utf-8'))
+# 添加附件,添加rar文件
+part = MIMEApplication(open('./test.rar','rb').read())
+part.add_header('Content-Disposition', 'attachment', filename=&quot;test.rar&quot;)
+part.add_header('Content-ID', '&lt;0&gt;')       # 定义内容ID
+part.add_header('X-Attachment-Id', '0')
+msg.attach(part)
+smtp.sendmail(sendAddr, recipientAddrs, msg.to_string())
+smtp.quit()
+</code></pre>
 
 <p>在python中,MIME的这些对象的继承关系如下。</p>
-<div class="highlight"><pre><span></span><span class="n">MIMEBase</span>
-<span class="o">|--</span> <span class="n">MIMENonMultipart</span>
-    <span class="o">|--</span> <span class="n">MIMEApplication</span>
-    <span class="o">|--</span> <span class="n">MIMEAudio</span>
-    <span class="o">|--</span> <span class="n">MIMEImage</span>
-    <span class="o">|--</span> <span class="n">MIMEMessage</span>
-    <span class="o">|--</span> <span class="n">MIMEText</span>
-<span class="o">|--</span> <span class="n">MIMEMultipart</span>
-</pre></div>
+<pre><code class="python">MIMEBase
+|-- MIMENonMultipart
+    |-- MIMEApplication
+    |-- MIMEAudio
+    |-- MIMEImage
+    |-- MIMEMessage
+    |-- MIMEText
+|-- MIMEMultipart
+</code></pre>
 
 <p>一般来说,不会用到MIMEBase,而是直接使用它的继承类。MIMEMultipart有attach方法,而MIMENonMultipart没有,只能被attach。MIME有很多种类型,这个略麻烦,如果附件是图片格式,我要用MIMEImage,如果是音频,要用MIMEAudio,如果是word、excel,我都不知道该用哪种MIME类型了,得上google去查。最懒的方法就是,不管什么类型的附件,都用MIMEApplication,MIMEApplication默认子类型是application/octet-stream。application/octet-stream表明“这是个二进制的文件,希望你们那边知道怎么处理”,然后客户端,比如qq邮箱,收到这个声明后,会根据文件扩展名来猜测。</p>
 <ul>
 <li><strong>显示图片的HTML邮件</strong></li>
 </ul>
 <p>如果我们要发送HTML邮件,而不是普通的纯文本文件怎么办？方法很简单,在构造MIMEText对象时,把HTML字符串传进去,再把第二个参数由plain变为html就可以了:</p>
-<div class="highlight"><pre><span></span><span class="n">msg</span> <span class="o">=</span> <span class="n">MIMEText</span><span class="p">(</span><span class="s1">&#39;&lt;html&gt;&lt;body&gt;&lt;h1&gt;Hello&lt;/h1&gt;&#39;</span> <span class="o">+</span>
-<span class="s1">&#39;&lt;p&gt;send by &lt;a href=&quot;http://www.python.org&quot;&gt;Python&lt;/a&gt;...&lt;/p&gt;&#39;</span> <span class="o">+</span>
-<span class="s1">&#39;&lt;/body&gt;&lt;/html&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;html&#39;</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
-</pre></div>
+<pre><code class="python">msg = MIMEText('&lt;html&gt;&lt;body&gt;&lt;h1&gt;Hello&lt;/h1&gt;' +
+'&lt;p&gt;send by &lt;a href=&quot;http://www.python.org&quot;&gt;Python&lt;/a&gt;...&lt;/p&gt;' +
+'&lt;/body&gt;&lt;/html&gt;', 'html', 'utf-8')
+</code></pre>
 
 <p>如果要把一个图片嵌入到邮件正文中怎么做？直接在HTML邮件中链接图片地址行不行？答案不行,大部分邮件服务商都会自动屏蔽带有外链的图片,因为不知道这些链接是否指向恶意网站。</p>
 <p>要把图片嵌入到邮件正文中,我们只需按照发送附件的方式,先把邮件作为附件添加进去,然后,在HTML中通过引用src="cid:0"就可以把附件作为图片嵌入了。如果有多个图片,给它们依次编号,然后引用不同的cid:x即可。</p>
 <p>把上面代码加入MIMEMultipart的MIMEText从plain改为html,然后在适当的位置引用图片:</p>
-<div class="highlight"><pre><span></span><span class="n">msg</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">MIMEText</span><span class="p">(</span><span class="s1">&#39;&lt;html&gt;&lt;body&gt;&lt;h1&gt;Hello&lt;/h1&gt;&#39;</span> <span class="o">+</span>
-    <span class="s1">&#39;&lt;p&gt;&lt;img src=&quot;cid:0&quot;&gt;&lt;/p&gt;&#39;</span> <span class="o">+</span>
-    <span class="s1">&#39;&lt;/body&gt;&lt;/html&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;html&#39;</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
-</pre></div>
+<pre><code class="python">msg.attach(MIMEText('&lt;html&gt;&lt;body&gt;&lt;h1&gt;Hello&lt;/h1&gt;' +
+    '&lt;p&gt;&lt;img src=&quot;cid:0&quot;&gt;&lt;/p&gt;' +
+    '&lt;/body&gt;&lt;/html&gt;', 'html', 'utf-8'))
+</code></pre>
 
 <p>如果我们发送HTML邮件,收件人通过浏览器或者Outlook之类的软件是可以正常浏览邮件内容的,但是,如果收件人使用的设备太古老,查看不了HTML邮件怎么办？办法是在发送HTML的同时再附加一个纯文本,如果收件人无法查看HTML格式的邮件,就可以自动降级查看纯文本邮件。</p>
 <p>利用MIMEMultipart就可以组合一个HTML和Plain,要注意指定subtype是alternative:</p>
-<div class="highlight"><pre><span></span><span class="n">msg</span> <span class="o">=</span> <span class="n">MIMEMultipart</span><span class="p">(</span><span class="s1">&#39;alternative&#39;</span><span class="p">)</span>
-<span class="n">msg</span><span class="p">[</span><span class="s1">&#39;From&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="o">...</span>
-<span class="n">msg</span><span class="p">[</span><span class="s1">&#39;To&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="o">...</span>
-<span class="n">msg</span><span class="p">[</span><span class="s1">&#39;Subject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="o">...</span>
+<pre><code class="python">msg = MIMEMultipart('alternative')
+msg['From'] = ...
+msg['To'] = ...
+msg['Subject'] = ...
 
-<span class="n">msg</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">MIMEText</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">,</span> <span class="s1">&#39;plain&#39;</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
-<span class="n">msg</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">MIMEText</span><span class="p">(</span><span class="s1">&#39;&lt;html&gt;&lt;body&gt;&lt;h1&gt;Hello&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;html&#39;</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
-<span class="c1"># 正常发送msg对象...</span>
-</pre></div>
+msg.attach(MIMEText('hello', 'plain', 'utf-8'))
+msg.attach(MIMEText('&lt;html&gt;&lt;body&gt;&lt;h1&gt;Hello&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;', 'html', 'utf-8'))
+# 正常发送msg对象...
+</code></pre>
 
 <ul>
 <li><strong>加密SMTP</strong></li>
@@ -2020,68 +2021,68 @@ Content-Location: it315logo.gif
 <p>使用标准的25端口连接SMTP服务器时,使用的是明文传输,发送邮件的整个过程可能会被窃听。要更安全地发送邮件,可以加密SMTP会话,实际上就是先创建SSL安全连接,然后再使用SMTP协议发送邮件。</p>
 <p>某些邮件服务商,例如Gmail,提供的SMTP服务必须要加密传输。我们来看看如何通过Gmail提供的安全SMTP发送邮件。</p>
 <p>必须知道,Gmail的SMTP端口是587,因此,修改代码如下:</p>
-<div class="highlight"><pre><span></span><span class="n">smtp_server</span> <span class="o">=</span> <span class="s1">&#39;smtp.gmail.com&#39;</span>
-<span class="n">smtp_port</span> <span class="o">=</span> <span class="mi">587</span>
-<span class="n">server</span> <span class="o">=</span> <span class="n">smtplib</span><span class="o">.</span><span class="n">SMTP</span><span class="p">(</span><span class="n">smtp_server</span><span class="p">,</span> <span class="n">smtp_port</span><span class="p">)</span>
-<span class="n">server</span><span class="o">.</span><span class="n">starttls</span><span class="p">()</span>
-<span class="c1"># 剩下的代码和前面的一模一样:</span>
-<span class="n">server</span><span class="o">.</span><span class="n">set_debuglevel</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="o">...</span>
-</pre></div>
+<pre><code class="python">smtp_server = 'smtp.gmail.com'
+smtp_port = 587
+server = smtplib.SMTP(smtp_server, smtp_port)
+server.starttls()
+# 剩下的代码和前面的一模一样:
+server.set_debuglevel(1)
+...
+</code></pre>
 
 <p>或者使用smtplib.SMTP构造,只需要在创建SMTP对象后,立刻调用starttls()方法,就创建了安全连接。后面的代码和前面的发送邮件代码完全一样。</p>
 <ul>
 <li><strong>python例子</strong></li>
 </ul>
-<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">email.message</span> <span class="kn">import</span> <span class="n">Message</span>
-<span class="kn">from</span> <span class="nn">email.mime.audio</span> <span class="kn">import</span> <span class="n">MIMEAudio</span>
-<span class="kn">from</span> <span class="nn">email.mime.base</span> <span class="kn">import</span> <span class="n">MIMEBase</span>
-<span class="kn">from</span> <span class="nn">email.mime.image</span> <span class="kn">import</span> <span class="n">MIMEImage</span>
-<span class="kn">from</span> <span class="nn">email.mime.multipart</span> <span class="kn">import</span> <span class="n">MIMEMultipart</span>
-<span class="kn">from</span> <span class="nn">email.mime.text</span> <span class="kn">import</span> <span class="n">MIMEText</span>
-<span class="kn">from</span> <span class="nn">email.utils</span> <span class="kn">import</span> <span class="n">formataddr</span>
-<span class="kn">from</span> <span class="nn">email</span> <span class="kn">import</span> <span class="n">encoders</span>
-<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">mimetypes</span>
+<pre><code class="python">from email.message import Message
+from email.mime.audio import MIMEAudio
+from email.mime.base import MIMEBase
+from email.mime.image import MIMEImage
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.utils import formataddr
+from email import encoders
+import os, mimetypes
 
-<span class="n">attach_dir</span> <span class="o">=</span> <span class="s2">&quot;./&quot;</span>
+attach_dir = &quot;./&quot;
 
-<span class="n">outer</span> <span class="o">=</span> <span class="n">MIMEMultipart</span><span class="p">()</span>
-<span class="n">outer</span><span class="p">[</span><span class="s1">&#39;Subject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Contents of directory </span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">attach_dir</span><span class="p">)</span>
-<span class="n">outer</span><span class="p">[</span><span class="s1">&#39;To&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">formataddr</span><span class="p">([</span><span class="s2">&quot;纪中&quot;</span><span class="p">,</span><span class="s2">&quot;jizhong1@staff.weibo.com&quot;</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;;&quot;</span> <span class="o">+</span> <span class="s2">&quot;1792403713@qq.com&quot;</span>
-<span class="n">outer</span><span class="p">[</span><span class="s1">&#39;From&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">formataddr</span><span class="p">([</span><span class="s2">&quot;纪中&quot;</span><span class="p">,</span><span class="s2">&quot;jizhong1@staff.weibo.com&quot;</span><span class="p">])</span>
-<span class="n">outer</span><span class="p">[</span><span class="s2">&quot;Cc&quot;</span><span class="p">]</span><span class="o">=</span><span class="n">formataddr</span><span class="p">([</span><span class="s2">&quot;纪中&quot;</span><span class="p">,</span><span class="s2">&quot;jizhong1@staff.weibo.com&quot;</span><span class="p">])</span>
+outer = MIMEMultipart()
+outer['Subject'] = 'Contents of directory %s'%os.path.abspath(attach_dir)
+outer['To'] = formataddr([&quot;纪中&quot;,&quot;jizhong1@staff.weibo.com&quot;]) + &quot;;&quot; + &quot;1792403713@qq.com&quot;
+outer['From'] = formataddr([&quot;纪中&quot;,&quot;jizhong1@staff.weibo.com&quot;])
+outer[&quot;Cc&quot;]=formataddr([&quot;纪中&quot;,&quot;jizhong1@staff.weibo.com&quot;])
 
-<span class="n">outer</span><span class="o">.</span><span class="n">preamble</span> <span class="o">=</span> <span class="s1">&#39;You will not see this in a MIME-aware mail reader.</span><span class="se">\n</span><span class="s1">&#39;</span>
+outer.preamble = 'You will not see this in a MIME-aware mail reader.\n'
 
-<span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">attach_dir</span><span class="p">):</span>
-    <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">attach_dir</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+for filename in os.listdir(attach_dir):
+    path = os.path.join(attach_dir, filename)
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">path</span><span class="p">):</span><span class="k">continue</span>
-    <span class="n">ctype</span><span class="p">,</span> <span class="n">encoding</span> <span class="o">=</span> <span class="n">mimetypes</span><span class="o">.</span><span class="n">guess_type</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">ctype</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">encoding</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-        <span class="n">ctype</span> <span class="o">=</span> <span class="s1">&#39;application/octet-stream&#39;</span>
-        <span class="n">maintype</span><span class="p">,</span> <span class="n">subtype</span> <span class="o">=</span> <span class="n">ctype</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    if not os.path.isfile(path):continue
+    ctype, encoding = mimetypes.guess_type(path)
+    if ctype is None or encoding is not None:
+        ctype = 'application/octet-stream'
+        maintype, subtype = ctype.split('/', 1)
 
-    <span class="k">if</span> <span class="n">maintype</span> <span class="o">==</span> <span class="s1">&#39;text&#39;</span><span class="p">:</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="n">MIMEText</span><span class="p">(</span><span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">(),</span> <span class="n">_subtype</span><span class="o">=</span><span class="n">subtype</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">maintype</span> <span class="o">==</span> <span class="s1">&#39;image&#39;</span><span class="p">:</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="n">MIMEImage</span><span class="p">(</span><span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">(),</span> <span class="n">_subtype</span><span class="o">=</span><span class="n">subtype</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">maintype</span> <span class="o">==</span> <span class="s1">&#39;audio&#39;</span><span class="p">:</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="n">MIMEAudio</span><span class="p">(</span><span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">(),</span> <span class="n">_subtype</span><span class="o">=</span><span class="n">subtype</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="n">MIMEBase</span><span class="p">(</span><span class="n">maintype</span><span class="p">,</span> <span class="n">subtype</span><span class="p">)</span>
-            <span class="n">msg</span><span class="o">.</span><span class="n">set_payload</span><span class="p">(</span><span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
-            <span class="n">encoders</span><span class="o">.</span><span class="n">encode_base64</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    if maintype == 'text':
+        with open(path) as fp:
+            msg = MIMEText(fp.read(), _subtype=subtype)
+    elif maintype == 'image':
+        with open(path, 'rb') as fp:
+            msg = MIMEImage(fp.read(), _subtype=subtype)
+    elif maintype == 'audio':
+        with open(path, 'rb') as fp:
+            msg = MIMEAudio(fp.read(), _subtype=subtype)
+    else:
+        with open(path, 'rb') as fp:
+            msg = MIMEBase(maintype, subtype)
+            msg.set_payload(fp.read())
+            encoders.encode_base64(msg)
 
-    <span class="n">msg</span><span class="o">.</span><span class="n">add_header</span><span class="p">(</span><span class="s1">&#39;Content-Disposition&#39;</span><span class="p">,</span> <span class="s1">&#39;attachment&#39;</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">)</span>
-    <span class="n">outer</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    msg.add_header('Content-Disposition', 'attachment', filename=filename)
+    outer.attach(msg)
 
-<span class="n">composed</span> <span class="o">=</span> <span class="n">outer</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span>
-</pre></div>
+composed = outer.as_string()
+</code></pre>
 
   <br>
     <style>
