@@ -564,34 +564,28 @@ $$
 
 对于这8组子向量的每组子向量,使用kmeans方法聚成k=256类。也就是说,每个子向量有256个中心点(centroids)。如下图。
 
-
-![](https://i.typcdn.com/fabwrite/NM/ZL0fPpntjxi3pzrQirdw.png)
+<img src="https://i.typcdn.com/fabwrite/NM/ZL0fPpntjxi3pzrQirdw.png" style="width:30%" />
 
 在product quantization方法中,这256个中心点构成一个码本。这些码本的笛卡尔积就是原始D维向量对应的码本。用$q_j$表示第$j$组子向量,用$C_j$表示其对应学习到的码本,那么原始D维向量对应的码本就是
 $C=C_1×C_2×\dots ×C_m$,码本大小为$k^m$。
 
 注意到每组子向量有其256个中心点,我们可以中心点的 ID 来表示每组子向量中的每个向量。中心点的ID只需要8位(=$log_2 256$)来保存即可。这样,初始一个由32位浮点数组成的1,024维向量,可以转化为8个8位整数组成。如下图。
 
-![](https://i.typcdn.com/fabwrite/c5/L56k1gZ7ZumryJrAfzzw.png)
-
+<img src="https://i.typcdn.com/fabwrite/c5/L56k1gZ7ZumryJrAfzzw.png" style="width:50%" />
 
 对向量压缩后,有2种方法作相似搜索。一种是SDC(symmetric distance computation),另一种是ADC(asymmetric distance computation)。SDC算法和ADC算法的区别在于是否要对查询向量x做量化,参见公式1和公式2。如下图所示,x是查询向量(query vector),y是数据集中的某个向量,目标是要在数据集中找到x的相似向量。
 
-![](https://i.typcdn.com/fabwrite/9v/LJlnKOiKCtDH1DN90YKQ.png)
+<img src="https://i.typcdn.com/fabwrite/9v/LJlnKOiKCtDH1DN90YKQ.png" style="width:50%" />
 
-> * SDC算法：先用PQ量化器对x和y表示为对应的中心点q(x)和q(y),然后用公式1来近似d(x,y)。这里 q 表示 PQ量化过程。
+> * **SDC算法:** 先用PQ量化器对x和y表示为对应的中心点q(x)和q(y),然后用公式1来近似d(x,y)。这里 q 表示 PQ量化过程。
+>
+> $$\hat{d}(x,y)=d(q(x),q(y))=\sqrt{\sum_jd(q_j(x),q_j(y))^2}$$
+>
+> * **ADC算法:** 只对y表示为对应的中心点q(y),然后用下述公式来近似d(x,y)。
+> 
+> $$\tilde{d}(x,y)=d(x,q(y))=\sqrt{\sum_jd(u_j(x),q_j(u_j(y)))^2}$$
 
-$$
-\hat{d}(x,y)=d(q(x),q(y))=\sqrt{\sum_jd(q_j(x),q_j(y))^2} 
-$$
-
-> * ADC算法：只对y表示为对应的中心点q(y),然后用下述公式来近似d(x,y)。
-
-$$
-\tilde{d}(x,y)=d(x,q(y))=\sqrt{\sum_jd(u_j(x),q_j(u_j(y)))^2}
-$$
-
-Python代码:
+python代码:
 
 ```python
 import numpy as np
@@ -787,13 +781,6 @@ class DistanceTable(object):
 
         return dists
 ```
-
-
-#### 2.3.4 距离指标
-
-#### 2.3.5 `KNN`算法
-
-
 
 ## 三、源码介绍
 
