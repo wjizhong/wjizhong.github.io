@@ -34,7 +34,7 @@
         var pageToc = [
           {title: "faiss\u6559\u7a0b", url: "#_top", children: [
               {title: "\u4e00\u3001faiss\u6559\u7a0b", url: "#faiss_1" },
-              {title: "\u4e8c\u3001faiss\u539f\u7406\u53ca\u793a\u4f8b\u5206\u6790", url: "#faiss_2" },
+              {title: "\u4e8c\u3001faiss\u539f\u7406", url: "#faiss_2" },
               {title: "\u4e09\u3001\u6e90\u7801\u4ecb\u7ecd", url: "#_1" },
           ]},
         ];
@@ -392,7 +392,7 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </pre></div>
 
 <p><img alt="" src="http://upload-images.jianshu.io/upload_images/5617720-56b8280f2c78029b.png?imageMogr2/auto-orient/strip|imageView2/2/w/569/format/webp" /></p>
-<h2 id="faiss_2">二、faiss原理及示例分析<a class="headerlink" href="#faiss_2" title="Permanent link">&para;</a></h2>
+<h2 id="faiss_2">二、faiss原理<a class="headerlink" href="#faiss_2" title="Permanent link">&para;</a></h2>
 <h3 id="21-faiss">2.1 faiss核心算法实现<a class="headerlink" href="#21-faiss" title="Permanent link">&para;</a></h3>
 <p><img alt="" src="http://raw.githubusercontent.com/wiki/facebookresearch/faiss/PQ_variants_Faiss_annotated.png" /></p>
 <p>faiss对一些基础的算法提供了非常高效的失效</p>
@@ -409,24 +409,24 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>为了解决KNN问题,在工程上需要实现对已有图库的存储,当用户指定检索图片后,需要知道如何从存储的图片库中找到最相似的K张图片。基于此,我们推测Faiss在应用场景中具备添加功能和搜索功能,有了添加相应的修改和删除功能也会接踵而来,从上述分析看,Faiss本质上是一个向量(矢量)数据库。</p>
 <p>对于数据库来说,时空优化是两个永恒的主题,即在存储上如何以更少的空间来存储更多的信息,在搜索上如何以更快的速度来搜索出更准确的信息。如何减少搜索所需的时间?在数据库中很最常见的操作便是加各种索引,把各种加速搜索算法的功能或空间换时间的策略都封装成各种各样的索引,以满足各种不同的引用场景。</p>
 <h3 id="23">2.3 组件分析<a class="headerlink" href="#23" title="Permanent link">&para;</a></h3>
-<p><code>Faiss</code>中最常用的是索引<code>Index</code>,而后是<code>PCA</code>降维、<code>PQ</code>乘积量化,这里针对<code>Index</code>和<code>PQ</code>进行说明,<code>PCA</code>降维从流程上都可以理解。</p>
-<h4 id="231-index">2.3.1 索引<code>Index</code><a class="headerlink" href="#231-index" title="Permanent link">&para;</a></h4>
-<p><code>Faiss</code>中有两个基础索引类<code>Index</code>、<code>IndexBinary</code>,下面我们先从类图进行分析。下面给出<code>Index</code>和<code>IndexBinary</code>的类图如下所示:</p>
-<p><img alt="" src="http://img2018.cnblogs.com/blog/1408825/201903/1408825-20190320225730601-1447506992.png" /></p>
-<p><img alt="" src="http://img2018.cnblogs.com/blog/1408825/201903/1408825-20190320225751231-231723243.png" /></p>
-<p><code>Faiss</code>提供了针对不同场景下应用对<code>Index</code>的封装类,这里我们针对<code>Index</code>基类进行说明。</p>
-<p><img alt="" src="http://img2018.cnblogs.com/blog/1408825/201903/1408825-20190320225820995-299814548.png" /></p>
-<p>基础索引的说明参考:<a href="http://github.com/facebookresearch/faiss/wiki/Faiss-indexes"><code>Faiss indexes</code></a>涉及方法解释、参数说明以及推荐试用的工厂方法创建时的标识等。</p>
+<p>Faiss中最常用的是索引Index,而后是PCA降维、PQ乘积量化,这里针对Index和PQ进行说明,PCA降维从流程上都可以理解。</p>
+<h4 id="231-index">2.3.1 索引Index<a class="headerlink" href="#231-index" title="Permanent link">&para;</a></h4>
+<p>faiss中有两个基础索引类Index、IndexBinary,下面我们先从类图进行分析。下面给出Index和IndexBinary的类图如下所示:</p>
+<p><img src="http://img2018.cnblogs.com/blog/1408825/201903/1408825-20190320225730601-1447506992.png" style="width:40%" /></p>
+<p><img src="http://img2018.cnblogs.com/blog/1408825/201903/1408825-20190320225751231-231723243.png" style="width:40%" /></p>
+<p>Faiss提供了针对不同场景下应用对Index的封装类,这里我们针对Index基类进行说明。</p>
+<p><img src="http://img2018.cnblogs.com/blog/1408825/201903/1408825-20190320225820995-299814548.png" style="width:80%" /></p>
+<p>基础索引的说明参考:<a href="http://github.com/facebookresearch/faiss/wiki/Faiss-indexes">Faiss indexes</a>涉及方法解释、参数说明以及推荐试用的工厂方法创建时的标识等。</p>
 <p>索引的创建提供了工厂方法,可以通过字符串灵活的创建不同的索引。</p>
 <div class="highlight"><pre><span></span><span class="n">index</span> <span class="o">=</span> <span class="n">faiss</span><span class="p">.</span><span class="n">index_factory</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="s">&quot;PCA32,IVF100,PQ8 &quot;</span><span class="p">)</span>
 </pre></div>
 
-<p>该字符串的含义为:使用<code>PCA</code>算法将向量降维到<code>32</code>维,划分成<code>100</code>个<code>nprobe</code>(搜索空间),通过<code>PQ</code>算法将每个向量压缩成<code>8bit</code>。其他的字符串可以参考上文给出的<code>Faiss indexes</code>链接中给出的标识。</p>
+<p>该字符串的含义为:使用PCA算法将向量降维到32维,划分成100个nprobe(搜索空间),通过PQ算法将每个向量压缩成8bit。其他的字符串可以参考上文给出的Faiss indexes链接中给出的标识。</p>
 <ul>
 <li><strong>索引说明</strong></li>
 </ul>
-<p>此部分对索引<code>id</code>进行说明,此部分的理解是基于<code>PQ</code>量化及<code>Faiss</code>创建不同的索引时选择的量化器而来,可能会稍有偏差,不影响对<code>Faiss</code>的使用操作。</p>
-<p>默认情况,<code>Faiss</code>会为每个输入的向量记录一个次序<code>id</code>,也可以为向量指定任意我们需要的<code>id</code>。部分索引类(<code>IndexIVFFlat</code>/<code>IndexPQ</code>/<code>IndexIVFPQ</code>等)有<code>add_with_ids</code>方法,可以为每个向量对应一个<code>64-bit</code>的<code>id</code>,搜索的时候返回此<code>id</code>。此段中说明的<code>id</code>从我的角度理解就是索引。(备注:<code>id</code>是<code>long</code>型数据,所有的索引<code>id</code>类型在<code>Index</code>基类中已经定义,参考类图中标注,<code>typedef long idx_t;    ///&lt; all indices are this type</code>)</p>
+<p>此部分对索引id进行说明,此部分的理解是基于PQ量化及Faiss创建不同的索引时选择的量化器而来,可能会稍有偏差,不影响对Faiss的使用操作。</p>
+<p>默认情况,Faiss会为每个输入的向量记录一个次序id,也可以为向量指定任意我们需要的id。部分索引类(IndexIVFFlat/IndexPQ/IndexIVFPQ等)有<code>add_with_ids</code>方法,可以为每个向量对应一个64-bit的id,搜索的时候返回此id。此段中说明的id从我的角度理解就是索引。(备注:id是long型数据,所有的索引id类型在Index基类中已经定义,参考类图中标注,<code>typedef long idx_t;    ///&lt; all indices are this type</code>)</p>
 <p>示例:</p>
 <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">faiss</span>                   <span class="c1"># make faiss available</span>
@@ -483,25 +483,21 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <ul>
 <li><strong>索引选择</strong></li>
 </ul>
-<p>此部分没做实践验证,对<code>Faiss</code>给的部分说明进行翻译过来作为后续我们使用的一个参考。</p>
-<p>如果关心返回精度,可以使用<code>IndexFlatL2</code>,该索引能确保返回精确结果。一般将其作为<code>baseline</code>与其他索引方式对比,以便在精度和时间开销之间做权衡。不支持<code>add_with_ids</code>,如果需要,可以用“<code>IDMap</code>”给予任意定义<code>id</code>。</p>
-<p>如果关注内存开销,可以使用"..., Flat“的索引,"..."是聚类操作,聚类之后将每个向量映射到相应的<code>bucket</code>。该索引类型并不会保存压缩之后的数据,而是保存原始数据,所以内存开销与原始数据一致。通过<code>nprobe</code>参数控制速度/精度。</p>
-<p>对内存开销比较关心的话,可以在聚类的基础上使用<code>PQ</code>成绩量化进行处理。</p>
+<p>此部分没做实践验证,对Faiss给的部分说明进行翻译过来作为后续我们使用的一个参考。</p>
+<p>如果关心返回精度,可以使用IndexFlatL2,该索引能确保返回精确结果。一般将其作为baseline与其他索引方式对比,以便在精度和时间开销之间做权衡。不支持<code>add_with_ids</code>,如果需要,可以用“IDMap”给予任意定义id。</p>
+<p>如果关注内存开销,可以使用"..., Flat“的索引,"..."是聚类操作,聚类之后将每个向量映射到相应的bucket。该索引类型并不会保存压缩之后的数据,而是保存原始数据,所以内存开销与原始数据一致。通过nprobe参数控制速度/精度。</p>
+<p>对内存开销比较关心的话,可以在聚类的基础上使用PQ成绩量化进行处理。</p>
 <ul>
 <li><strong>检索数据恢复</strong></li>
 </ul>
-<p><code>Faiss</code>检索返回的是数据的索引及数据的计算距离,在检索获得的索引后需要根据索引将原始数据取出。</p>
-<p><code>Faiss</code>提供了两种方式,一种是一条一条的进行恢复,一种是批量恢复。</p>
-<p>给定<code>id</code>,可以使用<code>reconstruct</code>进行单条取出数据;可以使用<code>reconstruct_n</code>方法从<code>index</code>中回批量复出原始向量(备注:该方法从给的示例看是恢复连续的数据(<code>0,10</code>),如果索引是离散的话恢复数据暂时还没做实践)。</p>
-<p>上述方法支持<code>IndexFlat</code>,<code>IndexIVFFlat</code>(需要与<code>make_direct_map</code>结合),<code>IndexIVFPQ</code>(需要与<code>make_direct_map</code>结合)等几类索引类型。</p>
-<h4 id="232-pca">2.3.2 <code>PCA</code>降维<a class="headerlink" href="#232-pca" title="Permanent link">&para;</a></h4>
-<p>具体的算法参考:<a href="https://wjizhong.github.io/%E4%BC%A0%E7%BB%9F%E7%AE%97%E6%B3%95/%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90/">主成分分析</a>和<a href="https://blog.csdn.net/watkinsong/article/details/38536463?utm_source=tuicool&amp;utm_medium=referral">PCA降维算法详解以及代码示例</a>。</p>
-<p>PCA通过数据压缩减少内存或者硬盘的使用以及数据降维加快机器学习的速度。从数据存储的角度,图片处理中通过PCA可以将图片从高维空间(p维)转换到低维空间(q维,其中p>q),其具体操作便是是将高维空间中的图片向量(n*p)乘以一个转换矩阵(p*q),得到一个低维空间中的向量(n*q)。</p>
-<p>为了使得在整个降维的过程中信息丢失最少,我们需要对待转换图片进行分析计算得到相应的转换矩阵(p*q)。也就是说这个降维中乘以的转换矩阵是与待转换图片息息相关的。回到我们的Faiss中来,假设我期望使用PCA预处理来减少Index中的存储空间,那在整个处理流程中,除了输入搜索图库外,我必须多输入一个转换矩阵,但是这个转换矩阵是与图库息息相关的,是可以由图库数据计算出来的。如果把这个转换矩阵看成一个参数的话,我们可以发现,在Faiss的一些预处理中,我们会引入一些参数,这些参数又无法一开始由人工来指定,只能通过喂样本来训练出来,所以Index中需要有这样的一个train()函数来为这种参数的训练提供输入训练样本的接口。</p>
-<h4 id="233-product-quantizationpq">2.3.3 <code>Product quantization</code>(乘积量化<code>PQ</code>)<a class="headerlink" href="#233-product-quantizationpq" title="Permanent link">&para;</a></h4>
-<p><code>Faiss</code>中使用的乘积量化是Faiss的作者在2011年发表的论文,参考:<a href="https://hal.inria.fr/file/index/docid/514462/filename/paper_hal.pdf"><code>Product Quantization for Nearest Neighbor Search</code></a></p>
-<p><code>PQ</code>算法可以理解为首先把原始的向量空间分解为<code>m</code>个低维向量空间的笛卡尔积,并对分解得到的低维向量空间分别做量化。即是把原始<code>D</code>维向量(比如<code>D=128</code>)分成<code>m</code>组(比如<code>m=4</code>),每组就是<code>D∗=D/m</code>维的子向量(比如<code>D∗=D/m=128/4=32</code>),各自用<code>kmeans</code>算法学习到一个码本,然后这些码本的笛卡尔积就是原始<code>D</code>维向量对应的码本。用<code>qj</code>表示第<code>j</code>组子向量,用<code>Cj</code>表示其对应学习到的码本,那么原始<code>D</code>维向量对应的码本就是<code>C=C1×C2×…×Cm</code>。用<code>k∗</code>表示子向量的聚类中心点数或者说码本大小,那么原始<code>D</code>维向量对应的聚类中心点数或者说码本大小就是<code>k=(k*)m</code>。</p>
-<p>示例参考<a href="http://www.fabwrite.com/productquantization">实例理解<code>product quantization</code>算法</a>。</p>
+<p>Faiss检索返回的是数据的索引及数据的计算距离,在检索获得的索引后需要根据索引将原始数据取出。</p>
+<p>Faiss提供了两种方式,一种是一条一条的进行恢复,一种是批量恢复。</p>
+<p>给定id,可以使用reconstruct进行单条取出数据;可以使用<code>reconstruct_n</code>方法从index中回批量复出原始向量(备注:该方法从给的示例看是恢复连续的数据(0,10),如果索引是离散的话恢复数据暂时还没做实践)。</p>
+<p>上述方法支持IndexFlat,IndexIVFFlat(需要与<code>make_direct_map</code>结合),IndexIVFPQ(需要与<code>make_direct_map</code>结合)等几类索引类型。</p>
+<h4 id="232-product-quantizationpq">2.3.2 Product quantization(乘积量化PQ)<a class="headerlink" href="#232-product-quantizationpq" title="Permanent link">&para;</a></h4>
+<p>Faiss中使用的乘积量化是Faiss的作者在2011年发表的论文,参考:<a href="https://hal.inria.fr/file/index/docid/514462/filename/paper_hal.pdf">Product Quantization for Nearest Neighbor Search</a></p>
+<p>PQ算法可以理解为首先把原始的向量空间分解为m个低维向量空间的笛卡尔积,并对分解得到的低维向量空间分别做量化。即是把原始D维向量(比如D=128)分成m组(比如m=4),每组就是D∗=D/m维的子向量(比如D∗=D/m=128/4=32),各自用kmeans算法学习到一个码本,然后这些码本的笛卡尔积就是原始D维向量对应的码本。用qj表示第j组子向量,用Cj表示其对应学习到的码本,那么原始D维向量对应的码本就是C=C1×C2×…×Cm。用k∗表示子向量的聚类中心点数或者说码本大小,那么原始D维向量对应的聚类中心点数或者说码本大小就是<code>k=(k*)m</code>。</p>
+<p>示例参考<a href="http://www.fabwrite.com/productquantization">实例理解product quantization算法</a>。</p>
 <ul>
 <li><strong>检索和距离的关系—ADC</strong></li>
 </ul>
@@ -515,7 +511,7 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
 </div>
 <p>示意图如下:</p>
-<p><img alt="" src="http://img-blog.csdn.net/20151218095829175" /></p>
+<p><img src="http://img-blog.csdn.net/20151218095829175" style="width:30%" /></p>
 <p>把求x与y的距离用x与q(y)的距离代替,q(y)是y量化后的结果。这样做之所以可行,论文中有详细推到,主要是两个原因:1）MSE越小,说明量化器的精度越高;2）三角形两边之和大于第三边,两边只差小于第三边。由于只是对y做量化,对x未量化,这是不对称的,这就是ADC(Asymmetric distance computation)中Asymmetric的含义,如果对y也量化,对x也量化,就是对称的。</p>
 <ul>
 <li><strong>索引结构</strong></li>
