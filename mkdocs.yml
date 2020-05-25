@@ -20,6 +20,9 @@ nav:
     - 工程内容:
         - 计算机概论: 工程内容/计算机概论.md
         - linux三剑客: 工程内容/linux三剑客.md
+        - python教程:
+            - python基础: 工程内容/python教程/python基础.md
+            - python日志: 工程内容/python教程/python日志.md
     - 项目内容:
         - faiss项目: 项目内容/faiss项目.md
     - 比赛内容:
