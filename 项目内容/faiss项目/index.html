@@ -584,40 +584,30 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>然后我们把1024维的向量平均分成m=8个子向量,每组子向量128维。如下图。</p>
 <p><img src="http://i.typcdn.com/fabwrite/5G/GGjYfyGzybfnchgieepw.png" style="width:30%" /></p>
 <p>对于这8组子向量的每组子向量,使用kmeans方法聚成k=256类。也就是说,每个子向量有256个中心点(centroids)。如下图。</p>
-<p><img alt="" src="https://i.typcdn.com/fabwrite/NM/ZL0fPpntjxi3pzrQirdw.png" /></p>
+<p><img src="https://i.typcdn.com/fabwrite/NM/ZL0fPpntjxi3pzrQirdw.png" style="width:30%" /></p>
 <p>在product quantization方法中,这256个中心点构成一个码本。这些码本的笛卡尔积就是原始D维向量对应的码本。用<span><span class="MathJax_Preview">q_j</span><script type="math/tex">q_j</script></span>表示第<span><span class="MathJax_Preview">j</span><script type="math/tex">j</script></span>组子向量,用<span><span class="MathJax_Preview">C_j</span><script type="math/tex">C_j</script></span>表示其对应学习到的码本,那么原始D维向量对应的码本就是
 <span><span class="MathJax_Preview">C=C_1×C_2×\dots ×C_m</span><script type="math/tex">C=C_1×C_2×\dots ×C_m</script></span>,码本大小为<span><span class="MathJax_Preview">k^m</span><script type="math/tex">k^m</script></span>。</p>
 <p>注意到每组子向量有其256个中心点,我们可以中心点的 ID 来表示每组子向量中的每个向量。中心点的ID只需要8位(=<span><span class="MathJax_Preview">log_2 256</span><script type="math/tex">log_2 256</script></span>)来保存即可。这样,初始一个由32位浮点数组成的1,024维向量,可以转化为8个8位整数组成。如下图。</p>
-<p><img alt="" src="https://i.typcdn.com/fabwrite/c5/L56k1gZ7ZumryJrAfzzw.png" /></p>
+<p><img src="https://i.typcdn.com/fabwrite/c5/L56k1gZ7ZumryJrAfzzw.png" style="width:50%" /></p>
 <p>对向量压缩后,有2种方法作相似搜索。一种是SDC(symmetric distance computation),另一种是ADC(asymmetric distance computation)。SDC算法和ADC算法的区别在于是否要对查询向量x做量化,参见公式1和公式2。如下图所示,x是查询向量(query vector),y是数据集中的某个向量,目标是要在数据集中找到x的相似向量。</p>
-<p><img alt="" src="https://i.typcdn.com/fabwrite/9v/LJlnKOiKCtDH1DN90YKQ.png" /></p>
+<p><img src="https://i.typcdn.com/fabwrite/9v/LJlnKOiKCtDH1DN90YKQ.png" style="width:50%" /></p>
 <blockquote>
 <ul>
-<li>SDC算法：先用PQ量化器对x和y表示为对应的中心点q(x)和q(y),然后用公式1来近似d(x,y)。这里 q 表示 PQ量化过程。</li>
+<li><strong>SDC算法:</strong> 先用PQ量化器对x和y表示为对应的中心点q(x)和q(y),然后用公式1来近似d(x,y)。这里 q 表示 PQ量化过程。</li>
 </ul>
-</blockquote>
 <div>
-<div class="MathJax_Preview">
-\hat{d}(x,y)=d(q(x),q(y))=\sqrt{\sum_jd(q_j(x),q_j(y))^2} 
+<div class="MathJax_Preview">\hat{d}(x,y)=d(q(x),q(y))=\sqrt{\sum_jd(q_j(x),q_j(y))^2}</div>
+<script type="math/tex; mode=display">\hat{d}(x,y)=d(q(x),q(y))=\sqrt{\sum_jd(q_j(x),q_j(y))^2}</script>
 </div>
-<script type="math/tex; mode=display">
-\hat{d}(x,y)=d(q(x),q(y))=\sqrt{\sum_jd(q_j(x),q_j(y))^2} 
-</script>
-</div>
-<blockquote>
 <ul>
-<li>ADC算法：只对y表示为对应的中心点q(y),然后用下述公式来近似d(x,y)。</li>
+<li><strong>ADC算法:</strong> 只对y表示为对应的中心点q(y),然后用下述公式来近似d(x,y)。</li>
 </ul>
-</blockquote>
 <div>
-<div class="MathJax_Preview">
-\tilde{d}(x,y)=d(x,q(y))=\sqrt{\sum_jd(u_j(x),q_j(u_j(y)))^2}
+<div class="MathJax_Preview">\tilde{d}(x,y)=d(x,q(y))=\sqrt{\sum_jd(u_j(x),q_j(u_j(y)))^2}</div>
+<script type="math/tex; mode=display">\tilde{d}(x,y)=d(x,q(y))=\sqrt{\sum_jd(u_j(x),q_j(u_j(y)))^2}</script>
 </div>
-<script type="math/tex; mode=display">
-\tilde{d}(x,y)=d(x,q(y))=\sqrt{\sum_jd(u_j(x),q_j(u_j(y)))^2}
-</script>
-</div>
-<p>Python代码:</p>
+</blockquote>
+<p>python代码:</p>
 <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">scipy.cluster.vq</span> <span class="kn">import</span> <span class="n">vq</span><span class="p">,</span> <span class="n">kmeans2</span>
 
@@ -812,8 +802,6 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
         <span class="k">return</span> <span class="n">dists</span>
 </pre></div>
 
-<h4 id="234">2.3.4 距离指标<a class="headerlink" href="#234" title="Permanent link">&para;</a></h4>
-<h4 id="235-knn">2.3.5 <code>KNN</code>算法<a class="headerlink" href="#235-knn" title="Permanent link">&para;</a></h4>
 <h2 id="_1">三、源码介绍<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
 <h3 id="41">4.1 基础工具<a class="headerlink" href="#41" title="Permanent link">&para;</a></h3>
 <h4 id="411-randomhrandomcpp">4.1.1 <code>random.h</code>和<code>random.cpp</code>文件<a class="headerlink" href="#411-randomhrandomcpp" title="Permanent link">&para;</a></h4>
