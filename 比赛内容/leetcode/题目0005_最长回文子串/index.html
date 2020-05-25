@@ -138,13 +138,13 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 
 </code></pre>
 
-<p>这给我们提供了一个复杂度为$O(n^2)$动态规划解法,它将占用$O(n)$的空间。</p>
+<p>这给我们提供了一个复杂度为<span><span class="MathJax_Preview">O(n^2)</span><script type="math/tex">O(n^2)</script></span>动态规划解法,它将占用<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>的空间。</p>
 <h3 id="_4">方法二:暴力法</h3>
 <p>很明显,暴力法将选出所有子字符串可能的开始和结束位置,并检验它是不是回文。</p>
 <p>复杂度分析</p>
 <blockquote>
-<p>时间复杂度:$O(n^3)$,假设n是输入字符串的长度,则$\binom{n}{2} = \frac{n(n-1)}{2}$,为此类子字符串(不包括字符本身是回文的一般解法)的总数。因为验证每个子字符串需要$O(n)$的时间,所以运行时间复杂度是$O(n^3)$。</p>
-<p>空间复杂度:$O(1)$。</p>
+<p>时间复杂度:<span><span class="MathJax_Preview">O(n^3)</span><script type="math/tex">O(n^3)</script></span>,假设n是输入字符串的长度,则<span><span class="MathJax_Preview">\binom{n}{2} = \frac{n(n-1)}{2}</span><script type="math/tex">\binom{n}{2} = \frac{n(n-1)}{2}</script></span>,为此类子字符串(不包括字符本身是回文的一般解法)的总数。因为验证每个子字符串需要<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>的时间,所以运行时间复杂度是<span><span class="MathJax_Preview">O(n^3)</span><script type="math/tex">O(n^3)</script></span>。</p>
+<p>空间复杂度:<span><span class="MathJax_Preview">O(1)</span><script type="math/tex">O(1)</script></span>。</p>
 </blockquote>
 <pre><code class="c++">class Solution {
     public:
@@ -175,17 +175,31 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 
 <h3 id="_5">方法三:动态规划</h3>
 <p>为了改进暴力法,我们首先观察如何避免在验证回文时进行不必要的重复计算。考虑"ababa"这个示例。如果我们已经知道"bab"是回文,那么很明显,"ababa"一定是回文,因为它的左首字母和右尾字母是相同的。</p>
-<p>我们给出$P(i,j)$的定义如下:</p>
-<p>$$P(i,j) = \begin{cases} \text{true,} &amp;\quad\text{如果子串} S_i \dots S_j \text{是回文子串}\ \text{false,} &amp;\quad\text{其它情况} \end{cases}$$</p>
+<p>我们给出<span><span class="MathJax_Preview">P(i,j)</span><script type="math/tex">P(i,j)</script></span>的定义如下:</p>
+<div>
+<div class="MathJax_Preview">P(i,j) = \begin{cases} \text{true,} &amp;\quad\text{如果子串} S_i \dots S_j \text{是回文子串}\\ \text{false,} &amp;\quad\text{其它情况} \end{cases}</div>
+<script type="math/tex; mode=display">P(i,j) = \begin{cases} \text{true,} &\quad\text{如果子串} S_i \dots S_j \text{是回文子串}\\ \text{false,} &\quad\text{其它情况} \end{cases}</script>
+</div>
 <p>因此,</p>
-<p>$$P(i, j) = ( P(i+1, j-1) \text{ and } S_i == S_j )$$</p>
+<div>
+<div class="MathJax_Preview">P(i, j) = ( P(i+1, j-1) \text{ and } S_i == S_j )</div>
+<script type="math/tex; mode=display">P(i, j) = ( P(i+1, j-1) \text{ and } S_i == S_j )</script>
+</div>
 <p>基本示例如下:</p>
-<p>$$
+<div>
+<div class="MathJax_Preview">
 \begin{aligned}
-&amp; P(i,i)=true \
+&amp; P(i,i)=true \\
 &amp; P(i, i+1) = ( S_i == S_{i+1} )
 \end{aligned}
-$$</p>
+</div>
+<script type="math/tex; mode=display">
+\begin{aligned}
+& P(i,i)=true \\
+& P(i, i+1) = ( S_i == S_{i+1} )
+\end{aligned}
+</script>
+</div>
 <p>这产生了一个直观的动态规划解法,我们首先初始化一字母和二字母的回文,然后找到所有三字母回文,并依此类推…</p>
 <pre><code class="c++">class Solution {
     public:
@@ -208,11 +222,11 @@ $$</p>
 
 <p>复杂度分析</p>
 <blockquote>
-<p>时间复杂度:$O(n^2)$,这里给出我们的运行时间复杂度为$O(n^2)$。</p>
-<p>空间复杂度:$O(n^2)$,该方法使用$O(n^2)$ 的空间来存储表。</p>
+<p>时间复杂度:<span><span class="MathJax_Preview">O(n^2)</span><script type="math/tex">O(n^2)</script></span>,这里给出我们的运行时间复杂度为<span><span class="MathJax_Preview">O(n^2)</span><script type="math/tex">O(n^2)</script></span>。</p>
+<p>空间复杂度:<span><span class="MathJax_Preview">O(n^2)</span><script type="math/tex">O(n^2)</script></span>,该方法使用<span><span class="MathJax_Preview">O(n^2)</span><script type="math/tex">O(n^2)</script></span> 的空间来存储表。</p>
 </blockquote>
 <h3 id="_6">方法四:中心扩展算法</h3>
-<p>事实上,只需使用恒定的空间,我们就可以在$O(n^2)$的时间内解决这个问题。我们观察到回文中心的两侧互为镜像。因此,回文可以从它的中心展开,并且只有$2n - 1$个这样的中心。你可能会问,为什么会是$2n - 1$个,而不是<code>n</code>个中心?原因在于所含字母数为偶数的回文的中心可以处于两字母之间(例如<code>"abba"</code>的中心在两个<code>'b'</code>之间)。</p>
+<p>事实上,只需使用恒定的空间,我们就可以在<span><span class="MathJax_Preview">O(n^2)</span><script type="math/tex">O(n^2)</script></span>的时间内解决这个问题。我们观察到回文中心的两侧互为镜像。因此,回文可以从它的中心展开,并且只有<span><span class="MathJax_Preview">2n - 1</span><script type="math/tex">2n - 1</script></span>个这样的中心。你可能会问,为什么会是<span><span class="MathJax_Preview">2n - 1</span><script type="math/tex">2n - 1</script></span>个,而不是<code>n</code>个中心?原因在于所含字母数为偶数的回文的中心可以处于两字母之间(例如<code>"abba"</code>的中心在两个<code>'b'</code>之间)。</p>
 <pre><code class="c++">class Solution {
     public:
         string longestPalindrome(string s) {
@@ -241,11 +255,11 @@ $$</p>
 
 <p>复杂度分析</p>
 <blockquote>
-<p>时间复杂度:$O(n^2)$,由于围绕中心来扩展回文会耗去$O(n)$的时间,所以总的复杂度为$O(n^2)$。</p>
-<p>空间复杂度:$O(1)$。</p>
+<p>时间复杂度:<span><span class="MathJax_Preview">O(n^2)</span><script type="math/tex">O(n^2)</script></span>,由于围绕中心来扩展回文会耗去<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>的时间,所以总的复杂度为<span><span class="MathJax_Preview">O(n^2)</span><script type="math/tex">O(n^2)</script></span>。</p>
+<p>空间复杂度:<span><span class="MathJax_Preview">O(1)</span><script type="math/tex">O(1)</script></span>。</p>
 </blockquote>
 <h3 id="manacher">方法五:Manacher 算法</h3>
-<p>还有一个复杂度为$O(n)$的Manacher算法。然而,这是一个非同寻常的算法,在45分钟的编码时间内提出这个算法将会是一个不折不扣的挑战。理解它,我保证这将是非常有趣的。</p>
+<p>还有一个复杂度为<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>的Manacher算法。然而,这是一个非同寻常的算法,在45分钟的编码时间内提出这个算法将会是一个不折不扣的挑战。理解它,我保证这将是非常有趣的。</p>
 <p>马拉车算法Manacher‘s Algorithm是用来查找一个字符串的最长回文子串的线性方法,由一个叫Manacher的人在1975年发明的,这个方法的最大贡献是在于将时间复杂度提升到了线性。</p>
 <p>首先我们解决下奇数和偶数的问题,在每个字符间插入"#",并且为了使得扩展的过程中,到边界后自动结束,在两端分别插入"^"和 "$",两个不可能在字符串中出现的字符,这样中心扩展的时候,判断两端字符是否相等的时候,如果到了边界就一定会不相等,从而出了循环。经过处理,字符串的长度永远都是奇数了。</p>
 <p><img alt="" src="https://pic.leetcode-cn.com/ad2b5e0da4a3a35b60f60c9a5a2be07a8074f9be0fe1597351eeff7dc460789a-image.png" /></p>
@@ -338,8 +352,8 @@ $$</p>
 
 <p>复杂度分析:</p>
 <blockquote>
-<p>时间复杂度:for循环里边套了一层while循环,难道不是$O(n^2)$?不!其实是$O(n)$。不严谨的想一下,因为while循环访问R右边的数字用来扩展,也就是那些还未求出的节点,然后不断扩展,而期间访问的节点下次就不会再进入while了,可以利用对称得到自己的解,所以每个节点访问都是常数次,所以是$O(n)$。</p>
-<p>空间复杂度:$O(n)$。</p>
+<p>时间复杂度:for循环里边套了一层while循环,难道不是<span><span class="MathJax_Preview">O(n^2)</span><script type="math/tex">O(n^2)</script></span>?不!其实是<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>。不严谨的想一下,因为while循环访问R右边的数字用来扩展,也就是那些还未求出的节点,然后不断扩展,而期间访问的节点下次就不会再进入while了,可以利用对称得到自己的解,所以每个节点访问都是常数次,所以是<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>。</p>
+<p>空间复杂度:<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>。</p>
 </blockquote>
 
   <br>

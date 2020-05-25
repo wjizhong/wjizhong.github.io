@@ -100,7 +100,7 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>解释: <code>4</code>皇后问题存在两个不同的解法。</p>
 <p>提示:皇后,是国际象棋中的棋子,意味着国王的妻子。皇后只做一件事,那就是“吃子”。当她遇见可以吃的棋子时,就迅速冲上去吃掉棋子。当然,她横、竖、斜都可走一到七步,可进可退。</p>
 <h2 id="_2">题解</h2>
-<p>第一个想法是使用蛮力法,意味着生成在棋盘上放置<code>N</code>个皇后的所有可能的情况,并且检查是否保证没有皇后可以互相攻击。这意味着$\mathcal{O}(N^N)$的时间复杂度,因此我们必须考虑优化。</p>
+<p>第一个想法是使用蛮力法,意味着生成在棋盘上放置<code>N</code>个皇后的所有可能的情况,并且检查是否保证没有皇后可以互相攻击。这意味着<span><span class="MathJax_Preview">\mathcal{O}(N^N)</span><script type="math/tex">\mathcal{O}(N^N)</script></span>的时间复杂度,因此我们必须考虑优化。</p>
 <p>下面是两个有用的编程概念。</p>
 <blockquote>
 <p>第一个叫做约束编程.</p>
@@ -184,8 +184,8 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 
 <p>复杂度分析</p>
 <blockquote>
-<p>时间复杂度:$\mathcal{O}(N!)$. 放置第1个皇后有<code>N</code>种可能的方法,放置两个皇后的方法不超过<code>N(N - 2)</code>,放置3个皇后的方法不超过<code>N(N - 2)(N - 4)</code>,以此类推。总体上,时间复杂度为$\mathcal{O}(N!)$.</p>
-<p>空间复杂度:$\mathcal{O}(N)$. 需要保存对角线和行的信息。</p>
+<p>时间复杂度:<span><span class="MathJax_Preview">\mathcal{O}(N!)</span><script type="math/tex">\mathcal{O}(N!)</script></span>. 放置第1个皇后有<code>N</code>种可能的方法,放置两个皇后的方法不超过<code>N(N - 2)</code>,放置3个皇后的方法不超过<code>N(N - 2)(N - 4)</code>,以此类推。总体上,时间复杂度为<span><span class="MathJax_Preview">\mathcal{O}(N!)</span><script type="math/tex">\mathcal{O}(N!)</script></span>.</p>
+<p>空间复杂度:<span><span class="MathJax_Preview">\mathcal{O}(N)</span><script type="math/tex">\mathcal{O}(N)</script></span>. 需要保存对角线和行的信息。</p>
 </blockquote>
 
   <br>

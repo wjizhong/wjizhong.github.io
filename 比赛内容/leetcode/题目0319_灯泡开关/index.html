@@ -90,25 +90,31 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </code></pre>
 
 <h2 id="_2">题解</h2>
-<p>显而易见,题目就是让统计整数<code>i</code>的因子个数为奇数的<code>i</code>的个数。由于因子个数函数$d(x)$是积性函数，</p>
-<p>$$d(x) = (1 + \alpha_{1})(1+ \alpha_{2})\cdots (1 + \alpha_{k})$$</p>
-<p>其中$x$的素性分解为:$x = p_{1}^{\alpha_{1}}p_{2}^{\alpha_{2}}\cdots p_{k}^{\alpha_{k}}$。</p>
-<p>由于$d(x)$为奇数,所以$1+\alpha_{i}$是奇数,亦即$\alpha_i$是偶数。所以$x$是完全平方数。题目即转化为统计<code>[1 , n]</code>中完全平方数的个数。所以答案就是$\big\lfloor \sqrt{n} \big\rfloor$ </p>
-<p>其实$O(n)$或者$O(\sqrt{n})$O的枚举还是能过去的:</p>
+<p>显而易见,题目就是让统计整数<code>i</code>的因子个数为奇数的<code>i</code>的个数。由于因子个数函数<span><span class="MathJax_Preview">d(x)</span><script type="math/tex">d(x)</script></span>是积性函数，</p>
+<div>
+<div class="MathJax_Preview">d(x) = (1 + \alpha_{1})(1+ \alpha_{2})\cdots (1 + \alpha_{k})</div>
+<script type="math/tex; mode=display">d(x) = (1 + \alpha_{1})(1+ \alpha_{2})\cdots (1 + \alpha_{k})</script>
+</div>
+<p>其中<span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span>的素性分解为:<span><span class="MathJax_Preview">x = p_{1}^{\alpha_{1}}p_{2}^{\alpha_{2}}\cdots p_{k}^{\alpha_{k}}</span><script type="math/tex">x = p_{1}^{\alpha_{1}}p_{2}^{\alpha_{2}}\cdots p_{k}^{\alpha_{k}}</script></span>。</p>
+<p>由于<span><span class="MathJax_Preview">d(x)</span><script type="math/tex">d(x)</script></span>为奇数,所以<span><span class="MathJax_Preview">1+\alpha_{i}</span><script type="math/tex">1+\alpha_{i}</script></span>是奇数,亦即<span><span class="MathJax_Preview">\alpha_i</span><script type="math/tex">\alpha_i</script></span>是偶数。所以<span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span>是完全平方数。题目即转化为统计<code>[1 , n]</code>中完全平方数的个数。所以答案就是<span><span class="MathJax_Preview">\big\lfloor \sqrt{n} \big\rfloor</span><script type="math/tex">\big\lfloor \sqrt{n} \big\rfloor</script></span> </p>
+<p>其实<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>或者<span><span class="MathJax_Preview">O(\sqrt{n})</span><script type="math/tex">O(\sqrt{n})</script></span>O的枚举还是能过去的:</p>
 <pre><code class="c">for(int i = 1;i * i &lt;= n;++i)   ++ans;
 </code></pre>
 
-<p>下面证明因子个数函数$d(x)$是积性函数。虽然这样的过程到处都有</p>
+<p>下面证明因子个数函数<span><span class="MathJax_Preview">d(x)</span><script type="math/tex">d(x)</script></span>是积性函数。虽然这样的过程到处都有</p>
 <p><strong>积性函数</strong></p>
 <p>对于任意正整数<code>m,n</code>互素,有<code>F(mn) = F(m)F(n)</code>,<code>f(x)</code>的和函数</p>
-<p>$$F(x) = \sum_{d | x}{f(x)}$$
+<p><span><span class="MathJax_Preview"><span><span class="MathJax_Preview">F(x) = \sum_{d | x}{f(x)}</span><script type="math/tex">F(x) = \sum_{d | x}{f(x)}</script></span></span><script type="math/tex"><span><span class="MathJax_Preview">F(x) = \sum_{d | x}{f(x)}</span><script type="math/tex">F(x) = \sum_{d | x}{f(x)}</script></span></script></span>
 我们先给出一个引理，然后通过引理证明。<strong>积性函数的和函数为积性函数</strong></p>
 <p>设积性函数<code>f(x)</code>,其和函数为<code>F(x)</code>。我们需要证明的是,若<code>(m,n) = 1</code>,那么<code>F(mn) = F(m)F(n)</code>。</p>
 <p>右边为</p>
-<p>$$\begin{aligned} F(m)F(n) &amp;= \sum_{p | m}\sum_{q | n}f(p)f(q) \ &amp;= \sum_{d | mn}f(pq) \ &amp;= F(mn) \end{aligned}$$</p>
+<div>
+<div class="MathJax_Preview">\begin{aligned} F(m)F(n) &amp;= \sum_{p | m}\sum_{q | n}f(p)f(q) \\ &amp;= \sum_{d | mn}f(pq) \\ &amp;= F(mn) \end{aligned}</div>
+<script type="math/tex; mode=display">\begin{aligned} F(m)F(n) &= \sum_{p | m}\sum_{q | n}f(p)f(q) \\ &= \sum_{d | mn}f(pq) \\ &= F(mn) \end{aligned}</script>
+</div>
 <p>证毕。</p>
-<p>而<code>f(x) = 1</code>肯定是积性的,(怎么乘都是<code>1</code>),所以$d(x) = \sum_{d | x}{1}$,也是积性的。这样我们就说明了因子个数函数是积性的。</p>
-<p>另一方面,若<code>p</code>是质数,则<code>d(p) = 2</code>。因为质数的因子只有<code>1</code>和它本身两个。$d(p^{k})$是多少?它的因子只有$1,p,p^{2},...,p^{k}$共<code>k + 1</code>个。那么$d(x)$也就不难求得。</p>
+<p>而<code>f(x) = 1</code>肯定是积性的,(怎么乘都是<code>1</code>),所以<span><span class="MathJax_Preview">d(x) = \sum_{d | x}{1}</span><script type="math/tex">d(x) = \sum_{d | x}{1}</script></span>,也是积性的。这样我们就说明了因子个数函数是积性的。</p>
+<p>另一方面,若<code>p</code>是质数,则<code>d(p) = 2</code>。因为质数的因子只有<code>1</code>和它本身两个。<span><span class="MathJax_Preview">d(p^{k})</span><script type="math/tex">d(p^{k})</script></span>是多少?它的因子只有<span><span class="MathJax_Preview">1,p,p^{2},...,p^{k}</span><script type="math/tex">1,p,p^{2},...,p^{k}</script></span>共<code>k + 1</code>个。那么<span><span class="MathJax_Preview">d(x)</span><script type="math/tex">d(x)</script></span>也就不难求得。</p>
 <pre><code class="python">class Solution:
     def bulbSwitch(self, n: int) -&gt; int:
         return int(sqrt(n))

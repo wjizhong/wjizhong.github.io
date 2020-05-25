@@ -91,22 +91,22 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>正则表达式可以用形式化语言理论的方式来表达。正则表达式由常量和算子组成,它们分别表示字符串的集合和在这些集合上的运算。给定有限字母表Σ定义了下列常量:</p>
 <blockquote>
 <ul>
-<li>空集$\varnothing$表示集合$\varnothing$。</li>
-<li>空串$\varepsilon$表示集合${\varepsilon }$。</li>
-<li>文字字符在$\Sigma$中的a表示集合${a}$。</li>
+<li>空集<span><span class="MathJax_Preview">\varnothing</span><script type="math/tex">\varnothing</script></span>表示集合<span><span class="MathJax_Preview">\varnothing</span><script type="math/tex">\varnothing</script></span>。</li>
+<li>空串<span><span class="MathJax_Preview">\varepsilon</span><script type="math/tex">\varepsilon</script></span>表示集合<span><span class="MathJax_Preview">\{\varepsilon \}</span><script type="math/tex">\{\varepsilon \}</script></span>。</li>
+<li>文字字符在<span><span class="MathJax_Preview">\Sigma</span><script type="math/tex">\Sigma</script></span>中的a表示集合<span><span class="MathJax_Preview">\{a\}</span><script type="math/tex">\{a\}</script></span>。</li>
 </ul>
 </blockquote>
 <p>定义了下列运算:</p>
 <blockquote>
 <ul>
-<li>串接$RS$表示集合${\alpha \beta \mid \alpha \in R,\beta \in S}$。例如:${ab,c}{d,ef}={abd,abef,cd,cef}$。</li>
-<li>选择$R|S$表示$R$和$S$的并集。例如:${ab,c}|{ab,d,ef}={ab,c,d,ef}$。</li>
-<li>Kleene星号$R^<em>$表示包含$\varepsilon$并且闭合在字符串串接下的$R$的最小子集。这是可以通过$R$中的零或多个字符串的串接得到所有字符串的集合。例如:${ab,c}^{</em>}={\varepsilon ,ab,c,abab,abc,cab,cc,ababab,\cdots }$。</li>
+<li>串接<span><span class="MathJax_Preview">RS</span><script type="math/tex">RS</script></span>表示集合<span><span class="MathJax_Preview">\{\alpha \beta \mid \alpha \in R,\beta \in S\}</span><script type="math/tex">\{\alpha \beta \mid \alpha \in R,\beta \in S\}</script></span>。例如:<span><span class="MathJax_Preview">\{ab,c\}\{d,ef\}=\{abd,abef,cd,cef\}</span><script type="math/tex">\{ab,c\}\{d,ef\}=\{abd,abef,cd,cef\}</script></span>。</li>
+<li>选择<span><span class="MathJax_Preview">R|S</span><script type="math/tex">R|S</script></span>表示<span><span class="MathJax_Preview">R</span><script type="math/tex">R</script></span>和<span><span class="MathJax_Preview">S</span><script type="math/tex">S</script></span>的并集。例如:<span><span class="MathJax_Preview">\{ab,c\}|\{ab,d,ef\}=\{ab,c,d,ef\}</span><script type="math/tex">\{ab,c\}|\{ab,d,ef\}=\{ab,c,d,ef\}</script></span>。</li>
+<li>Kleene星号<span><span class="MathJax_Preview">R^*</span><script type="math/tex">R^*</script></span>表示包含<span><span class="MathJax_Preview">\varepsilon</span><script type="math/tex">\varepsilon</script></span>并且闭合在字符串串接下的<span><span class="MathJax_Preview">R</span><script type="math/tex">R</script></span>的最小子集。这是可以通过<span><span class="MathJax_Preview">R</span><script type="math/tex">R</script></span>中的零或多个字符串的串接得到所有字符串的集合。例如:<span><span class="MathJax_Preview">\{ab,c\}^{*}=\{\varepsilon ,ab,c,abab,abc,cab,cc,ababab,\cdots \}</span><script type="math/tex">\{ab,c\}^{*}=\{\varepsilon ,ab,c,abab,abc,cab,cc,ababab,\cdots \}</script></span>。</li>
 </ul>
 </blockquote>
 <p>上述常量和算子形成了克莱尼代数。</p>
-<p>很多地方使用对选择使用符号$\cup$、$+$或$\vee$替代竖线。为了避免括号,假定<code>Kleene</code>星号有最高优先级,接着是串接,接着是并集。如果没有歧义则可以省略括号。例如:$(ab)c$可以写为$abc$而$a|(b(c<em>))$可以写为$a|bc</em>$。</p>
-<p>正则表达式为了避免多余的量词,定义了?和+,例如:$aa<em>$可以被表达为$a+$;$(a|ε)$可以被表达为$a?$。有时增加补算子$\sim$; $\sim R$表示在$\Sigma ^{</em>}$上但不在$R$中的所有字符串的集合。补算子是多余的,因为它可以使用其他算子来表达(尽管计算这种表示的过程是复杂的,而结果可能以指数增大)。</p>
+<p>很多地方使用对选择使用符号<span><span class="MathJax_Preview">\cup</span><script type="math/tex">\cup</script></span>、<span><span class="MathJax_Preview">+</span><script type="math/tex">+</script></span>或<span><span class="MathJax_Preview">\vee</span><script type="math/tex">\vee</script></span>替代竖线。为了避免括号,假定<code>Kleene</code>星号有最高优先级,接着是串接,接着是并集。如果没有歧义则可以省略括号。例如:<span><span class="MathJax_Preview">(ab)c</span><script type="math/tex">(ab)c</script></span>可以写为<span><span class="MathJax_Preview">abc</span><script type="math/tex">abc</script></span>而<span><span class="MathJax_Preview">a|(b(c*))</span><script type="math/tex">a|(b(c*))</script></span>可以写为<span><span class="MathJax_Preview">a|bc*</span><script type="math/tex">a|bc*</script></span>。</p>
+<p>正则表达式为了避免多余的量词,定义了?和+,例如:<span><span class="MathJax_Preview">aa*</span><script type="math/tex">aa*</script></span>可以被表达为<span><span class="MathJax_Preview">a+</span><script type="math/tex">a+</script></span>;<span><span class="MathJax_Preview">(a|ε)</span><script type="math/tex">(a|ε)</script></span>可以被表达为<span><span class="MathJax_Preview">a?</span><script type="math/tex">a?</script></span>。有时增加补算子<span><span class="MathJax_Preview">\sim</span><script type="math/tex">\sim</script></span>; <span><span class="MathJax_Preview">\sim R</span><script type="math/tex">\sim R</script></span>表示在<span><span class="MathJax_Preview">\Sigma ^{*}</span><script type="math/tex">\Sigma ^{*}</script></span>上但不在<span><span class="MathJax_Preview">R</span><script type="math/tex">R</script></span>中的所有字符串的集合。补算子是多余的,因为它可以使用其他算子来表达(尽管计算这种表示的过程是复杂的,而结果可能以指数增大)。</p>
 <p>这种意义上的正则表达式可以表达正则语言,精确的是可被<a href="http://zh.wikipedia.org/wiki/%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E8%87%AA%E5%8A%A8%E6%9C%BA">有限状态自动机</a>接受的语言类。但是在简洁性上有重要区别。某类正则语言只能用大小指数增长的自动机来描述,而要求的正则表达式的长度只线性的增长。</p>
 <p>正则表达式对应于乔姆斯基层级的<a href="http://zh.wikipedia.org/wiki/%E6%AD%A3%E5%88%99%E6%96%87%E6%B3%95">类型-3</a>文法。但通常编程语言或其相关库(例如PCRE)中实现的正则表达式的表达能力是乔姆斯基层级中<a href="http://zh.wikipedia.org/wiki/%E6%AD%A3%E5%88%99%E6%96%87%E6%B3%95">类型-3</a>文法的超集[来源请求]。在另一方面,在正则表达式和不导致这种大小上的爆炸的非确定有限状态自动机(NFA)之间有简单的映射;为此NFA经常被用作正则表达式的替表示式。</p>
 <p>我们还要在这种形式化中研究表达力。如下面例子所展示的,不同的正则表达式可以表达同样的语言:这种形式化中存在着冗余。</p>
@@ -505,7 +505,7 @@ machine(input);
 <li>由数字、26个英文字母或者下划线组成的字符串:<code>^\w+</code>或<code>^\w{3,20}</code></li>
 <li>中文、英文、数字包括下划线:<code>^[\u4E00-\u9FA5A-Za-z0-9_]+</code></li>
 <li>中文、英文、数字但不包括下划线等符号:<code>^[\u4E00-\u9FA5A-Za-z0-9]+</code>或<code>^[\u4E00-\u9FA5A-Za-z0-9]{2,20}</code></li>
-<li>可以输入含有\^%&amp;',;=?\$\"等字符:<code>[^%&amp;',;=?$\x22]+</code></li>
+<li>可以输入含有\^%&amp;',;=?$\"等字符:<code>[^%&amp;',;=?$\x22]+</code></li>
 <li>禁止输入含有~的字符:<code>[^~\x22]+</code></li>
 </ul>
 </blockquote>

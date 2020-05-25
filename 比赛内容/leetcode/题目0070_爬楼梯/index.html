@@ -105,7 +105,10 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <li><strong>方法一:暴力法</strong></li>
 </ul>
 <p>在暴力法中,我们将会把所有可能爬的阶数进行组合,也就是<code>1</code>和<code>2</code>。而在每一步中我们都会继续调用<code>climbStairsclimbStairs</code>这个函数模拟爬<code>1</code>阶和<code>2</code>阶的情形,并返回两个函数的返回值之和。</p>
-<p>$$climbStairs(i,n)=(i+1,n)+climbStairs(i+2,n)$$</p>
+<div>
+<div class="MathJax_Preview">climbStairs(i,n)=(i+1,n)+climbStairs(i+2,n)</div>
+<script type="math/tex; mode=display">climbStairs(i,n)=(i+1,n)+climbStairs(i+2,n)</script>
+</div>
 <p>其中i定义了当前阶数,而n定义了目标阶数。</p>
 <pre><code class="c">class Solution {
     public:
@@ -122,9 +125,9 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 
 <p>复杂度分析</p>
 <blockquote>
-<p>时间复杂度:$O(2^n)$,树形递归的大小为$2^n$。在<code>n=5</code>时的递归树将是这样的:</p>
+<p>时间复杂度:<span><span class="MathJax_Preview">O(2^n)</span><script type="math/tex">O(2^n)</script></span>,树形递归的大小为<span><span class="MathJax_Preview">2^n</span><script type="math/tex">2^n</script></span>。在<code>n=5</code>时的递归树将是这样的:</p>
 <p><img alt="" src="http://pic.leetcode-cn.com/07a21d45a33309d39925127eb0a8611fce5212cb932e4a6fe9914b30c885d1f6-file_1555697913334" /></p>
-<p>空间复杂度:$O(n)$,递归树的深度可以达到<code>n</code>。</p>
+<p>空间复杂度:<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>,递归树的深度可以达到<code>n</code>。</p>
 </blockquote>
 <ul>
 <li><strong>方法二:记忆化递归</strong></li>
@@ -151,8 +154,8 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 
 <p>复杂度分析</p>
 <blockquote>
-<p>时间复杂度:$O(n)$,树形递归的大小可以达到<code>n</code>。</p>
-<p>空间复杂度:$O(n)$,递归树的深度可以达到<code>n</code>。</p>
+<p>时间复杂度:<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>,树形递归的大小可以达到<code>n</code>。</p>
+<p>空间复杂度:<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>,递归树的深度可以达到<code>n</code>。</p>
 </blockquote>
 <ul>
 <li><strong>方法三:动态规划</strong></li>
@@ -165,7 +168,10 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </ol>
 <p>所以到达第i阶的方法总数就是到第(i-1)阶和第(i-2)阶的方法数之和。</p>
 <p>令dp[i]表示能到达第i阶的方法总数:</p>
-<p>$$dp[i]=dp[i-1]+dp[i-2]$$</p>
+<div>
+<div class="MathJax_Preview">dp[i]=dp[i-1]+dp[i-2]</div>
+<script type="math/tex; mode=display">dp[i]=dp[i-1]+dp[i-2]</script>
+</div>
 <p>示例:
 <script language="javascript">
     Img = new Array("1","2","3","4","5","6","7");
@@ -198,13 +204,16 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 
 <p>复杂度分析</p>
 <ul>
-<li>时间复杂度:$O(n)$,单循环到n。</li>
-<li>空间复杂度:$O(n)$,dp数组用了n的空间。</li>
+<li>时间复杂度:<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>,单循环到n。</li>
+<li>空间复杂度:<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>,dp数组用了n的空间。</li>
 </ul>
 <h3 id="_3">方法四:斐波那契数</h3>
-<p>在上述方法中,我们使用dp数组,其中$dp[i]=dp[i-1]+dp[i-2]$。可以很容易通过分析得出dp[i]其实就是第i个斐波那契数。</p>
-<p>$$Fib(n)=Fib(n-1)+Fib(n-2)$$</p>
-<p>现在我们必须找出以1和2作为第一项和第二项的斐波那契数列中的第n个数,也就是说$Fib(1)=1$且$Fib(2)=2$。</p>
+<p>在上述方法中,我们使用dp数组,其中<span><span class="MathJax_Preview">dp[i]=dp[i-1]+dp[i-2]</span><script type="math/tex">dp[i]=dp[i-1]+dp[i-2]</script></span>。可以很容易通过分析得出dp[i]其实就是第i个斐波那契数。</p>
+<div>
+<div class="MathJax_Preview">Fib(n)=Fib(n-1)+Fib(n-2)</div>
+<script type="math/tex; mode=display">Fib(n)=Fib(n-1)+Fib(n-2)</script>
+</div>
+<p>现在我们必须找出以1和2作为第一项和第二项的斐波那契数列中的第n个数,也就是说<span><span class="MathJax_Preview">Fib(1)=1</span><script type="math/tex">Fib(1)=1</script></span>且<span><span class="MathJax_Preview">Fib(2)=2</span><script type="math/tex">Fib(2)=2</script></span>。</p>
 <pre><code>class Solution {
     public:
         int climbStairs(int n) {
@@ -222,24 +231,36 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 
 <p>复杂度分析</p>
 <ul>
-<li>时间复杂度:$O(n)$,单循环到n,需要计算第n个斐波那契数。</li>
-<li>空间复杂度:$O(1)$,使用常量级空间。</li>
+<li>时间复杂度:<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>,单循环到n,需要计算第n个斐波那契数。</li>
+<li>空间复杂度:<span><span class="MathJax_Preview">O(1)</span><script type="math/tex">O(1)</script></span>,使用常量级空间。</li>
 </ul>
 <h3 id="binets">方法五:Binets 方法</h3>
 <p>这里有一种有趣的解法,它使用矩阵乘法来得到第n个斐波那契数。矩阵形式如下:</p>
-<p>$$\left[ {\begin{array}{cc} F_{n+1} &amp; F_n \ F_n &amp; F_{n-1} \end{array} } \right] = \left[ {\begin{array}{cc} 1 &amp; 1 \ 1 &amp; 0 \end{array} } \right]$$</p>
-<p>令$Q=\left[ {\begin{array}{cc} F_{n+1} &amp; F_n \ F_n &amp; F_{n-1} \end{array} } \right]$。按照此方法,第n个斐波那契数可以由 $Q^{n-1}[1,1]$给出。</p>
+<div>
+<div class="MathJax_Preview">\left[ {\begin{array}{cc} F_{n+1} &amp; F_n \\ F_n &amp; F_{n-1} \end{array} } \right] = \left[ {\begin{array}{cc} 1 &amp; 1 \\ 1 &amp; 0 \end{array} } \right]</div>
+<script type="math/tex; mode=display">\left[ {\begin{array}{cc} F_{n+1} & F_n \\ F_n & F_{n-1} \end{array} } \right] = \left[ {\begin{array}{cc} 1 & 1 \\ 1 & 0 \end{array} } \right]</script>
+</div>
+<p>令<span><span class="MathJax_Preview">Q=\left[ {\begin{array}{cc} F_{n+1} &amp; F_n \\ F_n &amp; F_{n-1} \end{array} } \right]</span><script type="math/tex">Q=\left[ {\begin{array}{cc} F_{n+1} & F_n \\ F_n & F_{n-1} \end{array} } \right]</script></span>。按照此方法,第n个斐波那契数可以由 <span><span class="MathJax_Preview">Q^{n-1}[1,1]</span><script type="math/tex">Q^{n-1}[1,1]</script></span>给出。</p>
 <p>让我们试着证明一下。</p>
-<p>我们可以使用数学归纳法来证明这一方法。易知,该矩阵给出了第3项(基本情况)的正确结果。由于$Q^2 = \left[ {\begin{array}{cc} 2 &amp; 1 \ 1 &amp; 1 \end{array} } \right]$。这证明基本情况是成立的。</p>
-<p>假设此方法适用于查找第n个斐波那契数,即$F_n=Q^{n-1}[1,1]$,那么:</p>
-<p>$$Q^{n-1}=\left[ {\begin{array}{cc} F_{n} &amp; F_{n-1} \ F_{n-1} &amp; F_{n-2} \end{array} } \right]$$</p>
-<p>现在,我们需要证明在上述两个条件为真的情况下,该方法可以有效找出第(n+1)个斐波那契数,即$F_{n+1}=Q^{n}[1,1]$。</p>
+<p>我们可以使用数学归纳法来证明这一方法。易知,该矩阵给出了第3项(基本情况)的正确结果。由于<span><span class="MathJax_Preview">Q^2 = \left[ {\begin{array}{cc} 2 &amp; 1 \\ 1 &amp; 1 \end{array} } \right]</span><script type="math/tex">Q^2 = \left[ {\begin{array}{cc} 2 & 1 \\ 1 & 1 \end{array} } \right]</script></span>。这证明基本情况是成立的。</p>
+<p>假设此方法适用于查找第n个斐波那契数,即<span><span class="MathJax_Preview">F_n=Q^{n-1}[1,1]</span><script type="math/tex">F_n=Q^{n-1}[1,1]</script></span>,那么:</p>
+<div>
+<div class="MathJax_Preview">Q^{n-1}=\left[ {\begin{array}{cc} F_{n} &amp; F_{n-1} \\ F_{n-1} &amp; F_{n-2} \end{array} } \right]</div>
+<script type="math/tex; mode=display">Q^{n-1}=\left[ {\begin{array}{cc} F_{n} & F_{n-1} \\ F_{n-1} & F_{n-2} \end{array} } \right]</script>
+</div>
+<p>现在,我们需要证明在上述两个条件为真的情况下,该方法可以有效找出第(n+1)个斐波那契数,即<span><span class="MathJax_Preview">F_{n+1}=Q^{n}[1,1]</span><script type="math/tex">F_{n+1}=Q^{n}[1,1]</script></span>。</p>
 <p>证明:</p>
-<p>$$Q^{n} = \left[ {\begin{array}{cc} F_{n} &amp; F_{n-1} \ F_{n-1} &amp; F_{n-2} \end{array} } \right]\left[ {\begin{array}{cc} 1 &amp; 1 \ 1 &amp; 0 \end{array} } \right]$$.</p>
-<p>$$Q^{n} = \left[ {\begin{array}{cc} F_{n}+F_{n-1} &amp; F_n \ F_{n-1}+F_{n-2} &amp; F_{n-1} \end{array} } \right]$$</p>
-<p>$$Q^{n} = \left[ {\begin{array}{cc} F_{n+1} &amp; F_n \ F_n &amp; F_{n-1} \end{array} } \right]$$</p>
-<p>从而, $F_{n+1}=Q^{n}[1,1]$,得证。</p>
-<p>我们需要为我们的问题做的唯一改动就是将斐波那契数列的初始项修改为2和1来代替原来的1和0 。或者,另一种方法是使用相同的初始矩阵Q并使用$result = Q^{n}[1,1]$r得出最后结果。发生这种情况的原因是我们必须使用原斐波那契数列的第2项和第3项作为初始项。</p>
+<p><span><span class="MathJax_Preview"><span><span class="MathJax_Preview">Q^{n} = \left[ {\begin{array}{cc} F_{n} &amp; F_{n-1} \\ F_{n-1} &amp; F_{n-2} \end{array} } \right]\left[ {\begin{array}{cc} 1 &amp; 1 \\ 1 &amp; 0 \end{array} } \right]</span><script type="math/tex">Q^{n} = \left[ {\begin{array}{cc} F_{n} & F_{n-1} \\ F_{n-1} & F_{n-2} \end{array} } \right]\left[ {\begin{array}{cc} 1 & 1 \\ 1 & 0 \end{array} } \right]</script></span></span><script type="math/tex"><span><span class="MathJax_Preview">Q^{n} = \left[ {\begin{array}{cc} F_{n} &amp; F_{n-1} \\ F_{n-1} &amp; F_{n-2} \end{array} } \right]\left[ {\begin{array}{cc} 1 &amp; 1 \\ 1 &amp; 0 \end{array} } \right]</span><script type="math/tex">Q^{n} = \left[ {\begin{array}{cc} F_{n} & F_{n-1} \\ F_{n-1} & F_{n-2} \end{array} } \right]\left[ {\begin{array}{cc} 1 & 1 \\ 1 & 0 \end{array} } \right]</script></span></script></span>.</p>
+<div>
+<div class="MathJax_Preview">Q^{n} = \left[ {\begin{array}{cc} F_{n}+F_{n-1} &amp; F_n \\ F_{n-1}+F_{n-2} &amp; F_{n-1} \end{array} } \right]</div>
+<script type="math/tex; mode=display">Q^{n} = \left[ {\begin{array}{cc} F_{n}+F_{n-1} & F_n \\ F_{n-1}+F_{n-2} & F_{n-1} \end{array} } \right]</script>
+</div>
+<div>
+<div class="MathJax_Preview">Q^{n} = \left[ {\begin{array}{cc} F_{n+1} &amp; F_n \\ F_n &amp; F_{n-1} \end{array} } \right]</div>
+<script type="math/tex; mode=display">Q^{n} = \left[ {\begin{array}{cc} F_{n+1} & F_n \\ F_n & F_{n-1} \end{array} } \right]</script>
+</div>
+<p>从而, <span><span class="MathJax_Preview">F_{n+1}=Q^{n}[1,1]</span><script type="math/tex">F_{n+1}=Q^{n}[1,1]</script></span>,得证。</p>
+<p>我们需要为我们的问题做的唯一改动就是将斐波那契数列的初始项修改为2和1来代替原来的1和0 。或者,另一种方法是使用相同的初始矩阵Q并使用<span><span class="MathJax_Preview">result = Q^{n}[1,1]</span><script type="math/tex">result = Q^{n}[1,1]</script></span>r得出最后结果。发生这种情况的原因是我们必须使用原斐波那契数列的第2项和第3项作为初始项。</p>
 <pre><code>import numpy as np
 class Solution(object):
     def climbStairs(self, n):
@@ -256,37 +277,58 @@ class Solution(object):
 
 <p>复杂度分析</p>
 <ul>
-<li>时间复杂度:$O(log(n))$,遍历$log(n)$ 位。</li>
-<li>空间复杂度:$O(1)$,使用常量级空间。</li>
+<li>时间复杂度:<span><span class="MathJax_Preview">O(log(n))</span><script type="math/tex">O(log(n))</script></span>,遍历<span><span class="MathJax_Preview">log(n)</span><script type="math/tex">log(n)</script></span> 位。</li>
+<li>空间复杂度:<span><span class="MathJax_Preview">O(1)</span><script type="math/tex">O(1)</script></span>,使用常量级空间。</li>
 </ul>
 <p>对时间复杂度的证明:</p>
-<p>假设我们需要计算矩阵M的n次幂。假设,n是2的幂。因此,$n = 2^i,i\in\mathbb{N}$,其中$\mathbb{N}$表示自然数的集合(包括0)。我们可以用树形结构进行表示:</p>
+<p>假设我们需要计算矩阵M的n次幂。假设,n是2的幂。因此,<span><span class="MathJax_Preview">n = 2^i,i\in\mathbb{N}</span><script type="math/tex">n = 2^i,i\in\mathbb{N}</script></span>,其中<span><span class="MathJax_Preview">\mathbb{N}</span><script type="math/tex">\mathbb{N}</script></span>表示自然数的集合(包括0)。我们可以用树形结构进行表示:</p>
 <p><img alt="" src="https://pic.leetcode-cn.com/f2caba82e1703ff580df436aad9c45c47d7ba8aac2f66c1f196e4eeef5b29fbd-file_1555697820512" /></p>
-<p>这意味着:$M^n = M^{n/2}.M^{n/2} = .... = \prod_{1}^{n} M^{1}$M </p>
-<p>所以,要计算$M^{n}$,我们先要计算$M^{n/2}$并将其与自身相乘。而为了计算$M^{n/2}$,我们需要对$M^{n/4}$进行类似的操作,并依此类推。</p>
-<p>显然,树的高度为$log_{2}$。</p>
-<p>让我们来估计一下$M^{n}$计算所需要的时间。矩阵M在幂运算过程中大小保持不变。因此,进行两矩阵幂乘的空间复杂度是$O(1)$。我们需要执行$log_2{n}$次这样的乘法。所以,计算$M^{n}$的时间复杂度为$O(log_{2}n)$。</p>
+<p>这意味着:<span><span class="MathJax_Preview">M^n = M^{n/2}.M^{n/2} = .... = \prod_{1}^{n} M^{1}</span><script type="math/tex">M^n = M^{n/2}.M^{n/2} = .... = \prod_{1}^{n} M^{1}</script></span>M </p>
+<p>所以,要计算<span><span class="MathJax_Preview">M^{n}</span><script type="math/tex">M^{n}</script></span>,我们先要计算<span><span class="MathJax_Preview">M^{n/2}</span><script type="math/tex">M^{n/2}</script></span>并将其与自身相乘。而为了计算<span><span class="MathJax_Preview">M^{n/2}</span><script type="math/tex">M^{n/2}</script></span>,我们需要对<span><span class="MathJax_Preview">M^{n/4}</span><script type="math/tex">M^{n/4}</script></span>进行类似的操作,并依此类推。</p>
+<p>显然,树的高度为<span><span class="MathJax_Preview">log_{2}</span><script type="math/tex">log_{2}</script></span>。</p>
+<p>让我们来估计一下<span><span class="MathJax_Preview">M^{n}</span><script type="math/tex">M^{n}</script></span>计算所需要的时间。矩阵M在幂运算过程中大小保持不变。因此,进行两矩阵幂乘的空间复杂度是<span><span class="MathJax_Preview">O(1)</span><script type="math/tex">O(1)</script></span>。我们需要执行<span><span class="MathJax_Preview">log_2{n}</span><script type="math/tex">log_2{n}</script></span>次这样的乘法。所以,计算<span><span class="MathJax_Preview">M^{n}</span><script type="math/tex">M^{n}</script></span>的时间复杂度为<span><span class="MathJax_Preview">O(log_{2}n)</span><script type="math/tex">O(log_{2}n)</script></span>。</p>
 <p>如果数字 n不是2的幂,我们可以使用其二进制表示将其转化为 2 的幂次项之和:</p>
-<p>$$n= \sum_{p\in P} 2^{p}, \text{where }P\subset\mathbb{N}$$</p>
+<div>
+<div class="MathJax_Preview">n= \sum_{p\in P} 2^{p}, \text{where }P\subset\mathbb{N}</div>
+<script type="math/tex; mode=display">n= \sum_{p\in P} 2^{p}, \text{where }P\subset\mathbb{N}</script>
+</div>
 <p>因此,我们可以使用以下方法获得最终结果:</p>
-<p>$$M^{n} = \prod_{p\in P} M^{2^{p}}$$</p>
-<p>这是我们在实现中使用的方法。 同样,时间复杂度仍为$O(log_{2}n)$,因为乘法次数的限制为$O(log_{2}n)$。</p>
+<div>
+<div class="MathJax_Preview">M^{n} = \prod_{p\in P} M^{2^{p}}</div>
+<script type="math/tex; mode=display">M^{n} = \prod_{p\in P} M^{2^{p}}</script>
+</div>
+<p>这是我们在实现中使用的方法。 同样,时间复杂度仍为<span><span class="MathJax_Preview">O(log_{2}n)</span><script type="math/tex">O(log_{2}n)</script></span>,因为乘法次数的限制为<span><span class="MathJax_Preview">O(log_{2}n)</span><script type="math/tex">O(log_{2}n)</script></span>。</p>
 <h3 id="_4">方法六:斐波那契公式</h3>
 <p>我们可以使用这一公式来找出第n个斐波那契数:</p>
-<p>$$F_n = 1/\sqrt{5}\left[ \left(\frac{1+\sqrt{5}}{2}\right)^{n} - \left(\frac{1-\sqrt{5}}{2}\right)^{n} \right]$$</p>
-<p>对于给定的问题,斐波那契序列将会被定义为$F_0 = 1,F_1= 1,F_2= 2,F_{n+2}= F_{n+1} + F_n$。尝试解决这一递归公式的标准方法是设出$F_n$,其形式为$F_n= a^n$。然后,自然有$F_{n+1} = a^{n+1}$和 $F_{n+2}= a^{n+2}$,所以方程可以写作$a^{n+2}= a^{n+1}+ a^n$。如果我们对整个方程进行约分,可以得到$a^2= a + 1$或者写成二次方程形式$a^2 - a- 1= 0$。</p>
+<div>
+<div class="MathJax_Preview">F_n = 1/\sqrt{5}\left[ \left(\frac{1+\sqrt{5}}{2}\right)^{n} - \left(\frac{1-\sqrt{5}}{2}\right)^{n} \right]</div>
+<script type="math/tex; mode=display">F_n = 1/\sqrt{5}\left[ \left(\frac{1+\sqrt{5}}{2}\right)^{n} - \left(\frac{1-\sqrt{5}}{2}\right)^{n} \right]</script>
+</div>
+<p>对于给定的问题,斐波那契序列将会被定义为<span><span class="MathJax_Preview">F_0 = 1,F_1= 1,F_2= 2,F_{n+2}= F_{n+1} + F_n</span><script type="math/tex">F_0 = 1,F_1= 1,F_2= 2,F_{n+2}= F_{n+1} + F_n</script></span>。尝试解决这一递归公式的标准方法是设出<span><span class="MathJax_Preview">F_n</span><script type="math/tex">F_n</script></span>,其形式为<span><span class="MathJax_Preview">F_n= a^n</span><script type="math/tex">F_n= a^n</script></span>。然后,自然有<span><span class="MathJax_Preview">F_{n+1} = a^{n+1}</span><script type="math/tex">F_{n+1} = a^{n+1}</script></span>和 <span><span class="MathJax_Preview">F_{n+2}= a^{n+2}</span><script type="math/tex">F_{n+2}= a^{n+2}</script></span>,所以方程可以写作<span><span class="MathJax_Preview">a^{n+2}= a^{n+1}+ a^n</span><script type="math/tex">a^{n+2}= a^{n+1}+ a^n</script></span>。如果我们对整个方程进行约分,可以得到<span><span class="MathJax_Preview">a^2= a + 1</span><script type="math/tex">a^2= a + 1</script></span>或者写成二次方程形式<span><span class="MathJax_Preview">a^2 - a- 1= 0</span><script type="math/tex">a^2 - a- 1= 0</script></span>。</p>
 <p>对二次公式求解,我们得到:</p>
-<p>$$a=1/\sqrt{5}\left(\left(\frac{1\pm \sqrt{5}}{2}\right)\right)$$</p>
+<div>
+<div class="MathJax_Preview">a=1/\sqrt{5}\left(\left(\frac{1\pm \sqrt{5}}{2}\right)\right)</div>
+<script type="math/tex; mode=display">a=1/\sqrt{5}\left(\left(\frac{1\pm \sqrt{5}}{2}\right)\right)</script>
+</div>
 <p>一般解采用以下形式:</p>
-<p>$$F_n = A\left(\frac{1+\sqrt{5}}{2}\right)^{n} + B\left(\frac{1-\sqrt{5}}{2}\right)^{n}$$</p>
+<div>
+<div class="MathJax_Preview">F_n = A\left(\frac{1+\sqrt{5}}{2}\right)^{n} + B\left(\frac{1-\sqrt{5}}{2}\right)^{n}</div>
+<script type="math/tex; mode=display">F_n = A\left(\frac{1+\sqrt{5}}{2}\right)^{n} + B\left(\frac{1-\sqrt{5}}{2}\right)^{n}</script>
+</div>
 <ul>
 <li>n=0时,有A + B = 1</li>
 <li>n=1 时,有¥A\left(\frac{1+\sqrt{5}}{2}\right) + B\left(\frac{1-\sqrt{5}}{2}\right) = 1$</li>
 </ul>
 <p>解上述等式,我们得到:</p>
-<p>$$A = \left(\frac{1+\sqrt{5}}{2\sqrt{5}}\right), B = \left(\frac{1-\sqrt{5}}{2\sqrt{5}}\right)$$</p>
-<p>将$A$和$B$的这些值带入上述的一般解方程中,可以得到:</p>
-<p>$$F_n = 1/\sqrt{5}\left( \left(\frac{1+\sqrt{5}}{2}\right)^{n+1} - \left(\frac{1-\sqrt{5}}{2}\right)^{n+1} \right)$$</p>
+<div>
+<div class="MathJax_Preview">A = \left(\frac{1+\sqrt{5}}{2\sqrt{5}}\right), B = \left(\frac{1-\sqrt{5}}{2\sqrt{5}}\right)</div>
+<script type="math/tex; mode=display">A = \left(\frac{1+\sqrt{5}}{2\sqrt{5}}\right), B = \left(\frac{1-\sqrt{5}}{2\sqrt{5}}\right)</script>
+</div>
+<p>将<span><span class="MathJax_Preview">A</span><script type="math/tex">A</script></span>和<span><span class="MathJax_Preview">B</span><script type="math/tex">B</script></span>的这些值带入上述的一般解方程中,可以得到:</p>
+<div>
+<div class="MathJax_Preview">F_n = 1/\sqrt{5}\left( \left(\frac{1+\sqrt{5}}{2}\right)^{n+1} - \left(\frac{1-\sqrt{5}}{2}\right)^{n+1} \right)</div>
+<script type="math/tex; mode=display">F_n = 1/\sqrt{5}\left( \left(\frac{1+\sqrt{5}}{2}\right)^{n+1} - \left(\frac{1-\sqrt{5}}{2}\right)^{n+1} \right)</script>
+</div>
 <pre><code>class Solution {
     public:
         int climbStairs(int n) {
@@ -299,8 +341,8 @@ class Solution(object):
 
 <p>复杂度分析</p>
 <ul>
-<li>时间复杂度:$O(log(n))$,pow方法将会用去$log(n)$的时间。</li>
-<li>空间复杂度:$O(1)$,使用常量级空间。</li>
+<li>时间复杂度:<span><span class="MathJax_Preview">O(log(n))</span><script type="math/tex">O(log(n))</script></span>,pow方法将会用去<span><span class="MathJax_Preview">log(n)</span><script type="math/tex">log(n)</script></span>的时间。</li>
+<li>空间复杂度:<span><span class="MathJax_Preview">O(1)</span><script type="math/tex">O(1)</script></span>,使用常量级空间。</li>
 </ul>
 
   <br>

@@ -502,10 +502,15 @@ print(I[-5:]) # neighbors of the 5 last queries
 <ul>
 <li><strong>检索和距离的关系—ADC</strong></li>
 </ul>
-<p>假如做法是以图搜图,那么输入图像为$x$,要从数据库中找出与$x$最匹配的图像集${y}$,首先提取特征,特征向量就代表图像,如果特征向量之间的距离越小,图像之间相似度越大,检索就是要找出$NN(x)=arg\ min_{y\in \mathcal{Y} d(x,y)}$,公式中d的选取可以是欧式距离。PQ(乘积量化)中ADC的做法并不是求各个分量差的平方和,而是求x与y量化后的向量之间各个分量差的平方和。用公式表示如下：</p>
-<p>$$
+<p>假如做法是以图搜图,那么输入图像为<span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span>,要从数据库中找出与<span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span>最匹配的图像集<span><span class="MathJax_Preview">\{y\}</span><script type="math/tex">\{y\}</script></span>,首先提取特征,特征向量就代表图像,如果特征向量之间的距离越小,图像之间相似度越大,检索就是要找出<span><span class="MathJax_Preview">NN(x)=arg\ min_{y\in \mathcal{Y} d(x,y)}</span><script type="math/tex">NN(x)=arg\ min_{y\in \mathcal{Y} d(x,y)}</script></span>,公式中d的选取可以是欧式距离。PQ(乘积量化)中ADC的做法并不是求各个分量差的平方和,而是求x与y量化后的向量之间各个分量差的平方和。用公式表示如下：</p>
+<div>
+<div class="MathJax_Preview">
 \tilde{d}(x,y)=d(x,q(y)) = \sqrt{\sum_jd(u_j(x),q_j(u_j(y)))^2}
-$$</p>
+</div>
+<script type="math/tex; mode=display">
+\tilde{d}(x,y)=d(x,q(y)) = \sqrt{\sum_jd(u_j(x),q_j(u_j(y)))^2}
+</script>
+</div>
 <p>示意图如下:</p>
 <p><img src="http://img-blog.csdn.net/20151218095829175" style="width:30%" /></p>
 <p>把求x与y的距离用x与q(y)的距离代替,q(y)是y量化后的结果。这样做之所以可行,论文中有详细推到,主要是两个原因:1）MSE越小,说明量化器的精度越高;2）三角形两边之和大于第三边,两边只差小于第三边。由于只是对y做量化,对x未量化,这是不对称的,这就是ADC(Asymmetric distance computation)中Asymmetric的含义,如果对y也量化,对x也量化,就是对称的。</p>
@@ -521,7 +526,7 @@ $$</p>
 <p><strong>coarse quantizer</strong> :对数据库中的所有特征采用K-means聚类,得到粗糙量化的类中心,比如聚类成1024类,并记录每个类的样本数和各个样本所属的类别,这个类中心的个数就是inverted list的个数,把所有类中心保存到一张表中,叫<code>coarse_cluster</code>表,表中每项是d维。</p>
 </li>
 <li>
-<p><strong>product quantizer</strong> :计算y的余量$r(y)=y-q_c(y)$,用y减去y的粗糙量化的结果得到$r(y)$。r(y)维数与y一样,然后对所有r(y)的特征分成m组,采用乘积量化,每组内仍然使用k-means聚类,这时结果是一个m维数的向量,这就是上篇文章中提到的内容。把所有的乘积量化结果保存到一个表中,叫<code>pq_centroids</code>表,表中每项是m维</p>
+<p><strong>product quantizer</strong> :计算y的余量<span><span class="MathJax_Preview">r(y)=y-q_c(y)</span><script type="math/tex">r(y)=y-q_c(y)</script></span>,用y减去y的粗糙量化的结果得到<span><span class="MathJax_Preview">r(y)</span><script type="math/tex">r(y)</script></span>。r(y)维数与y一样,然后对所有r(y)的特征分成m组,采用乘积量化,每组内仍然使用k-means聚类,这时结果是一个m维数的向量,这就是上篇文章中提到的内容。把所有的乘积量化结果保存到一个表中,叫<code>pq_centroids</code>表,表中每项是m维</p>
 </li>
 <li>
 <p><strong>append to inverted list</strong> :前面的操作中记录下y在<code>coarse_cluster</code>表的索引i,在<code>pq_centroids</code>表中的索引j,那么插入inverted list时,把(id,j)插入到第i个倒排索引中,id是y的标识符,比如文件名。list的长度就是属于第i类的样本y的数目,处理不等长list有些技巧。</p>
@@ -551,15 +556,26 @@ $$</p>
 </ul>
 </blockquote>
 <p>数学语言:</p>
-<p>$$
+<div>
+<div class="MathJax_Preview">
 \begin{aligned}
-    &amp; r(y)=y-q_c(y) \
-    &amp; y\approx q_c(y) + q_p(r(y)) \
-    &amp; x=q_c(x) + r(x) \
-    &amp; |x-y|=|q_c(x) + r(x) -q_c(y) -q_p(r(y))| = |r(x)-q_p(r(y))|  \
-    &amp; answer = \min_{{y|q_c(y)=q_c(x)}} |x-y|
+    &amp; r(y)=y-q_c(y) \\
+    &amp; y\approx q_c(y) + q_p(r(y)) \\
+    &amp; x=q_c(x) + r(x) \\
+    &amp; \|x-y\|=\|q_c(x) + r(x) -q_c(y) -q_p(r(y))\| = \|r(x)-q_p(r(y))\|  \\
+    &amp; answer = \min_{\{y|q_c(y)=q_c(x)\}} \|x-y\|
 \end{aligned}
-$$</p>
+</div>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    & r(y)=y-q_c(y) \\
+    & y\approx q_c(y) + q_p(r(y)) \\
+    & x=q_c(x) + r(x) \\
+    & \|x-y\|=\|q_c(x) + r(x) -q_c(y) -q_p(r(y))\| = \|r(x)-q_p(r(y))\|  \\
+    & answer = \min_{\{y|q_c(y)=q_c(x)\}} \|x-y\|
+\end{aligned}
+</script>
+</div>
 <p><img src="http://img-blog.csdn.net/20151218105910378" style="width:40%" /></p>
 <ul>
 <li><strong>PQ算法实例</strong></li>
@@ -570,9 +586,9 @@ $$</p>
 <p><img src="http://i.typcdn.com/fabwrite/5G/GGjYfyGzybfnchgieepw.png" style="width:30%" /></p>
 <p>对于这8组子向量的每组子向量,使用kmeans方法聚成k=256类。也就是说,每个子向量有256个中心点(centroids)。如下图。</p>
 <p><img src="https://i.typcdn.com/fabwrite/NM/ZL0fPpntjxi3pzrQirdw.png" style="width:30%" /></p>
-<p>在product quantization方法中,这256个中心点构成一个码本。这些码本的笛卡尔积就是原始D维向量对应的码本。用$q_j$表示第$j$组子向量,用$C_j$表示其对应学习到的码本,那么原始D维向量对应的码本就是
-$C=C_1×C_2×\dots ×C_m$,码本大小为$k^m$。</p>
-<p>注意到每组子向量有其256个中心点,我们可以中心点的 ID 来表示每组子向量中的每个向量。中心点的ID只需要8位(=$log_2 256$)来保存即可。这样,初始一个由32位浮点数组成的1,024维向量,可以转化为8个8位整数组成。如下图。</p>
+<p>在product quantization方法中,这256个中心点构成一个码本。这些码本的笛卡尔积就是原始D维向量对应的码本。用<span><span class="MathJax_Preview">q_j</span><script type="math/tex">q_j</script></span>表示第<span><span class="MathJax_Preview">j</span><script type="math/tex">j</script></span>组子向量,用<span><span class="MathJax_Preview">C_j</span><script type="math/tex">C_j</script></span>表示其对应学习到的码本,那么原始D维向量对应的码本就是
+<span><span class="MathJax_Preview">C=C_1×C_2×\dots ×C_m</span><script type="math/tex">C=C_1×C_2×\dots ×C_m</script></span>,码本大小为<span><span class="MathJax_Preview">k^m</span><script type="math/tex">k^m</script></span>。</p>
+<p>注意到每组子向量有其256个中心点,我们可以中心点的 ID 来表示每组子向量中的每个向量。中心点的ID只需要8位(=<span><span class="MathJax_Preview">log_2 256</span><script type="math/tex">log_2 256</script></span>)来保存即可。这样,初始一个由32位浮点数组成的1,024维向量,可以转化为8个8位整数组成。如下图。</p>
 <p><img src="https://i.typcdn.com/fabwrite/c5/L56k1gZ7ZumryJrAfzzw.png" style="width:50%" /></p>
 <p>对向量压缩后,有2种方法作相似搜索。一种是SDC(symmetric distance computation),另一种是ADC(asymmetric distance computation)。SDC算法和ADC算法的区别在于是否要对查询向量x做量化,参见公式1和公式2。如下图所示,x是查询向量(query vector),y是数据集中的某个向量,目标是要在数据集中找到x的相似向量。</p>
 <p><img src="https://i.typcdn.com/fabwrite/9v/LJlnKOiKCtDH1DN90YKQ.png" style="width:50%" /></p>
@@ -580,14 +596,21 @@ $C=C_1×C_2×\dots ×C_m$,码本大小为$k^m$。</p>
 <ul>
 <li><strong>SDC算法:</strong> 先用PQ量化器对x和y表示为对应的中心点q(x)和q(y),然后用公式1来近似d(x,y)。这里 q 表示 PQ量化过程。</li>
 </ul>
-<p>$$\hat{d}(x,y)=d(q(x),q(y))=\sqrt{\sum_jd(q_j(x),q_j(y))^2}$$</p>
+<div>
+<div class="MathJax_Preview">\hat{d}(x,y)=d(q(x),q(y))=\sqrt{\sum_jd(q_j(x),q_j(y))^2}</div>
+<script type="math/tex; mode=display">\hat{d}(x,y)=d(q(x),q(y))=\sqrt{\sum_jd(q_j(x),q_j(y))^2}</script>
+</div>
 <ul>
 <li><strong>ADC算法:</strong> 只对y表示为对应的中心点q(y),然后用下述公式来近似d(x,y)。</li>
 </ul>
-<p>$$\tilde{d}(x,y)=d(x,q(y))=\sqrt{\sum_jd(u_j(x),q_j(u_j(y)))^2}$$</p>
+<div>
+<div class="MathJax_Preview">\tilde{d}(x,y)=d(x,q(y))=\sqrt{\sum_jd(u_j(x),q_j(u_j(y)))^2}</div>
+<script type="math/tex; mode=display">\tilde{d}(x,y)=d(x,q(y))=\sqrt{\sum_jd(u_j(x),q_j(u_j(y)))^2}</script>
+</div>
 </blockquote>
 <p>python代码:</p>
-<pre><code class="python">import numpy as np
+<pre><code class="python"># -*- coding:utf8 -*-
+import numpy as np
 from scipy.cluster.vq import vq, kmeans2
 
 
@@ -772,20 +795,16 @@ class DistanceTable(object):
         # Fetch distance values using codes. The following codes are
         dists = np.sum(self.dtable[range(M), codes], axis=1)
 
-        # The above line is equivalent to the followings:
-        # dists = np.zeros((N, )).astype(np.float32)
-        # for n in range(N):
-        #     for m in range(M):
-        #         dists[n] += self.dtable[m][codes[n][m]]
-
         return dists
 </code></pre>
 
 <h2 id="_1">三、源码介绍</h2>
 <h3 id="41">4.1 基础工具</h3>
-<h4 id="411-randomhrandomcpp">4.1.1 <code>random.h</code>和<code>random.cpp</code>文件</h4>
+<h4 id="411-randomhrandomcpp">4.1.1 random.h和random.cpp文件</h4>
+<ul>
+<li><strong>random.h文件</strong></li>
+</ul>
 <pre><code class="c++">/* Random generators. Implemented here for speed and to make sequences reproducible. */
-
 #pragma once
 
 #include &lt;random&gt;
@@ -794,31 +813,75 @@ class DistanceTable(object):
 namespace faiss {
 
     /**************************************************
-    * Random data generation functions
-    **************************************************/
+     * Random data generation functions
+     **************************************************/
 
     /// random generator that can be used in multithreaded contexts
     struct RandomGenerator {
         std::mt19937 mt;
 
         /// random positive integer
-        int rand_int (){ return mt() &amp; 0x7fffffff; };
+        int rand_int ();
 
         /// random int64_t
-        int64_t rand_int64 (){ return int64_t(rand_int()) | int64_t(rand_int()) &lt;&lt; 31; };
+        int64_t rand_int64 ();
 
         /// generate random integer between 0 and max-1
-        int rand_int (int max) { return mt() % max; };
+        int rand_int (int max);
 
         /// between 0 and 1
-        float rand_float (){ return mt() / float(mt.max());};
+        float rand_float ();
+        double rand_double ();
 
-        double rand_double () { return mt() / double(mt.max()); };
-
-        explicit RandomGenerator (int64_t seed = 1234): mt((unsigned int)seed) {};
+        explicit RandomGenerator (int64_t seed = 1234);
     };
 
     /* Generate an array of uniform random floats / multi-threaded implementation */
+    void float_rand (float * x, size_t n, int64_t seed);
+    void float_randn (float * x, size_t n, int64_t seed);
+    void int64_rand (int64_t * x, size_t n, int64_t seed);
+    void byte_rand (uint8_t * x, size_t n, int64_t seed);
+    // max is actually the maximum value + 1
+    void int64_rand_max (int64_t * x, size_t n, uint64_t max, int64_t seed);
+
+    /* random permutation */
+    void rand_perm (int * perm, size_t n, int64_t seed);
+} // namespace faiss
+</code></pre>
+
+<ul>
+<li><strong>random.cpp文件</strong></li>
+</ul>
+<pre><code class="c++">#include &lt;faiss/utils/random.h&gt;
+
+namespace faiss {
+
+    /**************************************************
+     * Random data generation functions
+     **************************************************/
+
+    RandomGenerator::RandomGenerator (int64_t seed) : mt((unsigned int)seed) {}
+
+    int RandomGenerator::rand_int () { return mt() &amp; 0x7fffffff; }
+
+    int64_t RandomGenerator::rand_int64 () {
+        return int64_t(rand_int()) | int64_t(rand_int()) &lt;&lt; 31;
+    }
+
+    int RandomGenerator::rand_int (int max) { return mt() % max; }
+
+    float RandomGenerator::rand_float () { return mt() / float(mt.max()); }
+
+    double RandomGenerator::rand_double () { return mt() / double(mt.max()); }
+
+
+    /***********************************************************************
+     * Random functions in this C file only exist because Torch
+     *  counterparts are slow and not multi-threaded.  Typical use is for
+     *  more than 1-100 billion values. */
+
+    /* Generate a set of random floating point values such that x[i] in [0,1]
+       multi-threading. For this reason, we rely on re-entreant functions.  */
     void float_rand (float * x, size_t n, int64_t seed) {
         // only try to parallelize on large enough arrays
         const size_t nblock = n &lt; 1024 ? 1 : 1024;
@@ -827,19 +890,18 @@ namespace faiss {
         int a0 = rng0.rand_int (), b0 = rng0.rand_int ();
 
         #pragma omp parallel for
-        for (size_t j = 0; j &lt; nblock; j++) {
-            RandomGenerator rng (a0 + j * b0);
+            for (size_t j = 0; j &lt; nblock; j++) {
+                RandomGenerator rng (a0 + j * b0);
 
-            const size_t istart = j * n / nblock;
-            const size_t iend = (j + 1) * n / nblock;
+                const size_t istart = j * n / nblock;
+                const size_t iend = (j + 1) * n / nblock;
 
-            for (size_t i = istart; i &lt; iend; i++)
-                x[i] = rng.rand_float ();
-        }
+                for (size_t i = istart; i &lt; iend; i++)
+                    x[i] = rng.rand_float ();
+            }
     }
 
-
-    void float_randn (float * x, size_t n, int64_t seed);{
+    void float_randn (float * x, size_t n, int64_t seed) {
         // only try to parallelize on large enough arrays
         const size_t nblock = n &lt; 1024 ? 1 : 1024;
 
@@ -873,7 +935,8 @@ namespace faiss {
             }
     }
 
-    void int64_rand (int64_t * x, size_t n, int64_t seed){
+    /* Integer versions */
+    void int64_rand (int64_t * x, size_t n, int64_t seed) {
         // only try to parallelize on large enough arrays
         const size_t nblock = n &lt; 1024 ? 1 : 1024;
 
@@ -882,7 +945,9 @@ namespace faiss {
 
         #pragma omp parallel for
             for (size_t j = 0; j &lt; nblock; j++) {
+
                 RandomGenerator rng (a0 + j * b0);
+
                 const size_t istart = j * n / nblock;
                 const size_t iend = (j + 1) * n / nblock;
                 for (size_t i = istart; i &lt; iend; i++)
@@ -890,27 +955,7 @@ namespace faiss {
             }
     }
 
-    void byte_rand (uint8_t * x, size_t n, int64_t seed); {
-        // only try to parallelize on large enough arrays
-        const size_t nblock = n &lt; 1024 ? 1 : 1024;
-
-        RandomGenerator rng0 (seed);
-        int a0 = rng0.rand_int (), b0 = rng0.rand_int ();
-
-        #pragma omp parallel for
-            for (size_t j = 0; j &lt; nblock; j++) {
-                RandomGenerator rng (a0 + j * b0);
-                const size_t istart = j * n / nblock;
-                const size_t iend = (j + 1) * n / nblock;
-                size_t i;
-                for (i = istart; i &lt; iend; i++)
-                    x[i] = rng.rand_int64 ();
-            }
-    }
-
-
-    // max is actually the maximum value + 1
-    void int64_rand_max (int64_t * x, size_t n, uint64_t max, int64_t seed){
+    void int64_rand_max (int64_t * x, size_t n, uint64_t max, int64_t seed) {
         // only try to parallelize on large enough arrays
         const size_t nblock = n &lt; 1024 ? 1 : 1024;
 
@@ -921,6 +966,7 @@ namespace faiss {
             for (size_t j = 0; j &lt; nblock; j++) {
 
                 RandomGenerator rng (a0 + j * b0);
+
                 const size_t istart = j * n / nblock;
                 const size_t iend = (j + 1) * n / nblock;
                 for (size_t i = istart; i &lt; iend; i++)
@@ -928,9 +974,7 @@ namespace faiss {
             }
     }
 
-
-    /* random permutation */
-    void rand_perm (int * perm, size_t n, int64_t seed){
+    void rand_perm (int *perm, size_t n, int64_t seed) {
         for (size_t i = 0; i &lt; n; i++) perm[i] = i;
 
         RandomGenerator rng (seed);
@@ -941,21 +985,41 @@ namespace faiss {
         }
     }
 
+    void byte_rand (uint8_t * x, size_t n, int64_t seed) {
+        // only try to parallelize on large enough arrays
+        const size_t nblock = n &lt; 1024 ? 1 : 1024;
+
+        RandomGenerator rng0 (seed);
+        int a0 = rng0.rand_int (), b0 = rng0.rand_int ();
+
+        #pragma omp parallel for
+            for (size_t j = 0; j &lt; nblock; j++) {
+
+                RandomGenerator rng (a0 + j * b0);
+
+                const size_t istart = j * n / nblock;
+                const size_t iend = (j + 1) * n / nblock;
+
+                size_t i;
+                for (i = istart; i &lt; iend; i++)
+                    x[i] = rng.rand_int64 ();
+            }
+    }
 } // namespace faiss
-
-
-
 </code></pre>
 
-<h4 id="412-heaphheapcpp">4.1.2 <code>Heap.h</code>和<code>Heap.cpp</code>文件</h4>
-<pre><code class="c++">
-/*
- * C++ support for heaps. The set of functions is tailored for efficient similarity search.
+<h4 id="412-heaphheapcpp">4.1.2 Heap.h和Heap.cpp文件</h4>
+<ul>
+<li><strong>Heap.h文件</strong></li>
+</ul>
+<pre><code class="c++">/*
+ * C++ support for heaps. The set of functions is tailored for
+ * efficient similarity search.
  *
- * There is no specific object for a heap, and the functions that operate on a signle heap are 
- * inlined, because heaps are often small. More complex functions are implemented in Heaps.cpp
+ * There is no specific object for a heap, and the functions that
+ * operate on a signle heap are inlined, because heaps are often
+ * small. More complex functions are implemented in Heaps.cpp
  */
-
 
 #ifndef FAISS_Heap_h
 #define FAISS_Heap_h
@@ -974,14 +1038,14 @@ namespace faiss {
 namespace faiss {
 
     /*******************************************************************
-    * C object: uniform handling of min and max heap
-    *******************************************************************/
+     * C object: uniform handling of min and max heap
+     *******************************************************************/
 
     /** The C object gives the type T of the values in the heap, the type
-    *  of the keys, TI and the comparison that is done: &gt; for the minheap
-    *  and &lt; for the maxheap. The neutral value will always be dropped in
-    *  favor of any other value in the heap.
-    */
+     *  of the keys, TI and the comparison that is done: &gt; for the minheap
+     *  and &lt; for the maxheap. The neutral value will always be dropped in
+     *  favor of any other value in the heap.
+     */
 
     template &lt;typename T_, typename TI_&gt;
     struct CMax;
@@ -989,9 +1053,9 @@ namespace faiss {
     // traits of minheaps = heaps where the minimum value is stored on top
     // useful to find the *max* values of an array
     template &lt;typename T_, typename TI_&gt;
-    struct CMin { 
-        typedef T_ T; 
-        typedef TI_ TI; 
+    struct CMin {
+        typedef T_ T;
+        typedef TI_ TI;
         typedef CMax&lt;T_, TI_&gt; Crev;
         inline static bool cmp (T a, T b) {
             return a &lt; b;
@@ -1002,7 +1066,6 @@ namespace faiss {
             return -std::numeric_limits&lt;T&gt;::max();
         }
     };
-
 
     template &lt;typename T_, typename TI_&gt;
     struct CMax {
@@ -1017,7 +1080,6 @@ namespace faiss {
         }
     };
 
-
     /*******************************************************************
      * Basic heap ops: push and pop
      *******************************************************************/
@@ -1025,8 +1087,8 @@ namespace faiss {
     /** Pops the top element from the heap defined by bh_val[0..k-1] and
      * bh_ids[0..k-1].  on output the element at k-1 is undefined.
      */
-    template &lt;class C&gt; 
-    inline void heap_pop (size_t k, typename C::T * bh_val, typename C::TI * bh_ids) {
+    template &lt;class C&gt; inline
+    void heap_pop (size_t k, typename C::T * bh_val, typename C::TI * bh_ids) {
         bh_val--; /* Use 1-based indexing for easier node-&gt;child translation */
         bh_ids--;
         typename C::T val = bh_val[k];
@@ -1055,13 +1117,11 @@ namespace faiss {
         bh_ids[i] = bh_ids[k];
     }
 
-
-
     /** Pushes the element (val, ids) into the heap bh_val[0..k-2] and
      * bh_ids[0..k-2].  on output the element at k-1 is defined.
      */
     template &lt;class C&gt; inline
-    void heap_push (size_t k, typename C::T * bh_val, typename C::TI * bh_ids, typename C::T val, typename C::TI ids) {
+    void heap_push (size_t k,typename C::T * bh_val, typename C::TI * bh_ids, typename C::T val, typename C::TI ids) {
         bh_val--; /* Use 1-based indexing for easier node-&gt;child translation */
         bh_ids--;
         size_t i = k, i_father;
@@ -1077,13 +1137,12 @@ namespace faiss {
         bh_ids[i] = ids;
     }
 
-
-
     /* Partial instanciation for heaps with TI = int64_t */
     template &lt;typename T&gt; inline
-    void minheap_pop (size_t k, T * bh_val, int64_t * bh_ids){
+    void minheap_pop (size_t k, T * bh_val, int64_t * bh_ids) {
         heap_pop&lt;CMin&lt;T, int64_t&gt; &gt; (k, bh_val, bh_ids);
     }
+
     template &lt;typename T&gt; inline
     void minheap_push (size_t k, T * bh_val, int64_t * bh_ids, T val, int64_t ids) {
         heap_push&lt;CMin&lt;T, int64_t&gt; &gt; (k, bh_val, bh_ids, val, ids);
@@ -1093,21 +1152,24 @@ namespace faiss {
     void maxheap_pop (size_t k, T * bh_val, int64_t * bh_ids) {
         heap_pop&lt;CMax&lt;T, int64_t&gt; &gt; (k, bh_val, bh_ids);
     }
+
     template &lt;typename T&gt; inline
     void maxheap_push (size_t k, T * bh_val, int64_t * bh_ids, T val, int64_t ids) {
         heap_push&lt;CMax&lt;T, int64_t&gt; &gt; (k, bh_val, bh_ids, val, ids);
     }
 
 
+
     /*******************************************************************
      * Heap initialization
      *******************************************************************/
+
     /* Initialization phase for the heap (with unconditionnal pushes).
      * Store k0 elements in a heap containing up to k values. Note that
      * (bh_val, bh_ids) can be the same as (x, ids) */
     template &lt;class C&gt; inline
-    void heap_heapify (size_t k, typename C::T *  bh_val, typename C::TI *  bh_ids,
-        const typename C::T * x = nullptr,const typename C::TI * ids = nullptr, size_t k0 = 0){
+    void heap_heapify (size_t k, typename C::T *  bh_val, typename C::TI *  bh_ids, const typename C::T * x = nullptr,
+            const typename C::TI * ids = nullptr, size_t k0 = 0) {
         if (k0 &gt; 0) assert (x);
         if (ids) {
             for (size_t i = 0; i &lt; k0; i++)
@@ -1124,13 +1186,14 @@ namespace faiss {
     }
 
     template &lt;typename T&gt; inline
-    void minheap_heapify ( size_t k, T *  bh_val, int64_t * bh_ids,
-        const T * x = nullptr, const int64_t * ids = nullptr, size_t k0 = 0) {
+    void minheap_heapify (size_t k, T *  bh_val, int64_t * bh_ids, const T * x = nullptr,
+            const int64_t * ids = nullptr, size_t k0 = 0) {
         heap_heapify&lt; CMin&lt;T, int64_t&gt; &gt; (k, bh_val, bh_ids, x, ids, k0);
     }
+
     template &lt;typename T&gt; inline
-    void maxheap_heapify ( size_t k, T * bh_val, int64_t * bh_ids,
-         const T * x = nullptr, const int64_t * ids = nullptr, size_t k0 = 0) {
+    void maxheap_heapify (size_t k, T * bh_val, int64_t * bh_ids, const T * x = nullptr,
+            const int64_t * ids = nullptr, size_t k0 = 0) {
         heap_heapify&lt; CMax&lt;T, int64_t&gt; &gt; (k, bh_val, bh_ids, x, ids, k0);
     }
 
@@ -1142,16 +1205,15 @@ namespace faiss {
     /* Add some elements to the heap  */
     template &lt;class C&gt; inline
     void heap_addn (size_t k, typename C::T * bh_val, typename C::TI * bh_ids,
-                const typename C::T * x, const typename C::TI * ids, size_t n) {
+            const typename C::T * x, const typename C::TI * ids, size_t n) {
         size_t i;
         if (ids)
             for (i = 0; i &lt; n; i++) {
                 if (C::cmp (bh_val[0], x[i])) {
                     heap_pop&lt;C&gt; (k, bh_val, bh_ids);
                     heap_push&lt;C&gt; (k, bh_val, bh_ids, x[i], ids[i]);
-                }
-        }
-        else
+            }
+        } else
             for (i = 0; i &lt; n; i++) {
                 if (C::cmp (bh_val[0], x[i])) {
                     heap_pop&lt;C&gt; (k, bh_val, bh_ids);
@@ -1161,14 +1223,14 @@ namespace faiss {
     }
 
     /* Partial instanciation for heaps with TI = int64_t */
+
     template &lt;typename T&gt; inline
-    void minheap_addn (size_t k, T * bh_val, int64_t * bh_ids,
-                       const T * x, const int64_t * ids, size_t n) {
+    void minheap_addn (size_t k, T * bh_val, int64_t * bh_ids, const T * x, const int64_t * ids, size_t n) {
         heap_addn&lt;CMin&lt;T, int64_t&gt; &gt; (k, bh_val, bh_ids, x, ids, n);
     }
+
     template &lt;typename T&gt; inline
-    void maxheap_addn (size_t k, T * bh_val, int64_t * bh_ids,
-                       const T * x, const int64_t * ids, size_t n) {
+    void maxheap_addn (size_t k, T * bh_val, int64_t * bh_ids, const T * x, const int64_t * ids, size_t n) {
         heap_addn&lt;CMax&lt;T, int64_t&gt; &gt; (k, bh_val, bh_ids, x, ids, n);
     }
 
@@ -1181,6 +1243,7 @@ namespace faiss {
     template &lt;typename C&gt; inline
     size_t heap_reorder (size_t k, typename C::T * bh_val, typename C::TI * bh_ids) {
         size_t i, ii;
+
         for (i = 0, ii = 0; i &lt; k; i++) {
             /* top element should be put at the end of the list */
             typename C::T val = bh_val[0];
@@ -1194,8 +1257,10 @@ namespace faiss {
         }
         /* Count the number of elements which are effectively returned */
         size_t nel = ii;
+
         memmove (bh_val, bh_val+k-ii, ii * sizeof(*bh_val));
         memmove (bh_ids, bh_ids+k-ii, ii * sizeof(*bh_ids));
+
         for (; ii &lt; k; ii++) {
             bh_val[ii] = C::neutral();
             bh_ids[ii] = -1;
@@ -1207,6 +1272,7 @@ namespace faiss {
     size_t minheap_reorder (size_t k, T * bh_val, int64_t * bh_ids) {
         return heap_reorder&lt; CMin&lt;T, int64_t&gt; &gt; (k, bh_val, bh_ids);
     }
+
     template &lt;typename T&gt; inline
     size_t maxheap_reorder (size_t k, T * bh_val, int64_t * bh_ids) {
         return heap_reorder&lt; CMax&lt;T, int64_t&gt; &gt; (k, bh_val, bh_ids);
@@ -1218,7 +1284,8 @@ namespace faiss {
      *******************************************************************/
 
     /** a template structure for a set of [min|max]-heaps it is tailored
-     * so that the actual data of the heaps can just live in compact arrays. */
+     * so that the actual data of the heaps can just live in compact arrays.
+     */
     template &lt;typename C&gt;
     struct HeapArray {
         typedef typename C::TI TI;
@@ -1236,11 +1303,8 @@ namespace faiss {
         TI * get_ids (size_t key) { return ids + key * k; }
 
         /// prepare all the heaps before adding
-        void heapify (){
-            #pragma omp parallel for
-                for (size_t j = 0; j &lt; nh; j++)
-                    heap_heapify&lt;C&gt; (k, val + j * k, ids + j * k);
-        }
+        void heapify ();
+
         /** add nj elements to heaps i0:i0+ni, with sequential ids
          *
          * @param nj    nb of elements to add to each heap
@@ -1249,87 +1313,27 @@ namespace faiss {
          * @param i0    first heap to update
          * @param ni    nb of elements to update (-1 = use nh)
          */
-        void addn (size_t nj, const T *vin, TI j0 = 0, size_t i0 = 0, int64_t ni = -1){
-            if (ni == -1) ni = nh;
-            assert (i0 &gt;= 0 &amp;&amp; i0 + ni &lt;= nh);
-            #pragma omp parallel for
-                for (size_t i = i0; i &lt; i0 + ni; i++) {
-                    T * __restrict simi = get_val(i);
-                    TI * __restrict idxi = get_ids (i);
-                    const T *ip_line = vin + (i - i0) * nj;
-
-                    for (size_t j = 0; j &lt; nj; j++) {
-                        T ip = ip_line [j];
-                        if (C::cmp(simi[0], ip)) {
-                            heap_pop&lt;C&gt; (k, simi, idxi);
-                            heap_push&lt;C&gt; (k, simi, idxi, ip, j + j0);
-                        }
-                    }
-        }
+        void addn (size_t nj, const T *vin, TI j0 = 0, size_t i0 = 0, int64_t ni = -1);
 
         /** same as addn
+         *
          * @param id_in     ids of the elements to add, size ni * nj
          * @param id_stride stride for id_in
          */
-        void addn_with_ids ( size_t nj, const T *vin, const TI *id_in = nullptr,
-                int64_t id_stride = 0, size_t i0 = 0, int64_t ni = -1){
-            if (id_in == nullptr) {
-                addn (nj, vin, 0, i0, ni);
-                return;
-            }
-            if (ni == -1) ni = nh;
-            assert (i0 &gt;= 0 &amp;&amp; i0 + ni &lt;= nh);
-            #pragma omp parallel for
-                for (size_t i = i0; i &lt; i0 + ni; i++) {
-                    T * __restrict simi = get_val(i);
-                    TI * __restrict idxi = get_ids (i);
-                    const T *ip_line = vin + (i - i0) * nj;
-                    const TI *id_line = id_in + (i - i0) * id_stride;
-
-                    for (size_t j = 0; j &lt; nj; j++) {
-                        T ip = ip_line [j];
-                        if (C::cmp(simi[0], ip)) {
-                            heap_pop&lt;C&gt; (k, simi, idxi);
-                            heap_push&lt;C&gt; (k, simi, idxi, ip, id_line [j]);
-                        }
-                    }
-        }
+        void addn_with_ids (size_t nj, const T *vin, const TI *id_in = nullptr,
+            int64_t id_stride = 0, size_t i0 = 0, int64_t ni = -1);
 
         /// reorder all the heaps
-        void reorder (){
-            #pragma omp parallel for
-                for (size_t j = 0; j &lt; nh; j++)
-                    heap_reorder&lt;C&gt; (k, val + j * k, ids + j * k);
-        }
+        void reorder ();
 
         /** this is not really a heap function. It just finds the per-line
          *   extrema of each line of array D
          * @param vals_out    extreme value of each line (size nh, or NULL)
          * @param idx_out     index of extreme value (size nh or NULL)
          */
-        void per_line_extrema (T *vals_out, TI *idx_out) const{
-            #pragma omp parallel for
-                for (size_t j = 0; j &lt; nh; j++) {
-                    int64_t imin = -1;
-                    typename C::T xval = C::Crev::neutral ();
-                    const typename C::T * x_ = val + j * k;
-                    for (size_t i = 0; i &lt; k; i++)
-                        if (C::cmp (x_[i], xval)) {
-                            xval = x_[i];
-                            imin = i;
-                        }
-                    if (out_val)
-                        out_val[j] = xval;
+        void per_line_extrema (T *vals_out, TI *idx_out) const;
 
-                    if (out_ids) {
-                        if (ids &amp;&amp; imin != -1)
-                            out_ids[j] = ids [j * k + imin];
-                        else
-                            out_ids[j] = imin;
-                    }
-                }
-        }
-    }
+    };
 
     /* Define useful heaps */
     typedef HeapArray&lt;CMin&lt;float, int64_t&gt; &gt; float_minheap_array_t;
@@ -1337,6 +1341,8 @@ namespace faiss {
 
     typedef HeapArray&lt;CMax&lt;float, int64_t&gt; &gt; float_maxheap_array_t;
     typedef HeapArray&lt;CMax&lt;int, int64_t&gt; &gt; int_maxheap_array_t;
+
+    // The heap templates are instanciated explicitly in Heap.cpp
 
 
     /*********************************************************************
@@ -1347,7 +1353,7 @@ namespace faiss {
      *********************************************************************/
 
     template &lt;class C&gt;
-    inline void indirect_heap_pop (size_t k,const typename C::T * bh_val, typename C::TI * bh_ids) {
+    inline void indirect_heap_pop ( size_t k, const typename C::T * bh_val, typename C::TI * bh_ids) {
         bh_ids--; /* Use 1-based indexing for easier node-&gt;child translation */
         typename C::T val = bh_val[bh_ids[k]];
         size_t i = 1;
@@ -1373,8 +1379,7 @@ namespace faiss {
     }
 
     template &lt;class C&gt;
-    inline void indirect_heap_push (size_t k,const typename C::T * bh_val, typename C::TI * bh_ids,
-                         typename C::TI id) {
+    inline void indirect_heap_push (size_t k, const typename C::T * bh_val, typename C::TI * bh_ids, typename C::TI id) {
         bh_ids--; /* Use 1-based indexing for easier node-&gt;child translation */
         typename C::T val = bh_val[id];
         size_t i = k;
@@ -1387,6 +1392,103 @@ namespace faiss {
         }
         bh_ids[i] = id;
     }
+} // namespace faiss
+
+#endif  /* FAISS_Heap_h */
+</code></pre>
+
+<ul>
+<li><strong>Heap.cpp文件</strong></li>
+</ul>
+<pre><code class="c++">/* Function for soft heap */
+#include &lt;faiss/utils/Heap.h&gt;
+
+namespace faiss {
+
+    template &lt;typename C&gt;
+    void HeapArray&lt;C&gt;::heapify () {
+        #pragma omp parallel for
+            for (size_t j = 0; j &lt; nh; j++)
+                heap_heapify&lt;C&gt; (k, val + j * k, ids + j * k);
+    }
+
+    template &lt;typename C&gt;
+    void HeapArray&lt;C&gt;::reorder () {
+        #pragma omp parallel for
+            for (size_t j = 0; j &lt; nh; j++)
+                heap_reorder&lt;C&gt; (k, val + j * k, ids + j * k);
+    }
+
+    template &lt;typename C&gt;
+    void HeapArray&lt;C&gt;::addn (size_t nj, const T *vin, TI j0, size_t i0, int64_t ni) {
+        if (ni == -1) ni = nh;
+        assert (i0 &gt;= 0 &amp;&amp; i0 + ni &lt;= nh);
+        #pragma omp parallel for
+            for (size_t i = i0; i &lt; i0 + ni; i++) {
+                T * __restrict simi = get_val(i);
+                TI * __restrict idxi = get_ids (i);
+                const T *ip_line = vin + (i - i0) * nj;
+
+                for (size_t j = 0; j &lt; nj; j++) {
+                    T ip = ip_line [j];
+                    if (C::cmp(simi[0], ip)) {
+                        heap_pop&lt;C&gt; (k, simi, idxi);
+                        heap_push&lt;C&gt; (k, simi, idxi, ip, j + j0);
+                    }
+                }
+            }
+    }
+
+    template &lt;typename C&gt;
+    void HeapArray&lt;C&gt;::addn_with_ids ( size_t nj, const T *vin, const TI *id_in, int64_t id_stride, size_t i0, int64_t ni) {
+        if (id_in == nullptr) {
+            addn (nj, vin, 0, i0, ni);
+            return;
+        }
+        if (ni == -1) ni = nh;
+        assert (i0 &gt;= 0 &amp;&amp; i0 + ni &lt;= nh);
+        #pragma omp parallel for
+            for (size_t i = i0; i &lt; i0 + ni; i++) {
+                T * __restrict simi = get_val(i);
+                TI * __restrict idxi = get_ids (i);
+                const T *ip_line = vin + (i - i0) * nj;
+                const TI *id_line = id_in + (i - i0) * id_stride;
+
+                for (size_t j = 0; j &lt; nj; j++) {
+                    T ip = ip_line [j];
+                    if (C::cmp(simi[0], ip)) {
+                        heap_pop&lt;C&gt; (k, simi, idxi);
+                        heap_push&lt;C&gt; (k, simi, idxi, ip, id_line [j]);
+                    }
+                }
+            }
+    }
+
+
+    template &lt;typename C&gt;
+    void HeapArray&lt;C&gt;::per_line_extrema ( T * out_val, TI * out_ids) const {
+        #pragma omp parallel for
+            for (size_t j = 0; j &lt; nh; j++) {
+                int64_t imin = -1;
+                typename C::T xval = C::Crev::neutral ();
+                const typename C::T * x_ = val + j * k;
+                for (size_t i = 0; i &lt; k; i++)
+                    if (C::cmp (x_[i], xval)) {
+                        xval = x_[i];
+                        imin = i;
+                    }
+                if (out_val)
+                    out_val[j] = xval;
+
+                if (out_ids) {
+                    if (ids &amp;&amp; imin != -1)
+                        out_ids[j] = ids [j * k + imin];
+                    else
+                        out_ids[j] = imin;
+                }
+            }
+    }
+
 
     // explicit instanciations
     template struct HeapArray&lt;CMin &lt;float, int64_t&gt; &gt;;
@@ -1394,9 +1496,7 @@ namespace faiss {
     template struct HeapArray&lt;CMin &lt;int, int64_t&gt; &gt;;
     template struct HeapArray&lt;CMax &lt;int, int64_t&gt; &gt;;
 
-} // namespace faiss
-
-#endif  /* FAISS_Heap_h */
+}  // END namespace fasis
 </code></pre>
 
 <h3 id="413-distanceshdistancescpp">4.1.3 <code>distances.h</code>、<code>distances.cpp</code>文件</h3>
