@@ -24,6 +24,7 @@ nav:
             - python基础: 工程内容/python教程/python基础.md
             - python日志: 工程内容/python教程/python日志.md
     - 项目内容:
+        - makefile教程: 项目内容/makefile教程.md
         - faiss项目: 项目内容/faiss项目.md
     - 比赛内容:
         - leetcode:
