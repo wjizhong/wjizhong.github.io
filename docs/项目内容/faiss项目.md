@@ -1483,7 +1483,7 @@ namespace faiss {
 }  // END namespace fasis
 ```
 
-### 4.1.3 WorkerThread.h和WorkerThread.cpp文件
+#### 4.1.3 WorkerThread.h和WorkerThread.cpp文件
 
 * **WorkerThread.h文件**
 
@@ -1649,7 +1649,7 @@ namespace faiss {
 } // namespace
 ```
 
-### 4.1.3 `distances.h`、`distances.cpp`文件
+#### 4.1.3 distances.h和distances.cpp文件
 
 * **`distances.h`文件**
 

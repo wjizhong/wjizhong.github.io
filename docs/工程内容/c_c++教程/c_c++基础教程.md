@@ -1,0 +1,1180 @@
+# `C/C++`基础教程
+## 一、基本知识
+### 1.1 预定义宏
+
+* **宏定义**
+
+`C`语言中用到宏定义的地方很多,如在头文件中为了防止头文件被重复包含,则用到:
+
+```c
+#ifndef cTest_Header_h
+#define cTest_Header_h
+// 头文件内容
+#endif
+```
+
+在我们常用的`stdio.h`头文件中也可以见到很多宏定义,如:
+
+```c
+#define BUFSIZ 1024 // 缓冲区大小
+#define EOF (-1)    // 表文件末尾
+#ifndef SEEK_SET
+#define SEEK_SET 0  // 表示文件指针从文件的开头开始
+#endif
+#ifndef SEEK_CUR
+#define SEEK_CUR 1  // 表示文件指针从现在的位置开始
+#endif
+#ifndef SEEK_END
+#define SEEK_END 2  // 表示文件指针从文件的末尾开始
+#endif
+```
+
+从开始写`C`语言到生成执行程序的流程大致如下(姑且忽略预处理之前的编译器的翻译处理流程等),在进行编译的第一次扫描(词法扫描和语法分析)之前,会有由预处理程序负责完成的预处理工作。
+
+![](http://img-blog.csdn.net/20151107180104217)
+
+预处理工作是系统引用预处理程序对源程序中的预处理部分做处理,而预处理部分是指以"`#`"开头的、放在函数之外的、一般放在源文件的前面的预处理命令,如:包括命令`#include`,宏命令`#define`等,合理地利用预处理功能可以使得程序更加方便地阅读、修改、移植、调试等,也有利于模块化程序设计。本文主要介绍宏定义的以下几个部分:
+
+![](http://img-blog.csdn.net/20151107180303244)
+
+* **概念及无参宏**
+
+一种最简单的宏的形式如下:`#define 宏名 替换文本`
+
+每个`#define`行(即逻辑行)由三部分组成:第一部分是指令`#define`自身,"`#`"表示这是一条预处理命令,"`define`"为宏命令。第二部分为宏(`macro`),一般为缩略语,其名称(宏名)一般大写,而且不能有空格,遵循`C`变量命令规则。"替换文本"可以是任意常数、表达式、字符串等。在预处理工作过程中,代码中所有出现的"宏名",都会被"替换文本"替换。这个替换的过程被称为"宏代换"或"宏展开"(`macroexpansion`)。"宏代换"是由预处理程序自动完成的。在`C`语言中,"宏"分为两种:无参数和有参数。
+
+无参宏是指宏名之后不带参数,上面最简单的宏就是无参宏。
+
+```c
+#define M 5                // 宏定义
+#define PI 3.14            // 宏定义
+int a[M];                  // 会被替换为: int a[5];
+int b = M;                 // 会被替换为: int b = 5;
+printf("PI = %.2f\n", PI); // 输出结果为: PI = 3.14
+```
+
+注意宏不是语句,结尾不需要加"`;`",否则会被替换进程序中,如:
+
+```c
+#define N 10;               // 宏定义
+int c[N];                   // 会被替换为: int c[10;]; 
+//error:… main.c:133:11: Expected ']'
+```
+
+以上几个宏都是用来代表值,所以被成为类对象宏(`object-like macro`,还有类函数宏。如果要写宏不止一行,则在结尾加反斜线符号使得多行能连接上,如:
+
+```c
+#define HELLO "hello \
+the world"
+```
+
+注意第二行要对齐,否则,如:
+
+```c
+#define HELLO "hello the wo\
+  rld"
+printf("HELLO is %s\n", HELLO);
+// 输出结果为: HELLO is hello the wo  rld 
+```
+
+也就是行与行之间的空格也会被作为替换文本的一部分,而且由这个例子也可以看出:宏名如果出现在源程序中的`""`内,则不会被当做宏来进行宏代换。宏可以嵌套,但不参与运算:
+
+```c
+#define M 5                 // 宏定义
+#define MM M * M            // 宏的嵌套
+printf("MM = %d\n", MM);    // MM 被替换为: MM = M * M, 然后又变成 MM = 5 * 5
+```
+
+宏代换的过程在上句已经结束,实际的`5*5`相乘过程则在编译阶段完成,而不是在预处理器工作阶段完成,所以宏不进行运算,它只是按照指令进行文字的替换操作。再强调下,宏进行简单的文本替换,无论替换文本中是常数、表达式或者字符串等,预处理程序都不做任何检查,如果出现错误,只能是被宏代换之后的程序在编译阶段发现。
+
+宏定义必须写在函数之外,其作用域是`#define`开始,到源程序结束。如果要提前结束它的作用域则用`#undef`命令,如:
+
+```c
+#define M 5                 // 宏定义
+printf("M = %d\n", M);      // 输出结果为: M = 5
+#define M 100               // 取消宏定义
+printf("M = %d\n", M);      // error:… main.c:138:24: Use of undeclared identifier 'M'
+```
+
+也可以用宏定义表示数据类型,可以使代码简便:
+
+```c
+#define STU struct Student      // 宏定义STU
+struct Student{                 // 定义结构体Student
+    char *name;
+    int sNo;
+};
+STU stu = {"Jack", 20};         // 被替换为:struct Student stu = {"Jack", 20};
+printf("name: %s, sNo: %d\n", stu.name, stu.sNo);
+```
+
+如果重复定义宏,则不同的编译器采用不同的重定义策略。有的编译器认为这是错误的,有的则只是提示警告。`Xcode`中采用第二种方式。如:
+
+```c
+#define M 5                 // 宏定义
+#define M 100               // 重定义,warning:… main.c:26:9: 'M' macro redefined
+```
+
+这些简单的宏主要被用来定义那些显式常量(`Manifest Constants`)(`Stephen Prata`,`2004`),而且会使得程序更加容易修改,特别是某一常量的值在程序中多次被用到的时候,只需要改动一个宏定义,则程序中所有出现该变量的值都可以被改变。而且宏定义还有更多其他优点,如使得程序更容易理解,可以控制条件编译等。
+
+**`#define`与`typedef`的区别:**
+
+两者都可以用来表示数据类型,如:
+
+```c
+#define INT1 int
+typedef int INT2;
+```
+
+两者是等效的,调用也一样:
+
+```c
+INT1 a1 = 3;
+INT2 a2 = 5;
+```
+
+但当如下使用时,问题就来了:
+
+```c
+#define INT1 int *
+typedef int * INT2;
+INT1 a1, b1;
+INT2 a2, b2;
+b1 = &m;         // ... main.c:185:8: Incompatible pointer to integer conversion assigning to 'int' from 'int *'; remove &
+b2 = &n;         // OK
+```
+
+因为`INT1 a1, b1`;被宏代换后为:`int * a1, b1`;即定义的是一个指向`int`型变量的指针`a1`和一个`int`型的变量`b1`.而`INT2 a2, b2`;表示定义的是两个变量`a2`和`b2`,这两个变量的类型都是`INT2`的,也就是`int *`的,所以两个都是指向int型变量的指针。所以两者区别在于,宏定义只是简单的字符串代换,在预处理阶段完成。而`typedef`不是简单的字符串代换,而是可以用来做类型说明符的重命名的,类型的别名可以具有类型定义说明的功能,在编译阶段完成的。
+
+* **有参宏**
+
+`C`语言中宏是可以有参数的,这样的宏就成了外形与函数相似的类函数宏(`function-like macro`),如:
+
+![](http://img-blog.csdn.net/20151107181329002)
+
+宏调用:`宏名(实参表)`;
+
+```c
+printf("MEAN = %d\n", MEAN(7, 9)); // 输出结果: MEAN = 8
+```
+
+和函数类似,在宏定义中的参数成为形式参数,在宏调用中的参数成为实际参数。而且和无参宏不同的一点是,有参宏在调用中,不仅要进行宏展开,而且还要用实参去替换形参。如:
+
+```c
+#define M 5                          // 无参宏
+#define COUNT(M) M * M               // 有参宏
+printf("COUNT = %d\n", COUNT(10));   // 替换为: COUNT(10) = 10 * 10
+                                     // 输出结果: COUNT = 100
+```
+
+这看上去用法与函数调用类似,但实际上是有很大差别的。如:
+
+```c
+#define COUNT(M) M * M                // 定义有参宏
+int x = 6;
+printf("COUNT = %d\n", COUNT(x + 1)); // 输出结果: COUNT = 13
+printf("COUNT = %d\n", COUNT(++x));   // 输出结果: COUNT = 56                                                                                               // warning:... main.c:161:34: Multiple unsequenced modifications to 'x'
+```
+
+这两个结果和调用函数的方法的结果差别很大,因为如果是像函数那样的话,`COUNT(x+1)`应该相当于`COUNT(7)`,结果应该是`7*7=49`,但输出结果却是`21`。原因在于,预处理器不进行技术,只是进行字符串替换,而且也不会自动加上括号`()`,所以`COUNT(x+1)`被替换为`COUNT(x+1*x+1)`,代入`x=6`,即为`6+1*6+1=13`。而解决办法则是:尽量用括号把整个替换文本及其中的每个参数括起来:
+
+```c
+#define COUNT(M) ((M) * (M))  
+```
+
+但即使用括号,也不能解决上面例子的最后一个情况,`COUNT(++x)`被替换为`++x*++x`,即为`7*8=56`,而不是想要`7*7=49`,解决办法最简单的是:不要在有参宏用使用到"`++`"、"`–`"等。
+
+上面说到宏名中不能有空格,宏名与形参表之间也不能有空格,而形参表中形参之间可以出现空格:
+
+```c
+#define SUM (a,b) a + b              // 定义有参宏
+printf("SUM = %d\n", SUM(1,2));      // 调用有参宏。Build Failed!
+因为SUM被替换为:(a,b) a+b
+```
+
+如果用函数求一个整数的平方,则是:
+
+```c
+int count(int x){
+    return x * x;
+}
+```
+
+所以在宏定义中:`#define COUNT(M) M * M`中的形参不分配内存单元,所以不作类型定义。而函数`int count(int x)`中形参是局部变量,会在栈区分配内存单元,所以要作类型定义,而且实参与形参之间是"值传递"。而宏只是符号代换,不存在值传递。
+
+宏定义也可以用来定义表达式或者多个语句。如:
+
+```c
+#define JI(a,b) a = i + 3; b = j + 5;   // 宏定义多个语句
+int i = 5, j = 10;
+int m = 0, n = 0;
+JI(m, n);                               // 宏代换后为: m = i + 3, n = j + 5;
+printf("m = %d, n = %d\n", m, n);       // 输出结果为: m = 8, n = 15
+```
+
+* **`#`运算符**
+
+比如如果我们宏定义了:
+
+```c
+#define SUM (a,b) ((a) + (b)) 
+```
+
+我们想要输出"`1+2+3+4=10`",用以下方式显得比较麻烦,有重复代码,而且中间还有括号:
+
+```c
+printf("(%d + %d) + (%d + %d) = %d\n", 1, 2, 3, 4, SUM(1 + 2, 3+ 4));
+```
+
+那么这时可以考虑用#运算符来在字符串中包含宏参数,#运算符的用处就是把语言符号转化为字符串。例如,如果a是一个宏的形参,则替换文本中的#a则被系统转化为"a"。而这个转化的过程成为"字符串化(stringizing)"。用这个方法实现上面的要求:
+
+```c
+#define SUM(a,b) printf(#a " + "#b" = %d\n",((a) + (b)))    // 宏定义,运用#运算符
+SUM(1 + 2, 3 + 4);                                          // 宏调用
+// 输出结果:1 + 2 + 3 + 4 = 10
+```
+
+调用宏时,用`1+2`代替`a`,用`3+4`代替`b`,则替换文本为:`printf("1+2""+""3+4""=%d\n",((1+2)+(3+4)))`,接着字符串连接功能将四个相邻的字符串转换为一个字符串:
+
+```c
+"1 + 2 + 3 + 4 = %d\n"
+```
+
+* **`##`运算符**
+
+和`#`运算符一样,##运算符也可以用在替换文本中,而它的作用是起到粘合的作用,即将两个语言符号组合成一个语言符号,所以又称为"预处理器的粘合剂(`Preprocessor Glue`)"。用法:
+
+```c
+#define NAME(n) num ## n            // 宏定义,使用##运算符
+int num0 = 10;
+printf("num0 = %d\n", NAME(0));     // 宏调用
+```
+
+`NAME(0)`被替换为`num ## 0`,被粘合为:`num0`。
+
+* **可变宏:`…`和`__VA_ARGS__`**
+
+我们经常要输出结果时要多次使用`prinf("…", …)`;如果用上面例子`#define SUM(a,b) printf(#a " + "#b" = %d\n",((a) + (b)))`,则格式比较固定,不能用于输出其他格式。这时我们可以考虑用可变宏(`Variadic Macros`)。用法是:
+
+```c
+#define PR(...) printf(__VA_ARGS__)     // 宏定义
+PR("hello\n");                          // 宏调用
+// 输出结果:hello
+```
+
+在宏定义中,形参列表的最后一个参数为省略号"`…`",而"`__VA_ARGS__`"就可以被用在替换文本中,来表示省略号"…"代表了什么。而上面例子宏代换之后为:`printf("hello\n");`
+
+还有个例子如:
+
+```c
+#define PR2(X, ...) printf("Message"#X":"__VA_ARGS__)   // 宏定义
+double msg = 10;
+PR2(1, "msg = %.2f\n", msg);                            // 宏调用
+// 输出结果:Message1:msg = 10.00
+```
+
+在宏调用中,`X`的值为`10`,所以`#X`被替换为"`1`"。宏代换后为:
+
+```c
+printf("Message""1"":""msg = %.2f\n", msg);
+```
+
+接着这4个字符串连接成一个:
+
+```
+printf("Message1:msg = %.2f\n", msg);
+```
+
+要注意的是:省略号"`…`"只能用来替换宏的形参列表中最后一个!
+
+* **常见的宏**
+
+常用的标准预定义宏
+
+| 宏 | 描述 |
+| :--- | --- |
+| `__DATE__` | 当前前源文件的编泽日期,用"`Mmm dd yyy`"形式的字符串常量表示 |
+| `__FILE__` | 当前源文件的名称,用字符串常量表示 |
+| `__LINE__` | 当前源义件中的行号,用十进制整数常量表示,它可以随`#line`指令改变|
+| `__TIME__` | 当前源文件的最新编译吋间,用"`hh:mm:ss`"形式的宁符串常量表示 |
+| `__STDC__` | 如果今前编泽器符合`ISO`标准,那么该宏的值为`1`,否则未定义 |
+| `__STDC_VERSION__` | 如果当前编译器符合`C89`,那么它被定义为`199409L`;如果符合`C99`,那么它被定义为`199901L`:在其他情况下,该宏为宋定义 |
+| `__STDC_HOSTED__` | (`C99`)如果当前是宿主系统,则该宏的值为`1`;如果当前是独立系统,则该宏的值为`0` |
+| `__STDC_IEC_559_` | (`C99`)如果浮点数的实现符合`IEC 60559`标准时,则该宏的值为`1`,否则为未定义 |
+| `__STDC_IEC_559_COMPLEX__` | (C99)如果复数运算实现符合`IEC60559`标准时,则该宏的伉为`1`,否则为未定义 |
+| `__STDC_ISO_10646__` | (`C99`)定义为长整型常量,`yyyymmL`表示`wchai_t`值遵循`ISO 10646`标准及其指定年月的修订补充,否则该宏为未定义 |
+
+操作系统宏大全参见[predef](http://sourceforge.net/p/predef/wiki/OperatingSystems/)
+ 
+| `OS` | `MACRO`
+| :--- | :--- |
+| `linux` | `linux`,`__linux`,`__linux__` |
+| `windows` | `_WIN32` |
+| `MacOS` | `macintosh` |
+| `Android` | `__ANDROID__` |
+| `gnu linux` | `__gnu_linux__` |
+| `solaris` | `sun`,`__sun` |
+| `FreeBSD` | `__FreeBSD__` |
+| `OpenBSD`	| `__OpenBSD__` |
+
+
+
+
+### 1.2 指针的概念
+
+指针是一个特殊的变量,它里面存储的数值被解释成为内存里的一个地址。要搞清一个指针需要搞清指针的四方面的内容:指针的类型,指针所指向的类型,指针的值或者叫指针所指向的内存区,还有指针本身所占据的内存区。让我们分别说明。 先声明几个指针放着做例子: 
+
+
+> * int p;         // 这是一个普通的整型变量 
+> * int \*p;       // 首先从p处开始,先与\*结合,所以说明p是一个指针,然后再与int结合,说明指针所指向的内容的类型为int型.所以p是一个返回整型数据的指针  
+> * int p[3];      // 首先从p处开始,先与[]结合,说明p是一个数组,然后与int结合,说明数组里的元素是整型的,所以p是一个由整型数据组成的数组  
+> * int \*p[3];    // 首先从p 处开始,先与[]结合,因为其优先级比\*高,所以p是一个数组,然后再与\*结合,说明数组里的元素是指针类型,然后再与int结合,说明指针所指向的内容的类型是整型的,所以p是一个由返回整型数据的指针所组成的数组  
+> * int (\*p)[3];  // 首先从p处开始,先与\*结合,说明p是一个指针然后再与[]结合(与"()"这步可以忽略,只是为了改变优先级),说明指针所指向的内容是一个数组,然后再与int结合,说明数组里的元素是整型的.所以p是一个指向由整型数据组成的数组的指针  
+> * int \*\*p;     // 首先从p开始,先与\*结合,说是p是一个指针,然后再与\*结合,说明指针所指向的元素是指针,然后再与int结合,说明该指针所指向的元素是整型数据.由于二级指针以及更高级的指针极少用在复杂的类型中,所以后面更复杂的类型我们就不考虑多级指针了,最多只考虑一级指针.  
+> * int p(int);    // 从p处起,先与()结合,说明p是一个函数,然后进入()里分析,说明该函数有一个整型变量的参数,然后再与外面的int结合,说明函数的返回值是一个整型数据  
+> * Int (*p)(int); // 从p处开始,先与指针结合,说明p是一个指针,然后与()结合,说明指针指向的是一个函数,然后再与()里的int 结合,说明函数有一个int 型的参数,再与最外层的int结合,说明函数的返回类型是整型,所以p是一个指向有一个整型参数且返回类型为整型的函数的指针  
+> * int *(*p(int))[3]; // 可以先跳过,不看这个类型,过于复杂从p开始,先与()结合,说明p是一个函数,然后进入()里面,与int 结合,说明函数有一个整型变量参数,然后再与外面的*结合,说明函数返回的是一个指针,,然后到最外面一层,先与[]结合,说明返回的指针指向的是一个数组,然后再与*结合,说明数组里的元素是指针,然后再与int结合,说明指针指向的内容是整型数据.所以p是一个参数为一个整数据且返回一个指向由整型指针变量组成的数组的指针变量的函数.
+
+* **指针的类型**
+
+指针所指向的类型,当你通过指针来访问指针所指向的内存区时,指针所指向的类型决定了编译器将把那片内存区里的内容当做什么来看待。从语法上看,你只须把指针声明语句中的指针名字和名字左边的指针声明符\*去掉,剩下的就是指针所指向的类型。例如:
+
+```
+int *ptr;   // 指针所指向的类型是int  
+char *ptr;  // 指针所指向的的类型是char  
+int **ptr;  // 指针所指向的的类型是int *  
+int (*ptr)[3];  // 指针所指向的的类型是int()[3]  
+int *(*ptr)[4]; // 指针所指向的的类型是int *()[4]  
+```
+
+在指针的算术运算中,指针所指向的类型有很大的作用。  
+
+指针的类型(即指针本身的类型)和指针所指向的类型是两个概念。当你对C越来越熟悉时,你会发现,把与指针搅和在一起的"类型"这个概念分成"指针的类型"和"指针所指向的类型"两个概念,是精通指针的关键点之一。
+
+* **指针的值**
+
+指针的值是指针本身存储的数值,这个值将被编译器当作一个地址,而不是一个一般的数值。在32位程序里,所有类型的指针的值都是一个32位整数,因为32位程序里内存地址全都是32位长。指针所指向的内存区就是从指针的值所代表的那个内存地址开始,长度为sizeof(指针所指向的类型)的一片内存区。以后,我们说一个指针的值是XX,就相当于说该指针指向了以XX为首地址的一片内存区域;我们说一个指针指向了某块内存区域,就相当于说该指针的值是这块内存区域的首地址。指针所指向的内存区和指针所指向的类型是两个完全不同的概念。在例一中,指针所指向的类型已经有了,但由于指针还未初始化,所以它所指向的内存区是不存在的,或者说是无意义的。
+
+指针本身所占据的内存区:你只要用函数sizeof(指针的类型)测一下就知道了。在32位平台里,指针本身占据了4个字节的长度。指针本身占据的内存这个概念在判断一个指针表达式是否是左值时很有用。　
+* **指针的算术运算**
+
+指针可以加上或减去一个整数。指针的这种运算的意义和通常的数值的加减运算的意义是不一样的。例如:  
+
+```
+char a[20];  
+int *ptr=a;  
+...  
+...  
+ptr++;  
+```
+
+在上例中,指针ptr的类型是int\*,它指向的类型是int,它被初始化为指向整形变量a。接下来的第3句中,指针ptr被加了1,编译器是这样处理的:它把指针ptr的值加上了sizeof(int),在32位程序中,是被加上了4。由于地址是用字节做单位的,故ptr所指向的地址由原来的变量a的地址向高地址方向增加了4个字节。由于char类型的长度是一个字节,所以,原来ptr是指向数组a的第0号单元开始的四个字节,此时指向了数组a中从第4号单元开始的四个字节。
+
+我们可以用一个指针和一个循环来遍历一个数组,看例子:
+
+```
+int array[20];  
+int *ptr=array;  
+...  
+//此处略去为整型数组赋值的代码。  
+...  
+for(i=0;i<20;i++)  
+{  
+    (*ptr)++;  
+    ptr++;  
+}  
+```
+
+这个例子将整型数组中各个单元的值加1。由于每次循环都将指针ptr加1,所以每次循环都能访问数组的下一个单元。再看例子:  
+
+```
+char a[20];  
+int *ptr = a;  
+...  
+...  
+ptr += 5;  
+```
+
+在这个例子中,ptr被加上了5,编译器是这样处理的:将指针ptr的值加上5乘sizeof(int),在32位程序中就是加上了5乘4=20。由于地址的单位是字节,故现在的ptr所指向的地址比起加5后的ptr所指向的地址来说,向高地址方向移动了20个字节。在这个例子中,没加5前的ptr指向数组a的第0号单元开始的四个字节,加5后,ptr已经指向了数组a的合法范围之外了。虽然这种情况在应用上会出问题,但在语法上却是可以的。这也体现出了指针的灵活性。 
+
+如果上例中,ptr是被减去5,那么处理过程大同小异,只不过ptr的值是被减去5乘sizeof(int),新的ptr指向的地址将比原来的ptr所指向的地址向低地址方向移动了20个字节。 
+
+总结一下,一个指针ptrold加上一个整数n后,结果是一个新的指针ptrnew,ptrnew的类型和ptrold的类型相同,ptrnew所指向的类型和ptrold所指向的类型也相同。ptrnew的值将比ptrold的值增加了n乘sizeof(ptrold所指向的类型)个字节。就是说,ptrnew所指向的内存区将比ptrold所指向的内存区向高地址方向移动了n乘sizeof(ptrold所指向的类型)个字节。一个指针ptrold减去一个整数n后,结果是一个新的指针ptrnew,ptrnew的类型和ptrold的类型相同,ptrnew所指向的类型和ptrold所指向的类型也相同。ptrnew的值将比ptrold的值减少了n乘sizeof(ptrold所指向的类型)个字节,就是说,ptrnew所指向的内存区将比ptrold所指向的内存区向低地址方向移动了n乘sizeof(ptrold所指向的类型)个字节。
+
+* **运算符&和\***
+
+这里&是取地址运算符,\*叫做"间接运算符"。&a的运算结果是一个指针,指针的类型是a的类型加个\*,指针所指向的类型是a的类型,指针所指向的地址嘛,那就是a的地址。\*p的运算结果就五花八门了。总之\*p的结果是p所指向的东西,这个东西有这些特点:它的类型是p指向的类型,它所占用的地址是p所指向的地址。
+
+```
+int a=12;  
+int b;  
+int *p;  
+int **ptr;  
+p=&a;   // &a的结果是一个指针,类型是int*,指向的类型是int,指向的地址是a的地址。  
+*p=24;  // *p的结果,在这里它的类型是int,它所占用的地址是p所指向的地址,显然,*p就是变量a。
+ptr=&p; // &p的结果是个指针,该指针的类型是p的类型加个*,在这里是int**。该指针所指向的类型是p的类型,这里是int*。该指针所指向的地址就是指针p自己的地址。 
+*ptr=&b;// *ptr是个指针,&b的结果也是个指针,且这两个指针的类型和所指向的类型是一样的,所以?amp;b来给*ptr赋值就是毫无问题的了。
+**ptr=34;   // *ptr的结果是ptr所指向的东西,在这里是一个指针,对这个指针再做一次*运算,结果就是一个int类型的变量。
+```
+
+* **指针表达式**
+
+一个表达式的最后结果如果是一个指针,那么这个表达式就叫指针表达式。下面是一些指针表达式的例子:  
+
+```
+int a,b;  
+int array[10];  
+int *pa;  
+pa=&a;  // &a是一个指针表达式。  
+int **ptr=&pa;  // &pa也是一个指针表达式。  
+*ptr=&b;    // *ptr和&b都是指针表达式。  
+pa=array;  
+pa++;   // 这也是指针表达式。
+```
+
+```
+char *arr[20];  
+char **parr=arr;    // 如果把arr看作指针的话,arr也是指针表达式  
+char *str;  
+str=*parr;  // *parr是指针表达式  
+str=*(parr+1);  // *(parr+1)是指针表达式  
+str=*(parr+2);  // *(parr+2)是指针表达式  
+```
+
+由于指针表达式的结果是一个指针,所以指针表达式也具有指针所具有的四个要素:指针的类型,指针所指向的类型,指针指向的内存区,指针自身占据的内存。当一个指针表达式的结果指针已经明确地具有了指针自身占据的内存的话,这个指针表达式就是一个左值,否则就不是一个左值。 在例七中,&a不是一个左值,因为它还没有占据明确的内存。\*ptr是一个左值,因为\*ptr这个指针已经占据了内存,其实\*ptr就是指针pa,既然pa已经在内存中有了自己的位置,那么\*ptr当然也有了自己的位置。
+
+* **数组和指针的关系**
+
+数组的数组名其实可以看作一个指针。看下例:  
+
+```
+int array[10]={0,1,2,3,4,5,6,7,8,9},value;  
+...  
+...  
+value=array[0]; // 也可写成:value=*array;  
+value=array[3]; // 也可写成:value=*(array+3);  
+value=array[4]; // 也可写成:value=*(array+4);  
+```
+
+一般而言数组名array代表数组本身,类型是int [10],但如果把array看做指针的话,它指向数组的第0个单元,类型是int \*,所指向的类型是数组单元的类型即int。因此\*array等于0就一点也不奇怪了。同理,array+3是一个指向数组第3个单元的指针,所以\*(array+3)等于3。其它依此类推。 
+
+```
+char *str[3]={  
+"Hello,this is a sample!",  
+"Hi,good morning.",  
+"Hello world"  
+};  
+char s[80];  
+strcpy(s,str[0]);   // 也可写成strcpy(s,*str);  
+strcpy(s,str[1]);   // 也可写成strcpy(s,*(str+1));  
+strcpy(s,str[2]);   // 也可写成strcpy(s,*(str+2));  
+```
+上例中,str是一个三单元的数组,该数组的每个单元都是一个指针,这些指针各指向一个字符串。把指针数组名str当作一个指针的话,它指向数组的第0号单元,它的类型是char\*\*,它指向的类型是char \*。\*str也是一个指针,它的类型是char\*,它所指向的类型是char,它指向的地址是字符串"Hello,this is a sample!"的第一个字符的地址,即'H'的地址。 str+1也是一个指针,它指向数组的第1号单元,它的类型是char\*\*,它指向的类型是char \*。 \*(str+1)也是一个指针,它的类型是char\*,它所指向的类型是char,它指向"Hi,good morning."的第一个字符'H',等等。  
+
+下面总结一下数组的数组名的问题。声明了一个数组TYPE array[n],则数组名称array就有了两重含义:第一,它代表整个数组,它的类型是TYPE [n];第二,它是一个指针,该指针的类型是TYPE\*,该指针指向的类型是TYPE,也就是数组单元的类型,该指针指向的内存区就是数组第0号单元,该指针自己占有单独的内存区,注意它和数组第0号单元占据的内存区是不同的。该指针的值是不能修改的,即类似array++的表达式是错误的。 
+
+在不同的表达式中数组名array可以扮演不同的角色。  
+
+> * 在表达式sizeof(array)中,数组名array代表数组本身,故这时sizeof函数测出的是整个数组的大小。 
+> * 在表达式\*array中,array扮演的是指针,因此这个表达式的结果就是数组第0号单元的值。sizeof(\*array)测出的是数组单元的大小。  
+> * 表达式array+n(其中n=0,1,2,....。)中,array扮演的是指针,故array+n的结果是一个指针,它的类型是TYPE\*,它指向的类型是TYPE,它指向数组第n号单元。故sizeof(array+n)测出的是指针类型的大小。 
+
+```
+int array[10];  
+int (*ptr)[10];  
+ptr=&array;  
+```
+
+上例中ptr是一个指针,它的类型是int (\*)[10],他指向的类型是int [10],我们用整个数组的首地址来初始化它。在语句ptr=&array中,array代表数组本身。 
+
+本节中提到了函数sizeof(),那么sizeof(指针名称)测出的究竟是指针自身类型的大小呢还是指针所指向的类型的大小?答案是前者。例如:
+
+```
+int (*ptr)[10];  
+```
+
+则在32位程序中,有:  
+
+```
+sizeof(int(*)[10])==4  
+sizeof(int [10])==40  
+sizeof(ptr)==4  
+```
+
+实际上,sizeof(对象)测出的都是对象自身的类型的大小,而不是别的什么类型的大小。 　
+
+* **指针和结构类型的关系**
+
+可以声明一个指向结构类型对象的指针。  
+
+```
+struct MyStruct {  
+    int a;  
+    int b;  
+    int c;  
+}  
+
+MyStruct ss={20,30,40}; // 声明了结构对象ss,并把ss的三个成员初始化为20,30和40。
+MyStruct *ptr=&ss;      // 声明了一个指向结构对象ss的指针。它的类型是MyStruct*,它指向的类型是MyStruct。
+int *pstr=(int*)&ss;    // 声明了一个指向结构对象ss的指针。但是它的类型和它指向的类型和ptr是不同的。
+```
+
+请问怎样通过指针ptr来访问ss的三个成员变量?  
+
+```
+ptr->a;  
+ptr->b;  
+ptr->c;  
+```
+
+又请问怎样通过指针pstr来访问ss的三个成员变量?  
+
+```
+*pstr;     // 访问了ss的成员a。  
+*(pstr+1);  // 访问了ss的成员b。  
+*(pstr+2)   // 访问了ss的成员c。 
+```
+
+呵呵,虽然我在我的MSVC++6.0上调式过上述代码,但是要知道,这样使用pstr来访问结构成员是不正规的,为了说明为什么不正规,让我们看看怎样通过指针来访问数组的各个单元: 
+
+```
+int array[3]={35,56,37};  
+int *pa=array;  
+```
+
+通过指针pa访问数组array的三个单元的方法是:  
+
+```
+*pa;    // 访问了第0号单元  
+*(pa+1);// 访问了第1号单元  
+*(pa+2);// 访问了第2号单元  
+```
+从格式上看倒是与通过指针访问结构成员的不正规方法的格式一样。
+
+所有的C/C++编译器在排列数组的单元时,总是把各个数组单元存放在连续的存储区里,单元和单元之间没有空隙。但在存放结构对象的各个成员时,在某种编译环境下,可能会需要字对齐或双字对齐或者是别的什么对齐,需要在相邻两个成员之间加若干个"填充字节",这就导致各个成员之间可能会有若干个字节的空隙。
+
+所以,在例子中,即使\*pstr访问到了结构对象ss的第一个成员变量a,也不能保证\*(pstr+1)就一定能访问到结构成员b。因为成员a和成员b之间可能会有若干填充字节,说不定\*(pstr+1)就正好访问到了这些填充字节呢。这也证明了指针的灵活性。要是你的目的就是想看看各个结构成员之间到底有没有填充字节,嘿,这倒是个不错的方法。 
+
+* **指针和函数的关系**
+
+可以把一个指针声明成为一个指向函数的指针。  
+
+```
+int fun1(char*,int);  
+int (*pfun1)(char*,int);  
+pfun1=fun1;  
+....  
+....  
+int a=(*pfun1)("abcdefg",7); // 通过函数指针调用函数。  
+```
+可以把指针作为函数的形参。在函数调用语句中,可以用指针表达式来作为实参。  
+
+### 1.3 `#pragma`用法详解
+
+在所有的预处理指令中,\#Pragma指令可能是最复杂的了,它的作用是设定编译器的状态或者是指示编译器完成一些特定的动作。\#pragma指令对每个编译器给出了一个方法,在保持与C和C++语言完全兼容的情况下,给出主机或操作系统专有的特征。依据定义,编译指示是机器或操作系统专有的,且对于每个编译器都是不同的。其格式一般为:#pragma Para。其中Para为参数,下面来看一些常用的参数:
+
+|     |     |     |     |
+| --- | --- | --- | --- |
+| alloc\_text | comment | init\_seg\* | optimize |
+| auto\_inline | component | inline\_depth | pack |
+| bss\_seg | data\_seg | inline\_recursion | pointers\_to\_members\* | 
+| check\_stack | function | intrinsic | setlocale |
+| code\_seg | hdrstop | message | vtordisp\* | 
+| const\_seg | include\_alias | once | warning
+
+* **alloc\_text**
+
+```
+#pragma alloc_text( "textsection", function1, ... )
+```
+命名特别定义的函数驻留的代码段。该编译指示必须出现在函数说明符和函数定义之间。
+
+alloc\_text编译指示不处理C++成员函数或重载函数。它仅能应用在以C连接方式说明的函数。如果你试图将这个编译指示应用于一个具有C++连接方式的函数时,将出现一个编译程序错误。由于不支持使用\_\_based的函数地址,需要使用alloc\_text编译指示来指定段位置。由textsection指定的名字应该由双引号括起来。
+
+alloc\_text编译指示必须出现在任何需要指定的函数说明之后,以及这些函数的定义之前。在alloc\_text编译指示中引用的函数必须和该编译指示处于同一个模块中。如果不这样做,使以后一个未定义的函数被编译到一个不同的代码段时,错误会也可能不会被捕获。即使程序一般会正常运行,但是函数不会分派到应该在的段。
+
+alloc\_text的其它限制如下:它不能用在一个函数内部,它必须用于函数说明以后,函数定义以前。
+
+* **code\_seg**
+
+```
+#pragma code_seg( ["section-name"[,"section-class"] ] )
+```
+指定分配函数的代码段。code\_seg编译指示为函数指定默认的段。你也能够像段名一样指定一个可选的类名。使用没有段名字符串的#pragma code\_seg将恢复分配到编译开始时候的状态。
+
+* **const\_seg**
+
+```
+#pragma const_seg( ["section-name"[, "section-class"] ] )
+```
+指定用于常量数据的默认段。data_seg编译指示除了可以工作于所有数据以外具有一样的效果。你能够使用该编译指示将你的常量数据保存在一个只读的段中。
+
+```
+#pragma const_seg( "MY_DATA" )
+```
+导致在\#pragma语句后面的常量数据分配在一个叫做MY\_DATA的段中。用const\_seg编译指示分配的数据不包含任何关于其位置的信息。第二个参数section-class是用于兼容2.0版本以前的Visual C++的,现在将忽略它。
+
+* **comment**
+
+```
+#pragma comment( comment-type [, commentstring] )
+```
+
+将描述记录安排到目标文件或可执行文件中去。comment-type是下面说明的五个预定义标识符中的一个,用来指定描述记录的类型。可选的commentstring是一个字符串文字值用于为一些描述类型提供附加的信息。因为commentstring是一个字符串文字值,所以它遵从字符串文字值的所有规则,例如换码字符、嵌入的引号(")和联接。
+
+下面的编译指示导致连接程序在连接时搜索EMAPI.LIB库。连接程序首先在当前工作目录然后在LIB环境变量指定的路径中搜索。
+
+```
+#pragma comment( lib, "emapi" )
+```
+
+下面的编译指示导致编译程序将其名字和版本号放置到目标文件中去。
+
+```
+#pragma comment( compiler )
+```
+注意,对于具有commentstring参数的描述记录,你可以使用其它用作字符串文字量的宏来提供宏扩展为字符串文字量。你也能够联结任何字符串文字量和宏的组合来扩展成为一个字符串文字量。例如,下面的语句是可以接受的:
+
+```
+#pragma comment( user, "Compiled on " __DATE__ " at " __TIME__ )
+```
+
+* **data\_seg**
+
+```
+#pragma data_seg( ["section-name"[, "section-class"] ] )
+```
+指定数据的默认段。例如:#pragma data\_seg( "MY\_DATA" )导致在\#pragma语句后分配的数据保存在一个叫做MY\_DATA的段中。
+
+用data\_seg编译指示分配的数据不包含任何关于其位置的信息,第二个参数section-class是用于兼容2.0版本以前的Visual C++的,现在将忽略它。
+
+* **init\_seg**
+
+```
+C++特有,#pragma init_seg({ compiler | lib | user | "section-name" [, "func-name"]} )
+```
+
+指定影响启动代码执行的关键字或代码段。因为全局静态对象的初始化可以包含执行代码,所以你必须指定一个关键字来定义什么时候构造对象。在使用需要初始化的动态连接库(DLL)或程序库时使用init\_seg编译指示是尤其重要的。
+
+* **message**
+
+```
+#pragma message( messagestring )
+```
+
+不中断编译,发送一个字符串文字量到标准输出。message编译指示的典型运用是在编译时显示信息。下面的代码段用message编译指示在编译过程中显示一条信息:
+
+```
+#if _M_IX86 == 500
+#pragma message( "Pentium processor build" )
+#endif
+```
+
+messagestring参数可以是一个能够扩展成字符串文字量的宏,并且你能够用字符串文字量和宏的任何组合来构造。例如,下面的语句显示被编译文件的文件名和文件最后一次修改的日期和时间。
+
+```
+#pragma message( "Compiling " __FILE__ )
+#pragma message( "Last modified on " __TIMESTAMP__ )
+```
+
+* **once**
+
+```
+#pragma once
+```
+
+指定在创建过程中该编译指示所在的文件仅仅被编译程序包含(打开)一次。该编译指示的一种常见用法如下:
+
+```
+// header.h
+#pragma once
+```
+
+* **optimize**
+
+```
+#pragma optimize( "[optimization-list]", {on | off} )
+```
+代码优化仅有Visual C++专业版和企业版支持。详见Visual C++ Edition。指定在函数层次执行的优化。optimize编译选项必须在函数外出现,并且在该编译指示出现以后的第一个函数定义开始起作用。on和off参数打开或关闭在optimization-list指定的选项。
+
+optimization-list能够是0或更多个在表2.2中给出的参数:
+
+optimize编译指示的参数:
+
+参数 | 优化类型
+--- | ---
+a | 假定没有别名。
+g | 允许全局优化。
+p | 增强浮点一致性。
+s或t | 指定更短或者更快的机器代码序列。
+w | 假定在函数调用中没有别名。
+y | 在程序堆栈中生成框架指针。
+
+这些和在/O编译程序选项中使用的是相同的字母。例如:
+
+```
+#pragma optimize( "atp", on )
+```
+
+用空字符串("")的optimize编译指示是一种特别形式。它要么关闭所有的优化选项,要么恢复它们到原始(或默认)的设定。
+
+```
+#pragma optimize( "", off )
+#pragma optimize( "", on )
+```
+
+* **pack**
+
+```
+#pragma pack( [ n] )
+```
+
+指定结构和联合成员的紧缩对齐。尽管用/Zp选项设定整个翻译单元的结构和联合成员的紧缩对齐,可以用pack编译指示在数据说明层次设定紧缩对齐。从出现该编译指示后的第一个结构或者联合说明开始生效。这个编译指示不影响定义。
+
+当你使用\#pragma pack(n),其中n是1,2,4,8或者16,第一个以后的每个结构成员保存在较小的成员类型或者n字节边界上。如果你使用没有参数的\#pragma pack,结构成员将被紧缩到由/Zp指定的值。默认的/Zp紧缩的大小是/Zp8。
+
+编译程序还支持下面的增强语法:
+
+```
+#pragma pack( [ [ { push | pop}, ] [ identifier, ] ] [ n ] )
+```
+
+该语法允许你将使用不同紧缩编译指示的组件合并到同一个翻译单元内。
+
+每次出现有push参数的pack编译指示将保存当前的紧缩对齐值到一个内部的编译程序堆栈。编译指示的参数列表从左向右读取。如果你使用了push,当前紧缩值被保存。如果你提供了一个n值,这个值将成为新的紧缩值。如果你指定了一个你选定的标示符,这个标示符将和新的紧缩值关联。
+
+每次出现有pop参数的pack编译指示从内部编译程序堆栈顶部取出一个值并将那个值作为新的紧缩对齐。如果你用了pop,而内部编译程序堆栈是空的,对齐值将从命令行得到,同时给出一个警告。如果你用了pop并指定了n的值,那个值将成为新的紧缩值。如果你用了pop并指定了一个标示符,将移去所有保存在堆栈中的的值直到匹配的找到匹配的标示符,和该标示符关联的紧缩值也被从堆栈中移出来成为新的紧缩值。如果没有找到匹配的标示符,将从命令行获取紧缩值并产生一个1级警告。默认的紧缩对齐是8。
+
+pack编译指示的新的增强功能允许你编写头文件保证在使用头文件之前和其后的紧缩值是一样的:
+
+```
+/* File name: include1.h */
+#pragma pack( push, enter_include1 )
+/* Your include-file code ... */
+#pragma pack( pop, enter_include1 )
+/* End of include1.h */
+```
+
+在前面的例子中,进入头文件时将当前紧缩值和标示符enter\_include1关联并推入,被记住。在头文件尾部的pack编译选项移去所有在头文件中可能遇到的紧缩值并移去和enter\_include1关联的紧缩值。这样头文件保证了在使用头文件之前和其后的紧缩值是一样的。
+
+新功能也允许你在你的代码内用pack编译指示为不同的代码,例如头文件设定不同的紧缩对齐。
+
+```
+#pragma pack( push, before_include1 )
+#include "include1.h"
+#pragma pack( pop, before_include1 )
+```
+
+在上一个例子中,你的代码受到保护,防止了在include.h中的任何紧缩值的改变。
+
+* **warning**
+
+```
+#pragma warning( warning-specifier : warning-number-list [,warning-specifier : warning-number-list...] )
+#pragma warning( push[ , n ] )
+#pragma warning( pop )
+```
+
+允许有选择地修改编译程序警告信息的行为。
+
+warning-specifier能够是下列值之一:
+
+| warning-specifier | 含义 | 
+| --- | --- | 
+| once | 只显示指定信息一次。| 
+| default | 对指定信息应用默认的编译程序选项。|
+| 1,2,3,4 | 对指定信息引用给定的警告等级。| 
+| disable | 不显示指定信息。|
+| error | 对指定信息作为错误显示。|
+
+warning-number\_list能够包含任何警告编号。如下,在一个编译指示中可以指定多个选项:
+
+```
+#pragma warning( disable : 4507 34; once : 4385; error : 164 )
+```
+
+这等价于:
+
+```
+#pragma warning( disable : 4507 34 ) // Disable warning messages
+                                             // 4507 and 34.
+#pragma warning( once : 4385 )        // Issue warning 4385
+                                             // only once.
+#pragma warning( error : 164 )        // Report warning 164
+                                             // as an error.
+```
+
+对于那些关于代码生成的,大于4699的警告标号,warning编译指示仅在函数定义外时有效。如果指定的警告编号大于4699并且用于函数内时被忽略。下面例子说明了用warning编译指示禁止、然后恢复有关代码生成警告信息的正确位置:
+
+```
+int a;
+#pragma warning( disable : 4705 )
+void func(){
+    a;
+}
+#pragma warning( default : 4705 )
+```
+
+warning编译指示也支持下面语法:
+
+```
+#pragma warning( push [ ,n ] )
+#pragma warning( pop )
+```
+
+这里n表示警告等级(1到4)。
+
+> * warning(push)编译指示保存所有警告的当前警告状态。warning(push,n)保存所有警告的当前状态并将全局警告等级设置为n。
+> * warning(pop)弹出最后一次推入堆栈中的警告状态。任何在push和pop之间改变的警告状态将被取消。
+
+考虑下面的例子:
+
+```
+#pragma warning( push )
+#pragma warning( disable : 4705 )
+#pragma warning( disable : 4706 )
+#pragma warning( disable : 4707 )
+// Some code
+#pragma warning( pop )
+```
+
+在这些代码的结束,pop恢复了所有警告的状态(包括4705,4706和4707)到代码开始时候的样子。
+
+当你编写头文件时,你能用push和pop来保证任何用户修改的警告状态不会影响正常编译你的头文件。在头文件开始的地方使用push,在结束地方使用pop。例如,假定你有一个不能顺利在4级警告下编译的头文件,下面的代码改变警告等级到3,然后在头文件的结束时恢复到原来的警告等级。
+
+```
+#pragma warning( push, 3 )
+// Declarations/ definitions
+#pragma warning( pop )
+```
+
+
+## 二、关键字
+
+
+## 三、openMP
+
+`Open Multi-Processing`的缩写,是一个应用程序接口(`API`),可用于显式指导多线程、共享内存的并行性。由三个主要的`API`组件组成:编译器指令、运行时库函数和环境变量。
+
+ 
+### 3.1 `OpenMP`编程模型
+
+内存共享模型:`OpenMP`是专为多处理器/核,共享内存机器所设计的。底层架构可以是`UMA`和`NUMA`。即(`Uniform Memory Access`和`Non-Uniform Memory Access`)。
+
+![](http://img2018.cnblogs.com/blog/1365470/201812/1365470-20181212223751481-2040405150.png)
+
+`OpenMP`仅通过线程来完成并行,一个线程的运行是可由操作系统调用的最小处理单线程们存在于单个进程的资源中,没有了这个进程,线程也不存在了。通常,线程数与机器的处理器/核数相匹配,然而,实际使用取决与应用程序。
+
+`OpenMP`是一种显式(非自动)编程模型,为程序员提供对并行化的完全控制。一方面，并行化可像执行串行程序和插入编译指令那样简单,另一方面,像插入子程序来设置多级并行、锁、甚至嵌套锁一样复杂。
+
+`OpenMP`就是采用`Fork-Join`模型,所有的`OpenML`程序都以一个单个进程——`master thread`开始,`master threads`按顺序执行知道遇到第一个并行区域。
+
+![](http://img2018.cnblogs.com/blog/1365470/201812/1365470-20181212225453369-1878430615.png)
+
+> `Fork`:主线程创造一个并行线程组
+> 
+> `Join`:当线程组完成并行区域的语句时,它们同步、终止,仅留下主线程
+
+由于`OpenMP`时是共享内存模型,默认情况下,在共享区域的大部分数据是被共享的,并行区域中的所有线程可以同时访问这个共享的数据,如果不需要默认的共享作用域,`OpenMP`为程序员提供一种"显示"指定数据作用域的方法。
+
+**嵌套并行**:`API`提供在其它并行区域放置并行区域,实际实现也可能不支持。
+
+**动态线程**:`API`为运行环境提供动态的改变用于执行并行区域的线程数,实际实现也可能不支持。
+ 
+* **简单使用**
+
+```c++
+#include <omp.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    int nthreads, tid;
+
+    /* Fork a team of threads giving them their own copies of variables */
+    #pragma omp parallel private(nthreads, tid)
+    {
+        /* Obtain thread number */
+        tid = omp_get_thread_num();
+        printf("Hello World from thread = %d\n", tid);
+
+        /* Only master thread does this */
+        if (tid == 0) {
+            nthreads = omp_get_num_threads();
+            printf("Number of threads = %d\n", nthreads);
+        }
+    }  /* All threads join master thread and disband */
+    return 0;
+}
+```
+
+编译和运行代码:`g++ test.cpp -o test -fopenmp -lstdc++ && ./test`。
+
+运行结果如下:
+
+```sh
+Hello World from thread = 3
+Hello World from thread = 7
+Hello World from thread = 0
+Number of threads = 8
+Hello World from thread = 1
+Hello World from thread = 6
+Hello World from thread = 5
+Hello World from thread = 4
+Hello World from thread = 2
+```
+### 3.2 `OpenMP` `API`介绍
+
+OpenMP由三部分组成:编译指令,运行时库程序和环境变量。
+
+* **编译器指令**
+
+`OpenMP`编译器指令用于各种目的:产生平行区域,在线程之间划分代码块,在线程之间分配循环迭代,序列化代码段和线程之间的工作同步。
+
+格式如下:`#pragma omp <directive> [clause[[,] clause] ...]`。通用规则:
+
+> 区分大小写
+> 
+> 指令遵循编译指令的`C/C++`规则
+> 
+> 每个指令只能指定一个指令名
+> 
+> 每个指令最多使用一个后续语句,该语句必须是结构化块
+> 
+> 通过在指令行末尾用反斜杠("`\`")转义换行符,可以在后续行上“继续”长指令行
+
+并行区域构造:并行区域是将由多个线程执行的代码块。这是基本的`OpenMP`并行构造。
+
+```c++
+#pragma omp parallel [clause ...] newline
+                     if （scalar_expression）
+                     private （list）
+                     shared （list）
+                     default（shared | none）
+                     firstprivate （list）
+                     reduction （operator：list）
+                     copyin （list）
+                     num_threads （integer-expression）
+
+    structured_block
+```
+
+决定线程数的因素有多个,它们的优先级如下:
+
+> `if`语句的值
+> 
+> 设置`num_threads`语句
+> 
+> 使用的`omp_set_num_threads()`库函数
+> 
+> 设置的`OMP_NUM_THREADS`环境变量
+
+注意:生成的线程编号为`0~N`,其中`0`是主线程(`master thread`)的编号
+
+**指令(`directive`)**
+
+| 指令 | 说明 |
+| :--- | :--- |
+| `atomic` | 内存位置将会原子更新(Specifies that a memory location that will be updated atomically.) |
+| `barrier` | 线程在此等待,直到所有的线程都运行到此`barrier`。用来同步所有线程。 |
+| `critical` | 其后的代码块为临界区,任意时刻只能被一个线程运行。 |
+| `flush` | 所有线程对所有共享对象具有相同的内存视图(view of memory) |
+| `for` | 用在`for`循环之前,把for循环并行化由多个线程执行。循环变量只能是整型 |
+| `master` | 指定由主线程来运行接下来的程序。 |
+| `ordered` | 指定在接下来的代码块中,被并行化的`for`循环将依序运行(`sequential loop`) |
+| `parallel` | 代表接下来的代码块将被多个线程并行各执行一遍。 |
+| `sections` | 将接下来的代码块包含将被并行执行的section块。 |
+| `single` | 之后的程序将只会在一个线程(未必是主线程)中被执行,不会被并行执行。 |
+| `threadprivate` | 指定一个变量是线程局部存储(thread local storage)|
+
+**从句(clause)**
+
+| 从句 | 说明 |
+| :--- | :--- |
+| `copyin` | 让threadprivate的变量的值和主线程的值相同。|
+| `copyprivate` | 不同线程中的变量在所有线程中共享。 |
+| `default` | Specifies the behavior of unscoped variables in a parallel region. |
+| `firstprivate` | 对于线程局部存储的变量,其初值是进入并行区之前的值。 |
+| `if` | 判断条件,可用来决定是否要并行化。 |
+| `lastprivate` | 在一个循环并行执行结束后,指定变量的值为循环体在顺序最后一次执行时获取的值,或者`#pragma sections`在中,按文本顺序最后一个`section`中执行获取的值。 |
+| `nowait` | 忽略`barrier`的同步等待。 |
+| `num_threads` | 设置线程数量的数量,默认值为当前计算机硬件支持的最大并发数。一般就是`CPU`的内核数目,超线程被操作系统视为独立的CPU内核。 |
+| `ordered` | 使用于`for`,可以在将循环并行化的时候,将程序中有标记`directive ordered`的部分依序运行。 |
+| `private` | 指定变量为线程局部存储。 |
+| `reduction` | Specifies that one or more variables that are private to each thread are the subject of a reduction operation at the end of the parallel region. |
+| `schedule` | 设置`for`循环的并行化方法;有`dynamic`、`guided`、`runtime`、`static`四种方法。<br>* `schedule(static, chunk_size)`:把chunk_size数目的循环体的执行,静态依序指定给各线程。<br>* `schedule(dynamic,chunk_size)`:把循环体的执行按照`chunk_size`(缺省值为1)分为若干组(即`chunk`),每个等待的线程获得当前一组去执行,执行完后重新等待分配新的组。<br>* `schedule(guided,chunk_size)`:把循环体的执行分组,分配给等待执行的线程。最初的组中的循环体执行数目较大,然后逐渐按指数方式下降到`chunk_size`。<br>* `schedule(runtime)`:循环的并行化方式不在编译时静态确定,而是推迟到程序执行时动态地根据环境变量`OMP_SCHEDULE`来决定要使用的方法。 |
+| `shared` | 指定变量为所有线程共享。|
+
+
+* **`OpenmMP`的库函数(`Run-Time Library  Routines`)**
+
+
+> `void omp_set_num_threads(int _Num_threads);`在后续并行区域设置线程数,此调用只影响调用线程所遇到的同一级或内部嵌套级别的后续并行区域.说明:此函数只能在串行代码部分调用.
+> 
+> `int omp_get_num_threads(void);`返回当前线程数目.说明:如果在串行代码中调用此函数,返回值为1.
+> 
+> `int omp_get_max_threads(void);`如果在程序中此处遇到未使用`num_threads()`子句指定的活动并行区域,则返回程序的最大可用线程数量.说明:可以在串行或并行区域调用,通常这个最大数量由`omp_set_num_threads()`或`OMP_NUM_THREADS`环境变量决定。
+>
+> `int omp_get_thread_num(void);`返回当前线程`id`.`id`从1开始顺序编号,主线程id是0.
+> 
+> `int omp_get_num_procs(void);`返回程序可用的处理器数.
+>
+> `void omp_set_dynamic(int _Dynamic_threads);`启用或禁用可用线程数的动态调整.(缺省情况下启用动态调整.)此调用只影响调用线程所遇到的同一级或内部嵌套级别的后续并行区域.如果`_Dynamic_threads`的值为非零值,启用动态调整;否则,禁用动态调整.
+> 
+> `int omp_get_dynamic(void);`:确定在程序中此处是否启用了动态线程调整.启用了动态线程调整时返回非零值;否则,返回零值.
+> 
+> `int omp_in_parallel(void);`确定线程是否在并行区域的动态范围内执行.如果在活动并行区域的动态范围内调用,则返回非零值;否则,返回零值.活动并行区域是指`IF`子句求值为`TRUE`的并行区域.
+> 
+> `void omp_set_nested(int _Nested);`启用或禁用嵌套并行操作.此调用只影响调用线程所遇到的同一级或内部嵌套级别的后续并行区域.`_Nested`的值为非零值时启用嵌套并行操作;否则,禁用嵌套并行操作.缺省情况下,禁用嵌套并行操作.
+> 
+> `int omp_get_nested(void);`确定在程序中此处是否启用了嵌套并行操作.启用嵌套并行操作时返回非零值;否则,返回零值.
+> 
+> `void omp_init_lock(omp_lock_t * _Lock);`,`void omp_init_nest_lock(omp_nest_lock_t * _Lock);`初始化一个(嵌套)互斥锁.
+> 
+> `void omp_destroy_lock(omp_lock_t * _Lock);`,`void omp_destroy_nest_lock(omp_nest_lock_t * _Lock);`结束一个(嵌套)互斥锁的使用并释放内存.
+> 
+> `void omp_set_lock(omp_lock_t * _Lock);`,`void omp_set_nest_lock(omp_nest_lock_t * _Lock);`获得一个(嵌套)互斥锁.
+> 
+> `void omp_unset_lock(omp_lock_t * _Lock);`,`void omp_unset_nest_lock(omp_nest_lock_t * _Lock);`释放一个(嵌套)互斥锁.
+> 
+> `int omp_test_lock(omp_lock_t * _Lock);`,`int omp_test_nest_lock(omp_nest_lock_t * _Lock);`试图获得一个(嵌套)互斥锁,并在成功时放回真(`true`),失败是返回假(`false`).
+> 
+> `double omp_get_wtime(void);`,获取`wall clock time`,返回一个`double`的数,表示从过去的某一时刻经历的时间,一般用于成对出现,进行时间比较.此函数得到的时间是相对于线程的,也就是每一个线程都有自己的时间.
+> 
+> `double omp_get_wtick(void);`,得到`clock ticks`的秒数.
+
+ 
+* **环境变量(Environment  Variables)**
+
+> `OMP_SCHEDULE`:仅适用于`DO`,`PARALLEL DO`(`Fortran`)和(`C/C++`)指令并行,它们的`schedule`子句设置为`RUNTIME`。此变量的值确定如何在处理器上调度循环的迭代。例如:`export OMP_SCHEDULE="guided, 4"`。 
+>
+> `OMP_NUM_THREADS`:设置执行期间要使用的最大线程数。例如:`export OMP_NUM_THREADS=8`。
+> 
+> `OMP_DYNAMIC`:启用或禁用动态调整可用于执行并行区域的线程数。有效值为`TRUE`或`FALSE`。例如:`export OMP_DYNAMIC=TRUE`
+> 
+> `OMP_PROC_BIND`:启用或禁用绑定到处理器的线程。有效值为`TRUE`或`FALSE`。例如:`export OMP_PROC_BIND=TRUE`。
+>
+> `OMP_NESTED`:启用或禁用嵌套并行性,有效值为`TRUE`或`FALSE`。例如:`export OMP_NESTED=TRUE`。
+> 
+> `OMP_STACKSIZE`:控制创建(非主)线程的堆栈大小。例如:`export OMP_STACKSIZE=2000500B`,`export OMP_STACKSIZE="3000 k "`。
+>  
+> `OMP_WAIT_POLICY`:提供有关等待线程的所需行为的`OpenMP`实现的提示。兼容的`OpenMP`实现可能会也可能不会遵守环境变量的设置。有效值为`ACTIVE`和`PASSIVE`。`ACTIVE`指定等待线程应该主动处于活动状态,即在等待时消耗处理器周期。`PASSIVE`指定等待线程应该主要是被动的,即在等待时不消耗处理器周期。`ACTIVE`和`PASSIVE`行为的细节是实现定义的。例子:`export OMP_WAIT_POLICY=ACTIVE`。 
+> 
+> `OMP_MAX_ACTIVE_LEVELS`:控制嵌套活动并行区域的最大数量。此环境变量的值必须是非负整数。如果请求的`OMP_MAX_ACTIVE_LEVELS`值大于实现可以支持的嵌套活动并行级别的最大数量,或者该值不是非负整数,则程序的行为是实现定义的。例:`export OMP_MAX_ACTIVE_LEVELS=2`。
+> 
+> `OMP_THREAD_LIMIT`:设置要用于整个`OpenMP`程序的`OpenMP`线程数。此环境变量的值必须是正整数。如果请求的`OMP_THREAD_LIMIT`值大于实现可以支持的线程数,或者该值不是正整数,则程序的行为是实现定义的。例:`export OMP_THREAD_LIMIT=8`。
+ 
+
+### 3.3 示例
+
+ * **`test_v1.cpp`**
+
+```c++
+#include <iostream>
+#include <omp.h>   // NEW ADD
+
+using namespace std;
+
+int main(){
+    #pragma omp parallel for num_threads(4) // NEW ADD
+    for(int i=0; i<10; i++) {
+        cout << "数字为:"<<i << endl;
+    }
+    return 0;
+}
+```
+
+* **`test_reduce.cpp`**
+
+```c++
+#include <iostream>
+#include <omp.h>   // NEW ADD
+
+using namespace std;
+
+int main(){
+    int sum = 0;
+    #pragma omp parallel for num_threads(32) reduction(+:sum)
+    for(int i=0; i<100; i++) {
+        sum +=  i;
+    }
+    cout << sum << endl;
+    return 0;
+}
+```
+
+* **`test_primes_num.cpp`**
+
+```c++
+#include <iostream>
+#include <stdio.h>
+#include <time.h>
+#include <stdlib.h>
+#include <math.h>
+#include <omp.h>
+#include <sys/time.h>
+
+int main(int argc, char** argv) {
+    struct timeval start, end;
+    gettimeofday(&start, NULL);
+
+    if (argc != 3) {
+        std::cout << "USAGE: num_primer <num_of_thread> <integer>" << std::endl;
+        return -1;
+    }
+
+    int num_thread = atoi(argv[1]);
+    int n = atoi(argv[2]);
+
+    std::cout << "num of thread: " << num_thread << std::endl;
+    std::cout << " n: " << n << std::endl;
+    int* num_primer = new int[num_thread];
+    for (int i = 0; i < num_thread; ++i) {
+        num_primer[i] = 0;
+    }
+
+    omp_set_num_threads(num_thread);
+    #pragma omp parallel shared(n, num_primer)
+    {
+        int id = omp_get_thread_num();
+        for (int i = id + 2; i < n + 1; i = i + num_thread) {
+            bool has_factor = false;
+            #pragma omp parallel shared(n, i, num_primer, has_factor)
+            {
+                for (int j = 2; j < int(sqrt(i)) + 1; ++j) {
+                    if (i % j == 0) {
+                        has_factor = true;
+                        break;
+                    }
+                }
+                if (!has_factor) {
+                    ++num_primer[id];
+                    std::cout << "id: "<< id << ", primer:" << i << std::endl;
+                }
+            } // pragma
+        }
+    } // pragma
+
+    // add all primers
+    int sum_num_primer = 0;
+    for (int i = 0; i < num_thread; ++i) {
+        sum_num_primer += num_primer[i];
+    }
+
+    std::cout << "The number of primers between 0 and " << n << " is: " << sum_num_primer << std::endl;
+
+    gettimeofday(&end, NULL);
+    double time_gap = (end.tv_sec - start.tv_sec) * 1000000u + end.tv_usec - start.tv_usec;
+    printf("Time cost: %.2lf s.\n", time_gap / 100000);
+
+    return 0;
+}
+```
+
+## 四、标准库
+
+
+## 五、LAPACK库
+
+
+
