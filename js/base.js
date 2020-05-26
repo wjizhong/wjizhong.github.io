@@ -314,16 +314,13 @@ function collapseAndRemove(collapsibleElem) {
 function renderPageToc(parentElem, pageUrl, pageToc) {
   var ul = $('<ul class="wm-toctree">');
   function addItem(tocItem) {
-    var extra_str = '';
-    for(var i=1;i<tocItem.level;i=i+1){
-        extra_str = extra_str + '  ';
-    }
     if(tocItem.level > 1){
         ul.append($('<li class="wm-toc-li">')
           .append($('<a class="wm-article-link wm-page-toc-text">')
           .attr('href', pageUrl + tocItem.url)
+          .attr('style', "margin-left:"+(tocItem.level-1)*8+"px")
           .attr('data-wm-adjusted', 'done')
-          .text(extra_str + tocItem.title)));
+          .text(tocItem.title)));
     }
     if (tocItem.children) {
       tocItem.children.forEach(addItem);
