@@ -1174,7 +1174,63 @@ int main(int argc, char** argv) {
 ## 四、标准库
 
 
-## 五、LAPACK库
+## 五、Cblas库
+
+CBLAS是BLAS的C语言接口。BLAS的全称是Basic Linear Algebra Subprograms,中文大概可以叫做基础线性代数子程序。主要是用于向量和矩阵计算的高性能数学库。本身BLAS是用Fortran写的,为了方便C/C++程序的使用，就有了BLAS的C接口库CBLAS。BLAS的主页是http://www.netlib.org/blas/,CBLAS的下载地址也可以在这个页面上找到。
+
+CBLAS/BLAS分为3个level:
+
+> Level1:处理单一向量的线性运算以及两个向量的二元运算,接口函数名称由前缀+操作简称组成。(如:SROTG中S标明矩阵或向量中元素数据类型的前缀,ROTG表明向量运算简称)
+> 
+> Level2:处理矩阵与向量的运算,同时也包含线性方程求解计算,
+> 
+> Level3:包含矩阵与矩阵运算。Level2和Level3接口函数由前缀+矩阵类型+操作简称组成。（如:SGEMV中S标明矩阵或向量中元素数据类型的前缀,GE为矩阵类型,MV为向量或矩阵运算简称。
+
+![](http://www.netlib.org/blas/BLAS-snapshot.jpg)
+
+数据精度有如下几种:
+
+| 标识 | 说明 |
+| :--- | :--- |
+| S | single real |
+| D | double real |
+| C | single complex |
+| Z | double complex |
+
+操作类型有下面常见的几种:
+
+| 标识 | 说明 |
+| :--- | :--- |
+| DOT | scalar product, x^T y |
+| AXPY | vector sum, /alpha x + y |
+| MV | matrix-vector product, A x |
+| SV | matrix-vector solve, inv(A) x |
+| MM | matrix-matrix product, A B |
+| SM | matrix-matrix solve, inv(A) B |
+ 
+矩阵的类型有下面常见的几种:
+
+| 标识 | 说明 |
+| :--- | :--- |
+| GE | Genearl,稠密矩阵 |
+| GB | General Band,带状矩阵 |
+| SY | SYmmetric,对称矩阵 |
+| SB | Symmetric Band,对称带状矩阵 |
+| SP | Symmetric Packed,压缩存储对称矩阵 |
+| HE | HEmmitian,Hemmitian矩阵,自共轭矩阵 |
+| HB | Hemmitian Band,带状Hemmitian矩阵 |
+| HP | Hemmitian Packed,压缩存储Hemmitian矩阵 |
+| TR | TRiangular,三角矩阵 |
+| TB | Triangular Band,三角带状矩阵 |
+| TP | Triangular Packed,压缩存储三角矩阵 |
+
+## 六、指令集
+
+
+https://blog.csdn.net/just_sort/article/details/94393506
+
+https://blog.csdn.net/kezunhai/article/details/44850637
+
 
 
 
