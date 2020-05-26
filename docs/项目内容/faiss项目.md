@@ -1649,1003 +1649,6 @@ namespace faiss {
 } // namespace
 ```
 
-#### 4.1.3 distances.h和distances.cpp文件
-
-* **`distances.h`文件**
-
-```c++
-/* All distance functions for L2 and IP distances.
- * The actual functions are implemented in distances.cpp and distances_simd.cpp */
-
-#pragma once
-#include <stdint.h>
-#include <faiss/utils/Heap.h>
-
-namespace faiss {
-
-    /// Optimized distance/norm/inner prod computations
-
-    /// Squared L2 distance between two vectors
-    float fvec_L2sqr (const float * x, const float * y, size_t d);
-
-    /// inner product
-    float fvec_inner_product (const float * x, const float * y, size_t d);
-
-    /// L1 distance
-    float fvec_L1 (const float * x, const float * y, size_t d);
-
-float fvec_Linf (
-        const float * x,
-        const float * y,
-        size_t d);
-
-
-/** Compute pairwise distances between sets of vectors
- *
- * @param d     dimension of the vectors
- * @param nq    nb of query vectors
- * @param nb    nb of database vectors
- * @param xq    query vectors (size nq * d)
- * @param xb    database vectros (size nb * d)
- * @param dis   output distances (size nq * nb)
- * @param ldq,ldb, ldd strides for the matrices
- */
-void pairwise_L2sqr (int64_t d,
-                     int64_t nq, const float *xq,
-                     int64_t nb, const float *xb,
-                     float *dis,
-                     int64_t ldq = -1, int64_t ldb = -1, int64_t ldd = -1);
-
-/* compute the inner product between nx vectors x and one y */
-void fvec_inner_products_ny (
-        float * ip,         /* output inner product */
-        const float * x,
-        const float * y,
-        size_t d, size_t ny);
-
-/* compute ny square L2 distance bewteen x and a set of contiguous y vectors */
-void fvec_L2sqr_ny (
-        float * dis,
-        const float * x,
-        const float * y,
-        size_t d, size_t ny);
-
-
-/** squared norm of a vector */
-float fvec_norm_L2sqr (const float * x,
-                       size_t d);
-
-/** compute the L2 norms for a set of vectors
- *
- * @param  ip       output norms, size nx
- * @param  x        set of vectors, size nx * d
- */
-void fvec_norms_L2 (float * ip, const float * x, size_t d, size_t nx);
-
-/// same as fvec_norms_L2, but computes square norms
-void fvec_norms_L2sqr (float * ip, const float * x, size_t d, size_t nx);
-
-/* L2-renormalize a set of vector. Nothing done if the vector is 0-normed */
-void fvec_renorm_L2 (size_t d, size_t nx, float * x);
-
-
-/* This function exists because the Torch counterpart is extremly slow
-   (not multi-threaded + unexpected overhead even in single thread).
-   It is here to implement the usual property |x-y|^2=|x|^2+|y|^2-2<x|y>  */
-void inner_product_to_L2sqr (float * dis,
-                             const float * nr1,
-                             const float * nr2,
-                             size_t n1, size_t n2);
-
-/***************************************************************************
- * Compute a subset of  distances
- ***************************************************************************/
-
- /* compute the inner product between x and a subset y of ny vectors,
-   whose indices are given by idy.  */
-void fvec_inner_products_by_idx (
-        float * ip,
-        const float * x,
-        const float * y,
-        const int64_t *ids,
-        size_t d, size_t nx, size_t ny);
-
-/* same but for a subset in y indexed by idsy (ny vectors in total) */
-void fvec_L2sqr_by_idx (
-        float * dis,
-        const float * x,
-        const float * y,
-        const int64_t *ids, /* ids of y vecs */
-        size_t d, size_t nx, size_t ny);
-
-
-/** compute dis[j] = L2sqr(x[ix[j]], y[iy[j]]) forall j=0..n-1
- *
- * @param x  size (max(ix) + 1, d)
- * @param y  size (max(iy) + 1, d)
- * @param ix size n
- * @param iy size n
- * @param dis size n
- */
-void pairwise_indexed_L2sqr (
-        size_t d, size_t n,
-        const float * x, const int64_t *ix,
-        const float * y, const int64_t *iy,
-        float *dis);
-
-/* same for inner product */
-void pairwise_indexed_inner_product (
-        size_t d, size_t n,
-        const float * x, const int64_t *ix,
-        const float * y, const int64_t *iy,
-        float *dis);
-
-/***************************************************************************
- * KNN functions
- ***************************************************************************/
-
-// threshold on nx above which we switch to BLAS to compute distances
-extern int distance_compute_blas_threshold;
-
-/** Return the k nearest neighors of each of the nx vectors x among the ny
- *  vector y, w.r.t to max inner product
- *
- * @param x    query vectors, size nx * d
- * @param y    database vectors, size ny * d
- * @param res  result array, which also provides k. Sorted on output
- */
-void knn_inner_product (
-        const float * x,
-        const float * y,
-        size_t d, size_t nx, size_t ny,
-        float_minheap_array_t * res);
-
-/** Same as knn_inner_product, for the L2 distance */
-void knn_L2sqr (
-        const float * x,
-        const float * y,
-        size_t d, size_t nx, size_t ny,
-        float_maxheap_array_t * res);
-
-
-
-/** same as knn_L2sqr, but base_shift[bno] is subtracted to all
- * computed distances.
- *
- * @param base_shift   size ny
- */
-void knn_L2sqr_base_shift (
-         const float * x,
-         const float * y,
-         size_t d, size_t nx, size_t ny,
-         float_maxheap_array_t * res,
-         const float *base_shift);
-
-/* Find the nearest neighbors for nx queries in a set of ny vectors
- * indexed by ids. May be useful for re-ranking a pre-selected vector list
- */
-void knn_inner_products_by_idx (
-        const float * x,
-        const float * y,
-        const int64_t *  ids,
-        size_t d, size_t nx, size_t ny,
-        float_minheap_array_t * res);
-
-void knn_L2sqr_by_idx (const float * x,
-                       const float * y,
-                       const int64_t * ids,
-                       size_t d, size_t nx, size_t ny,
-                       float_maxheap_array_t * res);
-
-/***************************************************************************
- * Range search
- ***************************************************************************/
-
-
-
-/// Forward declaration, see AuxIndexStructures.h
-struct RangeSearchResult;
-
-/** Return the k nearest neighors of each of the nx vectors x among the ny
- *  vector y, w.r.t to max inner product
- *
- * @param x      query vectors, size nx * d
- * @param y      database vectors, size ny * d
- * @param radius search radius around the x vectors
- * @param result result structure
- */
-void range_search_L2sqr (
-        const float * x,
-        const float * y,
-        size_t d, size_t nx, size_t ny,
-        float radius,
-        RangeSearchResult *result);
-
-/// same as range_search_L2sqr for the inner product similarity
-void range_search_inner_product (
-        const float * x,
-        const float * y,
-        size_t d, size_t nx, size_t ny,
-        float radius,
-        RangeSearchResult *result);
-
-
-
-
-} // namespace faiss
-```
-
-* **`distances.cpp`文件**
-
-```c++
-// -*- c++ -*-
-
-#include <faiss/utils/distances.h>
-
-#include <cstdio>
-#include <cassert>
-#include <cstring>
-#include <cmath>
-
-#include <omp.h>
-
-#include <faiss/impl/AuxIndexStructures.h>
-#include <faiss/impl/FaissAssert.h>
-
-
-
-#ifndef FINTEGER
-#define FINTEGER long
-#endif
-
-
-extern "C" {
-
-/* declare BLAS functions, see http://www.netlib.org/clapack/cblas/ */
-
-int sgemm_ (const char *transa, const char *transb, FINTEGER *m, FINTEGER *
-            n, FINTEGER *k, const float *alpha, const float *a,
-            FINTEGER *lda, const float *b, FINTEGER *
-            ldb, float *beta, float *c, FINTEGER *ldc);
-
-/* Lapack functions, see http://www.netlib.org/clapack/old/single/sgeqrf.c */
-
-int sgeqrf_ (FINTEGER *m, FINTEGER *n, float *a, FINTEGER *lda,
-                 float *tau, float *work, FINTEGER *lwork, FINTEGER *info);
-
-int sgemv_(const char *trans, FINTEGER *m, FINTEGER *n, float *alpha,
-           const float *a, FINTEGER *lda, const float *x, FINTEGER *incx,
-           float *beta, float *y, FINTEGER *incy);
-
-}
-
-
-namespace faiss {
-
-
-
-/***************************************************************************
- * Matrix/vector ops
- ***************************************************************************/
-
-
-
-/* Compute the inner product between a vector x and
-   a set of ny vectors y.
-   These functions are not intended to replace BLAS matrix-matrix, as they
-   would be significantly less efficient in this case. */
-void fvec_inner_products_ny (float * ip,
-                             const float * x,
-                             const float * y,
-                             size_t d, size_t ny)
-{
-    // Not sure which one is fastest
-#if 0
-    {
-        FINTEGER di = d;
-        FINTEGER nyi = ny;
-        float one = 1.0, zero = 0.0;
-        FINTEGER onei = 1;
-        sgemv_ ("T", &di, &nyi, &one, y, &di, x, &onei, &zero, ip, &onei);
-    }
-#endif
-    for (size_t i = 0; i < ny; i++) {
-        ip[i] = fvec_inner_product (x, y, d);
-        y += d;
-    }
-}
-
-
-
-
-
-/* Compute the L2 norm of a set of nx vectors */
-void fvec_norms_L2 (float * __restrict nr,
-                    const float * __restrict x,
-                    size_t d, size_t nx)
-{
-
-#pragma omp parallel for
-    for (size_t i = 0; i < nx; i++) {
-        nr[i] = sqrtf (fvec_norm_L2sqr (x + i * d, d));
-    }
-}
-
-void fvec_norms_L2sqr (float * __restrict nr,
-                       const float * __restrict x,
-                       size_t d, size_t nx)
-{
-#pragma omp parallel for
-    for (size_t i = 0; i < nx; i++)
-        nr[i] = fvec_norm_L2sqr (x + i * d, d);
-}
-
-
-
-void fvec_renorm_L2 (size_t d, size_t nx, float * __restrict x)
-{
-#pragma omp parallel for
-    for (size_t i = 0; i < nx; i++) {
-        float * __restrict xi = x + i * d;
-
-        float nr = fvec_norm_L2sqr (xi, d);
-
-        if (nr > 0) {
-            size_t j;
-            const float inv_nr = 1.0 / sqrtf (nr);
-            for (j = 0; j < d; j++)
-                xi[j] *= inv_nr;
-        }
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-/***************************************************************************
- * KNN functions
- ***************************************************************************/
-
-
-
-/* Find the nearest neighbors for nx queries in a set of ny vectors */
-static void knn_inner_product_sse (const float * x,
-                        const float * y,
-                        size_t d, size_t nx, size_t ny,
-                        float_minheap_array_t * res)
-{
-    size_t k = res->k;
-    size_t check_period = InterruptCallback::get_period_hint (ny * d);
-
-    check_period *= omp_get_max_threads();
-
-    for (size_t i0 = 0; i0 < nx; i0 += check_period) {
-        size_t i1 = std::min(i0 + check_period, nx);
-
-#pragma omp parallel for
-        for (size_t i = i0; i < i1; i++) {
-            const float * x_i = x + i * d;
-            const float * y_j = y;
-
-            float * __restrict simi = res->get_val(i);
-            int64_t * __restrict idxi = res->get_ids (i);
-
-            minheap_heapify (k, simi, idxi);
-
-            for (size_t j = 0; j < ny; j++) {
-                float ip = fvec_inner_product (x_i, y_j, d);
-
-                if (ip > simi[0]) {
-                    minheap_pop (k, simi, idxi);
-                    minheap_push (k, simi, idxi, ip, j);
-                }
-                y_j += d;
-            }
-            minheap_reorder (k, simi, idxi);
-        }
-        InterruptCallback::check ();
-    }
-
-}
-
-static void knn_L2sqr_sse (
-                const float * x,
-                const float * y,
-                size_t d, size_t nx, size_t ny,
-                float_maxheap_array_t * res)
-{
-    size_t k = res->k;
-
-    size_t check_period = InterruptCallback::get_period_hint (ny * d);
-    check_period *= omp_get_max_threads();
-
-    for (size_t i0 = 0; i0 < nx; i0 += check_period) {
-        size_t i1 = std::min(i0 + check_period, nx);
-
-#pragma omp parallel for
-        for (size_t i = i0; i < i1; i++) {
-            const float * x_i = x + i * d;
-            const float * y_j = y;
-            size_t j;
-            float * simi = res->get_val(i);
-            int64_t * idxi = res->get_ids (i);
-
-            maxheap_heapify (k, simi, idxi);
-            for (j = 0; j < ny; j++) {
-                float disij = fvec_L2sqr (x_i, y_j, d);
-
-                if (disij < simi[0]) {
-                    maxheap_pop (k, simi, idxi);
-                    maxheap_push (k, simi, idxi, disij, j);
-                }
-                y_j += d;
-            }
-            maxheap_reorder (k, simi, idxi);
-        }
-        InterruptCallback::check ();
-    }
-
-}
-
-
-/** Find the nearest neighbors for nx queries in a set of ny vectors */
-static void knn_inner_product_blas (
-        const float * x,
-        const float * y,
-        size_t d, size_t nx, size_t ny,
-        float_minheap_array_t * res)
-{
-    res->heapify ();
-
-    // BLAS does not like empty matrices
-    if (nx == 0 || ny == 0) return;
-
-    /* block sizes */
-    const size_t bs_x = 4096, bs_y = 1024;
-    // const size_t bs_x = 16, bs_y = 16;
-    std::unique_ptr<float[]> ip_block(new float[bs_x * bs_y]);
-
-    for (size_t i0 = 0; i0 < nx; i0 += bs_x) {
-        size_t i1 = i0 + bs_x;
-        if(i1 > nx) i1 = nx;
-
-        for (size_t j0 = 0; j0 < ny; j0 += bs_y) {
-            size_t j1 = j0 + bs_y;
-            if (j1 > ny) j1 = ny;
-            /* compute the actual dot products */
-            {
-                float one = 1, zero = 0;
-                FINTEGER nyi = j1 - j0, nxi = i1 - i0, di = d;
-                sgemm_ ("Transpose", "Not transpose", &nyi, &nxi, &di, &one,
-                        y + j0 * d, &di,
-                        x + i0 * d, &di, &zero,
-                        ip_block.get(), &nyi);
-            }
-
-            /* collect maxima */
-            res->addn (j1 - j0, ip_block.get(), j0, i0, i1 - i0);
-        }
-        InterruptCallback::check ();
-    }
-    res->reorder ();
-}
-
-// distance correction is an operator that can be applied to transform
-// the distances
-template<class DistanceCorrection>
-static void knn_L2sqr_blas (const float * x,
-        const float * y,
-        size_t d, size_t nx, size_t ny,
-        float_maxheap_array_t * res,
-        const DistanceCorrection &corr)
-{
-    res->heapify ();
-
-    // BLAS does not like empty matrices
-    if (nx == 0 || ny == 0) return;
-
-    size_t k = res->k;
-
-    /* block sizes */
-    const size_t bs_x = 4096, bs_y = 1024;
-    // const size_t bs_x = 16, bs_y = 16;
-    float *ip_block = new float[bs_x * bs_y];
-    float *x_norms = new float[nx];
-    float *y_norms = new float[ny];
-    ScopeDeleter<float> del1(ip_block), del3(x_norms), del2(y_norms);
-
-    fvec_norms_L2sqr (x_norms, x, d, nx);
-    fvec_norms_L2sqr (y_norms, y, d, ny);
-
-
-    for (size_t i0 = 0; i0 < nx; i0 += bs_x) {
-        size_t i1 = i0 + bs_x;
-        if(i1 > nx) i1 = nx;
-
-        for (size_t j0 = 0; j0 < ny; j0 += bs_y) {
-            size_t j1 = j0 + bs_y;
-            if (j1 > ny) j1 = ny;
-            /* compute the actual dot products */
-            {
-                float one = 1, zero = 0;
-                FINTEGER nyi = j1 - j0, nxi = i1 - i0, di = d;
-                sgemm_ ("Transpose", "Not transpose", &nyi, &nxi, &di, &one,
-                        y + j0 * d, &di,
-                        x + i0 * d, &di, &zero,
-                        ip_block, &nyi);
-            }
-
-            /* collect minima */
-#pragma omp parallel for
-            for (size_t i = i0; i < i1; i++) {
-                float * __restrict simi = res->get_val(i);
-                int64_t * __restrict idxi = res->get_ids (i);
-                const float *ip_line = ip_block + (i - i0) * (j1 - j0);
-
-                for (size_t j = j0; j < j1; j++) {
-                    float ip = *ip_line++;
-                    float dis = x_norms[i] + y_norms[j] - 2 * ip;
-
-                    // negative values can occur for identical vectors
-                    // due to roundoff errors
-                    if (dis < 0) dis = 0;
-
-                    dis = corr (dis, i, j);
-
-                    if (dis < simi[0]) {
-                        maxheap_pop (k, simi, idxi);
-                        maxheap_push (k, simi, idxi, dis, j);
-                    }
-                }
-            }
-        }
-        InterruptCallback::check ();
-    }
-    res->reorder ();
-
-}
-
-
-
-
-
-
-
-
-
-/*******************************************************
- * KNN driver functions
- *******************************************************/
-
-int distance_compute_blas_threshold = 20;
-
-void knn_inner_product (const float * x,
-        const float * y,
-        size_t d, size_t nx, size_t ny,
-        float_minheap_array_t * res)
-{
-    if (nx < distance_compute_blas_threshold) {
-        knn_inner_product_sse (x, y, d, nx, ny, res);
-    } else {
-        knn_inner_product_blas (x, y, d, nx, ny, res);
-    }
-}
-
-
-
-struct NopDistanceCorrection {
-  float operator()(float dis, size_t /*qno*/, size_t /*bno*/) const {
-    return dis;
-    }
-};
-
-void knn_L2sqr (const float * x,
-                const float * y,
-                size_t d, size_t nx, size_t ny,
-                float_maxheap_array_t * res)
-{
-    if (nx < distance_compute_blas_threshold) {
-        knn_L2sqr_sse (x, y, d, nx, ny, res);
-    } else {
-        NopDistanceCorrection nop;
-        knn_L2sqr_blas (x, y, d, nx, ny, res, nop);
-    }
-}
-
-struct BaseShiftDistanceCorrection {
-    const float *base_shift;
-    float operator()(float dis, size_t /*qno*/, size_t bno) const {
-      return dis - base_shift[bno];
-    }
-};
-
-void knn_L2sqr_base_shift (
-         const float * x,
-         const float * y,
-         size_t d, size_t nx, size_t ny,
-         float_maxheap_array_t * res,
-         const float *base_shift)
-{
-    BaseShiftDistanceCorrection corr = {base_shift};
-    knn_L2sqr_blas (x, y, d, nx, ny, res, corr);
-}
-
-
-
-/***************************************************************************
- * compute a subset of  distances
- ***************************************************************************/
-
-/* compute the inner product between x and a subset y of ny vectors,
-   whose indices are given by idy.  */
-void fvec_inner_products_by_idx (float * __restrict ip,
-                                 const float * x,
-                                 const float * y,
-                                 const int64_t * __restrict ids, /* for y vecs */
-                                 size_t d, size_t nx, size_t ny)
-{
-#pragma omp parallel for
-    for (size_t j = 0; j < nx; j++) {
-        const int64_t * __restrict idsj = ids + j * ny;
-        const float * xj = x + j * d;
-        float * __restrict ipj = ip + j * ny;
-        for (size_t i = 0; i < ny; i++) {
-            if (idsj[i] < 0)
-                continue;
-            ipj[i] = fvec_inner_product (xj, y + d * idsj[i], d);
-        }
-    }
-}
-
-
-
-/* compute the inner product between x and a subset y of ny vectors,
-   whose indices are given by idy.  */
-void fvec_L2sqr_by_idx (float * __restrict dis,
-                        const float * x,
-                        const float * y,
-                        const int64_t * __restrict ids, /* ids of y vecs */
-                        size_t d, size_t nx, size_t ny)
-{
-#pragma omp parallel for
-    for (size_t j = 0; j < nx; j++) {
-        const int64_t * __restrict idsj = ids + j * ny;
-        const float * xj = x + j * d;
-        float * __restrict disj = dis + j * ny;
-        for (size_t i = 0; i < ny; i++) {
-            if (idsj[i] < 0)
-                continue;
-            disj[i] = fvec_L2sqr (xj, y + d * idsj[i], d);
-        }
-    }
-}
-
-void pairwise_indexed_L2sqr (
-        size_t d, size_t n,
-        const float * x, const int64_t *ix,
-        const float * y, const int64_t *iy,
-        float *dis)
-{
-#pragma omp parallel for
-    for (size_t j = 0; j < n; j++) {
-        if (ix[j] >= 0 && iy[j] >= 0) {
-            dis[j] = fvec_L2sqr (x + d * ix[j], y + d * iy[j], d);
-        }
-    }
-}
-
-void pairwise_indexed_inner_product (
-        size_t d, size_t n,
-        const float * x, const int64_t *ix,
-        const float * y, const int64_t *iy,
-        float *dis)
-{
-#pragma omp parallel for
-    for (size_t j = 0; j < n; j++) {
-        if (ix[j] >= 0 && iy[j] >= 0) {
-            dis[j] = fvec_inner_product (x + d * ix[j], y + d * iy[j], d);
-        }
-    }
-}
-
-
-/* Find the nearest neighbors for nx queries in a set of ny vectors
-   indexed by ids. May be useful for re-ranking a pre-selected vector list */
-void knn_inner_products_by_idx (const float * x,
-                                const float * y,
-                                const int64_t * ids,
-                                size_t d, size_t nx, size_t ny,
-                                float_minheap_array_t * res)
-{
-    size_t k = res->k;
-
-#pragma omp parallel for
-    for (size_t i = 0; i < nx; i++) {
-        const float * x_ = x + i * d;
-        const int64_t * idsi = ids + i * ny;
-        size_t j;
-        float * __restrict simi = res->get_val(i);
-        int64_t * __restrict idxi = res->get_ids (i);
-        minheap_heapify (k, simi, idxi);
-
-        for (j = 0; j < ny; j++) {
-            if (idsi[j] < 0) break;
-            float ip = fvec_inner_product (x_, y + d * idsi[j], d);
-
-            if (ip > simi[0]) {
-                minheap_pop (k, simi, idxi);
-                minheap_push (k, simi, idxi, ip, idsi[j]);
-            }
-        }
-        minheap_reorder (k, simi, idxi);
-    }
-
-}
-
-void knn_L2sqr_by_idx (const float * x,
-                       const float * y,
-                       const int64_t * __restrict ids,
-                       size_t d, size_t nx, size_t ny,
-                       float_maxheap_array_t * res)
-{
-    size_t k = res->k;
-
-#pragma omp parallel for
-    for (size_t i = 0; i < nx; i++) {
-        const float * x_ = x + i * d;
-        const int64_t * __restrict idsi = ids + i * ny;
-        float * __restrict simi = res->get_val(i);
-        int64_t * __restrict idxi = res->get_ids (i);
-        maxheap_heapify (res->k, simi, idxi);
-        for (size_t j = 0; j < ny; j++) {
-            float disij = fvec_L2sqr (x_, y + d * idsi[j], d);
-
-            if (disij < simi[0]) {
-                maxheap_pop (k, simi, idxi);
-                maxheap_push (k, simi, idxi, disij, idsi[j]);
-            }
-        }
-        maxheap_reorder (res->k, simi, idxi);
-    }
-
-}
-
-
-
-
-
-/***************************************************************************
- * Range search
- ***************************************************************************/
-
-/** Find the nearest neighbors for nx queries in a set of ny vectors
- * compute_l2 = compute pairwise squared L2 distance rather than inner prod
- */
-template <bool compute_l2>
-static void range_search_blas (
-        const float * x,
-        const float * y,
-        size_t d, size_t nx, size_t ny,
-        float radius,
-        RangeSearchResult *result)
-{
-
-    // BLAS does not like empty matrices
-    if (nx == 0 || ny == 0) return;
-
-    /* block sizes */
-    const size_t bs_x = 4096, bs_y = 1024;
-    // const size_t bs_x = 16, bs_y = 16;
-    float *ip_block = new float[bs_x * bs_y];
-    ScopeDeleter<float> del0(ip_block);
-
-    float *x_norms = nullptr, *y_norms = nullptr;
-    ScopeDeleter<float> del1, del2;
-    if (compute_l2) {
-        x_norms = new float[nx];
-        del1.set (x_norms);
-        fvec_norms_L2sqr (x_norms, x, d, nx);
-
-        y_norms = new float[ny];
-        del2.set (y_norms);
-        fvec_norms_L2sqr (y_norms, y, d, ny);
-    }
-
-    std::vector <RangeSearchPartialResult *> partial_results;
-
-    for (size_t j0 = 0; j0 < ny; j0 += bs_y) {
-        size_t j1 = j0 + bs_y;
-        if (j1 > ny) j1 = ny;
-        RangeSearchPartialResult * pres = new RangeSearchPartialResult (result);
-        partial_results.push_back (pres);
-
-        for (size_t i0 = 0; i0 < nx; i0 += bs_x) {
-            size_t i1 = i0 + bs_x;
-            if(i1 > nx) i1 = nx;
-
-            /* compute the actual dot products */
-            {
-                float one = 1, zero = 0;
-                FINTEGER nyi = j1 - j0, nxi = i1 - i0, di = d;
-                sgemm_ ("Transpose", "Not transpose", &nyi, &nxi, &di, &one,
-                        y + j0 * d, &di,
-                        x + i0 * d, &di, &zero,
-                        ip_block, &nyi);
-            }
-
-
-            for (size_t i = i0; i < i1; i++) {
-                const float *ip_line = ip_block + (i - i0) * (j1 - j0);
-
-                RangeQueryResult & qres = pres->new_result (i);
-
-                for (size_t j = j0; j < j1; j++) {
-                    float ip = *ip_line++;
-                    if (compute_l2) {
-                        float dis =  x_norms[i] + y_norms[j] - 2 * ip;
-                        if (dis < radius) {
-                            qres.add (dis, j);
-                        }
-                    } else {
-                        if (ip > radius) {
-                            qres.add (ip, j);
-                        }
-                    }
-                }
-            }
-        }
-        InterruptCallback::check ();
-    }
-
-    RangeSearchPartialResult::merge (partial_results);
-}
-
-
-template <bool compute_l2>
-static void range_search_sse (const float * x,
-                const float * y,
-                size_t d, size_t nx, size_t ny,
-                float radius,
-                RangeSearchResult *res)
-{
-
-#pragma omp parallel
-    {
-        RangeSearchPartialResult pres (res);
-
-#pragma omp for
-        for (size_t i = 0; i < nx; i++) {
-            const float * x_ = x + i * d;
-            const float * y_ = y;
-            size_t j;
-
-            RangeQueryResult & qres = pres.new_result (i);
-
-            for (j = 0; j < ny; j++) {
-                if (compute_l2) {
-                    float disij = fvec_L2sqr (x_, y_, d);
-                    if (disij < radius) {
-                        qres.add (disij, j);
-                    }
-                } else {
-                    float ip = fvec_inner_product (x_, y_, d);
-                    if (ip > radius) {
-                        qres.add (ip, j);
-                    }
-                }
-                y_ += d;
-            }
-
-        }
-        pres.finalize ();
-    }
-
-    // check just at the end because the use case is typically just
-    // when the nb of queries is low.
-    InterruptCallback::check();
-}
-
-
-
-
-
-void range_search_L2sqr (
-        const float * x,
-        const float * y,
-        size_t d, size_t nx, size_t ny,
-        float radius,
-        RangeSearchResult *res)
-{
-
-    if (nx < distance_compute_blas_threshold) {
-        range_search_sse<true> (x, y, d, nx, ny, radius, res);
-    } else {
-        range_search_blas<true> (x, y, d, nx, ny, radius, res);
-    }
-}
-
-void range_search_inner_product (
-        const float * x,
-        const float * y,
-        size_t d, size_t nx, size_t ny,
-        float radius,
-        RangeSearchResult *res)
-{
-
-    if (nx < distance_compute_blas_threshold) {
-        range_search_sse<false> (x, y, d, nx, ny, radius, res);
-    } else {
-        range_search_blas<false> (x, y, d, nx, ny, radius, res);
-    }
-}
-
-
-void pairwise_L2sqr (int64_t d,
-                     int64_t nq, const float *xq,
-                     int64_t nb, const float *xb,
-                     float *dis,
-                     int64_t ldq, int64_t ldb, int64_t ldd)
-{
-    if (nq == 0 || nb == 0) return;
-    if (ldq == -1) ldq = d;
-    if (ldb == -1) ldb = d;
-    if (ldd == -1) ldd = nb;
-
-    // store in beginning of distance matrix to avoid malloc
-    float *b_norms = dis;
-
-#pragma omp parallel for
-    for (int64_t i = 0; i < nb; i++)
-        b_norms [i] = fvec_norm_L2sqr (xb + i * ldb, d);
-
-#pragma omp parallel for
-    for (int64_t i = 1; i < nq; i++) {
-        float q_norm = fvec_norm_L2sqr (xq + i * ldq, d);
-        for (int64_t j = 0; j < nb; j++)
-            dis[i * ldd + j] = q_norm + b_norms [j];
-    }
-
-    {
-        float q_norm = fvec_norm_L2sqr (xq, d);
-        for (int64_t j = 0; j < nb; j++)
-            dis[j] += q_norm;
-    }
-
-    {
-        FINTEGER nbi = nb, nqi = nq, di = d, ldqi = ldq, ldbi = ldb, lddi = ldd;
-        float one = 1.0, minus_2 = -2.0;
-
-        sgemm_ ("Transposed", "Not transposed",
-                &nbi, &nqi, &di,
-                &minus_2,
-                xb, &ldbi,
-                xq, &ldqi,
-                &one, dis, &lddi);
-    }
-
-}
-
-
-} // namespace faiss
-```
-
-
-#### 4.1.4 hamming.h,hamming-inl.h和hamming.cpp文件
-
-* **`hamming.h`文件**
-
-
-* **`hamming-inl.h`文件**
-
-
 ### 4.2 `impl`目录
 
 #### 4.2.1 `FaissException.h`和`FaissException.cpp`文件
@@ -2838,13 +1841,13 @@ namespace faiss {
 ```
 
 
-### 4.3 `Index`相关文件
+### 4.3 Index相关文件
 
-#### 4.3.1 `MetricType.h`文件
+#### 4.3.1 MetricType.h文件
 
 * **`MetricType.h`文件**
 
-```c
+```c++
 #ifndef FAISS_METRIC_TYPE_H
 #define FAISS_METRIC_TYPE_H
 
@@ -2869,7 +1872,6 @@ namespace faiss {
         METRIC_JensenShannon,
     };
 }
-
 #endif
 ```
 
@@ -2885,8 +1887,9 @@ namespace faiss {
 
 ```
 
+#### 4.3.3 Index.h和Index.cpp文件
 
-#### 4.3.2 `Index.h`和`Index.cpp`文件
+* **Index.h文件**
 
 ```c++
 #ifndef FAISS_INDEX_H
@@ -2897,11 +1900,6 @@ namespace faiss {
 #include <typeinfo>
 #include <string>
 #include <sstream>
-
-#include <faiss/impl/AuxIndexStructures.h>
-#include <faiss/impl/FaissAssert.h>
-#include <faiss/utils/distances.h>
-#include <cstring>
 
 #define FAISS_VERSION_MAJOR 1
 #define FAISS_VERSION_MINOR 6
@@ -2915,14 +1913,11 @@ namespace faiss {
  * (added/searched) together in a batch. In this case, they are passed
  * in as a matrix. When n vectors of size d are provided as float * x,
  * component j of vector i is
- *
- *   x[ i * d + j ]
- *
+ *      x[ i * d + j ]
  * where 0 <= i < n and 0 <= j < d. In other words, matrices are
  * always compact. When specifying the size of the matrix, we call it
  * an n*d matrix, which implies a row-major storage.
  */
-
 
 namespace faiss {
 
@@ -2952,19 +1947,16 @@ namespace faiss {
         MetricType metric_type;
         float metric_arg;     ///< argument of the metric type
 
-        explicit Index (idx_t d = 0, MetricType metric = METRIC_L2): 
-            d(d), ntotal(0),verbose(false), is_trained(true), metric_type (metric),metric_arg(0) {}
-
-        virtual ~Index (){ }
+        explicit Index (idx_t d = 0, MetricType metric = METRIC_L2): d(d),
+                    ntotal(0), verbose(false), is_trained(true), metric_type (metric), metric_arg(0) {}
+        virtual ~Index ();
 
         /** Perform training on a representative set of vectors
          *
          * @param n      nb of training vectors
          * @param x      training vecors, size n * d
          */
-        virtual void train(idx_t n, const float* x){
-            // does nothing by default
-        }
+        virtual void train(idx_t n, const float* x);
 
         /** Add n vectors of dimension d to the index.
          *
@@ -2982,9 +1974,7 @@ namespace faiss {
          *
          * @param xids if non-null, ids to store for the vectors (size n)
          */
-        virtual void add_with_ids (idx_t n, const float * x, const idx_t *xids){
-            FAISS_THROW_MSG ("add_with_ids not implemented for this type of index");
-        }
+        virtual void add_with_ids (idx_t n, const float * x, const idx_t *xids);
 
         /** query n vectors of dimension d to the index.
          *
@@ -2995,7 +1985,7 @@ namespace faiss {
          * @param labels      output labels of the NNs, size n*k
          * @param distances   output pairwise distances, size n*k
          */
-        virtual void search (idx_t n, const float *x, idx_t k,float *distances, idx_t *labels) const = 0;
+        virtual void search (idx_t n, const float *x, idx_t k, float *distances, idx_t *labels) const = 0;
 
         /** query n vectors of dimension d to the index.
          *
@@ -3007,9 +1997,7 @@ namespace faiss {
          * @param radius      search radius
          * @param result      result table
          */
-        virtual void range_search (idx_t n, const float *x, float radius,RangeSearchResult *result) const{
-            FAISS_THROW_MSG ("range search not implemented");
-        }
+        virtual void range_search (idx_t n, const float *x, float radius, RangeSearchResult *result) const;
 
         /** return the indexes of the k vectors closest to the query x.
          *
@@ -3017,22 +2005,14 @@ namespace faiss {
          * @param x           input vectors to search, size n * d
          * @param labels      output labels of the NNs, size n*k
          */
-        void assign (idx_t n, const float * x, idx_t * labels, idx_t k = 1){
-            float * distances = new float[n * k];
-            ScopeDeleter<float> del(distances);
-            search (n, x, k, distances, labels);
-        }
+        void assign (idx_t n, const float * x, idx_t * labels, idx_t k = 1);
 
         /// removes all elements from the database.
         virtual void reset() = 0;
 
-        /** removes IDs from the index. Not supported by all
-         * indexes. Returns the number of elements removed.
-         */
-        virtual size_t remove_ids (const IDSelector & sel){
-            FAISS_THROW_MSG ("remove_ids not implemented for this type of index");
-            return -1;
-        }
+        /// removes IDs from the index. Not supported by all indexes. Returns the number of elements removed.
+
+        virtual size_t remove_ids (const IDSelector & sel);
 
         /** Reconstruct a stored vector (or an approximation if lossy coding)
          *
@@ -3040,20 +2020,14 @@ namespace faiss {
          * @param key         id of the vector to reconstruct
          * @param recons      reconstucted vector (size d)
          */
-        virtual void reconstruct (idx_t key, float * recons) const{
-            FAISS_THROW_MSG ("reconstruct not implemented for this type of index");
-        }
+        virtual void reconstruct (idx_t key, float * recons) const;
 
         /** Reconstruct vectors i0 to i0 + ni - 1
          *
          * this function may not be defined for some indexes
          * @param recons      reconstucted vector (size ni * d)
          */
-        virtual void reconstruct_n (idx_t i0, idx_t ni, float *recons) const{
-            for (idx_t i = 0; i < ni; i++) {
-                reconstruct (i0 + i, recons + i * d);
-            }
-        }
+        virtual void reconstruct_n (idx_t i0, idx_t ni, float *recons) const;
 
         /** Similar to search, but also reconstructs the stored vectors (or an
          * approximation in the case of lossy coding) for the search results.
@@ -3064,22 +2038,7 @@ namespace faiss {
          * @param recons      reconstructed vectors size (n, k, d)
          **/
         virtual void search_and_reconstruct (idx_t n, const float *x, idx_t k,
-                float *distances, idx_t *labels,float *recons) const{
-            search (n, x, k, distances, labels);
-            for (idx_t i = 0; i < n; ++i) {
-                for (idx_t j = 0; j < k; ++j) {
-                    idx_t ij = i * k + j;
-                    idx_t key = labels[ij];
-                    float* reconstructed = recons + ij * d;
-                    if (key < 0) {
-                        // Fill with NaNs
-                        memset(reconstructed, -1, sizeof(*reconstructed) * d);
-                    } else {
-                        reconstruct (key, reconstructed);
-                    }
-                }
-            }
-        }
+                                             float *distances, idx_t *labels, float *recons) const;
 
         /** Computes a residual vector after indexing encoding.
          *
@@ -3092,12 +2051,7 @@ namespace faiss {
          * @param residual    output residual vector, size d
          * @param key         encoded index, as returned by search and assign
          */
-        virtual void compute_residual (const float * x,float * residual, idx_t key) const{
-            reconstruct (key, residual);
-            for (size_t i = 0; i < d; i++) {
-                residual[i] = x[i] - residual[i];
-            }
-        }
+        virtual void compute_residual (const float * x, float * residual, idx_t key) const;
 
         /** Computes a residual vector after indexing encoding (batch form).
          * Equivalent to calling compute_residual for each vector.
@@ -3112,12 +2066,8 @@ namespace faiss {
          * @param residuals   output residual vectors, size (n x d)
          * @param keys        encoded index, as returned by search and assign
          */
-        virtual void compute_residual_n (idx_t n, const float* xs,float* residuals,const idx_t* keys) const{
-            #pragma omp parallel for
-                for (idx_t i = 0; i < n; ++i) {
-                    compute_residual(&xs[i * d], &residuals[i * d], keys[i]);
-                }
-        }
+        virtual void compute_residual_n (idx_t n, const float* xs,
+                                         float* residuals, const idx_t* keys) const;
 
         /** Get a DistanceComputer (defined in AuxIndexStructures) object
          * for this kind of index.
@@ -3125,21 +2075,12 @@ namespace faiss {
          * DistanceComputer is implemented for indexes that support random
          * access of their vectors.
          */
-        virtual DistanceComputer * get_distance_computer() const{
-            if (metric_type == METRIC_L2) {
-                return new GenericDistanceComputer(*this);
-            } else {
-                FAISS_THROW_MSG ("get_distance_computer() not implemented");
-            }
-        }
-
+        virtual DistanceComputer * get_distance_computer() const;
 
         /* The standalone codec interface */
 
         /** size of the produced codes in bytes */
-        virtual size_t sa_code_size () const{
-            FAISS_THROW_MSG ("standalone codec not implemented for this type of index");
-        }
+        virtual size_t sa_code_size () const;
 
         /** encode a set of vectors
          *
@@ -3147,9 +2088,7 @@ namespace faiss {
          * @param x       input vectors, size n * d
          * @param bytes   output encoded vectors, size n * sa_code_size()
          */
-        virtual void sa_encode (idx_t n, const float *x,uint8_t *bytes) const{
-            FAISS_THROW_MSG ("standalone codec not implemented for this type of index");
-        }
+        virtual void sa_encode (idx_t n, const float *x,uint8_t *bytes) const;
 
         /** encode a set of vectors
          *
@@ -3157,10 +2096,106 @@ namespace faiss {
          * @param bytes   input encoded vectors, size n * sa_code_size()
          * @param x       output vectors, size n * d
          */
-        virtual void sa_decode (idx_t n, const uint8_t *bytes,float *x) const{
-            FAISS_THROW_MSG ("standalone codec not implemented for this type of index");
-        }
+        virtual void sa_decode (idx_t n, const uint8_t *bytes,float *x) const;
     };
+}
+#endif
+```
+
+* **Index.cpp文件**
+
+```c++
+#include <faiss/Index.h>
+
+#include <faiss/impl/AuxIndexStructures.h>
+#include <faiss/impl/FaissAssert.h>
+#include <faiss/utils/distances.h>
+
+#include <cstring>
+
+
+namespace faiss {
+
+    Index::~Index () { }
+
+    void Index::train(idx_t /*n*/, const float* /*x*/) {
+        // does nothing by default
+    }
+
+    void Index::range_search (idx_t , const float *, float, RangeSearchResult *) const {
+        FAISS_THROW_MSG ("range search not implemented");
+    }
+
+    void Index::assign (idx_t n, const float * x, idx_t * labels, idx_t k) {
+        float * distances = new float[n * k];
+        ScopeDeleter<float> del(distances);
+        search (n, x, k, distances, labels);
+    }
+
+    void Index::add_with_ids( idx_t /*n*/, const float* /*x*/, const idx_t* /*xids*/) {
+        FAISS_THROW_MSG ("add_with_ids not implemented for this type of index");
+    }
+
+    size_t Index::remove_ids(const IDSelector& /*sel*/) {
+        FAISS_THROW_MSG ("remove_ids not implemented for this type of index");
+        return -1;
+    }
+
+    void Index::reconstruct (idx_t, float * ) const {
+        FAISS_THROW_MSG ("reconstruct not implemented for this type of index");
+    }
+
+    void Index::reconstruct_n (idx_t i0, idx_t ni, float *recons) const {
+        for (idx_t i = 0; i < ni; i++) {
+            reconstruct (i0 + i, recons + i * d);
+        }
+    }
+
+
+    void Index::search_and_reconstruct (idx_t n, const float *x, idx_t k,
+            float *distances, idx_t *labels, float *recons) const {
+        search (n, x, k, distances, labels);
+        for (idx_t i = 0; i < n; ++i) {
+            for (idx_t j = 0; j < k; ++j) {
+                idx_t ij = i * k + j;
+                idx_t key = labels[ij];
+                float* reconstructed = recons + ij * d;
+                if (key < 0) {
+                    // Fill with NaNs
+                    memset(reconstructed, -1, sizeof(*reconstructed) * d);
+                } else {
+                    reconstruct (key, reconstructed);
+                }
+            }
+        }
+    }
+
+    void Index::compute_residual (const float * x, float * residual, idx_t key) const {
+        reconstruct (key, residual);
+        for (size_t i = 0; i < d; i++) {
+            residual[i] = x[i] - residual[i];
+        }
+    }
+
+    void Index::compute_residual_n (idx_t n, const float* xs, float* residuals, const idx_t* keys) const {
+        #pragma omp parallel for
+            for (idx_t i = 0; i < n; ++i) {
+                compute_residual(&xs[i * d], &residuals[i * d], keys[i]);
+            }
+    }
+
+    size_t Index::sa_code_size () const {
+        FAISS_THROW_MSG ("standalone codec not implemented for this type of index");
+    }
+
+    void Index::sa_encode (idx_t, const float *,uint8_t *) const {
+        FAISS_THROW_MSG ("standalone codec not implemented for this type of index");
+    }
+
+    void Index::sa_decode (idx_t, const uint8_t *, float *) const {
+        FAISS_THROW_MSG ("standalone codec not implemented for this type of index");
+    }
+
 
     namespace {
 
@@ -3192,10 +2227,17 @@ namespace faiss {
             }
         };
     }  // namespace
-}
-#endif
-```
 
+
+    DistanceComputer * Index::get_distance_computer() const {
+        if (metric_type == METRIC_L2) {
+            return new GenericDistanceComputer(*this);
+        } else {
+            FAISS_THROW_MSG ("get_distance_computer() not implemented");
+        }
+    }
+}
+```
 
 #### 4.3.3 `IndexFlat.h`和`IndexFlat.cpp`文件
 
