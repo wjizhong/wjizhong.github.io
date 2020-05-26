@@ -32,14 +32,77 @@
       var is_top_frame = false;
         
         var pageToc = [
-          {title: "python\u57fa\u7840\u6559\u7a0b", url: "#_top", children: [
-              {title: "\u4e00\u3001python\u57fa\u7840", url: "#python_1" },
-              {title: "\u4e8c\u3001python\u5185\u5b58\u4f7f\u7528", url: "#python_2" },
-              {title: "\u4e09\u3001\u8fdb\u7a0b\u7ebf\u7a0b\u548c\u534f\u7a0b", url: "#_1" },
-              {title: "\u56db\u3001\u4ee3\u7801\u7247\u6bb5", url: "#_2" },
+          {title: "python\u57fa\u7840\u6559\u7a0b", url: "#_top", level:1, children: [
+              {title: "\u4e00\u3001python\u57fa\u7840", url: "#python_1", level:2, children: [
+                  {title: "1.1.\u7b80\u5316\u7248python\u89e3\u91ca\u5668", url: "#11python", level:3, children: [
+                  ]},
+                  {title: "1.2 \u7b80\u5316\u7248\u5bf9\u8c61(object)\u4e0e\u7c7b(class)", url: "#12-objectclass", level:3, children: [
+                  ]},
+                  {title: "1.3 \u7b80\u5316\u7248\u8c03\u7528\u6808(call stack)\u548c\u5806(heap)", url: "#13-call-stackheap", level:3, children: [
+                  ]},
+                  {title: "1.4 \u6570\u636e\u7c7b\u578b", url: "#14", level:3, children: [
+                      {title: "1.4.1 \u5217\u8868(list)", url: "#141-list", level:4,children: [
+                      ]},
+                      {title: "1.4.2 \u5143\u7ec4(tuple)", url: "#142-tuple", level:4,children: [
+                      ]},
+                      {title: "1.4.3 \u5e8f\u5217(sequence)", url: "#143-sequence", level:4,children: [
+                      ]},
+                      {title: "1.4.4 \u5b57\u5178(dict)", url: "#144-dict", level:4,children: [
+                      ]},
+                      {title: "1.4.5 \u96c6\u5408(set),frozenset", url: "#145-setfrozenset", level:4,children: [
+                      ]},
+                      {title: "1.4.6 \u5173\u4e8eNone", url: "#146-none", level:4,children: [
+                      ]},
+                      {title: "1.4.7 \u7b80\u5316\u5185\u7f6e\u7684help\u51fd\u6570", url: "#147-help", level:4,children: [
+                      ]},
+                  ]}, 
+              ]},
+              {title: "\u4e8c\u3001python\u5185\u5b58\u4f7f\u7528", url: "#python_2", level:2, children: [
+                  {title: "2.1 Python\u6574\u578b\u5bf9\u8c61", url: "#21-python", level:3, children: [
+                  ]},
+                  {title: "2.2 python\u683c\u5f0f\u5316\u5b57\u7b26\u4e32", url: "#22-python", level:3, children: [
+                      {title: "2.2.1 %\u683c\u5f0f\u5316\u5b57\u7b26\u4e32", url: "#221", level:4,children: [
+                      ]},
+                      {title: "2.2.2 format\u4f7f\u7528", url: "#222-format", level:4,children: [
+                      ]},
+                      {title: "2.2.3 f-string\u6982\u89c8", url: "#223-f-string", level:4,children: [
+                      ]},
+                  ]},
+                  {title: "2.3 python \u5bf9\u8c61", url: "#23-python", level:3, children: [
+                  ]},
+                  {title: "2.4 \u7f16\u7801\u57fa\u7840\u77e5\u8bc6", url: "#24", level:3, children: [
+                      {title: "2.4.1 \u5e38\u7528\u5b57\u7b26\u96c6\u548c\u5b57\u7b26\u7f16\u7801", url: "#241", level:4,children: [
+                      ]},
+                      {title: "2.4.2 python\u4e2d\u7684\u7f16\u7801", url: "#242-python", level:4,children: [
+                      ]},
+                  ]},
+                  {title: "2.5 python\u4ee3\u7801\u8c03\u8bd5", url: "#25-python", level:3, children: [
+                  ]},
+                  {title: "2.6 python\u4ee3\u7801\u6267\u884cshell", url: "#26-pythonshell", level:3, children: [
+                  ]},
+                  {title: "2.7 \u7279\u6b8a\u7684\u5185\u7f6e\u51fd\u6570", url: "#27", level:3, children: [
+                  ]}, 
+              ]},
+              {title: "\u4e09\u3001\u8fdb\u7a0b\u7ebf\u7a0b\u548c\u534f\u7a0b", url: "#_1", level:2, children: [
+                  {title: "3.1 \u8fdb\u7a0b", url: "#31", level:3, children: [
+                  ]},
+                  {title: "3.2 \u7ebf\u7a0b", url: "#32", level:3, children: [
+                  ]},
+                  {title: "3.3 \u534f\u7a0b", url: "#33", level:3, children: [
+                  ]},
+                  {title: "3.4 \u8fdb\u7a0b\u7ebf\u7a0b\u548c\u534f\u7a0b", url: "#34", level:3, children: [
+                  ]},
+                  {title: "3.5 python\u5b88\u62a4\u8fdb\u7a0b", url: "#35-python", level:3, children: [
+                  ]},
+                  {title: "3.6 shell\u591a\u4efb\u52a1", url: "#36-shell", level:3, children: [
+                  ]}, 
+              ]},
+              {title: "\u56db\u3001\u4ee3\u7801\u7247\u6bb5", url: "#_2", level:2, children: [
+                  {title: "4.1 PyTorch Cookbook", url: "#41-pytorch-cookbook", level:3, children: [
+                  ]}, 
+              ]},
           ]},
         ];
-
     </script>
     <script src="../../../js/base.js"></script> 
 </head>

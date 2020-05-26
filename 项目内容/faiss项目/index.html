@@ -32,13 +32,59 @@
       var is_top_frame = false;
         
         var pageToc = [
-          {title: "faiss\u6559\u7a0b", url: "#_top", children: [
-              {title: "\u4e00\u3001faiss\u6559\u7a0b", url: "#faiss_1" },
-              {title: "\u4e8c\u3001faiss\u539f\u7406", url: "#faiss_2" },
-              {title: "\u4e09\u3001\u6e90\u7801\u4ecb\u7ecd", url: "#_1" },
+          {title: "faiss\u6559\u7a0b", url: "#_top", level:1, children: [
+              {title: "\u4e00\u3001faiss\u6559\u7a0b", url: "#faiss_1", level:2, children: [
+                  {title: "1.1  faiss\u6559\u7a0b", url: "#11-faiss", level:3, children: [
+                  ]},
+                  {title: "1.2 faiss\u4f7f\u7528", url: "#12-faiss", level:3, children: [
+                  ]}, 
+              ]},
+              {title: "\u4e8c\u3001faiss\u539f\u7406", url: "#faiss_2", level:2, children: [
+                  {title: "2.1 faiss\u6838\u5fc3\u7b97\u6cd5\u5b9e\u73b0", url: "#21-faiss", level:3, children: [
+                  ]},
+                  {title: "2.2 faiss\u529f\u80fd\u6d41\u7a0b\u8bf4\u660e", url: "#22-faiss", level:3, children: [
+                  ]},
+                  {title: "2.3 \u7ec4\u4ef6\u5206\u6790", url: "#23", level:3, children: [
+                      {title: "2.3.1 \u7d22\u5f15Index", url: "#231-index", level:4,children: [
+                      ]},
+                      {title: "2.3.2 Product quantization(\u4e58\u79ef\u91cf\u5316PQ)", url: "#232-product-quantizationpq", level:4,children: [
+                      ]},
+                  ]}, 
+              ]},
+              {title: "\u4e09\u3001\u6e90\u7801\u4ecb\u7ecd", url: "#_1", level:2, children: [
+                  {title: "4.1 \u57fa\u7840\u5de5\u5177", url: "#41", level:3, children: [
+                      {title: "4.1.1 random.h\u548crandom.cpp\u6587\u4ef6", url: "#411-randomhrandomcpp", level:4,children: [
+                      ]},
+                      {title: "4.1.2 Heap.h\u548cHeap.cpp\u6587\u4ef6", url: "#412-heaphheapcpp", level:4,children: [
+                      ]},
+                  ]},
+                  {title: "4.1.3 WorkerThread.h\u548cWorkerThread.cpp\u6587\u4ef6", url: "#413-workerthreadhworkerthreadcpp", level:3, children: [
+                  ]},
+                  {title: "4.1.3 distances.h\u3001distances.cpp\u6587\u4ef6", url: "#413-distanceshdistancescpp", level:3, children: [
+                      {title: "4.1.4 hamming.h,hamming-inl.h\u548chamming.cpp\u6587\u4ef6", url: "#414-hamminghhamming-inlhhammingcpp", level:4,children: [
+                      ]},
+                  ]},
+                  {title: "4.2 impl\u76ee\u5f55", url: "#42-impl", level:3, children: [
+                      {title: "4.2.1 FaissException.h\u548cFaissException.cpp\u6587\u4ef6", url: "#421-faissexceptionhfaissexceptioncpp", level:4,children: [
+                      ]},
+                      {title: "4.2.* FaissAssert.h\u6587\u4ef6", url: "#42-faissasserth", level:4,children: [
+                      ]},
+                  ]},
+                  {title: "4.3 Index\u76f8\u5173\u6587\u4ef6", url: "#43-index", level:3, children: [
+                      {title: "4.3.1 MetricType.h\u6587\u4ef6", url: "#431-metrictypeh", level:4,children: [
+                      ]},
+                      {title: "4.3.2 VectorTransform.h\u548cVectorTransform.cpp\u6587\u4ef6", url: "#432-vectortransformhvectortransformcpp", level:4,children: [
+                      ]},
+                      {title: "4.3.2 Index.h\u548cIndex.cpp\u6587\u4ef6", url: "#432-indexhindexcpp", level:4,children: [
+                      ]},
+                      {title: "4.3.3 IndexFlat.h\u548cIndexFlat.cpp\u6587\u4ef6", url: "#433-indexflathindexflatcpp", level:4,children: [
+                      ]},
+                      {title: "4.3.4 IndexLSH.h\u548cIndexLSH.cpp\u6587\u4ef6", url: "#434-indexlshhindexlshcpp", level:4,children: [
+                      ]},
+                  ]}, 
+              ]},
           ]},
         ];
-
     </script>
     <script src="../../js/base.js"></script> 
 </head>

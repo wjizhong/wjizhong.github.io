@@ -32,12 +32,19 @@
       var is_top_frame = false;
         
         var pageToc = [
-          {title: "\u5206\u89e3\u6210\u5206\u4fe1\u53f7", url: "#_top", children: [
-              {title: "\u4e00\u3001\u964d\u7ef4\u6280\u672f", url: "#_2" },
-              {title: "\u4e8c\u3001\u805a\u7c7b\u7b97\u6cd5", url: "#_3" },
+          {title: "\u5206\u89e3\u6210\u5206\u4fe1\u53f7", url: "#_top", level:1, children: [
+              {title: "\u4e00\u3001\u964d\u7ef4\u6280\u672f", url: "#_2", level:2, children: [
+                  {title: "1.1 \u4e3b\u6210\u5206\u5206\u6790", url: "#11", level:3, children: [
+                  ]}, 
+              ]},
+              {title: "\u4e8c\u3001\u805a\u7c7b\u7b97\u6cd5", url: "#_3", level:2, children: [
+                  {title: "2.1 k-means", url: "#21-k-means", level:3, children: [
+                  ]},
+                  {title: "2.2 Mean Shift", url: "#22-mean-shift", level:3, children: [
+                  ]}, 
+              ]},
           ]},
         ];
-
     </script>
     <script src="../../js/base.js"></script> 
 </head>
