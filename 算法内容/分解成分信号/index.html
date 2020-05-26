@@ -33,15 +33,11 @@
         
         var pageToc = [
           {title: "\u5206\u89e3\u6210\u5206\u4fe1\u53f7", url: "#_top", level:1, children: [
-              {title: "\u4e00\u3001\u964d\u7ef4\u6280\u672f", url: "#_2", level:2, children: [
+              {title: "\u4e00\u3001\u4e3b\u6210\u5206\u5206\u6790", url: "#_2", level:2, children: [
                   {title: "1.1 \u4e3b\u6210\u5206\u5206\u6790", url: "#11", level:3, children: [
                   ]}, 
               ]},
-              {title: "\u4e8c\u3001\u805a\u7c7b\u7b97\u6cd5", url: "#_3", level:2, children: [
-                  {title: "2.1 k-means", url: "#21-k-means", level:3, children: [
-                  ]},
-                  {title: "2.2 Mean Shift", url: "#22-mean-shift", level:3, children: [
-                  ]}, 
+              {title: "1.2 \u589e\u91cfPCA (Incremental PCA)", url: "#12-pca-incremental-pca", level:2, children: [ 
               ]},
           ]},
         ];
@@ -76,9 +72,14 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 
 
     
+    
+      
+    
+
+    
 
     <h1 id="_1">分解成分信号</h1>
-<h2 id="_2">一、降维技术</h2>
+<h2 id="_2">一、主成分分析</h2>
 <h3 id="11">1.1 主成分分析</h3>
 <p>在多元统计分析中,主成分分析(Principal components analysis,PCA)是一种分析、简化数据集的技术。主成分分析经常用于减少数据集的维数,同时保持数据集中的对方差贡献最大的特征。这是通过保留低阶主成分,忽略高阶主成分做到的。这样低阶成分往往能够保留住数据的最重要方面。但是,这也不是一定的,要视具体应用而定。由于主成分分析依赖所给数据,所以数据的准确性对分析结果影响很大。</p>
 <p>主成分分析<a href="http://pca.narod.ru/pearson1901.pdf">由卡尔·皮尔逊于1901年发明</a>,用于分析数据及建立数理模型。其方法主要是通过对协方差矩阵进行特征分解,以得出数据的主成分(即特征向量)与它们的权值(即特征值)。<code>PCA</code>是最简单的以特征量分析多元统计分布的方法。其结果可以理解为对原数据中的方差做出解释:哪一个方向上的数据值对方差的影响最大?换而言之,<code>PCA</code>提供了一种降低数据维度的有效办法;如果分析者在原数据中除掉最小的特征值所对应的成分,那么所得的低维度数据必定是最优化的(也即,这样降低维度必定是失去讯息最少的方法)。主成分分析在分析复杂数据时尤为有用,比如人脸识别。</p>
@@ -312,464 +313,51 @@ plt.show()
 </div>
 <p>PCA相当于在气象学中使用的经验正交函数(EOF),同时也类似于一个线性隐层神经网络。隐含层K个神经元的权重向量收敛后,将形成一个由前K个主成分跨越空间的基础。但是与PCA不同的是,这种技术并不一定会产生正交向量。</p>
 <p>PCA是一种很流行且主要的的模式识别技术。然而,它并不能最优化类别可分离性 。另一种不考虑这一点的方法是线性判别分析。</p>
-<h2 id="_3">二、聚类算法</h2>
-<h3 id="21-k-means">2.1 <code>k-means</code></h3>
-<p><code>k-means</code>算法源于信号处理中的一种向量量化方法,现在则更多地作为一种聚类分析方法流行于数据挖掘领域。<code>k-means</code>聚类的目的是:把<span><span class="MathJax_Preview">n</span><script type="math/tex">n</script></span>个点(可以是样本的一次观察或一个实例)划分到<span><span class="MathJax_Preview">k</span><script type="math/tex">k</script></span>个聚类中,使得每个点都属于离他最近的均值(此即聚类中心)对应的聚类,以之作为聚类的标准。这个问题将归结为一个把数据空间划分为<code>Voronoi cells</code>的问题。</p>
-<p>这个问题在计算上是NP困难的,不过存在高效的启发式算法。一般情况下,都使用效率比较高的启发式算法,它们能够快速收敛于一个局部最优解。这些算法通常类似于通过迭代优化方法处理高斯混合分布的最大期望算法(EM算法)。而且,它们都使用聚类中心来为数据建模;然而<code>k-means</code>聚类倾向于在可比较的空间范围内寻找聚类,期望-最大化技术却允许聚类有不同的形状。<code>k-means</code>聚类与<code>k</code>-近邻之间没有任何关系。</p>
-<ul>
-<li><strong>历史源流</strong></li>
-</ul>
-<p>虽然其思想能够追溯到1957年的Hugo Steinhaus,术语"<code>k-means</code>"于1967年才被James MacQueen首次使用。标准算法则是在1957年被Stuart Lloyd作为一种脉冲码调制的技术所提出,但直到1982年才被贝尔实验室公开出版。在1965年,E.W.Forgy发表了本质上相同的方法,所以这一算法有时被称为Lloyd-Forgy方法。更高效的版本则被Hartigan and Wong提出(1975/1979)。</p>
-<ul>
-<li><strong>算法描述</strong></li>
-</ul>
-<p>已知观测集<span><span class="MathJax_Preview">(x_1,x_2,\cdots,x_n)</span><script type="math/tex">(x_1,x_2,\cdots,x_n)</script></span>,其中每个观测都是一个<span><span class="MathJax_Preview">d</span><script type="math/tex">d</script></span>维实向量,<code>k-means</code>聚类要把这<span><span class="MathJax_Preview">n</span><script type="math/tex">n</script></span>个观测划分到<span><span class="MathJax_Preview">k</span><script type="math/tex">k</script></span>个集合中<span><span class="MathJax_Preview">(k\le n)</span><script type="math/tex">(k\le n)</script></span>,使得组内平方和(WCSS within-cluster sum of squares)最小。换句话说,它的目标是找到使得下式满足的聚类<span><span class="MathJax_Preview">S_{i}</span><script type="math/tex">S_{i}</script></span>，</p>
-<div>
-<div class="MathJax_Preview">
-{\underset  {{\mathbf  {S}}}
-{\operatorname {arg\,min}}}\sum _{{i=1}}^{{k}}\sum _{{{\mathbf  x}\in S_{i}}}\left\|{\mathbf  x}-{\boldsymbol  \mu }_{i}\right\|^{2}
-</div>
-<script type="math/tex; mode=display">
-{\underset  {{\mathbf  {S}}}
-{\operatorname {arg\,min}}}\sum _{{i=1}}^{{k}}\sum _{{{\mathbf  x}\in S_{i}}}\left\|{\mathbf  x}-{\boldsymbol  \mu }_{i}\right\|^{2}
-</script>
-</div>
-<p>其中<span><span class="MathJax_Preview">\mu _{i}</span><script type="math/tex">\mu _{i}</script></span>是<span><span class="MathJax_Preview">S_{i}</span><script type="math/tex">S_{i}</script></span>中所有点的均值。</p>
-<blockquote>
-<ul>
-<li><strong>标准算法</strong></li>
-</ul>
-</blockquote>
-<p>最常用的算法使用了迭代优化的技术。它被称为<code>k-means</code>算法而广为使用,有时也被称为Lloyd算法(尤其在计算机科学领域)。已知初始的<span><span class="MathJax_Preview">k</span><script type="math/tex">k</script></span>个均值点<span><span class="MathJax_Preview">m_1^{(1)},\codts,m_k^{(1)}</span><script type="math/tex">m_1^{(1)},\codts,m_k^{(1)}</script></span>,算法的按照下面两个步骤交替进行:</p>
-<blockquote>
-<ol>
-<li>分配(Assignment):将每个观测分配到聚类中,使得组内平方和(WCSS)达到最小。因为这一平方和就是平方后的欧氏距离,所以很直观地把观测分配到离它最近的均值点即可。(数学上,这意味依照由这些均值点生成的Voronoi图来划分上述观测)。
-$$
-S_{i}^{{(t)}}=\left{x_{p}:\left|x_{p}-m_{i}^{{(t)}}\right|^{2}\leq \left|x_{p}-m_{j}^{{(t)}}\right|^{2}\forall j,1\leq j\leq k\right}
-$$
-其中每个<span><span class="MathJax_Preview">x_{p}</span><script type="math/tex">x_{p}</script></span>都只被分配到一个确定的聚类<span><span class="MathJax_Preview">S^{{t}}</span><script type="math/tex">S^{{t}}</script></span>中，尽管在理论上它可能被分配到2个或者更多的聚类。</li>
-<li>更新(Update):对于上一步得到的每一个聚类,以聚类中观测值的图心,作为新的均值点。
-$$
-m_{i}^{{(t+1)}}={\frac  {1}{\left|S_{i}^{{(t)}}\right|}}\sum <em>{{x</em>{j}\in S_{i}^{{(t)}}}}x_{j}
-$$
-因为算术平均是最小二乘估计，所以这一步同样减小了目标函数组内平方和（WCSS）的值。</li>
-</ol>
-</blockquote>
-<p>这一算法将在对于观测的分配不再变化时收敛。由于交替进行的两个步骤都会减小目标函数WCSS的值,并且分配方案只有有限种,所以算法一定会收敛于某一(局部)最优解。注意:使用这一算法无法保证得到全局最优解。</p>
-<p>这一算法经常被描述为"把观测按照距离分配到最近的聚类"。标准算法的目标函数是组内平方和(WCSS),而且按照"最小二乘和"来分配观测,确实是等价于按照最小欧氏距离来分配观测的。如果使用不同的距离函数来代替(平方)欧氏距离,可能使得算法无法收敛。然而,使用不同的距离函数,也能得到<code>k-means</code>聚类的其他变体,如球体k-均值算法和k-中心点算法。</p>
-<blockquote>
-<ul>
-<li><strong>初始化方法</strong></li>
-</ul>
-</blockquote>
-<p>通常使用的初始化方法有Forgy和随机划分(Random Partition)方法。Forgy方法随机地从数据集中选择<code>k</code>个观测作为初始的均值点;而随机划分方法则随机地为每一观测指定聚类,然后运行"更新(Update)"步骤,即计算随机分配的各聚类的图心,作为初始的均值点。Forgy方法易于使得初始均值点散开,随机划分方法则把均值点都放到靠近数据集中心的地方。此随机划分方法一般更适用于k-调和均值和模糊k-均值算法。对于期望-最大化(EM)算法和标准k-均值算法,Forgy方法作为初始化方法的表现会更好一些。</p>
-<p>这是一个启发式算法,无法保证收敛到全局最优解,并且聚类的结果会依赖于初始的聚类。又因为算法的运行速度通常很快,所以一般都以不同的起始状态运行多次来得到更好的结果。不过,在最差的情况下,k-均值算法会收敛地特别慢:尤其是已经证明了存在这一的点集(甚至在2维空间中),使得k-均值算法收敛的时间达到指数级(<span><span class="MathJax_Preview">2^{\Omega (n)}</span><script type="math/tex">2^{\Omega (n)}</script></span>)。好在在现实中,这样的点集几乎不会出现:因为k-均值算法的平滑运行时间是多项式时间的。</p>
-<p><strong>注:把“分配”步骤视为“期望”步骤,把“更新”步骤视为“最大化步骤”,可以看到,这一算法实际上是广义期望-最大化算法(GEM)的一个变体。</strong></p>
-<blockquote>
-<ul>
-<li><strong>复杂度</strong></li>
-</ul>
-</blockquote>
-<p>在<span><span class="MathJax_Preview">d</span><script type="math/tex">d</script></span>维空间中找到<code>k-means</code>聚类问题的最优解的计算复杂度:</p>
-<blockquote>
-<p><code>NP-hard</code>:一般欧式空间中,即使目标聚类数仅为2
-<br><code>NP</code>困难:平面中,不对聚类数目<code>k</code>作限制</p>
-</blockquote>
-<p>如果<code>k</code>和<span><span class="MathJax_Preview">d</span><script type="math/tex">d</script></span>都是固定的,时间复杂度为<span><span class="MathJax_Preview">O(n^{{dk+1}}\log n</span><script type="math/tex">O(n^{{dk+1}}\log n</script></span>),其中<span><span class="MathJax_Preview">n</span><script type="math/tex">n</script></span>为待聚类的观测点数目。相比之下,Lloyds算法的运行时间通常为<span><span class="MathJax_Preview">O(nkdi)</span><script type="math/tex">O(nkdi)</script></span>,<span><span class="MathJax_Preview">k</span><script type="math/tex">k</script></span>和<span><span class="MathJax_Preview">d</span><script type="math/tex">d</script></span>定义如上,<span><span class="MathJax_Preview">i</span><script type="math/tex">i</script></span>为直到收敛时的迭代次数。如果数据本身就有一定的聚类结构,那么收敛所需的迭代数目通常是很少的,并且进行少数迭代之后,再进行迭代的话,对于结果的改善效果很小。鉴于上述原因,Lloyds算法在实践中通常被认为几乎是线性复杂度的。</p>
-<p>下面有几个关于这一算法复杂度的近期研究：</p>
-<blockquote>
-<p>Lloyd's <code>k-means</code>算法具有多项式平滑运行时间。对于落在空间<span><span class="MathJax_Preview">[0,1]^{d}</span><script type="math/tex">[0,1]^{d}</script></span>任意的<span><span class="MathJax_Preview">n</span><script type="math/tex">n</script></span>点集合,如果每一个点都独立地受一个均值为<span><span class="MathJax_Preview">0</span><script type="math/tex">0</script></span>,标准差为<span><span class="MathJax_Preview">\sigma</span><script type="math/tex">\sigma</script></span>的正态分布所影响,那么<code>k-means</code>算法的期望运行时间上界为<span><span class="MathJax_Preview">O(n^{{34}}k^{{34}}d^{{8}}log^{4}(n)/\sigma ^{6})</span><script type="math/tex">O(n^{{34}}k^{{34}}d^{{8}}log^{4}(n)/\sigma ^{6})</script></span>,即对于<code>n</code>,<code>k</code>,<code>i</code>,<code>d</code>和<span><span class="MathJax_Preview">1/\sigma</span><script type="math/tex">1/\sigma</script></span>都是多项式时间的。
-<br> 在更简单的情况下,有更好的上界。例如在整数网格<span><span class="MathJax_Preview">\left\{1,...,M\right\}^{d}</span><script type="math/tex">\left\{1,...,M\right\}^{d}</script></span>中,<code>k-means</code>算法运行时间的上界为<span><span class="MathJax_Preview">O(dn^{4}M^{2})</span><script type="math/tex">O(dn^{4}M^{2})</script></span>。</p>
-</blockquote>
-<p>使得<code>k-means</code>算法效率很高的两个关键特征同时也被经常被视为它最大的缺陷:</p>
-<blockquote>
-<p>聚类数目<code>k</code>是一个输入参数。选择不恰当的<code>k</code>值可能会导致糟糕的聚类结果,这也是为什么要进行特征检查来决定数据集的聚类数目了。
-<br> 收敛到局部最优解,可能导致"反直观"的错误结果。</p>
-</blockquote>
-<p><code>k-means</code>算法的一个重要的局限性即在于它的聚类模型。这一模型的基本思想在于:得到相互分离的球状聚类,在这些聚类中,均值点趋向收敛于聚类中心。一般会希望得到的聚类大小大致相当,这样把每个观测都分配到离它最近的聚类中心(即均值点)就是比较正确的分配方案。<code>k-means</code>聚类的结果也能理解为由均值点生成的Voronoi cells。</p>
-<ul>
-<li><strong>相关应用</strong></li>
-</ul>
-<p><code>k-means</code>聚类(尤其是使用如Lloyd's算法的启发式方法的聚类)即使是在巨大的数据集上也非常容易部署实施。正因为如此,它在很多领域都得到的成功的应用,如市场划分、机器视觉、 地质统计学、天文学和农业等。它经常作为其他算法的预处理步骤,比如要找到一个初始设置。</p>
-<blockquote>
-<p>1、<strong>向量的量化</strong></p>
-</blockquote>
-<p><code>k-means</code>起源于信号处理领域,并且现在也能在这一领域找到应用。例如在计算机图形学中,色彩量化的任务,就是要把一张图像的色彩范围减少到一个固定的数目<code>k</code>上来。<code>k-means</code>算法就能很容易地被用来处理这一任务,并得到不错的结果。其它得向量量化的例子有非随机抽样,在这里,为了进一步的分析,使用<code>k-means</code>算法能很容易的从大规模数据集中选出<code>k</code>个合适的不同观测。</p>
-<blockquote>
-<p>2、<strong>聚类分析</strong></p>
-</blockquote>
-<p>在聚类分析中,<code>k-means</code>算法被用来将输入数据划分到<code>k</code>个部分(聚类)中。然而,纯粹的<code>k-means</code>算法并不是非常灵活,同样地,在使用上有一定局限(不过上面说到得向量量化,确实是一个理想的应用场景)。特别是,当没有额外的限制条件时,参数<code>k</code>是很难选择的(真如上面讨论过的一样)。算法的另一个限制就是它不能和任意的距离函数一起使用、不能处理非数值数据。而正是为了满足这些使用条件,许多其他的算法才被发展起来。</p>
-<blockquote>
-<p>3、<strong>特征学习</strong></p>
-</blockquote>
-<p>在(半)监督学习或无监督学习中，k-均值聚类被用来进行特征学习（或字典学习）步骤[18]。基本方法是，首先使用输入数据训练出一个k-均值聚类表示，然后把任意的输入数据投射到这一新的特征空间。 k-均值的这一应用能成功地与自然语言处理和计算机视觉中半监督学习的简单线性分类器结合起来。在对象识别任务中，它能展现出与其他复杂特征学习方法（如自动编码器、受限Boltzmann机等）相当的效果。然而，相比复杂方法，它需要更多的数据来达到相同的效果，因为每个数据点都只贡献了一个特征（而不是多重特征）。</p>
-<blockquote>
-<p>4、<strong>与其他统计机器学习方法的关系</strong></p>
-</blockquote>
-<p><code>k-means</code>聚类以及它与EM算法的联系,是高斯混合模型的一个特例。很容易能把<code>k-means</code>问题一般化为高斯混合模型。另一个<code>k-means</code>算法的推广则是<code>k-SVD</code>算法,后者把数据点视为“编码本向量”的稀疏线性组合。而<code>k-means</code>对应于使用单编码本向量的特殊情形(其权重为1)。</p>
-<blockquote>
-<p>5、<strong><code>Mean Shift</code>聚类</strong></p>
-</blockquote>
-<p>基本的<code>Mean Shift</code>聚类要维护一个与输入数据集规模大小相同的数据点集。初始时,这一集合就是输入集的副本。然后对于每一个点,用一定距离范围内的所有点的均值来迭代地替换它。与之对比,<code>k-means</code>把这样的迭代更新限制在(通常比输入数据集小得多的)<code>K</code>个点上,而更新这些点时,则利用了输入集中与之相近的所有点的均值(亦即在每个点的Voronoi划分内)。还有一种与<code>k-means</code>类似的<code>Mean shift</code>算法,即似然<code>Mean shift</code>,对于迭代变化的集合,用一定距离内在输入集中所有点的均值来更新集合里的点。<code>Mean Shift</code>聚类与<code>k-means</code>聚类相比,有一个优点就是不用指定聚类数目,因为<code>Mean shift</code>倾向于找到尽可能少的聚类数目。然而<code>Mean shift</code>会比<code>k-means</code>慢得多,并且同样需要选择一个"宽度"参数。和<code>k-means</code>一样,<code>Mean shift</code>算法有许多变体。</p>
-<blockquote>
-<p>6、<strong>主成分分析(<code>PCA</code>)</strong></p>
-</blockquote>
-<p>有一些研究表明,<code>k-means</code>的放松形式解(由聚类指示向量表示),可由主成分分析中的主成分给出,并且主成分分析由主方向张成的子空间与聚类图心空间是等价的。不过,主成分分析是<code>k-means</code>聚类的有效放松形式并不是一个新的结果,并且还有的研究结果直接揭示了关于“聚类图心子空间是由主成分方向张成的”这一论述的反例。</p>
-<blockquote>
-<p>7、<strong>独立成分分析(<code>ICA</code>)</strong></p>
-</blockquote>
-<p>有研究表明,在稀疏假设以及输入数据经过白化的预处理后,<code>k-means</code>得到的解就是独立成分分析的解。这一结果对于解释<code>k-means</code>在特征学习方面的成功应用很有帮助。</p>
-<blockquote>
-<p>8、<strong>双向过滤</strong></p>
-</blockquote>
-<p><code>k-means</code>算法隐含地假设输入数据的顺序不影响结果。双向过滤与<code>k-means</code>算法和<code>Mean shift</code>算法类似之处在于它同样维护着一个迭代更新的数据集(亦是被均值更新)。然而,双向过滤限制了均值的计算只包含了在输入数据中顺序相近的点,这使得双向过滤能够被应用在图像去噪等数据点的空间安排是非常重要的问题中。</p>
-<ul>
-<li><strong><code>k-means++</code>算法</strong></li>
-</ul>
-<p><code>k-means++</code>算法在聚类中心的初始化过程中的基本原则是使得初始的聚类中心之间的相互距离尽可能远,修改因为初始化聚类中心过短的问题。<code>k-means++</code>算法的初始化过程如下所示:</p>
-<blockquote>
-<p>在数据集中随机选择一个样本点作为第一个初始化的聚类中心<span><span class="MathJax_Preview">c_1</span><script type="math/tex">c_1</script></span>
-<br>选择出其余的聚类中心:
-<br> - 计算样本中的每一个样本点与已经初始化的聚类中心之间的距离,并选择其中最短的距离,记为<span><span class="MathJax_Preview">D(x)</span><script type="math/tex">D(x)</script></span>
-<br> - 以概率<span><span class="MathJax_Preview">\frac{D(x)}{\sum_{x\in X}D(x)}</span><script type="math/tex">\frac{D(x)}{\sum_{x\in X}D(x)}</script></span>选择距离最大的样本作为新的聚类中心,重复上述过程,直到<span><span class="MathJax_Preview">k</span><script type="math/tex">k</script></span>个聚类中心都被确定
-<br> 对<code>k</code>个初始化的聚类中心,利用<code>k-means</code>算法计算最终的聚类中心。</p>
-</blockquote>
-<ul>
-<li><strong><code>ISODATA</code>算法</strong></li>
-</ul>
-<p>正如之前所述,<code>k-means</code>和<code>k-means++</code>的聚类中心数<code>k</code>是固定不变的。而<code>ISODATA</code>算法在运行过程中能够根据各个类别的实际情况进行两种操作来调整聚类中心数<code>k</code>:分裂操作,对应着增加聚类中心数;合并操作,对应着减少聚类中心数。</p>
-<p>下面首先给出ISODATA算法的输入(输入的数据和迭代次数不再单独介绍):</p>
-<p>第一步:输入<span><span class="MathJax_Preview">N</span><script type="math/tex">N</script></span>个模式样本<span><span class="MathJax_Preview">\{x_i,i=1,2,\dots,N\}</span><script type="math/tex">\{x_i,i=1,2,\dots,N\}</script></span>,预选<span><span class="MathJax_Preview">N_c</span><script type="math/tex">N_c</script></span>个初始聚类中心<span><span class="MathJax_Preview">\{z_1,z_2,\dots,z_{N_c}\}</span><script type="math/tex">\{z_1,z_2,\dots,z_{N_c}\}</script></span>,它可以不等于所要求的聚类中心的数目,其初始位置可以从样本中任意选取。预选参数:</p>
-<blockquote>
-<p><span><span class="MathJax_Preview">k_0</span><script type="math/tex">k_0</script></span>,预期的聚类中心数目;
-<br> <span><span class="MathJax_Preview">\theta_N</span><script type="math/tex">\theta_N</script></span>,每一聚类域中最少的样本数目,若少于此数即不作为一个独立的聚类;
-<br> <span><span class="MathJax_Preview">\theta_S</span><script type="math/tex">\theta_S</script></span>,一个聚类域中样本距离分布的标准差;
-<br> <span><span class="MathJax_Preview">\theta_c</span><script type="math/tex">\theta_c</script></span>:两个聚类中心间的最小距离,若小于此数,两个聚类需进行合并;
-<br> <span><span class="MathJax_Preview">L</span><script type="math/tex">L</script></span>:在一次迭代运算中可以合并的聚类中心的最多对数;
-<br> <span><span class="MathJax_Preview">𝐼</span><script type="math/tex">𝐼</script></span>:迭代运算的次数。</p>
-</blockquote>
-<p>第二步:将<span><span class="MathJax_Preview">N</span><script type="math/tex">N</script></span>个样本分给最近的聚类<span><span class="MathJax_Preview">S_jj</span><script type="math/tex">S_jj</script></span>,假若<span><span class="MathJax_Preview">D_j=\min\{\|x-z_i\|,i=1,2,\dots,N_c\}</span><script type="math/tex">D_j=\min\{\|x-z_i\|,i=1,2,\dots,N_c\}</script></span>,即<span><span class="MathJax_Preview">\|x-z_j\|</span><script type="math/tex">\|x-z_j\|</script></span>的距离最小,则<span><span class="MathJax_Preview">x\in S_j</span><script type="math/tex">x\in S_j</script></span>。</p>
-<p>第三步:如果<span><span class="MathJax_Preview">S_j</span><script type="math/tex">S_j</script></span>中的样本数目<span><span class="MathJax_Preview">S_j&lt;\theta_N</span><script type="math/tex">S_j<\theta_N</script></span>,则取消该样本子集,此时<span><span class="MathJax_Preview">N_c</span><script type="math/tex">N_c</script></span>减去1。</p>
-<p>第四步:修正各聚类中心</p>
-<div>
-<div class="MathJax_Preview"> z_j=\frac{1}{N_j}\sum_{s\in S_j}x,i=1,2,\dots,N_c </div>
-<script type="math/tex; mode=display"> z_j=\frac{1}{N_j}\sum_{s\in S_j}x,i=1,2,\dots,N_c </script>
-</div>
-<p>第五步:计算各聚类域<span><span class="MathJax_Preview">S_j</span><script type="math/tex">S_j</script></span>中样本与各聚类中心间的平均距离</p>
-<div>
-<div class="MathJax_Preview"> \bar{D}_j = \frac{1}{N_j}\sum_{x\in S_j}\|x-z_j\|,j=1,2,\dots, N_c </div>
-<script type="math/tex; mode=display"> \bar{D}_j = \frac{1}{N_j}\sum_{x\in S_j}\|x-z_j\|,j=1,2,\dots, N_c </script>
-</div>
-<p>第六步:计算全部模式样本和其对应聚类中心的总平均距离</p>
-<div>
-<div class="MathJax_Preview">\bar{D}\frac{1}{N}\sum_{j=1}^{N}N_j\bar{D}_j</div>
-<script type="math/tex; mode=display">\bar{D}\frac{1}{N}\sum_{j=1}^{N}N_j\bar{D}_j</script>
-</div>
-<p>第七步:判别分裂、合并及迭代运算</p>
-<blockquote>
-<p>若迭代运算次数已达到<span><span class="MathJax_Preview">I</span><script type="math/tex">I</script></span>次,即最后一次迭代,则置<span><span class="MathJax_Preview">\theta_c=0</span><script type="math/tex">\theta_c=0</script></span>,转至第十一步
-<br> 若<span><span class="MathJax_Preview">N_c\le \frac{K}{2},即聚类中心的数目小于或等于规定值的一半,则转至第八步,对已有聚类进行分裂处理。
-&lt;br&gt; 若迭代运算的次数是偶数次,或</span><script type="math/tex">N_c\le \frac{K}{2},即聚类中心的数目小于或等于规定值的一半,则转至第八步,对已有聚类进行分裂处理。
-<br> 若迭代运算的次数是偶数次,或</script></span>N_c\ge 2K<span><span class="MathJax_Preview">,不进行分裂处理,转至第十一步;否则(即既不是偶数次迭代,又不满足</span><script type="math/tex">,不进行分裂处理,转至第十一步;否则(即既不是偶数次迭代,又不满足</script></span>N_c\ge 2K$),转至第八步,进行分裂处理。</p>
-</blockquote>
-<p>第八步:计算每个聚类中样本距离的标准差向量<span><span class="MathJax_Preview">\sigma_j=(\sigma_1,\sigma_2,\dots,\sigma_{n_j})^T</span><script type="math/tex">\sigma_j=(\sigma_1,\sigma_2,\dots,\sigma_{n_j})^T</script></span>,其中向量的各个分量为:</p>
-<p>$$\sigma_{ij}=\sqrt{\frac{1}{N_j}\sum_{k=1}^{N_j}(x_{ik}-z_{ij})^2}</p>
-<p>式中<span><span class="MathJax_Preview">i=1,2,\dots,n</span><script type="math/tex">i=1,2,\dots,n</script></span>为样本特征向量的维数,<span><span class="MathJax_Preview">j=1,2,\dots,N_c</span><script type="math/tex">j=1,2,\dots,N_c</script></span>为聚类数,<span><span class="MathJax_Preview">N_j</span><script type="math/tex">N_j</script></span>为<span><span class="MathJax_Preview">S_j</span><script type="math/tex">S_j</script></span>中的样本个数。</p>
-<p>第九步:求每一标准差向量<span><span class="MathJax_Preview">\{\sigma_j,j=1,2,\dots,N_c\}</span><script type="math/tex">\{\sigma_j,j=1,2,\dots,N_c\}</script></span>中的最大分量,以<span><span class="MathJax_Preview">\{\sigma_{j_{max}},j=1,2,\dots,N_c\}</span><script type="math/tex">\{\sigma_{j_{max}},j=1,2,\dots,N_c\}</script></span>代表。</p>
-<p>第十步:在任一最大分量集<span><span class="MathJax_Preview">\{\sigma_{j_{max}},j=1,2,\dots,N_c\}</span><script type="math/tex">\{\sigma_{j_{max}},j=1,2,\dots,N_c\}</script></span>中,若有<span><span class="MathJax_Preview">\sigma_{j_{max}}&gt;\theta_S</span><script type="math/tex">\sigma_{j_{max}}>\theta_S</script></span>,同时又满足如下两个条件之一:</p>
-<blockquote>
-<p><span><span class="MathJax_Preview">\bar{D}_j&gt;\bar{D}和</span><script type="math/tex">\bar{D}_j>\bar{D}和</script></span>N_j&gt;2(\theta_N+1)<span><span class="MathJax_Preview">,即</span><script type="math/tex">,即</script></span>S_j$中样本总数超过规定值一倍以上
-<br> $N_c\le \frac{K}/2</p>
-</blockquote>
-<p>则将<span><span class="MathJax_Preview">z_j</span><script type="math/tex">z_j</script></span>分裂为两个新的聚类中心和,且<span><span class="MathJax_Preview">N_c</span><script type="math/tex">N_c</script></span>加1。 中对应于σjmax的分量加上kσjmax，其中；中对应于σjmax的分量减去kσjmax。如果本步骤完成了分裂运算,则转至第二步,否则继续。</p>
-<p>第十一步:计算全部聚类中心的距离:</p>
-<div>
-<div class="MathJax_Preview"> D_{ij} = \|z_i-z_j\|,i=1,2,\dots,N_c-1,j=i+1,dots,N_c </div>
-<script type="math/tex; mode=display"> D_{ij} = \|z_i-z_j\|,i=1,2,\dots,N_c-1,j=i+1,dots,N_c </script>
-</div>
-<p>第十二步:比较<span><span class="MathJax_Preview">D_{ij}</span><script type="math/tex">D_{ij}</script></span>与<span><span class="MathJax_Preview">\theta_c</span><script type="math/tex">\theta_c</script></span>的值,将<span><span class="MathJax_Preview">D_{ij}&lt;\theta_c</span><script type="math/tex">D_{ij}<\theta_c</script></span>的值按最小距离次序递增排列,即</p>
-<div>
-<div class="MathJax_Preview">\{D_{i_1j_1},D_{i_2j_2},\dots, D_{i_Lj_L}\}</div>
-<script type="math/tex; mode=display">\{D_{i_1j_1},D_{i_2j_2},\dots, D_{i_Lj_L}\}</script>
-</div>
-<p>式中<span><span class="MathJax_Preview">D_{i_1j_1}&lt;D_{i_2j_2}&lt;\cdots D_{i_Lj_L}</span><script type="math/tex">D_{i_1j_1}<D_{i_2j_2}<\cdots D_{i_Lj_L}</script></span>.</p>
-<p>第十三步:将距离为<span><span class="MathJax_Preview">D_{i_kj_k}</span><script type="math/tex">D_{i_kj_k}</script></span>的两个聚类中心<span><span class="MathJax_Preview">Z_{ik}</span><script type="math/tex">Z_{ik}</script></span>和<span><span class="MathJax_Preview">Z_{jk}</span><script type="math/tex">Z_{jk}</script></span>合并,得新的中心为:</p>
-<div>
-<div class="MathJax_Preview">z^*=\frac{1}{N_{ik}+N_{jk}}[N_{ik}z_{ik}+N_{ik}z_{jk}],k=1,2,\dots,L</div>
-<script type="math/tex; mode=display">z^*=\frac{1}{N_{ik}+N_{jk}}[N_{ik}z_{ik}+N_{ik}z_{jk}],k=1,2,\dots,L</script>
-</div>
-<p>式中,被合并的两个聚类中心向量分别以其聚类域内的样本数加权,使<span><span class="MathJax_Preview">Z^*_k</span><script type="math/tex">Z^*_k</script></span>为真正的平均向量。</p>
-<p>第十四步:如果是最后一次迭代运算(即第<span><span class="MathJax_Preview">I</span><script type="math/tex">I</script></span>次),则算法结束;否则,若需要操作者改变输入参数,转至第一步;若输入参数不变,转至第二步。在本步运算中,迭代运算的次数每次应加1。</p>
-<h3 id="22-mean-shift">2.2 <code>Mean Shift</code></h3>
-<p>在<code>K-Means</code>算法中,最终的聚类效果受初始的聚类中心的影响,<code>K-Means++</code>算法的提出,为选择较好的初始聚类中心提供了依据,但是算法中,聚类的类别个数<code>k</code>仍需事先制定,对于类别个数事先未知的数据集,<code>K-Means</code>和<code>K-Means++</code>将很难对其精确求解,对此,有一些改进的算法被提出来处理聚类个数<code>k</code>未知的情形。<code>Mean Shift</code>算法,又被称为均值漂移算法,与<code>K-Means</code>算法一样,都是基于聚类中心的聚类算法,不同的是,<code>Mean Shift</code>算法不需要事先制定类别个数k。</p>
-<p><code>Mean Shift</code>的概念最早是由Fukunage在1975年提出的,在后来由Yizong Cheng对其进行扩充,主要提出了两点的改进:定义了核函数,增加了权重系数。核函数的定义使得偏移值对偏移向量的贡献随之样本与被偏移点的距离的不同而不同。权重系数使得不同样本的权重不同。</p>
-<p><code>Mean Shift</code>算法在很多领域都有成功应用,例如图像平滑、图像分割、物体跟踪等,这些属于人工智能里面模式识别或计算机视觉的部分;另外也包括常规的聚类应用。</p>
-<blockquote>
-<p>图像平滑:图像最大质量下的像素压缩;
-<br>图像分割:跟图像平滑类似的应用,但最终是将可以平滑的图像进行分离已达到前后景或固定物理分割的目的;
-<br>目标跟踪:例如针对监控视频中某个人物的动态跟踪;
-<br>常规聚类,如用户聚类等。</p>
-</blockquote>
-<ul>
-<li><strong><code>Mean Shift</code>算法理论</strong></li>
-</ul>
-<p><strong><code>Mean Shift</code>向量</strong></p>
-<p>对于给定的d维空间<span><span class="MathJax_Preview">R^d</span><script type="math/tex">R^d</script></span>中的n个样本点<span><span class="MathJax_Preview">x_i,i=1,\cdots,n</span><script type="math/tex">x_i,i=1,\cdots,n</script></span>,则对于<span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span>点,其<code>Mean Shift</code>向量的基本形式为:</p>
-<div>
-<div class="MathJax_Preview">M_h(x)=\frac{1}{k}\sum_{x_i\in S_h}(x_i-x)</div>
-<script type="math/tex; mode=display">M_h(x)=\frac{1}{k}\sum_{x_i\in S_h}(x_i-x)</script>
-</div>
-<p>其中,<span><span class="MathJax_Preview">S_h</span><script type="math/tex">S_h</script></span>指的是一个半径为<code>h</code>的高维球区域,如上图中的圆形区域。<span><span class="MathJax_Preview">S_h</span><script type="math/tex">S_h</script></span>的定义为:</p>
-<div>
-<div class="MathJax_Preview">S_h(x)=(y \mid (y-x)( y-x)^T \leqslant h^2)</div>
-<script type="math/tex; mode=display">S_h(x)=(y \mid (y-x)( y-x)^T \leqslant h^2)</script>
-</div>
-<p>里面所有点与圆心为起点形成的向量相加的结果就是Mean shift向量。下图黄色箭头就是<span><span class="MathJax_Preview">M_h</span><script type="math/tex">M_h</script></span>（Mean Shift向量）。</p>
-<p>对于<code>Mean Shift</code>算法,是一个迭代的步骤,即先算出当前点的偏移均值,将该点移动到此偏移均值,然后以此为新的起始点,继续移动,直到满足最终的条件。</p>
-<p><code>Mean Shift</code>聚类就是对于集合中的每一个元素,对它执行下面的操作:把该元素移动到它邻域中所有元素的特征值的均值的位置,不断重复直到收敛。准确的说,不是真正移动元素,而是把该元素与它的收敛位置的元素标记为同一类。</p>
-<p><img alt="" src="http://www.biaodianfu.com/wp-content/uploads/2018/06/mean-shift-vector.gif" /></p>
-<p>如上的均值漂移向量的求解方法存在一个问题,即在<span><span class="MathJax_Preview">S_h</span><script type="math/tex">S_h</script></span>的区域内,每一个样本点<span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span>对样本<span><span class="MathJax_Preview">X</span><script type="math/tex">X</script></span>的共享是一样的。而实际中,每一个样本点<span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span>对样本<span><span class="MathJax_Preview">X</span><script type="math/tex">X</script></span>的贡献是不一样的,这样的共享可以通过核函数进行度量。</p>
-<p><strong>核函数</strong></p>
-<p>在<code>Mean Shift</code>算法中引入核函数的目的是使得随着样本与被偏移点的距离不同,其偏移量对均值偏移向量的贡献也不同。核函数是机器学习中常用的一种方式。核函数的定义如下所示:</p>
-<p><span><span class="MathJax_Preview">X</span><script type="math/tex">X</script></span>表示一个<span><span class="MathJax_Preview">d</span><script type="math/tex">d</script></span>维的欧式空间,<span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span>是该空间中的一个点<span><span class="MathJax_Preview">x = \{x_1,x_2,x_3\cdots ,x_d\}</span><script type="math/tex">x = \{x_1,x_2,x_3\cdots ,x_d\}</script></span>,其中,x的模<span><span class="MathJax_Preview">\| x \|^2=xx^T</span><script type="math/tex">\| x \|^2=xx^T</script></span>,R表示实数域,如果一个函数<span><span class="MathJax_Preview">K:X\rightarrow R</span><script type="math/tex">K:X\rightarrow R</script></span>存在一个剖面函数<span><span class="MathJax_Preview">k:[0,\infty]\rightarrow R</span><script type="math/tex">k:[0,\infty]\rightarrow R</script></span>,即</p>
-<div>
-<div class="MathJax_Preview">K (x)=k (\| x \|^2)</div>
-<script type="math/tex; mode=display">K (x)=k (\| x \|^2)</script>
-</div>
-<p>并且满足:</p>
-<blockquote>
-<p><code>k</code>是非负的
-<br><code>k</code>是非增的
-<br><code>k</code>是分段连续的</p>
-</blockquote>
-<p>那么,函数<span><span class="MathJax_Preview">K(x)</span><script type="math/tex">K(x)</script></span>就称为核函数。核函数有很多,下图中表示的每一个曲线都为一个核函数。</p>
-<p><img alt="" src="https://www.biaodianfu.com/wp-content/uploads/2018/06/core-function.png" /></p>
-<p>常用的核函数有高斯核函数。高斯核函数如下所示:</p>
-<div>
-<div class="MathJax_Preview">N (x)=\frac{1}{\sqrt{2\pi }h}e^{-\frac{x^2}{2h^2}}</div>
-<script type="math/tex; mode=display">N (x)=\frac{1}{\sqrt{2\pi }h}e^{-\frac{x^2}{2h^2}}</script>
-</div>
-<p>其中,<span><span class="MathJax_Preview">h</span><script type="math/tex">h</script></span>称为带宽(bandwidth),不同带宽的核函数如下图所示:</p>
-<p><img alt="" src="https://www.biaodianfu.com/wp-content/uploads/2018/06/gaussian.png" /></p>
-<p>从高斯函数的图像可以看出,当带宽<span><span class="MathJax_Preview">h</span><script type="math/tex">h</script></span>一定时,样本点之间的距离越近,其核函数的值越大,当样本点之间的距离相等时,随着高斯函数的带宽<span><span class="MathJax_Preview">h</span><script type="math/tex">h</script></span>的增加,核函数的值在减小。</p>
-<p>高斯核函数的<code>python</code>实现:</p>
-<pre><code class="python">import numpy as np
-import math
-
-def gaussian_kernel(distance, bandwidth):
-    &quot;&quot;&quot;
-    高斯核函数
-        :param distance: 欧氏距离计算函数
-        :param bandwidth: 核函数的带宽
-        :return: 高斯函数值
-    &quot;&quot;&quot;
-    m = np.shape(distance)[0]           # 样本个数
-    right = np.mat(np.zeros((m, 1)))    # m*1矩阵
-    for i in range(m):
-        right[i, 0] = (-0.5 * distance[i] * distance[i].T) / (bandwidth * bandwidth)
-        right[i, 0] = np.exp(right[i, 0])
-    left = 1 / (bandwidth * math.sqrt(2 * math.pi))
-    gaussian_val = left * right
-    return gaussian_val
-</code></pre>
-
-<ul>
-<li><strong>引入核函数的<code>Mean Shift</code>向量</strong></li>
-</ul>
-<p>假设在半径为<span><span class="MathJax_Preview">h</span><script type="math/tex">h</script></span>的范围<span><span class="MathJax_Preview">S_h</span><script type="math/tex">S_h</script></span>范围内,为了使得每一个样本点<span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span>对于样本<span><span class="MathJax_Preview">X</span><script type="math/tex">X</script></span>的共享不一样,向基本的<code>Mean Shift</code>向量形式中增加核函数,得到如下改进的<code>Mean Shift</code>向量形式:</p>
-<div>
-<div class="MathJax_Preview">M_h(x)=\frac{\sum_{i=1}^{n}G(\frac{x_i-x}{h_i})(x_i-x)}{\sum_{i=1}^{n}G(\frac{x_i-x}{h_i})}</div>
-<script type="math/tex; mode=display">M_h(x)=\frac{\sum_{i=1}^{n}G(\frac{x_i-x}{h_i})(x_i-x)}{\sum_{i=1}^{n}G(\frac{x_i-x}{h_i})}</script>
-</div>
-<p>其中,<span><span class="MathJax_Preview">G(\frac{x_i-x}{h_i})</span><script type="math/tex">G(\frac{x_i-x}{h_i})</script></span>为核函数。通常,可以取<span><span class="MathJax_Preview">S_h</span><script type="math/tex">S_h</script></span>为整个数据集范围。</p>
-<p>计算<span><span class="MathJax_Preview">M_h</span><script type="math/tex">M_h</script></span>时考虑距离的影响,同时也可以认为在所有的样本点<span><span class="MathJax_Preview">X</span><script type="math/tex">X</script></span>中,重要性并不一样,因此对每个样本还引入一个权重系数。如此以来就可以把Mean Shift形式扩展为:</p>
-<div>
-<div class="MathJax_Preview"> M_h (x)=\frac{\sum_{i=1}^{n}G(\frac{x_i-x}{h_i})w(x_i)(x_i-x)}{\sum_{i=1}^{n}G(\frac{x_i-x}{h_i})w(x_i)} </div>
-<script type="math/tex; mode=display"> M_h (x)=\frac{\sum_{i=1}^{n}G(\frac{x_i-x}{h_i})w(x_i)(x_i-x)}{\sum_{i=1}^{n}G(\frac{x_i-x}{h_i})w(x_i)} </script>
-</div>
-<p>其中,<span><span class="MathJax_Preview">w(x_i)</span><script type="math/tex">w(x_i)</script></span>是一个赋给采样点的权重。</p>
-<ul>
-<li><strong><code>Mean Shift</code>的代码实现</strong></li>
-</ul>
-<p>算法的<code>python</code>实现</p>
-<pre><code class="python">import numpy as np
-import math
-
-MIN_DISTANCE = 0.00001      # 最小误差
-
-def euclidean_dist(pointA, pointB):
-    # 计算pointA和pointB之间的欧式距离
-    total = (pointA - pointB) * (pointA - pointB).T
-    return math.sqrt(total)
-
-def gaussian_kernel(distance, bandwidth):
-    &quot;&quot;&quot;
-    高斯核函数
-        :param distance: 欧氏距离计算函数
-        :param bandwidth: 核函数的带宽
-        :return: 高斯函数值
-    &quot;&quot;&quot;
-    m = np.shape(distance)[0]  # 样本个数
-    right = np.mat(np.zeros((m, 1)))
-    for i in range(m):
-        right[i, 0] = (-0.5 * distance[i] * distance[i].T) / (bandwidth * bandwidth)
-        right[i, 0] = np.exp(right[i, 0])
-    left = 1 / (bandwidth * math.sqrt(2 * math.pi))
-    gaussian_val = left * right
-    return gaussian_val
-
-
-def shift_point(point, points, kernel_bandwidth):
-    &quot;&quot;&quot;
-    计算均值漂移点
-        :param point: 需要计算的点
-        :param points: 所有的样本点
-        :param kernel_bandwidth: 核函数的带宽
-        :return point_shifted:漂移后的点
-    &quot;&quot;&quot;
-    points = np.mat(points)
-    m = np.shape(points)[0]  # 样本个数
-    # 计算距离
-    point_distances = np.mat(np.zeros((m, 1)))
-    for i in range(m):
-        point_distances[i, 0] = euclidean_dist(point, points[i])
-
-    # 计算高斯核
-    point_weights = gaussian_kernel(point_distances, kernel_bandwidth)
-
-    # 计算分母
-    all = 0.0
-    for i in range(m):
-        all += point_weights[i, 0]
-
-    # 均值偏移
-    point_shifted = point_weights.T * points / all
-    return point_shifted
-
-
-def group_points(mean_shift_points):
-    &quot;&quot;&quot;
-    计算所属的类别
-        :param mean_shift_points:漂移向量
-        :return: group_assignment:所属类别
-    &quot;&quot;&quot;
-    group_assignment = []
-    m, n = np.shape(mean_shift_points)
-    index = 0
-    index_dict = {}
-    for i in range(m):
-        item = []
-        for j in range(n):
-            item.append(str((&quot;%5.2f&quot; % mean_shift_points[i, j])))
-
-        item_1 = &quot;_&quot;.join(item)
-        if item_1 not in index_dict:
-            index_dict[item_1] = index
-            index += 1
-
-    for i in range(m):
-        item = []
-        for j in range(n):
-            item.append(str((&quot;%5.2f&quot; % mean_shift_points[i, j])))
-
-        item_1 = &quot;_&quot;.join(item)
-        group_assignment.append(index_dict[item_1])
-    return group_assignment
-
-
-def train_mean_shift(points, kernel_bandwidth=2):
-    &quot;&quot;&quot;
-    训练Mean Shift模型
-        :param points: 特征数据
-        :param kernel_bandwidth: 核函数带宽
-        :return:
-            points:特征点
-            mean_shift_points:均值漂移点
-            group:类别
-    &quot;&quot;&quot;
-    mean_shift_points = np.mat(points)
-    max_min_dist = 1
-    iteration = 0
-    m = np.shape(mean_shift_points)[0]  # 样本的个数
-    need_shift = [True] * m             # 标记是否需要漂移
-
-    # 计算均值漂移向量
-    while max_min_dist &gt; MIN_DISTANCE:
-        max_min_dist = 0
-        iteration += 1
-        print(&quot;iteration : &quot; + str(iteration))
-        for i in range(0, m):
-            # 判断每一个样本点是否需要计算偏置均值
-            if not need_shift[i]:
-                continue
-            p_new = mean_shift_points[i]
-            p_new_start = p_new
-            p_new = shift_point(p_new, points, kernel_bandwidth)  # 对样本点进行偏移
-            dist = euclidean_dist(p_new, p_new_start)  # 计算该点与漂移后的点之间的距离
-
-            if dist &gt; max_min_dist:  # 记录是有点的最大距离
-                max_min_dist = dist
-            if dist &lt; MIN_DISTANCE:  # 不需要移动
-                need_shift[i] = False
-
-            mean_shift_points[i] = p_new
-    # 计算最终的group
-    group = group_points(mean_shift_points)  # 计算所属的类别
-    return np.mat(points), mean_shift_points, group
-</code></pre>
-
-<p>以上代码实现了基本的流程,但是执行效率很慢,正式使用时建议使用<code>scikit-learn</code>库中的<code>MeanShift</code>。<code>scikit-learn</code> <code>MeanShift</code>演示</p>
-<pre><code class="python">import numpy as np
-from sklearn.cluster import MeanShift, estimate_bandwidth
-
-data = []
-f = open(&quot;k_means_sample_data.txt&quot;, 'r')
-for line in f:
-    data.append([float(line.split(',')[0]), float(line.split(',')[1])])
-data = np.array(data)
-
-# 通过下列代码可自动检测bandwidth值
-# 从data中随机选取1000个样本,计算每一对样本的距离,然后选取这些距离的0.2分位数作为返回值,
-# 当n_samples很大时,这个函数的计算量是很大的。
-bandwidth = estimate_bandwidth(data, quantile=0.2, n_samples=1000)
-print(bandwidth)
-# bin_seeding设置为True就不会把所有的点初始化为核心位置,从而加速算法
-ms = MeanShift(bandwidth=bandwidth, bin_seeding=True)
-ms.fit(data)
-labels = ms.labels_
-cluster_centers = ms.cluster_centers_
-# 计算类别个数
-labels_unique = np.unique(labels)
-n_clusters = len(labels_unique)
-print(&quot;number of estimated clusters : %d&quot; % n_clusters)
-
-# 画图
-import matplotlib.pyplot as plt
-from itertools import cycle
-
-plt.figure(1)
-plt.clf()  # 清楚上面的旧图形
-
-# cycle把一个序列无限重复下去
-colors = cycle('bgrcmyk')
-for k, color in zip(range(n_clusters), colors):
-    # current_member表示标签为k的记为true 反之false
-    current_member = labels == k
-    cluster_center = cluster_centers[k]
-    # 画点
-    plt.plot(data[current_member, 0], data[current_member, 1], color + '.')
-    #画圈
-    plt.plot(cluster_center[0], cluster_center[1], 'o',
-             markerfacecolor=color,  #圈内颜色
-             markeredgecolor='k',  #圈边颜色
-             markersize=14)  #圈大小
-plt.title('Estimated number of clusters: %d' % n_clusters)
-plt.show()
-</code></pre>
-
-<p>执行效果:</p>
-<p><img alt="" src="https://www.biaodianfu.com/wp-content/uploads/2018/06/mean_shift_demo.png" /></p>
-<p><code>scikit-learn</code> <code>MeanShift</code>源码:<code>https://github.com/scikit-learn/scikit-learn/blob/master/sklearn/cluster/_mean_shift.py</code></p>
+<h2 id="12-pca-incremental-pca">1.2 增量PCA (Incremental PCA)</h2>
+<p>PCA 对象非常有用, 但 针对大型数据集的应用, 仍然具有一定的限制。 最大的限制是 PCA 仅支持批处理，这意味着所有要处理的数据必须放在主内存。 IncrementalPCA 对象使用不同的处理形式, 即允许部分计算以小型批处理方式处理数据的方法进行, 而得到和 PCA 算法差不多的结果。 IncrementalPCA 可以通过以下方式实现核外（out-of-core）主成分分析：</p>
+<p>基于从本地硬盘或网络数据库中连续获取的数据块之上, 使用 partial_fit 方法。
+在 memory mapped file (通过 numpy.memmap 创建)上使用 fit 方法。
+IncrementalPCA 类为了增量式的更新 explainedvariance_ratio ，仅需要存储估计出的分量和噪声方差。 这就是为什么内存使用量依赖于每个批次的样本数量，而不是数据集中需要处理的样本总量。</p>
+<p>在应用SVD之前，IncrementalPCA就像PCA一样,为每个特征聚集而不是缩放输入数据。</p>
+<p>http://sklearn.apachecn.org/cn/0.19.0/_images/sphx_glr_plot_incremental_pca_0011.pnghttp://sklearn.apachecn.org/cn/0.19.0/_images/sphx_glr_plot_incremental_pca_0021.png</p>
+<p>示例</p>
+<p>Incremental PCA</p>
+<p>2.5.1.3. 基于随机化SVD的PCA
+通过丢弃具有较低奇异值的奇异向量的分量，将数据降维到低维空间并保留大部分方差信息是非常有意义的。</p>
+<p>例如，如果我们使用64x64像素的灰度级图像进行人脸识别，数据的维数为4096，在这样大的数据上训练含RBF内核的支持向量机是很慢的。此外我们知道这些数据固有维度远低于4096，因为人脸的所有照片都看起来有点相似。样本位于较低维度的流体上（例如约200维）。 PCA算法可以用于线性变换数据，同时降低维数并同时保留大部分可描述的方差信息。</p>
+<p>在这种情况下，使用可选参数 svd_solver='randomized' 的 PCA 是非常有用的。既然我们将要丢弃大部分奇异值，那么仅仅就实际转换中所需的奇异向量进行计算就可以使得 PCA 计算过程变得异常有效。</p>
+<p>例如：以下显示了来自 Olivetti 数据集的 16 个样本肖像（以 0.0 为中心）。右侧是前 16 个奇异向量重画的肖像。因为我们只需要使用大小为 n_{samples} = 400 和 n_{features} = 64 \times 64 = 4096 的数据集的前 16 个奇异向量, 使得计算时间小于 1 秒。</p>
+<p>orig_img pca_img</p>
+<p>注意：使用可选参数 svd_solver='randomized' ，在 PCA 中我们还需要给出输入低维空间大小 n_components 。</p>
+<p>我们注意到, 如果 n_{\max} = \max(n_{\mathrm{samples}}, n_{\mathrm{features}}) 且 n_{\min} = \min(n_{\mathrm{samples}}, n_{\mathrm{features}}), 对于PCA中的实现，随机 PCA 的时间复杂度是：O(n_{\max}^2 \cdot n_{\mathrm{components}}), 而不是 O(n_{\max}^2 \cdot n_{\min}) 。</p>
+<p>就内部实现的方法而言, 随机 PCA 的内存占用量和 2 \cdot n_{\max} \cdot n_{\mathrm{components}}, 而不是 n_{\max}\cdot n_{\min} 成正比。</p>
+<p>注意：选择参数 svd_solver='randomized' 的 PCA 的 inverse_transform 的实现, 并不是对应 transform 的逆变换（即使 参数设置为默认的 whiten=False）</p>
+<p>示例:</p>
+<p>Faces recognition example using eigenfaces and SVMs
+Faces dataset decompositions
+参考资料:</p>
+<p>“Finding structure with randomness: Stochastic algorithms for constructing approximate matrix decompositions” Halko, et al., 2009
+2.5.1.4. 核 PCA
+KernelPCA 是 PCA 的扩展，通过使用核方法实现非线性降维（dimensionality reduction） (参阅 成对的矩阵, 类别和核函数)。 它具有许多应用，包括去噪, 压缩和结构化预测（ structured prediction ） (kernel dependency estimation（内核依赖估计）)。 KernelPCA 支持 transform 和 inverse_transform 。</p>
+<p>http://sklearn.apachecn.org/cn/0.19.0/_images/sphx_glr_plot_kernel_pca_0011.png</p>
+<p>示例:</p>
+<p>Kernel PCA
+2.5.1.5. 稀疏主成分分析 ( SparsePCA 和 MiniBatchSparsePCA )
+SparsePCA 是 PCA 的一个变体，目的是提取能最大程度得重建数据的稀疏分量集合。</p>
+<p>小批量稀疏 PCA ( MiniBatchSparsePCA ) 是一个 SparsePCA 的变体，它速度更快但准确度有所降低。对于给定的迭代次数，通过迭代该组特征的小块来达到速度的增加。</p>
+<p>Principal component analysis（主成分分析） (PCA) 的缺点在于，通过该方法提取的成分具有独占的密度表达式，即当表示为原始变量的线性组合时，它们具有非零系数，使之难以解释。在许多情况下，真正的基础分量可以被更自然地想象为稀疏向量; 例如在面部识别中，每个分量可能自然地映射到面部的某个部分。</p>
+<p>稀疏的主成分产生更节约、可解释的表达式，明确强调了样本之间的差异性来自哪些原始特征。</p>
+<p>以下示例说明了使用稀疏 PCA 提取 Olivetti 人脸数据集中的 16 个分量。可以看出正则化项产生了许多零。此外，数据的自然结构导致了非零系数垂直相邻 （vertically adjacent）。该模型并不具备纯数学意义的执行: 每个分量都是一个向量 h \in \mathbf{R}^{4096}, 除非人性化地的可视化为 64x64 像素的图像，否则没有垂直相邻性的概念。下面显示的分量看起来局部化（appear local)是数据的内在结构的影响，这种局部模式使重建误差最小化。有一种考虑到邻接性和不同结构类型的导致稀疏的规范（sparsity-inducing norms）,参见 [Jen09] 对这种方法进行了解。有关如何使用稀疏 PCA 的更多详细信息，请参阅下面的示例部分。</p>
+<p>pca_img spca_img</p>
+<p>请注意，有多种不同的计算稀疏PCA 问题的公式。 这里使用的方法基于 [Mrl09] 。对应优化问题的解决是一个带有惩罚项（L1范数的） \ell_1 的 PCA 问题（dictionary learning（字典学习））:</p>
+<p>(U^<em>, V^</em>) = \underset{U, V}{\operatorname{arg\,min\,}} &amp; \frac{1}{2}||X-UV||<em>2^2+\alpha||V||_1 \\text{subject to\,} &amp; ||U_k||_2 = 1 \text{ for all }0 \leq k &lt; n</em>{components}</p>
+<p>稀疏推导（sparsity-inducing） \ell_1 规范也可以当训练样本很少时,避免从噪声中拟合分量。可以通过超参数 alpha 来调整惩罚程度（或称稀疏度）。值较小会导致温和的正则化因式分解，而较大的值将许多系数缩小到零。</p>
+<p>注意 虽然本着在线算法的精神， MiniBatchSparsePCA 类不实现 partial_fit , 因为在线算法是以特征为导向，而不是以样本为导向。</p>
+<p>示例:</p>
+<p>Faces dataset decompositions
+参考资料:</p>
+<p>[Mrl09] “Online Dictionary Learning for Sparse Coding” J. Mairal, F. Bach, J. Ponce, G. Sapiro, 2009
+[Jen09] “Structured Sparse Principal Component Analysis” R. Jenatton, G. Obozinski, F. Bach, 2009</p>
 
   <br>
     <style>
@@ -788,6 +376,11 @@ MathJax.Hub.Config({
 src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
 
+
+    
+    
+      
+    
 
     <br>
 </div>

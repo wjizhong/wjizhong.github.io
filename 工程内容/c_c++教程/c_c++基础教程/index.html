@@ -53,7 +53,9 @@
               ]},
               {title: "\u56db\u3001\u6807\u51c6\u5e93", url: "#_3", level:2, children: [ 
               ]},
-              {title: "\u4e94\u3001LAPACK\u5e93", url: "#lapack", level:2, children: [ 
+              {title: "\u4e94\u3001Cblas\u5e93", url: "#cblas", level:2, children: [ 
+              ]},
+              {title: "\u516d\u3001\u6307\u4ee4\u96c6", url: "#_4", level:2, children: [ 
               ]},
           ]},
         ];
@@ -1286,7 +1288,142 @@ int main(int argc, char** argv) {
 </code></pre>
 
 <h2 id="_3">四、标准库</h2>
-<h2 id="lapack">五、LAPACK库</h2>
+<h2 id="cblas">五、Cblas库</h2>
+<p>CBLAS是BLAS的C语言接口。BLAS的全称是Basic Linear Algebra Subprograms,中文大概可以叫做基础线性代数子程序。主要是用于向量和矩阵计算的高性能数学库。本身BLAS是用Fortran写的,为了方便C/C++程序的使用，就有了BLAS的C接口库CBLAS。BLAS的主页是http://www.netlib.org/blas/,CBLAS的下载地址也可以在这个页面上找到。</p>
+<p>CBLAS/BLAS分为3个level:</p>
+<blockquote>
+<p>Level1:处理单一向量的线性运算以及两个向量的二元运算,接口函数名称由前缀+操作简称组成。(如:SROTG中S标明矩阵或向量中元素数据类型的前缀,ROTG表明向量运算简称)</p>
+<p>Level2:处理矩阵与向量的运算,同时也包含线性方程求解计算,</p>
+<p>Level3:包含矩阵与矩阵运算。Level2和Level3接口函数由前缀+矩阵类型+操作简称组成。（如:SGEMV中S标明矩阵或向量中元素数据类型的前缀,GE为矩阵类型,MV为向量或矩阵运算简称。</p>
+</blockquote>
+<p><img alt="" src="http://www.netlib.org/blas/BLAS-snapshot.jpg" /></p>
+<p>数据精度有如下几种:</p>
+<table>
+<thead>
+<tr>
+<th align="left">标识</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">S</td>
+<td align="left">single real</td>
+</tr>
+<tr>
+<td align="left">D</td>
+<td align="left">double real</td>
+</tr>
+<tr>
+<td align="left">C</td>
+<td align="left">single complex</td>
+</tr>
+<tr>
+<td align="left">Z</td>
+<td align="left">double complex</td>
+</tr>
+</tbody>
+</table>
+<p>操作类型有下面常见的几种:</p>
+<table>
+<thead>
+<tr>
+<th align="left">标识</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">DOT</td>
+<td align="left">scalar product, x^T y</td>
+</tr>
+<tr>
+<td align="left">AXPY</td>
+<td align="left">vector sum, /alpha x + y</td>
+</tr>
+<tr>
+<td align="left">MV</td>
+<td align="left">matrix-vector product, A x</td>
+</tr>
+<tr>
+<td align="left">SV</td>
+<td align="left">matrix-vector solve, inv(A) x</td>
+</tr>
+<tr>
+<td align="left">MM</td>
+<td align="left">matrix-matrix product, A B</td>
+</tr>
+<tr>
+<td align="left">SM</td>
+<td align="left">matrix-matrix solve, inv(A) B</td>
+</tr>
+<tr>
+<td align="left"> </td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">矩阵的类型有下面常见的几种:</td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th align="left">标识</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">GE</td>
+<td align="left">Genearl,稠密矩阵</td>
+</tr>
+<tr>
+<td align="left">GB</td>
+<td align="left">General Band,带状矩阵</td>
+</tr>
+<tr>
+<td align="left">SY</td>
+<td align="left">SYmmetric,对称矩阵</td>
+</tr>
+<tr>
+<td align="left">SB</td>
+<td align="left">Symmetric Band,对称带状矩阵</td>
+</tr>
+<tr>
+<td align="left">SP</td>
+<td align="left">Symmetric Packed,压缩存储对称矩阵</td>
+</tr>
+<tr>
+<td align="left">HE</td>
+<td align="left">HEmmitian,Hemmitian矩阵,自共轭矩阵</td>
+</tr>
+<tr>
+<td align="left">HB</td>
+<td align="left">Hemmitian Band,带状Hemmitian矩阵</td>
+</tr>
+<tr>
+<td align="left">HP</td>
+<td align="left">Hemmitian Packed,压缩存储Hemmitian矩阵</td>
+</tr>
+<tr>
+<td align="left">TR</td>
+<td align="left">TRiangular,三角矩阵</td>
+</tr>
+<tr>
+<td align="left">TB</td>
+<td align="left">Triangular Band,三角带状矩阵</td>
+</tr>
+<tr>
+<td align="left">TP</td>
+<td align="left">Triangular Packed,压缩存储三角矩阵</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_4">六、指令集</h2>
+<p>https://blog.csdn.net/just_sort/article/details/94393506</p>
+<p>https://blog.csdn.net/kezunhai/article/details/44850637</p>
 
   <br>
     <style>
