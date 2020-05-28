@@ -2473,10 +2473,5 @@ extern void __cdecl _fxsave64(void *mem);
 extern void __cdecl _fxrstor(void *mem);
 extern void __cdecl _fxrstor64(void *mem);
 ```
-https://blog.csdn.net/just_sort/article/details/94393506
-
-https://blog.csdn.net/kezunhai/article/details/44850637
-
-
 
 
