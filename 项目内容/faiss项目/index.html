@@ -3517,207 +3517,156 @@ struct IndexFlat1D:IndexFlatL2 {
 
 
 namespace faiss {
-    IndexFlat::IndexFlat (idx_t d, MetricType metric):Index(d, metric) {}
 
+    IndexFlat::IndexFlat (idx_t d, MetricType metric): Index(d, metric) { }
 
-
-void IndexFlat::add (idx_t n, const float *x) {
-    xb.insert(xb.end(), x, x + n * d);
-    ntotal += n;
-}
-
-
-void IndexFlat::reset() {
-    xb.clear();
-    ntotal = 0;
-}
-
-
-void IndexFlat::search (idx_t n, const float *x, idx_t k,
-                               float *distances, idx_t *labels) const
-{
-    // we see the distances and labels as heaps
-
-    if (metric_type == METRIC_INNER_PRODUCT) {
-        float_minheap_array_t res = {
-            size_t(n), size_t(k), labels, distances};
-        knn_inner_product (x, xb.data(), d, n, ntotal, &amp;res);
-    } else if (metric_type == METRIC_L2) {
-        float_maxheap_array_t res = {
-            size_t(n), size_t(k), labels, distances};
-        knn_L2sqr (x, xb.data(), d, n, ntotal, &amp;res);
-    } else {
-        float_maxheap_array_t res = {
-            size_t(n), size_t(k), labels, distances};
-        knn_extra_metrics (x, xb.data(), d, n, ntotal,
-                           metric_type, metric_arg,
-                           &amp;res);
-    }
-}
-
-void IndexFlat::range_search (idx_t n, const float *x, float radius,
-                              RangeSearchResult *result) const
-{
-    switch (metric_type) {
-    case METRIC_INNER_PRODUCT:
-        range_search_inner_product (x, xb.data(), d, n, ntotal,
-                                    radius, result);
-        break;
-    case METRIC_L2:
-        range_search_L2sqr (x, xb.data(), d, n, ntotal, radius, result);
-        break;
-    default:
-        FAISS_THROW_MSG(&quot;metric type not supported&quot;);
-    }
-}
-
-
-void IndexFlat::compute_distance_subset (
-            idx_t n,
-            const float *x,
-            idx_t k,
-            float *distances,
-            const idx_t *labels) const
-{
-    switch (metric_type) {
-        case METRIC_INNER_PRODUCT:
-            fvec_inner_products_by_idx (
-                 distances,
-                 x, xb.data(), labels, d, n, k);
-            break;
-        case METRIC_L2:
-            fvec_L2sqr_by_idx (
-                 distances,
-                 x, xb.data(), labels, d, n, k);
-            break;
-        default:
-            FAISS_THROW_MSG(&quot;metric type not supported&quot;);
+    void IndexFlat::add (idx_t n, const float *x) {
+        xb.insert(xb.end(), x, x + n * d);
+        ntotal += n;
     }
 
-}
+    void IndexFlat::reset() {
+        xb.clear();
+        ntotal = 0;
+    }
 
-size_t IndexFlat::remove_ids (const IDSelector &amp; sel)
-{
-    idx_t j = 0;
-    for (idx_t i = 0; i &lt; ntotal; i++) {
-        if (sel.is_member (i)) {
-            // should be removed
+    void IndexFlat::search (idx_t n, const float *x, idx_t k, float *distances, idx_t *labels) const {
+        // we see the distances and labels as heaps
+        if (metric_type == METRIC_INNER_PRODUCT) {
+            float_minheap_array_t res = {size_t(n), size_t(k), labels, distances};
+            knn_inner_product (x, xb.data(), d, n, ntotal, &amp;res);
+        } else if (metric_type == METRIC_L2) {
+            float_maxheap_array_t res = {size_t(n), size_t(k), labels, distances};
+            knn_L2sqr (x, xb.data(), d, n, ntotal, &amp;res);
         } else {
-            if (i &gt; j) {
-                memmove (&amp;xb[d * j], &amp;xb[d * i], sizeof(xb[0]) * d);
-            }
-            j++;
+            float_maxheap_array_t res = { size_t(n), size_t(k), labels, distances};
+            knn_extra_metrics (x, xb.data(), d, n, ntotal, metric_type, metric_arg, &amp;res);
         }
     }
-    size_t nremove = ntotal - j;
-    if (nremove &gt; 0) {
-        ntotal = j;
-        xb.resize (ntotal * d);
-    }
-    return nremove;
-}
 
-
-namespace {
-
-
-struct FlatL2Dis : DistanceComputer {
-    size_t d;
-    Index::idx_t nb;
-    const float *q;
-    const float *b;
-    size_t ndis;
-
-    float operator () (idx_t i) override {
-        ndis++;
-        return fvec_L2sqr(q, b + i * d, d);
+    void IndexFlat::range_search (idx_t n, const float *x, float radius, RangeSearchResult *result) const {
+        switch (metric_type) {
+            case METRIC_INNER_PRODUCT:
+                range_search_inner_product (x, xb.data(), d, n, ntotal, radius, result);
+                break;
+            case METRIC_L2:
+                range_search_L2sqr (x, xb.data(), d, n, ntotal, radius, result);
+                break;
+            default:
+                FAISS_THROW_MSG(&quot;metric type not supported&quot;);
+        }
     }
 
-    float symmetric_dis(idx_t i, idx_t j) override {
-        return fvec_L2sqr(b + j * d, b + i * d, d);
+    void IndexFlat::compute_distance_subset (idx_t n, const float *x, idx_t k, float *distances, const idx_t *labels) const {
+        switch (metric_type) {
+            case METRIC_INNER_PRODUCT:
+                fvec_inner_products_by_idx (distances, x, xb.data(), labels, d, n, k);
+                break;
+            case METRIC_L2:
+                fvec_L2sqr_by_idx (distances, x, xb.data(), labels, d, n, k);
+                break;
+            default:
+                FAISS_THROW_MSG(&quot;metric type not supported&quot;);
+        }
     }
 
-    explicit FlatL2Dis(const IndexFlat&amp; storage, const float *q = nullptr)
-        : d(storage.d),
-          nb(storage.ntotal),
-          q(q),
-          b(storage.xb.data()),
-          ndis(0) {}
-
-    void set_query(const float *x) override {
-        q = x;
-    }
-};
-
-struct FlatIPDis : DistanceComputer {
-    size_t d;
-    Index::idx_t nb;
-    const float *q;
-    const float *b;
-    size_t ndis;
-
-    float operator () (idx_t i) override {
-        ndis++;
-        return fvec_inner_product (q, b + i * d, d);
+    size_t IndexFlat::remove_ids (const IDSelector &amp; sel) {
+        idx_t j = 0;
+        for (idx_t i = 0; i &lt; ntotal; i++) {
+            if (sel.is_member (i)) {
+                // should be removed
+            } else {
+                if (i &gt; j) {
+                    memmove (&amp;xb[d * j], &amp;xb[d * i], sizeof(xb[0]) * d);
+                }
+                j++;
+            }
+        }
+        size_t nremove = ntotal - j;
+        if (nremove &gt; 0) {
+            ntotal = j;
+            xb.resize (ntotal * d);
+        }
+        return nremove;
     }
 
-    float symmetric_dis(idx_t i, idx_t j) override {
-        return fvec_inner_product (b + j * d, b + i * d, d);
+    namespace {
+
+        struct FlatL2Dis : DistanceComputer {
+            size_t d;
+            Index::idx_t nb;
+            const float *q;
+            const float *b;
+            size_t ndis;
+
+            float operator () (idx_t i) override {
+                ndis++;
+                return fvec_L2sqr(q, b + i * d, d);
+            }
+
+            float symmetric_dis(idx_t i, idx_t j) override {
+                return fvec_L2sqr(b + j * d, b + i * d, d);
+            }
+
+            explicit FlatL2Dis(const IndexFlat&amp; storage, const float *q = nullptr)
+                : d(storage.d), nb(storage.ntotal), q(q), b(storage.xb.data()), ndis(0) {}
+
+            void set_query(const float *x) override {
+                q = x;
+            }
+        };
+
+        struct FlatIPDis : DistanceComputer {
+            size_t d;
+            Index::idx_t nb;
+            const float *q;
+            const float *b;
+            size_t ndis;
+
+            float operator () (idx_t i) override {
+                ndis++;
+                return fvec_inner_product (q, b + i * d, d);
+            }
+
+            float symmetric_dis(idx_t i, idx_t j) override {
+                return fvec_inner_product (b + j * d, b + i * d, d);
+            }
+
+            explicit FlatIPDis(const IndexFlat&amp; storage, const float *q = nullptr)
+                : d(storage.d), nb(storage.ntotal), q(q), b(storage.xb.data()), ndis(0) {}
+
+            void set_query(const float *x) override {
+                q = x;
+            }
+        };
+    }  // namespace
+
+    DistanceComputer * IndexFlat::get_distance_computer() const {
+        if (metric_type == METRIC_L2) {
+            return new FlatL2Dis(*this);
+        } else if (metric_type == METRIC_INNER_PRODUCT) {
+            return new FlatIPDis(*this);
+        } else {
+            return get_extra_distance_computer (d, metric_type, metric_arg, ntotal, xb.data());
+        }
     }
 
-    explicit FlatIPDis(const IndexFlat&amp; storage, const float *q = nullptr)
-        : d(storage.d),
-          nb(storage.ntotal),
-          q(q),
-          b(storage.xb.data()),
-          ndis(0) {}
-
-    void set_query(const float *x) override {
-        q = x;
+    void IndexFlat::reconstruct (idx_t key, float * recons) const {
+        memcpy (recons, &amp;(xb[key * d]), sizeof(*recons) * d);
     }
-};
 
-
-
-
-}  // namespace
-
-
-DistanceComputer * IndexFlat::get_distance_computer() const {
-    if (metric_type == METRIC_L2) {
-        return new FlatL2Dis(*this);
-    } else if (metric_type == METRIC_INNER_PRODUCT) {
-        return new FlatIPDis(*this);
-    } else {
-        return get_extra_distance_computer (d, metric_type, metric_arg,
-                                            ntotal, xb.data());
+    /* The standalone codec interface */
+    size_t IndexFlat::sa_code_size () const {
+        return sizeof(float) * d;
     }
-}
 
+    void IndexFlat::sa_encode (idx_t n, const float *x, uint8_t *bytes) const {
+        memcpy (bytes, x, sizeof(float) * d * n);
+    }
 
-void IndexFlat::reconstruct (idx_t key, float * recons) const
-{
-    memcpy (recons, &amp;(xb[key * d]), sizeof(*recons) * d);
-}
-
-
-/* The standalone codec interface */
-size_t IndexFlat::sa_code_size () const
-{
-    return sizeof(float) * d;
-}
-
-void IndexFlat::sa_encode (idx_t n, const float *x, uint8_t *bytes) const
-{
-    memcpy (bytes, x, sizeof(float) * d * n);
-}
-
-void IndexFlat::sa_decode (idx_t n, const uint8_t *bytes, float *x) const
-{
-    memcpy (x, bytes, sizeof(float) * d * n);
-}
-
-
+    void IndexFlat::sa_decode (idx_t n, const uint8_t *bytes, float *x) const {
+        memcpy (x, bytes, sizeof(float) * d * n);
+    }
 
 
 /***************************************************
