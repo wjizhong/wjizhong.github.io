@@ -1,0 +1,216 @@
+# hiho第098周:搜索一·24点
+
+* **描述**
+
+周末,小Hi和小Ho都在家待着。
+
+在收拾完房间时,小Ho偶然发现了一副扑克,于是两人考虑用这副扑克来打发时间。
+
+小Ho:玩点什么好呢?
+
+小Hi:两个人啊,不如来玩24点怎么样,不靠运气就靠实力的游戏。
+
+小Ho:好啊,好啊。
+
+<经过若干局游戏之后>
+
+小Ho:小Hi,你说如果要写个程序来玩24点会不会很复杂啊?
+
+小Hi:让我想想。
+
+<过了几分钟>
+
+小Hi:我知道了!其实很简单嘛。
+
+> * 提示:24点
+
+小Hi:小Ho,你仔细观察我们计算24点的方法,来总结有几种情况。
+
+假设我们用⊙表示运算,⊙除了可以表示基本的"+","-","*","/"外。我们还引入两个新的运算,"反-",和"反/"。
+
+比如(a反/b)的意思是(b/a)。则对形如(c/(a + b))的形式,就可以等价的描述为((a+b)反/c)。
+
+利用这6种运算，可以将所有可能的计算过程归结为2类:
+
+```
+(((a ⊙ b) ⊙ c ) ⊙ d)
+((a ⊙ b) ⊙ (c ⊙ d))
+```
+
+小Ho:恩..(小Ho思考了一下)..好像确实是这样。
+
+小Hi:既然我们已经找到了固定的模式,那么剩下的就比较简单了。
+
+将4张牌的值,分别代入a,b,c,d,再把可能的运算符也代入。就可以得到相应的计算式子,将其计算出来,再检查结果是否等于24。
+
+那么小Ho,你觉得有多少种情况呢?
+
+小Ho:由于我们有4个数,所以对于a,b,c,d的对应关系有4!=24种情况。3个运算符,每个运算符可能有6种情况,那就是6^3=216。再考虑到2种不同的模式,所以一共有2 * 24 * 216 = 10368种情况。
+
+小Hi:你的计算中并没有考虑等价的情况,比如a+b和b+a,所以实际的情况数其实是小于10368种的。
+
+不过由于对计算机而言,10368种情况数本来也不是很多,而要考虑等价反而显得比较麻烦。所以我们可以不要去考虑加法和乘法的可逆性,直接枚举所有的情况。
+
+那么最后还是由小Ho你来给出参考的伪代码吧。
+
+小Ho:嗯，这次的伪代码:
+
+```c++
+used[] = false
+nowNumber[] = {0,0,0,0}
+ops[] = {0,0,0}
+opType = {+,-,*,/,反-,反/}
+
+makeNumber(depth):
+    If (depth >= 4) Then
+        // 此时已经枚举完a,b,c,d
+        // 开始枚举运算符
+        Return makeOperation(0)
+    End If
+    For i = 1 .. 4
+        If (not used[i]) Then   // 每个数字只能使用一次
+            nowNumber[ depth ] = number[i]
+            used[i] = true
+            If (makeNumber(depth + 1)) Then
+                Return True
+            End If
+            used[i] = false
+        End If
+    End For
+    Return False
+    
+makeOperation(depth):
+    If (depth >= 3) Then
+        // 此时已经枚举完a,b,c,d和三个运算符
+        // 计算在(((a ⊙ b) ⊙ c ) ⊙ d)形式下的值
+        If (calcType1(nowNumber, ops) == 24) Then
+            Return true;
+        End If
+        // 计算在((a ⊙ b) ⊙ (c ⊙ d))形式下的值
+        If (calcType2(nowNumber, ops) == 24) Then
+            Return true;
+        End If
+        Return false
+    End If
+    For i = 1 .. 6
+        ops[ depth ] = opType[i]
+        If (makeOperation(depth + 1)) Then
+            Return True
+        End If
+    End For
+    Return False
+
+Main:
+    input(number)
+    used[] = false
+    makeNumber(0)
+```
+
+* **输入输出**
+
+> * 输入
+
+第1行:1个正整数,t,表示数据组数,2≤t≤100。
+
+第2..t+1行:4个正整数,a,b,c,d,1≤a,b,c,d≤10。
+
+> 输出
+
+第1..t行:每行一个字符串,第i行表示第i组能否计算出24点。若能够输出"Yes",否则输出"No"。
+
+样例输入
+
+```
+2
+5 5 5 1
+9 9 9 9
+```
+
+样例输出
+
+```
+Yes
+No
+```
+
+* **解题代码**
+
+`c++`代码:
+
+```c++
+#include <bits/stdc++.h>
+
+#define rep(i, j, k) for(int i = (int) j; i < (int) k; ++i)
+#define ll long long
+#define mp make_pair
+
+using namespace std;
+const double eps = 1e-8;
+
+inline int sig(double x) {return (x > eps) - (x < -eps);}
+
+double a[4];
+int t;
+bool flag;
+
+void dfs(double x, double y, int d) {
+    if(flag) return ;
+    if(d == 3) {
+        if(!sig(x+y-24) || !sig(x-y-24) || !sig(y-x-24) || !sig(x*y-24)) flag = 1;
+        else if(sig(x) && !sig(y/x-24)) flag = 1;
+        //else if(sig(y) && !sig(x/y-24)) flag = 1;
+        return ;
+    }
+    // front
+    dfs(x+y, a[d+1], d+1);
+    dfs(x-y, a[d+1], d+1);
+    //dfs(y-x, a[d+1], d+1);
+    dfs(x*y, a[d+1], d+1);
+    if(sig(y)) dfs(x/y, a[d+1], d+1);
+    //if(sig(x)) dfs(y/x, a[d+1], d+1);
+    // behind
+    dfs(x, y+a[d+1], d+1);
+    dfs(x, y-a[d+1], d+1);
+    dfs(x, y*a[d+1], d+1);
+    //dfs(x, a[d+1]-y, d+1);
+    if(sig(a[d+1])) dfs(x, y/a[d+1], d+1);
+    //if(sig(y)) dfs(x, a[d+1]/y, d+1);
+}
+
+int main()
+{
+#ifdef PIT
+//freopen("", "r", stdin);
+#endif // PIT
+    for(scanf("%d", &t); t; --t) {
+        rep(i, 0, 4) scanf("%lf", a+i);
+        flag = 0; 
+        sort(a, a+4);
+        do {
+            dfs(a[0], a[1], 1);
+        } while(next_permutation(a, a+4) && !flag);
+        puts((flag) ? "Yes" : "No");
+    }
+    return 0;
+}
+```
+
+`python`代码:
+
+```python
+from operator import add, sub, mul, div
+from itertools import permutations
+d = {0:add, 1:sub, 2:lambda x, y: y - x, 3:mul, 4:div, 5:lambda x, y: y / x}
+o = range(6)
+def f(a):
+    for x in permutations(a):
+        for i,j,k in [(i,j,k) for i in o for j in o for k in o]:
+            try:
+                r1 = d[k](d[j](d[i](x[0], x[1]), x[2]), x[3])
+                r2 = d[k](d[i](x[0], x[1]), d[j](x[2], x[3]))
+            except: continue
+            if r1 == 24 or r2 == 24: return True
+    return False
+for i in range(input()):
+    print 'Yes' if f(map(float, raw_input().split())) else 'No'
+```
