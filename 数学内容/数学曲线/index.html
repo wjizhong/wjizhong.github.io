@@ -374,6 +374,26 @@ anim.save('lorenz.mp4', writer='ffmpeg', fps=30, dpi=200,bitrate=1000, codec='li
 </div>
 <p>上面参数方程的参数<span><span class="MathJax_Preview">t</span><script type="math/tex">t</script></span>,也是螺线于该点的曲率:<span><span class="MathJax_Preview">\kappa (t)=2t</span><script type="math/tex">\kappa (t)=2t</script></span>。两个螺线的中心位于<span><span class="MathJax_Preview">\frac {\sqrt {\pi }}{2}</span><script type="math/tex">\frac {\sqrt {\pi }}{2}</script></span>,<span><span class="MathJax_Preview">\frac {\sqrt {\pi }}{2}</span><script type="math/tex">\frac {\sqrt {\pi }}{2}</script></span></p>
 <p>由于此螺线的曲率与长度成正比,故常用于公路工程或铁路工程,以缓和直路线与圆曲路线之间的曲率变化(向心力变化)。在光学上,近场衍射(Fresnel衍射)中会应用Fresnel积分。</p>
+<p>python代码:</p>
+<pre><code class="python">import numpy as np
+import matplotlib.pyplot as plt
+from scipy import integrate
+import math
+
+t = np.arange(-10,10,0.01)
+s = map(lambda i:integrate.quad(lambda x:math.sin(pow(x,2)),0,i),t)
+c = map(lambda i:integrate.quad(lambda x:math.cos(pow(x,2)),0,i),t)
+
+s = [i[0] for i in list(s)]
+c = [i[0] for i in list(c)]
+
+plt.figure(figsize=(4,3))
+plt.axis('off')
+plt.plot(c,s, color='red',linewidth = '1')
+plt.savefig(&quot;butter.jpg&quot;,bbox_inches='tight', transparent=True,dpi=400)
+</code></pre>
+
+<p><img alt="" src="http://wx4.sinaimg.cn/nmw690/006HJ6Ndly1gfawtskq2aj310o0rw0v0.jpg" /></p>
 
   <br>
     <style>
