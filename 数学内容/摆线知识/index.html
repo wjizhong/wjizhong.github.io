@@ -37,6 +37,10 @@
               ]},
               {title: "\u4e8c\u3001\u6700\u901f\u964d\u7ebf\u95ee\u9898", url: "#_3", level:2, children: [ 
               ]},
+              {title: "\u4e09\u3001\u4f2f\u52aa\u5229\u89e3\u6cd5\u2014\u2014\u7528\u65af\u6d85\u5c14\u5b9a\u5f8b\u6c42\u89e3\u6700\u901f\u964d\u7ebf", url: "#_4", level:2, children: [ 
+              ]},
+              {title: "\u56db\u3001\u6b27\u62c9\u7684\u89e3\u6cd5\u2014\u2014\u53d8\u5206\u6cd5", url: "#_5", level:2, children: [ 
+              ]},
           ]},
         ];
     </script>
@@ -167,24 +171,30 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <div class="MathJax_Preview">{\mathrm{d}T\over\mathrm{d}x}={x\over v_1\sqrt{x^2+a^2}}-{d-x\over v_2\sqrt{(d-x)^2+b^2}}</div>
 <script type="math/tex; mode=display">{\mathrm{d}T\over\mathrm{d}x}={x\over v_1\sqrt{x^2+a^2}}-{d-x\over v_2\sqrt{(d-x)^2+b^2}}</script>
 </div>
-<p>我们知道,当导数为<code>0</code>或未定义时,函数取极值。然而在在<code>T</code>函数的定义域内,函数只在导数为<code>0</code>时达到最小值。因此,我们能够列出这样的方程来求解<span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span>:</p>
+<p>我们知道,当导数为0或未定义时,函数取极值。然而在在T函数的定义域内,函数只在导数为0时达到最小值。因此,我们能够列出这样的方程来求解<span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span>:</p>
 <div>
-<div class="MathJax_Preview">{x\over v_1\sqrt{x^2+a^2}}-{d-x\over v_2\sqrt{(d-x)^2+b^2}}=0 \\ {x\over v_1\sqrt{x^2+a^2}}={d-x\over v_2\sqrt{(d-x)^2+b^2}}</div>
-<script type="math/tex; mode=display">{x\over v_1\sqrt{x^2+a^2}}-{d-x\over v_2\sqrt{(d-x)^2+b^2}}=0 \\ {x\over v_1\sqrt{x^2+a^2}}={d-x\over v_2\sqrt{(d-x)^2+b^2}}</script>
+<div class="MathJax_Preview">
+&amp; {x\over v_1\sqrt{x^2+a^2}}-{d-x\over v_2\sqrt{(d-x)^2+b^2}}=0 \\
+&amp; {x\over v_1\sqrt{x^2+a^2}}={d-x\over v_2\sqrt{(d-x)^2+b^2}}
+</div>
+<script type="math/tex; mode=display">
+& {x\over v_1\sqrt{x^2+a^2}}-{d-x\over v_2\sqrt{(d-x)^2+b^2}}=0 \\
+& {x\over v_1\sqrt{x^2+a^2}}={d-x\over v_2\sqrt{(d-x)^2+b^2}}
+</script>
 </div>
 <p>根据原图,我们不难得出<span><span class="MathJax_Preview">\sin\alpha={x\over\sqrt{x^2+a^2}}</span><script type="math/tex">\sin\alpha={x\over\sqrt{x^2+a^2}}</script></span>,<span><span class="MathJax_Preview">\cos\alpha={d-x\over\sqrt{(d-x)^2+b^2}}</span><script type="math/tex">\cos\alpha={d-x\over\sqrt{(d-x)^2+b^2}}</script></span>。因此,代入到原式,我们就得到了入射角<span><span class="MathJax_Preview">\alpha</span><script type="math/tex">\alpha</script></span>与折射角<span><span class="MathJax_Preview">\beta</span><script type="math/tex">\beta</script></span>的关系:</p>
 <div>
 <div class="MathJax_Preview">{\sin\alpha\over v_1}={\sin\beta\over v_2} \Rightarrow{\sin\alpha\over\sin\beta}={v_1\over v_2}</div>
 <script type="math/tex; mode=display">{\sin\alpha\over v_1}={\sin\beta\over v_2} \Rightarrow{\sin\alpha\over\sin\beta}={v_1\over v_2}</script>
 </div>
-<p>因此,入射角与折射角的正弦比刚好等于两种介质下的光速比,这个结论又叫做斯涅尔定律(<code>Snell's law</code>)。虽然斯涅尔定律是一个光学定律,但是在力学中它依然适用。</p>
-<p><strong>伯努利解法——用斯涅尔定律求解最速降线</strong></p>
+<p>因此,入射角与折射角的正弦比刚好等于两种介质下的光速比,这个结论又叫做斯涅尔定律(Snell's law)。虽然斯涅尔定律是一个光学定律,但是在力学中它依然适用。</p>
+<h2 id="_4">三、伯努利解法——用斯涅尔定律求解最速降线</h2>
 <p>我们设物体最初距离地面的高度为<span><span class="MathJax_Preview">h</span><script type="math/tex">h</script></span>,而物体的当前速度和高度分别为<span><span class="MathJax_Preview">v=v(t)</span><script type="math/tex">v=v(t)</script></span>和<span><span class="MathJax_Preview">y=y(t)</span><script type="math/tex">y=y(t)</script></span>。根据(理想状态下)机械能守恒,我们可以对物体的速度和当前高度建立如下关系:</p>
 <div>
 <div class="MathJax_Preview">{1\over2}mv^2+mgy=mgh</div>
 <script type="math/tex; mode=display">{1\over2}mv^2+mgy=mgh</script>
 </div>
-<p>由于物体的质量恒不为<code>0</code>,所以我们可以直接让等式两侧与之相除:</p>
+<p>由于物体的质量恒不为0,所以我们可以直接让等式两侧与之相除:</p>
 <div>
 <div class="MathJax_Preview">{1\over2}v^2+gy=gh</div>
 <script type="math/tex; mode=display">{1\over2}v^2+gy=gh</script>
@@ -195,59 +205,91 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <script type="math/tex; mode=display">v=\sqrt{2g(h-y)}</script>
 </div>
 <p>根据幂函数的性质,物体的纵坐标其速度一一对应。如果我们把每个纵坐标都当作一个不同的介质而每个不同的介质下的光速都为<span><span class="MathJax_Preview">\sqrt{2g(h-y)}</span><script type="math/tex">\sqrt{2g(h-y)}</script></span>,我们可以把最速降线问题理解成光在多个不同介质下的传播问题。根据费马原理,光总是沿着耗时最短的路径传播,所以我们如果用光学的原则求解出耗时最短的传播路径,就可以得到最速降线问题的答案。</p>
-<p><img alt="" src="https://pic1.zhimg.com/80/v2-b59ab27f82624502bfecd3fe72cce178_1440w.jpg" /></p>
-<p>如果我们把物体的运动空间用平行于<code>x</code>轴的直线进行分割,就可以发现当"光线"从第<code>j</code>个区间穿越到第<code>j+1</code>个区间进行折射时,折射角满足斯涅尔定律。因此:</p>
+<p><img src="https://pic1.zhimg.com/80/v2-b59ab27f82624502bfecd3fe72cce178_1440w.jpg" style="width:40%" ></p>
+<p>如果我们把物体的运动空间用平行于x轴的直线进行分割,就可以发现当"光线"从第j个区间穿越到第j+1个区间进行折射时,折射角满足斯涅尔定律。因此:</p>
 <div>
 <div class="MathJax_Preview">{\sin\alpha_j\over v_j}={\sin\alpha'_j\over v_{j+1}}</div>
 <script type="math/tex; mode=display">{\sin\alpha_j\over v_j}={\sin\alpha'_j\over v_{j+1}}</script>
 </div>
-<p>由于我们所做的发现均垂直于<code>x</code>轴(即平行于<code>y</code>轴),所以这些法线都相互平行。于是,根据两直线平行,内错角相等的原则,我们得到<span><span class="MathJax_Preview">\alpha'_j=\alpha_{j+1}</span><script type="math/tex">\alpha'_j=\alpha_{j+1}</script></span>,因此,我们可以把上述等式进行这样的拓展:</p>
+<p>由于我们所做的发现均垂直于x轴(即平行于y轴),所以这些法线都相互平行。于是,根据两直线平行,内错角相等的原则,我们得到<span><span class="MathJax_Preview">\alpha'_j=\alpha_{j+1}</span><script type="math/tex">\alpha'_j=\alpha_{j+1}</script></span>,因此,我们可以把上述等式进行这样的拓展:</p>
 <div>
 <div class="MathJax_Preview">{\sin\alpha_1\over v_1}={\sin\alpha_2\over v_2}=\dots={\sin\alpha_j\over v_j}={\sin\alpha_{j+1}\over v_{j+1}}=\dots={\sin\alpha_N\over v_N}=C</div>
 <script type="math/tex; mode=display">{\sin\alpha_1\over v_1}={\sin\alpha_2\over v_2}=\dots={\sin\alpha_j\over v_j}={\sin\alpha_{j+1}\over v_{j+1}}=\dots={\sin\alpha_N\over v_N}=C</script>
 </div>
-<p>因此每一个区间内入射角的正弦于区间内的传播速度成正比,而比例常数设为<code>C</code>。因此,我们可以再把速度关于<code>y</code>的表达式代入,得到:</p>
+<p>因此每一个区间内入射角的正弦于区间内的传播速度成正比,而比例常数设为C。因此,我们可以再把速度关于y的表达式代入,得到:</p>
 <div>
 <div class="MathJax_Preview">{\sin\alpha\over\sqrt{2g(h-y)}}=C</div>
 <script type="math/tex; mode=display">{\sin\alpha\over\sqrt{2g(h-y)}}=C</script>
 </div>
-<p>经过一定代数操作,我们可以得到<code>y</code>关于<span><span class="MathJax_Preview">\sin\alpha</span><script type="math/tex">\sin\alpha</script></span>的表达式:</p>
+<p>经过一定代数操作,我们可以得到y关于<span><span class="MathJax_Preview">\sin\alpha</span><script type="math/tex">\sin\alpha</script></span>的表达式:</p>
 <div>
-<div class="MathJax_Preview">\begin{aligned} {\sin^2\alpha\over2g(h-y)}&amp;=C^2 \\ {\sin^2\alpha\over2gC^2}&amp;=h-y \\ y&amp;=-{\sin^2\alpha\over2gC^2}+h \end{aligned}</div>
-<script type="math/tex; mode=display">\begin{aligned} {\sin^2\alpha\over2g(h-y)}&=C^2 \\ {\sin^2\alpha\over2gC^2}&=h-y \\ y&=-{\sin^2\alpha\over2gC^2}+h \end{aligned}</script>
+<div class="MathJax_Preview">
+\begin{aligned} 
+    {\sin^2\alpha\over2g(h-y)}&amp;=C^2 \\ {\sin^2\alpha\over2gC^2}&amp;=h-y \\ 
+    y&amp;=-{\sin^2\alpha\over2gC^2}+h 
+\end{aligned}
+</div>
+<script type="math/tex; mode=display">
+\begin{aligned} 
+    {\sin^2\alpha\over2g(h-y)}&=C^2 \\ {\sin^2\alpha\over2gC^2}&=h-y \\ 
+    y&=-{\sin^2\alpha\over2gC^2}+h 
+\end{aligned}
+</script>
 </div>
 <p>现在我们再来看一看入射角于物体坐标微小变化的关系:</p>
-<p><img alt="" src="https://pic2.zhimg.com/v2-9cff3fe7aa631201bcca3a24ee34fc21_b.jpg" /></p>
+<p><img src="https://pic2.zhimg.com/v2-9cff3fe7aa631201bcca3a24ee34fc21_b.jpg" style="width:20%" ></p>
 <p>我们不难发现<span><span class="MathJax_Preview">{\mathrm{d}x\over\mathrm{d}y}=\tan\alpha</span><script type="math/tex">{\mathrm{d}x\over\mathrm{d}y}=\tan\alpha</script></span>,因此我们可以通过<span><span class="MathJax_Preview">\alpha</span><script type="math/tex">\alpha</script></span>构造一个最速降线的参数方程。现在我们先让<code>y</code>对<span><span class="MathJax_Preview">\alpha</span><script type="math/tex">\alpha</script></span>求导,得到下式:</p>
 <div>
 <div class="MathJax_Preview">{\mathrm{d}y\over\mathrm{d}\alpha}=-{\sin\alpha\cos\alpha\over gC^2}</div>
 <script type="math/tex; mode=display">{\mathrm{d}y\over\mathrm{d}\alpha}=-{\sin\alpha\cos\alpha\over gC^2}</script>
 </div>
-<p>根据链式法则,我们可以得到<code>x</code>关于<span><span class="MathJax_Preview">\alpha</span><script type="math/tex">\alpha</script></span>的微分方程:</p>
+<p>根据链式法则,我们可以得到x关于<span><span class="MathJax_Preview">\alpha</span><script type="math/tex">\alpha</script></span>的微分方程:</p>
 <div>
 <div class="MathJax_Preview">{\mathrm{d}x\over\mathrm{d}\alpha}={\mathrm{d}x\over\mathrm{d}y}{\mathrm{d}y\over\mathrm{d}\alpha}=\tan\alpha\cdot\left(-{\sin\alpha\cos\alpha\over gC^2}\right)=-{\sin^2\alpha\over gC^2}</div>
 <script type="math/tex; mode=display">{\mathrm{d}x\over\mathrm{d}\alpha}={\mathrm{d}x\over\mathrm{d}y}{\mathrm{d}y\over\mathrm{d}\alpha}=\tan\alpha\cdot\left(-{\sin\alpha\cos\alpha\over gC^2}\right)=-{\sin^2\alpha\over gC^2}</script>
 </div>
 <p>现在两侧积分,我们可以得到:</p>
 <div>
-<div class="MathJax_Preview">\begin{aligned} x&amp;=-{1\over gC^2}\int\sin^2\alpha\mathrm{d}\alpha \\ &amp;=-{1\over4gC^2}\int(2-2\cos2\alpha)\mathrm{d}\alpha \\ &amp;=-{1\over4gC^2}(2\alpha-\sin2\alpha)+x_0 \end{aligned}</div>
-<script type="math/tex; mode=display">\begin{aligned} x&=-{1\over gC^2}\int\sin^2\alpha\mathrm{d}\alpha \\ &=-{1\over4gC^2}\int(2-2\cos2\alpha)\mathrm{d}\alpha \\ &=-{1\over4gC^2}(2\alpha-\sin2\alpha)+x_0 \end{aligned}</script>
+<div class="MathJax_Preview">
+\begin{aligned} 
+    x&amp;=-{1\over gC^2}\int\sin^2\alpha\mathrm{d}\alpha \\ 
+    &amp;=-{1\over4gC^2}\int(2-2\cos2\alpha)\mathrm{d}\alpha \\ 
+    &amp;=-{1\over4gC^2}(2\alpha-\sin2\alpha)+x_0 
+\end{aligned}
 </div>
-<p>现在我们可以将<code>y</code>的表达式改写,得到:</p>
+<script type="math/tex; mode=display">
+\begin{aligned} 
+    x&=-{1\over gC^2}\int\sin^2\alpha\mathrm{d}\alpha \\ 
+    &=-{1\over4gC^2}\int(2-2\cos2\alpha)\mathrm{d}\alpha \\ 
+    &=-{1\over4gC^2}(2\alpha-\sin2\alpha)+x_0 
+\end{aligned}
+</script>
+</div>
+<p>现在我们可以将y的表达式改写,得到:</p>
 <div>
 <div class="MathJax_Preview">y=-{1\over4gC^2}(1-\cos2\alpha)+h</div>
 <script type="math/tex; mode=display">y=-{1\over4gC^2}(1-\cos2\alpha)+h</script>
 </div>
 <p>为了美观,我们可以更换自变量<span><span class="MathJax_Preview">\theta=2\alpha</span><script type="math/tex">\theta=2\alpha</script></span>,得到最速降线最后的参数方程:</p>
 <div>
-<div class="MathJax_Preview">\left\{ \begin{aligned} x&amp;=-{1\over4gC^2}(\theta-\sin\theta)+x_0 \\ y&amp;=-{1\over4gC^2}(1-\cos\theta)+h \end{aligned} \right.</div>
-<script type="math/tex; mode=display">\left\{ \begin{aligned} x&=-{1\over4gC^2}(\theta-\sin\theta)+x_0 \\ y&=-{1\over4gC^2}(1-\cos\theta)+h \end{aligned} \right.</script>
+<div class="MathJax_Preview">
+\left\{ \begin{aligned} 
+    x&amp;=-{1\over4gC^2}(\theta-\sin\theta)+x_0 \\ 
+    y&amp;=-{1\over4gC^2}(1-\cos\theta)+h \end{aligned} 
+\right.
+</div>
+<script type="math/tex; mode=display">
+\left\{ \begin{aligned} 
+    x&=-{1\over4gC^2}(\theta-\sin\theta)+x_0 \\ 
+    y&=-{1\over4gC^2}(1-\cos\theta)+h \end{aligned} 
+\right.
+</script>
 </div>
 <p>我们不难发现最速降线的参数方程画出的图像刚刚好就是翻转后的摆线:</p>
-<p><img alt="" src="https://pic4.zhimg.com/v2-a0ad86024efb0781c26331333e11ca87_b.jpg" /></p>
+<p><img src="https://pic4.zhimg.com/v2-a0ad86024efb0781c26331333e11ca87_b.jpg" style="width:40%" ></p>
 <p>因此,最速降线的答案就是摆线。以上便是伯努利的解法,现在我们再来看看他的学生——欧拉——的解法。</p>
-<p><strong>欧拉的解法——变分法</strong></p>
-<p>我们先来看一下什么是泛函(<code>functional</code>)。泛函一般指从一个空间到数域的映射。</p>
+<h2 id="_5">四、欧拉的解法——变分法</h2>
+<p>我们先来看一下什么是泛函(functional)。泛函一般指从一个空间到数域的映射。</p>
 <p>对于一个实变函数<span><span class="MathJax_Preview">f</span><script type="math/tex">f</script></span>,<span><span class="MathJax_Preview">f\mapsto f(x_0)</span><script type="math/tex">f\mapsto f(x_0)</script></span>就是一个基本的泛函,它把函数空间映射到了实数域。而另外一种常见泛函则由积分构成:</p>
 <div>
 <div class="MathJax_Preview">J[y]=\int_{x_0}^{x_1}F(x,y,y')\mathrm{d}x</div>
