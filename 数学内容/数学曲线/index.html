@@ -39,9 +39,11 @@
               ]},
               {title: "\u4e09\u3001Mandelbrot\u96c6\u5408", url: "#mandelbrot", level:2, children: [ 
               ]},
-              {title: "Newton\u5206\u5f62", url: "#newton", level:2, children: [ 
+              {title: "\u56db\u3001Newton\u5206\u5f62", url: "#newton", level:2, children: [ 
               ]},
-              {title: "\u56db\u3001\u6d1b\u4f26\u8328\u5438\u5f15\u5b50", url: "#_4", level:2, children: [ 
+              {title: "\u4e94\u3001\u6d1b\u4f26\u8328\u5438\u5f15\u5b50", url: "#_4", level:2, children: [ 
+              ]},
+              {title: "\u516d\u3001\u7f8a\u89d2\u87ba\u7ebf", url: "#_5", level:2, children: [ 
               ]},
           ]},
         ];
@@ -212,7 +214,7 @@ plt.savefig(&quot;Mandelbrot.jpg&quot;,dpi=400)
 </code></pre>
 
 <p><img alt="" src="http://wx4.sinaimg.cn/large/006HJ6Ndly1g57vk83gudj31400u07eo.jpg" /></p>
-<h2 id="newton"><code>Newton</code>分形</h2>
+<h2 id="newton">四、Newton分形</h2>
 <p>牛顿分形就是分形的一种,它与解方程的牛顿法(跟优化中的牛顿法是不同的方法)紧密相关。假如需要求解方程<span><span class="MathJax_Preview">f(x) = 0</span><script type="math/tex">f(x) = 0</script></span>。</p>
 <p>其中,x的定义域是整个复平面。如何求解这个方程的解呢？我们可以用牛顿法。牛顿法是一种数值解法,我们首先会估算一个“比较好”的初始值<span><span class="MathJax_Preview">x_0</span><script type="math/tex">x_0</script></span>,然后使用迭代公式:</p>
 <div>
@@ -265,7 +267,7 @@ fig.savefig('newton.jpg')
 </code></pre>
 
 <p><img alt="" src="http://wx4.sinaimg.cn/large/006HJ6Ndly1g57vuwkfx8j30go0goq7r.jpg" /></p>
-<h2 id="_4">四、洛伦茨吸引子</h2>
+<h2 id="_4">五、洛伦茨吸引子</h2>
 <p>含时间参数的形式:</p>
 <div>
 <div class="MathJax_Preview">
@@ -349,7 +351,29 @@ anim = FuncAnimation(fig, animate, init_func=init, interval=20, frames=2000, bli
 anim.save('lorenz.mp4', writer='ffmpeg', fps=30, dpi=200,bitrate=1000, codec='libx264', extra_args=['-crf', '10'])
 </code></pre>
 
-<video src="./media/000f38c7lx07vGmvENUs01041200Dbzo0E010.mp4" width="600px" controls></video>
+<video src="../media/000f38c7lx07vGmvENUs01041200Dbzo0E010.mp4" width="600px" controls></video>
+
+<h2 id="_5">六、羊角螺线</h2>
+<p>羊角螺线(clothoid),又称欧拉螺线(Euler spiral),是形式为</p>
+<div>
+<div class="MathJax_Preview">x=C(t)</div>
+<script type="math/tex; mode=display">x=C(t)</script>
+</div>
+<div>
+<div class="MathJax_Preview">y=S(t)</div>
+<script type="math/tex; mode=display">y=S(t)</script>
+</div>
+<p>的曲线,其中<span><span class="MathJax_Preview">C(t)</span><script type="math/tex">C(t)</script></span>、<span><span class="MathJax_Preview">S(t)</span><script type="math/tex">S(t)</script></span>为Fresnel积分:</p>
+<div>
+<div class="MathJax_Preview">S(x)=\int _{0}^{x}\sin(t^{2})\,dt=\sum _{{n=0}}^{{\infty }}(-1)^{n}{\frac  {x^{{4n+3}}}{(4n+3)(2n+1)!}},</div>
+<script type="math/tex; mode=display">S(x)=\int _{0}^{x}\sin(t^{2})\,dt=\sum _{{n=0}}^{{\infty }}(-1)^{n}{\frac  {x^{{4n+3}}}{(4n+3)(2n+1)!}},</script>
+</div>
+<div>
+<div class="MathJax_Preview">C(x)=\int _{0}^{x}\cos(t^{2})\,dt=\sum _{{n=0}}^{{\infty }}(-1)^{n}{\frac  {x^{{4n+1}}}{(4n+1)(2n)!}}.</div>
+<script type="math/tex; mode=display">C(x)=\int _{0}^{x}\cos(t^{2})\,dt=\sum _{{n=0}}^{{\infty }}(-1)^{n}{\frac  {x^{{4n+1}}}{(4n+1)(2n)!}}.</script>
+</div>
+<p>上面参数方程的参数<span><span class="MathJax_Preview">t</span><script type="math/tex">t</script></span>,也是螺线于该点的曲率:<span><span class="MathJax_Preview">\kappa (t)=2t</span><script type="math/tex">\kappa (t)=2t</script></span>。两个螺线的中心位于<span><span class="MathJax_Preview">\frac {\sqrt {\pi }}{2}</span><script type="math/tex">\frac {\sqrt {\pi }}{2}</script></span>,<span><span class="MathJax_Preview">\frac {\sqrt {\pi }}{2}</span><script type="math/tex">\frac {\sqrt {\pi }}{2}</script></span></p>
+<p>由于此螺线的曲率与长度成正比,故常用于公路工程或铁路工程,以缓和直路线与圆曲路线之间的曲率变化(向心力变化)。在光学上,近场衍射(Fresnel衍射)中会应用Fresnel积分。</p>
 
   <br>
     <style>
