@@ -33,6 +33,10 @@
         
         var pageToc = [
           {title: "\u6446\u7ebf\u77e5\u8bc6", url: "#_top", level:1, children: [
+              {title: "\u4e00\u3001\u6446\u7ebf\u7684\u57fa\u672c\u6027\u8d28", url: "#_2", level:2, children: [ 
+              ]},
+              {title: "\u4e8c\u3001\u6700\u901f\u964d\u7ebf\u95ee\u9898", url: "#_3", level:2, children: [ 
+              ]},
           ]},
         ];
     </script>
@@ -74,43 +78,79 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 
     <h1 id="_1">摆线知识</h1>
 <p>圆形是我们学习数学以来最先接触的特殊图形——它没法被分解成有限个三角形。我们如果在一个滚轮的边上一定点放置一支笔,然后让滚轮沿着墙壁滚动,就能够在墙上画出摆线(Cycloid)的图像:</p>
-<p><img alt="" src="http://pic3.zhimg.com/v2-dcb650852f34aed235ddb97986194386_b.webp" /></p>
+<p><img src="http://pic3.zhimg.com/v2-dcb650852f34aed235ddb97986194386_b.webp" style="width: 40%;"></p>
 <p>不妨再用几何的方法来得到其参数方程:</p>
-<p><img alt="" src="https://pic4.zhimg.com/80/v2-dd16bdbc65b7554aa01fc259a0381ae7_1440w.jpg" /></p>
-<p>经过一定的分析，我们最终可以得到一组方程来描述摆线(其中<code>a</code>为圆的半径):</p>
+<p><img src="https://pic4.zhimg.com/80/v2-dd16bdbc65b7554aa01fc259a0381ae7_1440w.jpg" style="width: 40%;"></p>
+<p>经过一定的分析，我们最终可以得到一组方程来描述摆线(其中a为圆的半径):</p>
 <div>
-<div class="MathJax_Preview">\left\{ \begin{aligned} x&amp;=a(\theta-\sin\theta) \\ y&amp;=a(1-\cos\theta) \end{aligned} \right.</div>
-<script type="math/tex; mode=display">\left\{ \begin{aligned} x&=a(\theta-\sin\theta) \\ y&=a(1-\cos\theta) \end{aligned} \right.</script>
+<div class="MathJax_Preview">
+\left\{ \begin{aligned} 
+    x&amp;=a(\theta-\sin\theta) \\ 
+    y&amp;=a(1-\cos\theta) 
+\end{aligned} \right.
 </div>
-<ul>
-<li><strong>摆线的基本性质</strong></li>
-</ul>
+<script type="math/tex; mode=display">
+\left\{ \begin{aligned} 
+    x&=a(\theta-\sin\theta) \\ 
+    y&=a(1-\cos\theta) 
+\end{aligned} \right.
+</script>
+</div>
+<h2 id="_2">一、摆线的基本性质</h2>
 <p>根据三角函数的性质以及摆线的绘制过程,我们知道<span><span class="MathJax_Preview">0\le\theta\le2\pi</span><script type="math/tex">0\le\theta\le2\pi</script></span>内(即滚轮旋转一周)的曲线构成摆线的一个弧。所以我们可以根据这个性质来求出摆线一个周期的弧长。</p>
-<p>第一步:计算弧微分</p>
+<p><strong>第一步:计算弧微分</strong></p>
 <div>
-<div class="MathJax_Preview">{\mathrm{d}x\over\mathrm{d}\theta}=a(1-\cos\theta) \\ {\mathrm{d}y\over\mathrm{d}\theta}=a\sin\theta</div>
-<script type="math/tex; mode=display">{\mathrm{d}x\over\mathrm{d}\theta}=a(1-\cos\theta) \\ {\mathrm{d}y\over\mathrm{d}\theta}=a\sin\theta</script>
+<div class="MathJax_Preview">
+\begin{aligned}
+    &amp; {\mathrm{d}x\over\mathrm{d}\theta}=a(1-\cos\theta) \\
+    &amp; {\mathrm{d}y\over\mathrm{d}\theta}=a\sin\theta
+\end{aligned}
+</div>
+<script type="math/tex; mode=display">
+\begin{aligned}
+    & {\mathrm{d}x\over\mathrm{d}\theta}=a(1-\cos\theta) \\
+    & {\mathrm{d}y\over\mathrm{d}\theta}=a\sin\theta
+\end{aligned}
+</script>
 </div>
 <p>根据勾股定理<span><span class="MathJax_Preview">(\mathrm{d}s)^2=(\mathrm{d}x)^2+(\mathrm{d}y)^2</span><script type="math/tex">(\mathrm{d}s)^2=(\mathrm{d}x)^2+(\mathrm{d}y)^2</script></span>,我们得到:</p>
 <div>
-<div class="MathJax_Preview">\begin{aligned} {\mathrm{d}s\over\mathrm{d}\theta} &amp;=\sqrt{a^2(1-\cos\theta)^2+a^2\sin^2\theta} \\ &amp;=a\sqrt{(1-\cos\theta)^2+\sin^2\theta} \\ &amp;=a\sqrt{1-2\cos\theta+\cos^2\theta+\sin^2\theta} \\ &amp;=a\sqrt{1-2\cos\theta+1} \\ &amp;=a\sqrt{2-2(1-2\sin^2(\theta/2))} \\ &amp;=a\sqrt{4\sin^2(\theta/2)} \\ &amp;=2a\sin\left(\theta\over2\right) \end{aligned}</div>
-<script type="math/tex; mode=display">\begin{aligned} {\mathrm{d}s\over\mathrm{d}\theta} &=\sqrt{a^2(1-\cos\theta)^2+a^2\sin^2\theta} \\ &=a\sqrt{(1-\cos\theta)^2+\sin^2\theta} \\ &=a\sqrt{1-2\cos\theta+\cos^2\theta+\sin^2\theta} \\ &=a\sqrt{1-2\cos\theta+1} \\ &=a\sqrt{2-2(1-2\sin^2(\theta/2))} \\ &=a\sqrt{4\sin^2(\theta/2)} \\ &=2a\sin\left(\theta\over2\right) \end{aligned}</script>
+<div class="MathJax_Preview">
+\begin{aligned} 
+    {\mathrm{d}s\over\mathrm{d}\theta} &amp;=\sqrt{a^2(1-\cos\theta)^2+a^2\sin^2\theta} \\ 
+    &amp;=a\sqrt{(1-\cos\theta)^2+\sin^2\theta} \\ 
+    &amp;=a\sqrt{1-2\cos\theta+\cos^2\theta+\sin^2\theta} \\ 
+    &amp;=a\sqrt{1-2\cos\theta+1} \\ &amp;=a\sqrt{2-2(1-2\sin^2(\theta/2))} \\ 
+    &amp;=a\sqrt{4\sin^2(\theta/2)} \\ 
+    &amp;=2a\sin\left(\theta\over2\right) 
+\end{aligned}
 </div>
-<p>由于我们theta的取值范围内正弦函数不会取负值，因此我们可以放心的去掉绝对值符号。</p>
-<p>第二步:计算曲线积分</p>
+<script type="math/tex; mode=display">
+\begin{aligned} 
+    {\mathrm{d}s\over\mathrm{d}\theta} &=\sqrt{a^2(1-\cos\theta)^2+a^2\sin^2\theta} \\ 
+    &=a\sqrt{(1-\cos\theta)^2+\sin^2\theta} \\ 
+    &=a\sqrt{1-2\cos\theta+\cos^2\theta+\sin^2\theta} \\ 
+    &=a\sqrt{1-2\cos\theta+1} \\ &=a\sqrt{2-2(1-2\sin^2(\theta/2))} \\ 
+    &=a\sqrt{4\sin^2(\theta/2)} \\ 
+    &=2a\sin\left(\theta\over2\right) 
+\end{aligned}
+</script>
+</div>
+<p>由于我们<span><span class="MathJax_Preview">\theta</span><script type="math/tex">\theta</script></span>的取值范围内正弦函数不会取负值,因此我们可以放心的去掉绝对值符号。</p>
+<p><strong>第二步:计算曲线积分</strong></p>
 <div>
 <div class="MathJax_Preview">\int_C\mathrm{d}s=\int_0^{2\pi}2a\sin\left(\theta\over2\right)\mathrm{d}\theta=\left.-4a\cos\left(\theta\over2\right)\right|^{2\pi}_0=8a</div>
 <script type="math/tex; mode=display">\int_C\mathrm{d}s=\int_0^{2\pi}2a\sin\left(\theta\over2\right)\mathrm{d}\theta=\left.-4a\cos\left(\theta\over2\right)\right|^{2\pi}_0=8a</script>
 </div>
 <p>因此,一个滚轮转动一周形成摆线的弧长刚好是滚轮半径的八倍。</p>
+<h2 id="_3">二、最速降线问题</h2>
+<p><img src="http://pic2.zhimg.com/v2-7ada36a782280b4a144915339352c03d_b.webp" style="width: 40%;"></p>
+<p>最速降线问题,即找到两个定点间连接的曲线,使得物体能够在重力作用下花最短的时间到达终点。早在1696年,著名数学家约翰·伯努利(Johann Bernoulli)就提出了这个问题。当时欧洲各地的数学家都使用了不同的方法来求解这个问题。然而,伯努利本人提出这个挑战的初衷是为了凸显自己方法的高明从而体现他自己很聪明。他本人花了近两个星期找到这个方法。然而他向欧洲发表这个问题后仅仅一天,已经退休牛顿就给出了他的解法。牛顿在后来的书信里曾说道:"我不喜欢让外国人嘲弄我的数学能力"。后来,伯努利的学生欧拉(Leonard Euler)不仅给出了最速降线问题的另一种解法,还设计了欧拉—拉格朗日方程(Euler—Lagrange equation)来解决类似的问题。本节中我将着重讲述伯努利和欧拉的解法。</p>
 <ul>
-<li><strong>摆线的首次亮相——最速降线问题</strong></li>
+<li><strong>费马原理与斯涅尔定律</strong></li>
 </ul>
-<p><img alt="" src="https://pic2.zhimg.com/v2-7ada36a782280b4a144915339352c03d_b.webp" /></p>
-<p>最速降线问题,即找到两个定点间连接的曲线,使得物体能够在重力作用下花最短的时间到达终点。早在<code>1696</code>年,著名数学家约翰·伯努利(<code>Johann Bernoulli</code>)就提出了这个问题。当时欧洲各地的数学家都使用了不同的方法来求解这个问题。然而,伯努利本人提出这个挑战的初衷是为了凸显自己方法的高明从而体现他自己很聪明。他本人花了近两个星期找到这个方法。然而他向欧洲发表这个问题后仅仅一天,已经退休牛顿就给出了他的解法。牛顿在后来的书信里曾说道:"我不喜欢让外国人嘲弄我的数学能力"。后来,伯努利的学生欧拉(Leonard Euler)不仅给出了最速降线问题的另一种解法,还设计了欧拉—拉格朗日方程(<code>Euler—Lagrange equation</code>)来解决类似的问题。本节中我将着重讲述伯努利和欧拉的解法。</p>
-<p><strong>费马原理与斯涅尔定律</strong></p>
-<p>在直接进入最速降线问题的推导前,我们需要提及费马原理(<code>Fermat's principle</code>),即在两点间,光总是选择耗时最短的路径。利用这个原理,我们可以研究一下光的折射性质:</p>
-<p><img alt="" src="https://pic2.zhimg.com/80/v2-e3b3709a7d7783ddb2b921759a6ddb95_1440w.jpg" /></p>
+<p>在直接进入最速降线问题的推导前,我们需要提及费马原理(Fermat's principle),即在两点间,光总是选择耗时最短的路径。利用这个原理,我们可以研究一下光的折射性质:</p>
+<p><img src="http://pic2.zhimg.com/80/v2-e3b3709a7d7783ddb2b921759a6ddb95_1440w.jpg" style="width: 30%;"></p>
 <p>现在我们想研究一下入射角与折射角的关系。不同于求证光的反射定律,我们需要用上述的费马原理来求解<span><span class="MathJax_Preview">\alpha</span><script type="math/tex">\alpha</script></span>与<span><span class="MathJax_Preview">\beta</span><script type="math/tex">\beta</script></span>的关系。假设光在白色区域内的传播速度为<span><span class="MathJax_Preview">v_1</span><script type="math/tex">v_1</script></span>,而它在蓝色区域的传播速度为<span><span class="MathJax_Preview">v_2</span><script type="math/tex">v_2</script></span>,现在我们要找到合适的<span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span>,使得光沿着红色路线的传播时间最少(即找到最快传播路径)。</p>
 <p>本篇文章将使用微积分里优化函数的方法来求解。根据勾股定理,我们不难得出:</p>
 <div>
