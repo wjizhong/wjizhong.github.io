@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/hiho%E6%AF%94%E8%B5%9B/hiho%E7%AC%AC002%E5%91%A8/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>hiho第002周:Trie树 - 图像/视频算法</title>
+    <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "hiho\u7b2c002\u5468:Trie\u6811", url: "#_top", level:1, children: [
+          ]},
+        ];
+    </script>
+    <script src="../../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+    <h1 id="hiho002trie">hiho第002周:Trie树</h1>
+<ul>
+<li><strong>题目描述</strong></li>
+</ul>
+<p>小Hi和小Ho是一对好朋友,出生在信息化社会的他们对编程产生了莫大的兴趣,他们约定好互相帮助,在编程的学习道路上一同前进。</p>
+<p>这一天,他们遇到了一本词典,于是小Hi就向小Ho提出了那个经典的问题:“小Ho,你能不能对于<strong>每一个我给出的字符串,都在这个词典里面找到以这个字符串开头的所有单词呢?</strong>”</p>
+<p>身经百战的小Ho答道:“怎么会不能呢!<strong>你每给我一个字符串,我就依次遍历词典里的所有单词,检查你给我的字符串是不是这个单词的前缀不就是了?</strong>”</p>
+<p>小Hi笑道:“你啊,还是太年轻了!~假设这本词典里有10万个单词,我询问你一万次,你得要算到哪年哪月去?”</p>
+<p>小Ho低头算了一算,看着那一堆堆的0,顿时感觉自己这辈子都要花在上面了...</p>
+<p>小Hi看着小Ho的囧样,也是继续笑道:“让我来提高一下你的知识水平吧~你知道树这样一种数据结构么?”</p>
+<p>小Ho想了想,说道:“知道~它是一种基础的数据结构,就像<a src="https://zh.wikipedia.org/wiki/%E6%A0%91_(%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84)">这里</a>说的一样!”</p>
+<p>小Hi满意的点了点头,说道:“那你知道我怎么样用一棵树来表示整个词典么?”</p>
+<p>小Ho摇摇头表示自己不清楚。</p>
+<blockquote>
+<ul>
+<li><strong>提示一:Trie树的建立</strong></li>
+</ul>
+</blockquote>
+<p>小Hi于是在纸上画了一会,递给小Ho,道:“你看这棵树和这个词典有什么关系?”</p>
+<p><img alt="" src="http://media.hihocoder.com//problem_images/20140712/14051554971354.jpg" /></p>
+<p>小Ho盯着手里的纸想了一会道:“我知道了!<strong>对于从树的根节点走到每一个黑色节点所经过的路径,如果将路径上的字母都连起来的话,就都对应着词典中的一个单词呢!</strong>”</p>
+<p>小Hi说道:“那你知道如何根据一个词典构建这样一棵树么?”</p>
+<p>“不造!”</p>
+<p>“想你也不知道,我来告诉你吧~”小Hi摆出一副老师的样子,说道:“你先这么想,如果我已经有了这样的一个词典和对应的一棵树,我要添加一个新的单词apart,我应该怎么做?”</p>
+<p>“让我想想……”小Ho又开始苦思冥想:“首先我要先看看已经能走到哪一步了对吧?比如我从1号节点走"a"这一条边就可以走到2号节点,然后从2号节点走"p"这一条边可以走到3号节点,然后……就没路可走了!这时候我就需要添加一条从3号节点出发且标记为"p"的边才可以接着往下走……最后就是这样了!然后我把最后到达的这个结点标记为黑色就可以了。”</p>
+<p><img alt="" src="http://media.hihocoder.com//problem_images/20140712/14051555414053.jpg" /></p>
+<p>小Hi说道:“真聪明~那你不妨再算算如果是一个有10W个单词的词典,每个单词的长度不超过10的话,这棵树会有多大?”</p>
+<p>小Ho于是掏出笔来,一边画一遍念叨:“假设我已经将前三个单词构成了这样一棵树,那么我要添加一个新的单词的时候,最坏情况是这个单词和之前的三个单词都没有公共前缀,那么这个新的单词的长度如果是5的话,我就至少要添加5个结点到树中才能够继续表示这个词典!”</p>
+<p>“而如果每次都是最坏情况的话,这棵树最多也就100W个结点这么大!更何况最坏情况是不可能次次都发生的!毕竟字母表也才26个字母呢!”小Ho继续说道。</p>
+<p>“嗯~这样我们是不是就可以用(单词个数<code>*</code>单词长度)个结点来表示一个词典了呢?小Hi问道。</p>
+<p>“是的呢!”小Ho道:“但是这样一棵树又有什么用呢?”</p>
+<p>“可别小看了它,它就是传说中的Trie树哦~至于他有什么用,一会你就知道了!”小Hi笑嘻嘻的回答道。</p>
+<p>“你看,我们现在得到了这样一棵树,那么你看,如果我给你一个字符串ap,你要怎么找到所有以ap开头的单词呢?”小Hi又开始考校小Ho。</p>
+<p>“唔...一个个遍历所有的单词?”小Ho还是不忘自己最开始提出来的算法。</p>
+<p>“笨!这棵树难道就白构建了!”小Hi教训完小Ho,继续道:“看好了!”</p>
+<blockquote>
+<ul>
+<li><strong>提示二:如何使用Trie树</strong></li>
+</ul>
+</blockquote>
+<p>小Hi在树上用绿色标出了一个节点,递给小Ho。</p>
+<p><img alt="" src="http://media.hihocoder.com//problem_images/20140712/14051555696936.jpg" /></p>
+<p>“这个结点……是从根节点先走"a"然后走"p"到达的结点呢!哦~~我知道了,以这个结点为根的子树里所有标记结点都是以"ap"为前缀的单词呢!而且所有以"ap"为前缀的单词都在以这个节点为根的子树里~”小Ho惊喜道。</p>
+<p>“是的呢~那你对怎么解决我的问题有想法了么?”小Hi追问道。</p>
+<p>“唔...那就是每次拿到你的字符串之后,我在树上找到其对应的那个结点,然后统计这个节点中有多少个标记节点?”小Ho不是很确定的答道:“但是这样...似乎在最坏情况,也就是你每次给个字符串都很短的时候,我还是要扫描这棵树的很大一部分呢?也就是说虽然平均时间复杂度降低了,但是最坏情况时间复杂度还是很高的样子!”</p>
+<p>小Hi笑嘻嘻道:”没想到你自己看出来了呢~我还以为又要教训你了!~那你有什么好的解决方法么?”</p>
+<p>“没呢!小Hi你就别卖关子了,赶紧告诉我吧!”被折磨的够呛的小Ho开始求饶。</p>
+<p>“好吧!就帮你这一回~”</p>
+<blockquote>
+<ul>
+<li><strong>提示三:在建立Trie树时同时进行统计!</strong></li>
+</ul>
+</blockquote>
+<p>“小Ho你有没有想过这样一个问题?<strong>不妨称以T为根的子树中标记节点的个数为L[T],既然我要统计某个L[T1],,而这个结点是不确定的,我有没有办法一次性把所有结点的L[T]求出来呢?</strong>”小Hi整理了下思绪,问道。</p>
+<p>“似乎是有的,老师以前说过,递归什么的。。”小Ho答道。</p>
+<p>“递归太复杂了!我们可以之后再说,你这么想,在你构建Trie树的时候,当你经过一个结点的时候,说明了什么?”小Hi撇了撇头,继续问道。</p>
+<p>“我想想,经过一个结点……标记结点……说明了以这个结点为根的子树中将要多出来一个标记结点?”</p>
+<p>“没错!那你有没有什么办法来记录这个改变呢?”</p>
+<p>“我想想,我在<strong>最开始置所有L[T]=0,然后每次添加一个新的单词的时候,都将它经过的所有结点的L[T]全部+1,这样我构建完这棵Trie树的时候,我也就能够同时统计到所有L[T]了</strong>,对么?”小Ho开心道。</p>
+<p>“那么现在!赶紧去用代码实现吧!”小Hi如是说道</p>
+<ul>
+<li><strong>输入输出</strong></li>
+</ul>
+<p>输入的第一行为一个正整数n,表示词典的大小,其后n行,每一行一个单词(不保证是英文单词,也有可能是火星文单词哦),单词由不超过10个的小写英文字母组成,可能存在相同的单词,此时应将其视作不同的单词。接下来的一行为一个正整数m,表示小Hi询问的次数,其后m行,每一行一个字符串,该字符串由不超过10个的小写英文字母组成,表示小Hi的一个询问。</p>
+<blockquote>
+<ul>
+<li>在20%的数据中n, m&lt;=10,词典的字母表大小&lt;=2.</li>
+<li>在60%的数据中n, m&lt;=1000,词典的字母表大小&lt;=5.</li>
+<li>在100%的数据中n, m&lt;=100000,词典的字母表大小&lt;=26.</li>
+</ul>
+</blockquote>
+<p>对于小Hi的每一个询问,输出一个整数Ans,表示词典中以小Hi给出的字符串为前缀的单词的个数。</p>
+<p>样例输入</p>
+<pre><code class="sh">5
+babaab
+babbbaaaa
+abba
+aaaaabaa
+babaababb
+5
+babb
+baabaaa
+bab
+bb
+bbabbaab
+</code></pre>
+
+<p>样例输出</p>
+<pre><code class="sh">1
+0
+3
+0
+0
+</code></pre>
+
+<ul>
+<li><strong>解题代码</strong></li>
+</ul>
+<pre><code class="c">#include&lt;cstdio&gt;
+#include&lt;cstring&gt;
+#include&lt;iostream&gt;
+using namespace std;
+struct node{
+    int next[26];int cnt;
+    void init() {
+        cnt=0;
+        memset(next,-1,sizeof(next));
+    }
+} T[1000000];
+
+int le;
+void insert(char *s) {
+    int i=0, p=0;
+    while(s[i]) {
+        int x=s[i]-'a';
+        if(T[p].next[x]==-1) {
+            T[le].init();
+            T[p].next[x]=le++;
+        }
+        p=T[p].next[x];
+        T[p].cnt++;
+        i++;
+    }
+}
+
+void query(char *s) {
+    int i=0,p=0;
+    while(s[i]) {
+        int x=s[i]-'a';
+        if(T[p].next[x]==-1) {
+            puts(&quot;0&quot;);
+            return ;
+        }
+        p=T[p].next[x];
+        i++;
+    }
+    printf(&quot;%d\n&quot;,T[p].cnt);
+}
+
+int main(int argc, char** argv){
+    int n,m;
+    char str[20];
+    while(~scanf(&quot;%d&quot;,&amp;n)) {
+        le=1;
+        T[0].init();
+        while(n--) {
+            scanf(&quot;%s&quot;,str);
+            insert(str);
+        }
+        scanf(&quot;%d&quot;,&amp;m);
+        while(m--) {
+            scanf(&quot;%s&quot;,str);
+            query(str);
+        }
+    }
+    return 0;
+}
+</code></pre>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    <br>
+</div>
+
+</body>
+</html>

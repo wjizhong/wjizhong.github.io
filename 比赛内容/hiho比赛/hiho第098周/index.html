@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/hiho%E6%AF%94%E8%B5%9B/hiho%E7%AC%AC098%E5%91%A8/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>hiho第098周:搜索一·24点 - 图像/视频算法</title>
+    <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "hiho\u7b2c098\u5468:\u641c\u7d22\u4e00\u00b724\u70b9", url: "#_top", level:1, children: [
+          ]},
+        ];
+    </script>
+    <script src="../../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+    <h1 id="hiho09824">hiho第098周:搜索一·24点</h1>
+<ul>
+<li><strong>描述</strong></li>
+</ul>
+<p>周末,小Hi和小Ho都在家待着。</p>
+<p>在收拾完房间时,小Ho偶然发现了一副扑克,于是两人考虑用这副扑克来打发时间。</p>
+<p>小Ho:玩点什么好呢?</p>
+<p>小Hi:两个人啊,不如来玩24点怎么样,不靠运气就靠实力的游戏。</p>
+<p>小Ho:好啊,好啊。</p>
+<p>&lt;经过若干局游戏之后&gt;</p>
+<p>小Ho:小Hi,你说如果要写个程序来玩24点会不会很复杂啊?</p>
+<p>小Hi:让我想想。</p>
+<p>&lt;过了几分钟&gt;</p>
+<p>小Hi:我知道了!其实很简单嘛。</p>
+<blockquote>
+<ul>
+<li>提示:24点</li>
+</ul>
+</blockquote>
+<p>小Hi:小Ho,你仔细观察我们计算24点的方法,来总结有几种情况。</p>
+<p>假设我们用⊙表示运算,⊙除了可以表示基本的"+","-","*","/"外。我们还引入两个新的运算,"反-",和"反/"。</p>
+<p>比如(a反/b)的意思是(b/a)。则对形如(c/(a + b))的形式,就可以等价的描述为((a+b)反/c)。</p>
+<p>利用这6种运算，可以将所有可能的计算过程归结为2类:</p>
+<pre><code>(((a ⊙ b) ⊙ c ) ⊙ d)
+((a ⊙ b) ⊙ (c ⊙ d))
+</code></pre>
+
+<p>小Ho:恩..(小Ho思考了一下)..好像确实是这样。</p>
+<p>小Hi:既然我们已经找到了固定的模式,那么剩下的就比较简单了。</p>
+<p>将4张牌的值,分别代入a,b,c,d,再把可能的运算符也代入。就可以得到相应的计算式子,将其计算出来,再检查结果是否等于24。</p>
+<p>那么小Ho,你觉得有多少种情况呢?</p>
+<p>小Ho:由于我们有4个数,所以对于a,b,c,d的对应关系有4!=24种情况。3个运算符,每个运算符可能有6种情况,那就是6^3=216。再考虑到2种不同的模式,所以一共有2 * 24 * 216 = 10368种情况。</p>
+<p>小Hi:你的计算中并没有考虑等价的情况,比如a+b和b+a,所以实际的情况数其实是小于10368种的。</p>
+<p>不过由于对计算机而言,10368种情况数本来也不是很多,而要考虑等价反而显得比较麻烦。所以我们可以不要去考虑加法和乘法的可逆性,直接枚举所有的情况。</p>
+<p>那么最后还是由小Ho你来给出参考的伪代码吧。</p>
+<p>小Ho:嗯，这次的伪代码:</p>
+<pre><code class="c++">used[] = false
+nowNumber[] = {0,0,0,0}
+ops[] = {0,0,0}
+opType = {+,-,*,/,反-,反/}
+
+makeNumber(depth):
+    If (depth &gt;= 4) Then
+        // 此时已经枚举完a,b,c,d
+        // 开始枚举运算符
+        Return makeOperation(0)
+    End If
+    For i = 1 .. 4
+        If (not used[i]) Then   // 每个数字只能使用一次
+            nowNumber[ depth ] = number[i]
+            used[i] = true
+            If (makeNumber(depth + 1)) Then
+                Return True
+            End If
+            used[i] = false
+        End If
+    End For
+    Return False
+
+makeOperation(depth):
+    If (depth &gt;= 3) Then
+        // 此时已经枚举完a,b,c,d和三个运算符
+        // 计算在(((a ⊙ b) ⊙ c ) ⊙ d)形式下的值
+        If (calcType1(nowNumber, ops) == 24) Then
+            Return true;
+        End If
+        // 计算在((a ⊙ b) ⊙ (c ⊙ d))形式下的值
+        If (calcType2(nowNumber, ops) == 24) Then
+            Return true;
+        End If
+        Return false
+    End If
+    For i = 1 .. 6
+        ops[ depth ] = opType[i]
+        If (makeOperation(depth + 1)) Then
+            Return True
+        End If
+    End For
+    Return False
+
+Main:
+    input(number)
+    used[] = false
+    makeNumber(0)
+</code></pre>
+
+<ul>
+<li><strong>输入输出</strong></li>
+</ul>
+<blockquote>
+<ul>
+<li>输入</li>
+</ul>
+</blockquote>
+<p>第1行:1个正整数,t,表示数据组数,2≤t≤100。</p>
+<p>第2..t+1行:4个正整数,a,b,c,d,1≤a,b,c,d≤10。</p>
+<blockquote>
+<p>输出</p>
+</blockquote>
+<p>第1..t行:每行一个字符串,第i行表示第i组能否计算出24点。若能够输出"Yes",否则输出"No"。</p>
+<p>样例输入</p>
+<pre><code>2
+5 5 5 1
+9 9 9 9
+</code></pre>
+
+<p>样例输出</p>
+<pre><code>Yes
+No
+</code></pre>
+
+<ul>
+<li><strong>解题代码</strong></li>
+</ul>
+<p><code>c++</code>代码:</p>
+<pre><code class="c++">#include &lt;bits/stdc++.h&gt;
+
+#define rep(i, j, k) for(int i = (int) j; i &lt; (int) k; ++i)
+#define ll long long
+#define mp make_pair
+
+using namespace std;
+const double eps = 1e-8;
+
+inline int sig(double x) {return (x &gt; eps) - (x &lt; -eps);}
+
+double a[4];
+int t;
+bool flag;
+
+void dfs(double x, double y, int d) {
+    if(flag) return ;
+    if(d == 3) {
+        if(!sig(x+y-24) || !sig(x-y-24) || !sig(y-x-24) || !sig(x*y-24)) flag = 1;
+        else if(sig(x) &amp;&amp; !sig(y/x-24)) flag = 1;
+        //else if(sig(y) &amp;&amp; !sig(x/y-24)) flag = 1;
+        return ;
+    }
+    // front
+    dfs(x+y, a[d+1], d+1);
+    dfs(x-y, a[d+1], d+1);
+    //dfs(y-x, a[d+1], d+1);
+    dfs(x*y, a[d+1], d+1);
+    if(sig(y)) dfs(x/y, a[d+1], d+1);
+    //if(sig(x)) dfs(y/x, a[d+1], d+1);
+    // behind
+    dfs(x, y+a[d+1], d+1);
+    dfs(x, y-a[d+1], d+1);
+    dfs(x, y*a[d+1], d+1);
+    //dfs(x, a[d+1]-y, d+1);
+    if(sig(a[d+1])) dfs(x, y/a[d+1], d+1);
+    //if(sig(y)) dfs(x, a[d+1]/y, d+1);
+}
+
+int main()
+{
+#ifdef PIT
+//freopen(&quot;&quot;, &quot;r&quot;, stdin);
+#endif // PIT
+    for(scanf(&quot;%d&quot;, &amp;t); t; --t) {
+        rep(i, 0, 4) scanf(&quot;%lf&quot;, a+i);
+        flag = 0; 
+        sort(a, a+4);
+        do {
+            dfs(a[0], a[1], 1);
+        } while(next_permutation(a, a+4) &amp;&amp; !flag);
+        puts((flag) ? &quot;Yes&quot; : &quot;No&quot;);
+    }
+    return 0;
+}
+</code></pre>
+
+<p><code>python</code>代码:</p>
+<pre><code class="python">from operator import add, sub, mul, div
+from itertools import permutations
+d = {0:add, 1:sub, 2:lambda x, y: y - x, 3:mul, 4:div, 5:lambda x, y: y / x}
+o = range(6)
+def f(a):
+    for x in permutations(a):
+        for i,j,k in [(i,j,k) for i in o for j in o for k in o]:
+            try:
+                r1 = d[k](d[j](d[i](x[0], x[1]), x[2]), x[3])
+                r2 = d[k](d[i](x[0], x[1]), d[j](x[2], x[3]))
+            except: continue
+            if r1 == 24 or r2 == 24: return True
+    return False
+for i in range(input()):
+    print 'Yes' if f(map(float, raw_input().split())) else 'No'
+</code></pre>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    <br>
+</div>
+
+</body>
+</html>

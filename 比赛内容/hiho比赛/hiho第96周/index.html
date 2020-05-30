@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/hiho%E6%AF%94%E8%B5%9B/hiho%E7%AC%AC96%E5%91%A8/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>hiho第96周:数论五·欧拉函数 - 图像/视频算法</title>
+    <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "hiho\u7b2c96\u5468:\u6570\u8bba\u4e94\u00b7\u6b27\u62c9\u51fd\u6570", url: "#_top", level:1, children: [
+              {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1", level:2, children: [
+                  {title: "\u63d0\u793a:\u6b27\u62c9\u51fd\u6570", url: "#_2", level:3, children: [
+                  ]},
+                  {title: "\u8f93\u5165\u8f93\u51fa", url: "#_3", level:3, children: [
+                  ]}, 
+              ]},
+              {title: "\u89e3\u9898\u4ee3\u7801", url: "#_4", level:2, children: [ 
+              ]},
+          ]},
+        ];
+    </script>
+    <script src="../../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+    <h1 id="hiho96">hiho第96周:数论五·欧拉函数</h1>
+<h2 id="_1">题目描述</h2>
+<p>小Hi和小Ho有时候会用密码写信来互相联系,他们用了一个很大的数当做密钥。小Hi和小Ho约定了一个区间[L,R],每次小Hi和小Ho会选择其中的一个数作为密钥。</p>
+<p>小Hi:小Ho,这次我们选[L,R]中的一个数K。</p>
+<p>小Ho:恩,小Hi,这个K是多少啊?</p>
+<p>小Hi:这个K嘛,不如这一次小Ho你自己想办法算一算怎么样?我这次选择的K满足这样一个条件:</p>
+<blockquote>
+<p>假设φ(n)表示1..n-1中与n互质的数的个数。对于[L,R]中的任意一个除K以外的整数y,满足φ(K)≤φ(y)且φ(K)=φ(y)时,K\&lt;y。</p>
+</blockquote>
+<p>也即是K是[L,R]中φ(n)最小并且值也最小的数。</p>
+<p>小Ho:噫,要我自己算么?</p>
+<p>小Hi:没错！</p>
+<p>小Ho:好吧,让我想一想啊。</p>
+<p>&lt;几分钟之后...&gt;</p>
+<p>小Ho:啊,不行了。。感觉好难算啊。</p>
+<p>小Hi:没有那么难吧,小Ho你是怎么算的?</p>
+<p>小Ho:我从枚举每一个L,R的数i,然后利用辗转相除法去计算[1,i]中和i互质的数的个数。但每计算一个数都要花好长的时间。</p>
+<p>小Hi:你这样做的话,时间复杂度就很高了。不妨告诉你一个巧妙的算法吧:</p>
+<h3 id="_2">提示:欧拉函数</h3>
+<p>小Hi:刚刚我所描述的φ(n),一般被称为欧拉函数。其定义为:小于n的正整数中与n互质的数的个数。</p>
+<p>小Ho:又是欧拉么！</p>
+<p>小Hi:毕竟是伟大的数学家,所以以他名字命名的东西很多啦。</p>
+<p>对于φ(n),我们有这样三个性质:</p>
+<p><strong>(1) 若n为素数,则φ(n) = n - 1</strong></p>
+<p>显然,由于n为素数,1~n-1与n都只有公因子1,因此φ(n) = n - 1。</p>
+<p><strong>(2) 若n = p^k,p为素数（即n为单个素数的整数幂）,则φ(n) = (p-1)*p^(k-1)</strong></p>
+<p>因为n是p的整数幂,因此所有p的倍数和n都不互质。小于n的p的倍数一共有p^(k-1)-1个,因此和n互质的个数为:</p>
+<p>p^k-1 - (p^(k-1)-1) = p^k - p^(k-1) = (p-1)*p^(k-1)</p>
+<p><strong>(3) 若p和q互质,则φ(p*q) = φ(p) * φ(q)</strong></p>
+<p>对于所有小于pq的整数u,可以表示为u=aq+r。(a=0,1,2,...,p-1,r=0,1,...,q-1)。</p>
+<p>对于u = aq + r, 设R = u mod p,0≤R&lt;q。对于一个固定的r,设a1, a2满足0 &lt;= a1, a2 &lt; p且a1≠a2,有:</p>
+<pre><code>u1 = a1*q+r, u2 = a2*q+r
+u1-u2=(a1-a2)*q
+</code></pre>
+
+<p>因为p与q互质,且|a1-a2|&lt;p,则|u1-u2|一定不是p的倍数。</p>
+<p>所以对于每一个固定的r,其对应的p个u = a*q+r(a=0,1,2,...,p-1)对mod p来说余数都不相同,即u mod p的结果恰好取遍0,1,...,p-1中的每一个数。</p>
+<p>下面我证明一个引理:u mod p与p互质 &lt;=&gt; u与p互质,其证明如下:</p>
+<pre><code>假设a,b互质,c = a mod b。
+假设c与b不互质,则存在d≥1,使得c=nd, b=md。
+由于c = a mod b,因此a = kb + c,
+则a = kmd + nd = (kn+m)d
+因此d是a,b的公因数,与a,b互质矛盾。
+假设不成立,所以c与b互质。
+</code></pre>
+
+<p>因此对于任意一个确定的r,与其对应的p个u中恰好有φ(p)个与p互质。</p>
+<p>同理,由u = aq + r知r与q互质 &lt;=&gt; u与q互质。因此在0..q-1中恰好有φ(q)个r使得u与q互质。</p>
+<p>综上,当r与q互质的情况下,固定r可以得到φ(p)个与p和q都互质的数。</p>
+<p>满足条件的r一共用φ(q)个,所以一共能找到有φ(p) * φ(q)个与p和q都互质的数。</p>
+<p>由此得证:φ(p*q) = φ(p) * φ(q)</p>
+<p>这一段证明不是太好理解,小Ho你一定要自己推导一遍哦。</p>
+<p>小Ho:好。</p>
+<p>小Hi:在上面这些性质的基础上我们能到推导出两条定理:</p>
+<p>若p为质数,n为任意整数:</p>
+<p><strong>(1) 若p为n的约数,则φ(n*p) = φ(n) * p</strong></p>
+<p>若p为n的约数,且p为质数。则我们可以将n表示为p^k*m。m表示其他和p不同的质数的乘积。</p>
+<p>显然有p^k与m互质,则:</p>
+<pre><code>φ(n) = φ(p^k)*φ(m) = (p-1)*p^(k-1)*φ(m)
+φ(n*p) = φ(p^(k+1))*φ(m) = (p-1)*p^k*φ(m) = (p-1)*p^(k-1)*φ(m) * p =  φ(n) * p
+</code></pre>
+
+<p><strong>(2) 若p为不为n的约数,则φ(n*p) = φ(n) * (p-1)</strong></p>
+<p>由p不为n的约数,因此p与n互质,所以φ(n*p) = φ(n) * φ(p) = φ(n)*(p-1)</p>
+<p>根据这两条定理,当我们得到一个n时,可以枚举质数p来递推的求解φ(n*p)。这一步是不是觉得很眼熟呢?</p>
+<p>小Ho:嗯...我想起了,这不是我们使用欧拉筛法时一样的算法么?</p>
+<p>小Hi:没错！因此我们只需要在欧拉筛代码的基础上做一个小改动,就可以得到递推求解φ(n)的算法:</p>
+<pre><code>isPrime[] = true
+primeList = []
+phi = []    // phi[n]表示n的欧拉函数
+primeCount = 0
+For i = 2 .. N
+    If isPrime[i] Then
+        primeCount = primeCount + 1
+        primeList[ primeCount ] = i
+        phi[i] = i - 1 // 质数的欧拉函数为p-1
+    End If 
+    For j = 1 .. primeCount
+        If (i * primeList[j] &gt; N) Then
+            Break
+        End If
+        isPrime[ i * primeList[j] ] = false
+        If (i % primeList[j] == 0) Then
+            // primeList[j]是i的约数,φ(n*p) = φ(n) * p
+            phi[ i * primeList[j] ] = phi[i] * primeList[j];
+            Break
+        Else 
+            // primeList[j]不是i的约数,φ(n*p) = φ(n) * (p-1)
+            phi[ i * primeList[j] ] = phi[i] * (primeList[j] - 1);
+        End If
+    End If
+End For
+</code></pre>
+
+<p>小Ho:因为欧拉筛的时间复杂度是O(n)的,因此求出一个大区间内所有数的欧拉函数也只用了O(n)的时间。接下来再使用O(n)的枚举就可以求得最小的K了。我知道该怎么做了！</p>
+<h3 id="_3">输入输出</h3>
+<ul>
+<li>输入</li>
+</ul>
+<p>第1行:2个正整数, L,R,2≤L≤R≤5,000,000。</p>
+<ul>
+<li>输出</li>
+</ul>
+<p>第1行:1个整数,表示满足要求的数字K</p>
+<p>样例输入</p>
+<pre><code>4 6
+</code></pre>
+
+<p>样例输出</p>
+<pre><code>4
+</code></pre>
+
+<h2 id="_4">解题代码</h2>
+<pre><code>
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+
+int tag[5000001];
+vector&lt;int&gt; prime;
+int low, hign;
+
+void solve(int m){
+    if (tag[m] == 0) {
+        tag[m] = m - 1;
+        prime.push_back(m);
+    }
+    for (auto it = prime.begin(); it != prime.end(); ++it) {
+        int t = *it;
+        if (t * m &gt; hign) {
+            break;
+        }else{
+            if (m % t == 0) {
+                tag[m * t] = tag[m] * t;
+                break;
+            }else{
+                tag[m * t] = tag[m] * (t - 1);
+            }
+        }
+    }
+}
+
+int main(int argc, const char * argv[]) {
+    // insert code here...
+    scanf(&quot;%d %d&quot;, &amp;low, &amp;hign);
+    for (int i = 2; i &lt;= hign; ++i) {
+        solve(i);
+    }
+    int val = hign;
+    int rst = 0;
+    for (int i = low; i &lt;= hign; ++i) {
+        if (tag[i] &lt; val) {
+            val = tag[i];
+            rst = i;
+        }
+    }
+    printf(&quot;%d&quot;, rst);
+    return 0;
+}
+</code></pre>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    <br>
+</div>
+
+</body>
+</html>

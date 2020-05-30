@@ -33,9 +33,9 @@
         
         var pageToc = [
           {title: "\u6570\u5b66\u66f2\u7ebf", url: "#_top", level:1, children: [
-              {title: "\u8774\u8776\u66f2\u7ebf", url: "#_2", level:2, children: [ 
+              {title: "\u4e00\u3001\u8774\u8776\u66f2\u7ebf", url: "#_2", level:2, children: [ 
               ]},
-              {title: "\u5fc3\u5f62\u66f2\u7ebf", url: "#_3", level:2, children: [ 
+              {title: "\u4e8c\u3001\u5fc3\u5f62\u66f2\u7ebf", url: "#_3", level:2, children: [ 
               ]},
               {title: "Mandelbrot\u96c6\u5408", url: "#mandelbrot", level:2, children: [ 
               ]},
@@ -83,7 +83,7 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
     
 
     <h1 id="_1">数学曲线</h1>
-<h2 id="_2">蝴蝶曲线</h2>
+<h2 id="_2">一、蝴蝶曲线</h2>
 <div>
 <div class="MathJax_Preview">
 \begin{aligned}
@@ -103,7 +103,7 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <div class="MathJax_Preview">r=e^{\sin(\theta)}-2\cos(4\theta)+\sin(\frac{2\theta-\pi}{24})</div>
 <script type="math/tex; mode=display">r=e^{\sin(\theta)}-2\cos(4\theta)+\sin(\frac{2\theta-\pi}{24})</script>
 </div>
-<p><code>python</code>代码:</p>
+<p>python代码:</p>
 <pre><code class="python">import numpy as np
 import matplotlib.pyplot as plt
 
@@ -114,11 +114,11 @@ y = np.cos(t)*(np.e**np.cos(t) - 2*np.cos(4*t)-np.sin(t/12)**5)
 plt.figure(figsize=(8,6))
 plt.axis('off')
 plt.plot(x,y,color='blue',linewidth = '2')
-plt.savefig(&quot;butter.jpg&quot;,dpi=400)
+plt.savefig(&quot;butter.png&quot;,format='png',bbox_inches='tight',transparent=True,dpi=400)
 </code></pre>
 
-<p><img alt="" src="http://wx1.sinaimg.cn/large/006HJ6Ndly1g57uy4mht9j31400u0aug.jpg" /></p>
-<h2 id="_3">心形曲线</h2>
+<p><img alt="" src="../images/butter.png" /></p>
+<h2 id="_3">二、心形曲线</h2>
 <div>
 <div class="MathJax_Preview">
 (x^2+y^2-1)^3-x^2y^3=0

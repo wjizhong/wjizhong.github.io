@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/hiho%E6%AF%94%E8%B5%9B/hiho%E7%AC%AC95%E5%91%A8/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>hiho第95周:数论四·扩展欧几里德 - 图像/视频算法</title>
+    <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "hiho\u7b2c95\u5468:\u6570\u8bba\u56db\u00b7\u6269\u5c55\u6b27\u51e0\u91cc\u5fb7", url: "#_top", level:1, children: [
+              {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1", level:2, children: [
+                  {title: "\u63d0\u793a:\u6269\u5c55\u6b27\u51e0\u91cc\u5fb7", url: "#_2", level:3, children: [
+                  ]}, 
+              ]},
+          ]},
+        ];
+    </script>
+    <script src="../../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+    <h1 id="hiho95">hiho第95周:数论四·扩展欧几里德</h1>
+<h2 id="_1">题目描述</h2>
+<p>小Hi和小Ho周末在公园溜达。公园有一堆围成环形的石板,小Hi和小Ho分别站在不同的石板上。已知石板总共有m块,编号为 0..m-1,小Hi一开始站在s1号石板上,小Ho一开始站在s2号石板上。</p>
+<p>小Hi:小Ho,你说我们俩如果从现在开始按照固定的间隔数同时同向移动,我们会不会在某个时间点站在同一块石板上呢?</p>
+<p>小Ho:我觉得可能吧,你每次移动v1块,我移动v2块,我们看能不能遇上好了。</p>
+<p>小Hi:好啊,那我们试试呗。</p>
+<p>一个小时过去了,然而小Hi和小Ho还是没有一次站在同一块石板上。</p>
+<p>小Ho:不行了,这样走下去不知道什么时候才汇合。小Hi,你有什么办法算算具体要多久才能汇合么?</p>
+<p>小Hi:让我想想啊。。</p>
+<h3 id="_2">提示:扩展欧几里德</h3>
+<p>小Hi:首先可以我俩现在的情况列出一个式子:</p>
+<pre><code>s1+v1*t=s2+v2*t-k*m (v1&lt;v2)
+</code></pre>
+
+<p>也就是经过t时间过后,速度快的人刚好超过了速度慢的人k圈,且到达同一个位置。</p>
+<p>将这个式子进行变换得到:</p>
+<pre><code>(v1-v2)*t+k*m=(s2-s1)
+</code></pre>
+
+<p>即原式子变成了形如"Ax+By=C"的情况,我们要求解的是一组(x,y)使得原公式成立。</p>
+<p>小Ho:形如"Ax+By=C",也就是说我们令A=(v1-v2),B=m,C=(s2-s1),x=t,y=k。</p>
+<p>小Hi:恩,没错。</p>
+<p>求解该式子的算法我们称为扩展欧几里德算法。</p>
+<p>该算法分为两个部分:</p>
+<p>(1) <strong>判定是否存在解</strong></p>
+<p>对于形如"Ax+By=C"的式子,其存在解的条件为C为A和B最大公约数的整数倍。</p>
+<p>我们将A和B的最大公约数记为gcd(A,B)。因此其有解的条件是C=n*gcd(A,B)。</p>
+<p>那么我们应该如何来求解gcd(A,B)呢?</p>
+<p>一个朴素的算法是枚举1~min(A,B),最大的一个能同时被A,B整除的数即gcd(A,B)。显然这个算法是非常没有效率的。</p>
+<p>为了求解gcd(A,B),欧几里德提出了一个辗转相除法:</p>
+<p>首先要证明一个定理:gcd(A,B) = gcd(B, A mod B)</p>
+<p>证明:</p>
+<pre><code>假设A = k\*B+r,有r = A mod B。不妨设d为A和B的一个任意一个公约数,则有A = pd, B = qd。
+由r = A - k\*B = pd - k\*qd = (p - kq)*d,所以有d也为r的约数,因此d是B和A mod B的公约数。
+由于对任意一个A和B的公约数都满足这个性质,gcd(A,B)也满足,因此有gcd(A,B)=gcd(B,A mod B)。
+</code></pre>
+
+<p>利用这个性质,我们可以得到算法:</p>
+<pre><code>A mod B = 0, 则B为gcd(A,B)
+A mod B ≠ 0, 则gcd(A,B) = gcd(B, A mod B)
+</code></pre>
+
+<p>通过不断的模运算,数据的规模也越来越小,因此能够快速得收敛到一个解。将其写成伪代码为:</p>
+<pre><code>gcd(A, B):
+    If (A mod B == 0) Then
+        Return B
+    End If
+    Return gcd(B, A mod B)
+</code></pre>
+
+<p>(2) <strong>求解</strong></p>
+<p>在判定有解之后,我们需要在其基础上再求出一组(x,y)。由于A,B,C均是gcd(A,B)的整数倍,因此可以将它们都缩小gcd(A,B)倍。即A'=A/gcd(A,B),B'=B/gcd(A,B),C'=C/gcd(A,B)。</p>
+<p>化简为A'x+B'y=C',gcd(A',B')=1,即A',B'互质。</p>
+<p>此时,我们可以先求解出A'x+B'y=1的解(x',y'),再将其扩大C'倍,即为我们要求的最后解(x,y)=(C'x', C'y')。</p>
+<p>那么接下来我们来研究如何求解A'x+B'y=1:</p>
+<p>假设A&gt;B&gt;0,同时我们设:</p>
+<p>A * x[1] + B * y[1] = gcd(A, B)
+B * x[2] + (A mod B) * y[2] = gcd(B, A mod B)</p>
+<p>已知gcd(A,B)=gcd(B, A mod B),因此有:</p>
+<pre><code>A * x[1] + B * y[1] = B * x[2] + (A mod B) * y[2]
+</code></pre>
+<p>=&gt;  A * x[1] + B * y[1] = B * x[2] + (A - kB) * y[2]    // A = kB + r
+=&gt;  A * x[1] + B * y[1] = A * y[2] + B * x[2] - kB * y[2]
+=&gt;  A * x[1] + B * y[1] = A * y[2] + B * (x[2] - ky[2])
+=&gt;  x[1] = y[2], y[1] = (x[2] - ky[2])</p>
+<p>利用这个性质,我们可以递归的去求解(x,y)。</p>
+<p>其终止条件为gcd(A, B)=B,此时对应的(x,y)=(0,1)</p>
+<p>将这个过程写成伪代码为:</p>
+<p>extend_gcd(A, B):
+    If (A mod B == 0) Then
+        Return (0, 1)
+    End If
+    (tempX, tempY) = extend_gcd(B, A mod B)
+    x = tempY
+    y = tempX - (A / B) * tempY
+    Return (x, y)   </p>
+<p>小Ho:那么我只需要把A=(v1-v2),B=m,C=(s2-s1),x=t,y=k代入就可以得到t了么?</p>
+<p>小Hi:是的,在已知A,B,C的情况下,我们的确能够顺利求解出一组合法的(x,y)。</p>
+<p>但是在求解过程中,我们并没有保证x是最小的非负整数,它不能直接作为我们的解。</p>
+<p>小Ho:那还需要做怎样的处理么?</p>
+<p>小Hi:我们需要将(A',B',x',y')扩充为一个解系。</p>
+<p>由于A'B'是互质的,所以可以将A'x'+B'y'=1扩展为:</p>
+<pre><code>A'x'+B'y'+(u+(-u))A'B'=1
+</code></pre>
+<p>=&gt;  (x' + uB')<em>A' + (y' - uA')</em>B' = 1
+=&gt;  X = x' + uB', Y = y' - uA'</p>
+<p>可以求得最小的X为(x'+uB') mod B',(x'+uB'&gt;0)</p>
+<p>同时我们还需要将X扩大C'倍,因此最后解为:</p>
+<p>x = (x'*C') mod B'</p>
+<p>若x&lt;0,则不断累加B',直到x&gt;0为止。</p>
+<p>那么最后,小Ho你来总结一下主体部分的伪代码吧！</p>
+<p>小Ho:好的,最后的代码为:</p>
+<p>solve(s1, s2, v1, v2, m):
+    A = v1 - v2
+    B = m
+    C = s2 - s1</p>
+<pre><code>If (A &lt; 0) Then
+    A = A + m // 相对距离变化
+End If
+D = gcd(A, B)
+
+If (C mod D) Then
+    Return -1
+End If
+
+A = A / D
+B = B / D
+C = C / D
+
+(x, y) = extend_gcd(A, B)
+x = (x * C) mod B
+While (x &lt; 0)
+    x = x + B
+End While
+Return x
+</code></pre>
+<p>输入
+第1行:每行5个整数s1,s2,v1,v2,m,0≤v1,v2≤m≤1,000,000,000。0≤s1,s2&lt;m</p>
+<p>中间过程可能很大,最好使用64位整型</p>
+<p>输出
+第1行:每行1个整数,表示解,若该组数据无解则输出-1</p>
+<p>样例输入
+0 1 1 2 6
+样例输出
+5</p>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    <br>
+</div>
+
+</body>
+</html>

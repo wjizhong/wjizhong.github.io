@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/hiho%E6%AF%94%E8%B5%9B/%E7%BC%96%E7%A8%8B%E7%BB%83%E4%B9%A0%E8%B5%9B70/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>编程练习赛70 - 图像/视频算法</title>
+    <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "\u7f16\u7a0b\u7ec3\u4e60\u8d5b70", url: "#_top", level:1, children: [
+              {title: "P01:\u6570\u4f4d\u7ffb\u8f6c", url: "#p01", level:2, children: [ 
+              ]},
+              {title: "P02:\u6700\u77ed\u516c\u5171\u5b50\u5e8f\u5217", url: "#p02", level:2, children: [ 
+              ]},
+              {title: "P03: \u62fc\u4e09\u89d2\u5f62", url: "#p03", level:2, children: [ 
+              ]},
+              {title: "P04:\u795e\u5947\u7684\u5e8f\u5217", url: "#p04", level:2, children: [ 
+              ]},
+          ]},
+        ];
+    </script>
+    <script src="../../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+    <h1 id="70">编程练习赛70</h1>
+<h2 id="p01">P01:数位翻转</h2>
+<ul>
+<li><strong>题目描述</strong></li>
+</ul>
+<p>给定一个数 n，你可以进行若干次操作，每次操作可以翻转 n 的二进制表示下的某一位，即将 0 变成 1，1 变成 0</p>
+<p>现在小 Hi 想知道，至少需要多少次操作，才能将 n 变成 n-1</p>
+<ul>
+<li><strong>输入输出</strong></li>
+<li>输入
+一个正整数 n</li>
+</ul>
+<p>1 ≤ n ≤ 109</p>
+<ul>
+<li>输出</li>
+</ul>
+<p>输出最少的操作次数</p>
+<p>样例输入</p>
+<pre><code>10
+</code></pre>
+
+<p>样例输出</p>
+<pre><code>2
+</code></pre>
+
+<ul>
+<li><strong>解题代码</strong></li>
+</ul>
+<pre><code>#include &lt;iostream&gt;
+#include &lt;string.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;map&gt;
+#include &lt;string&gt;
+using namespace std;
+#define  LL long long
+const LL maxn  = 222+55;
+
+int main()
+{
+    int n;scanf(&quot;%d&quot;,&amp;n);
+    int aim=n^(n-1);
+    int ans=0;
+    while(aim){
+        if(aim&amp;1) ans++;
+        aim&gt;&gt;=1;
+    }
+    cout&lt;&lt;ans&lt;&lt;endl;
+
+}
+</code></pre>
+
+<h2 id="p02">P02:最短公共子序列</h2>
+<ul>
+<li><strong>题目描述</strong></li>
+</ul>
+<p>给定一个 01 串 A，你需要找一个和它等长的01串 B，使得 A 和 B 的最长公共子序列最短</p>
+<p>为了方便，你不需要输出 B，你只需要输出 A 和 B 的最长公共子序列的长度</p>
+<ul>
+<li>
+<p><strong>输入输出</strong></p>
+</li>
+<li>
+<p>输入</p>
+</li>
+</ul>
+<p>第一行一个 01 串 A</p>
+<p>1 ≤ |A| ≤ 105</p>
+<ul>
+<li>输出</li>
+</ul>
+<p>输出最短的长度</p>
+<p>样例输入</p>
+<pre><code>000111
+</code></pre>
+
+<p>样例输出</p>
+<pre><code>3
+</code></pre>
+
+<ul>
+<li><strong>解题代码</strong></li>
+</ul>
+<pre><code>#include &lt;iostream&gt;
+#include &lt;string.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;map&gt;
+#include &lt;string&gt;
+using namespace std;
+#define  LL long long
+const LL maxn  = 222+55;
+
+int main()
+{
+    string s;
+    cin&gt;&gt;s;
+    int zero=0,one=0;
+    for(int i=0;i&lt;s.length();i++){
+        if(s[i]=='0') zero++;
+        else one++;
+    }
+    cout&lt;&lt;min(zero,one)&lt;&lt;endl;
+}
+</code></pre>
+
+<h2 id="p03">P03: 拼三角形</h2>
+<ul>
+<li><strong>题目描述</strong></li>
+</ul>
+<p>给定 n 根木棍，第 i 根长度为 ai</p>
+<p>现在你想用他们拼成尽量多的面积大于 0 的三角形，要求每根木棍只能被用一次，且不能折断</p>
+<p>请你求出最多能拼出几个</p>
+<ul>
+<li>
+<p><strong>输入输出</strong></p>
+</li>
+<li>
+<p>输入</p>
+</li>
+</ul>
+<p>第一行一个正整数 n</p>
+<p>第二行 n 个正整数 a1 … an</p>
+<p>1 ≤ n ≤ 15</p>
+<p>1 ≤ ai ≤ 109</p>
+<ul>
+<li>输出</li>
+</ul>
+<p>输出最多能拼出几个三角形</p>
+<p>样例输入</p>
+<pre><code>6
+2 2 3 4 5 6
+</code></pre>
+
+<p>样例输出</p>
+<pre><code>2
+</code></pre>
+
+<ul>
+<li><strong>解题代码</strong></li>
+</ul>
+<pre><code>#include &lt;iostream&gt;
+#include &lt;string.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;algorithm&gt;
+#include &lt;string&gt;
+using namespace std;
+#define  LL long long
+const LL maxn  = 500+55;
+
+int a[20];
+int num[maxn];
+
+
+bool check(int x,int y,int z)
+{
+    int b[4];
+    b[1]=a[x];b[2]=a[y];b[3]=a[z];
+    sort(b+1,b+4);
+    if(b[1]+b[2]&lt;=b[3])
+        return false;
+    return true;
+}
+int dp[70000];
+int main()
+{
+    int n;
+    scanf(&quot;%d&quot;,&amp;n);
+    for(int i=0;i&lt;n;i++){
+        scanf(&quot;%d&quot;,&amp;a[i]);
+    }
+    int cnt=0;
+    for(int i=0;i&lt;n;i++){
+        for(int j=i+1;j&lt;n;j++){
+            for(int k=j+1;k&lt;n;k++){
+                if(check(i,j,k)){
+                    num[++cnt]=(1&lt;&lt;i)|(1&lt;&lt;j)|(1&lt;&lt;k);
+                }
+            }
+        }
+    }
+    dp[0]=1;
+    int ans=0;
+    for(int i=1;i&lt;=cnt;i++){
+        for(int j=(1&lt;&lt;n)-1;j&gt;=0;j--){
+            if(dp[j]!=0&amp;&amp;(j&amp;num[i])==0){
+                dp[j|num[i]]=dp[j]+1;
+                ans=max(ans,dp[j]);
+            }
+        }
+    }
+    printf(&quot;%d\n&quot;,ans);
+
+
+}
+</code></pre>
+
+<h2 id="p04">P04:神奇的序列</h2>
+<ul>
+<li>
+<p><strong>题目描述</strong>
+小 A 有一个神奇的序列a1, a2 …，这个序列有几个神奇的地方：</p>
+</li>
+<li>
+<p>a1 .. an 是小 A 已知的</p>
+</li>
+<li>
+<p>对于 x&gt;n，有ax=ax-k1 + ax-k2 + ... ax-kc</p>
+</li>
+</ul>
+<p>现在给定a1 .. an和k1 .. kc，小 A 想请你计算出 am 的值</p>
+<p>由于结果可能过大，你只需要输出对 109+9 取模后的值</p>
+<ul>
+<li>
+<p><strong>输入输出</strong></p>
+</li>
+<li>
+<p>输入</p>
+</li>
+</ul>
+<p>第一行三个整数 n, m, c</p>
+<p>第二行 n 个整数 a1 .. an</p>
+<p>第三行 c 个整数 k1 .. kc</p>
+<p>1 ≤ c ≤ n ≤ 20</p>
+<p>1 ≤ m ≤ 1018</p>
+<p>0 ≤ ai ≤ 10</p>
+<p>1 ≤ ki ≤ n</p>
+<ul>
+<li>输出</li>
+</ul>
+<p>输出一个数，表示 am 对 109+9 取模后的值</p>
+<p>样例输入</p>
+<pre><code>2 4 1
+1 1
+1
+</code></pre>
+
+<p>样例输出</p>
+<pre><code>1
+</code></pre>
+
+<ul>
+<li><strong>解题代码</strong></li>
+</ul>
+<pre><code>#include &lt;iostream&gt;
+#include &lt;string.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;algorithm&gt;
+#include &lt;string&gt;
+using namespace std;
+#define  LL long long
+const LL maxn  = 22;
+const LL mod = 1e9+9;
+LL a[22];
+LL n;
+struct node
+{
+    LL a[maxn][maxn];
+    void init(){
+        memset(a,0,sizeof a);
+    }
+    node friend operator * (node a,node b)
+    {
+        node c;
+        c.init();
+        for(LL i=1;i&lt;=n;i++){
+            for(LL j=1;j&lt;=n;j++){
+                for(LL k=1;k&lt;=n;k++){
+                    c.a[i][j]+=a.a[i][k]*b.a[k][j]%mod;
+                    c.a[i][j]%=mod;
+                }
+            }
+        }
+        return c;
+    }
+};
+
+int main()
+{
+    LL m,c;
+    scanf(&quot;%lld%lld%lld&quot;,&amp;n,&amp;m,&amp;c);
+    for(LL i=1;i&lt;=n;i++){
+        scanf(&quot;%lld&quot;,&amp;a[i]);
+    }
+    node b;
+    b.init();
+    for(LL i=1;i&lt;n;i++){
+        b.a[i+1][i]=1;
+    }
+    for(LL i=1;i&lt;=c;i++){
+        LL x;scanf(&quot;%lld&quot;,&amp;x);
+        b.a[n+1-x][n]++;
+    }
+    if(m&lt;=n){
+        printf(&quot;%lld\n&quot;,a[m]);
+    }else{
+        node ans;
+        ans.init();
+        for(LL i=1;i&lt;=n;i++) ans.a[i][i]=1;
+        m-=n;
+        while(m){
+            if(m&amp;1) ans=ans*b;
+            b=b*b;
+            m&gt;&gt;=1;
+        }
+        LL z=0;
+        for(LL i=1;i&lt;=n;i++){
+            z+=a[i]*ans.a[i][n]%mod;
+            z%=mod;
+        }
+        printf(&quot;%lld\n&quot;,z);
+    }
+
+
+
+
+
+}
+</code></pre>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    <br>
+</div>
+
+</body>
+</html>

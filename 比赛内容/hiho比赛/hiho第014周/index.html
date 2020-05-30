@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/hiho%E6%AF%94%E8%B5%9B/hiho%E7%AC%AC014%E5%91%A8/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>hiho第014周:无间道之并查集 - 图像/视频算法</title>
+    <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "hiho\u7b2c014\u5468:\u65e0\u95f4\u9053\u4e4b\u5e76\u67e5\u96c6", url: "#_top", level:1, children: [
+          ]},
+        ];
+    </script>
+    <script src="../../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+    <h1 id="hiho014">hiho第014周:无间道之并查集</h1>
+<ul>
+<li><strong>题目描述</strong></li>
+</ul>
+<p>这天天气晴朗、阳光明媚、鸟语花香,空气中弥漫着春天的气息……额,说远了,总之,小Hi和小Ho决定趁着这朗朗春光出去玩。</p>
+<p>但是刚刚离开居住的宾馆不久,抄近道不小心走入了一条偏僻小道的小Hi和小Ho就发现自己的前方走来了几个彪形大汉,定睛一看还都是地地道道的黑人兄弟!小Hi和小Ho这下就慌了神,捡肥皂事小,这一身百把来斤别一不小心葬身他乡可就没处说去了。</p>
+<p>就在两人正举足无措之时,为首的黑叔叔从怀里掏出了一件东西——两张花花绿绿的纸,分别递给了小Hi和小Ho。</p>
+<p>小Hi和小Ho接过来,只见上面写道(译为中文):“本地最大的帮派——青龙帮,诚邀您的加入!”下面还详细的列出了加入青龙帮的种种好处。</p>
+<p>于是两人略感心安,在同黑叔叔们交谈一番之后,已是均感相见恨晚。同时,在小Hi和小Ho表示自己不日便将回国之后,黑叔叔们也没有再提加入帮派之事,但是那为首的黑叔叔思索一会,开口道(译为中文):“我现在有一个难题,思索了很久也没法子解决,既然你们俩都是高材生,不如来帮我看看。”</p>
+<p>小Hi和小Ho点了点头表示没问题,于是黑叔叔继续说道:“这个问题是这样的,我们帮派最近混进了许多警察的卧底,但是在我们的调查过程中只能够知道诸如‘某人和另一个人是同阵营的’这样的信息,虽然没有办法知道他们具体是哪个阵营的,但是这样的信息也是很重要的,因为我们经常会想要知道某两个人究竟是不是同一阵营的。”</p>
+<p>小Hi和小Ho赞同的点了点头,毕竟无间道也都是他们看过的。</p>
+<p>黑叔叔接着说道:“于是现在问题就来了,我希望你们能写出这样一个程序,我会有两种操作,一种是告诉它哪两个人是同一阵营的,而另一种是询问某两个人是不是同一阵营的……既然你们就要回国了,不如现在就去我们帮派的总部写好这个程序再走把。”</p>
+<p>为了生命安全与……小Hi和小Ho都不得不解决这个问题!那么他们究竟从何下手呢?</p>
+<blockquote>
+<ul>
+<li><strong>提示:说起来其实就是不断的合并集合嘛~</strong></li>
+</ul>
+</blockquote>
+<p>到了青龙帮的总部,望着桌上的电脑,小Ho陷入了沉思,良久,抬起头向小Hi道:“小Hi,你看我这样做可以么,一开始我将每个人视作一个仅由他们自己组成的集合,每次遇见op=0的操作,实际上就是合并这两个人所在的两个集合,而每次遇见op=1的操作,实际上就是询问这两个人是否在同一个集合中。”</p>
+<p>“你说的很有道理。”小Hi点头道:“但是集合并不是计算机中直接就存在的一个基础类型,你准备用什么样的方式去实现这个集合呢?”</p>
+<p>“用Set……”小Ho道。</p>
+<p>小Hi脸色一黑,道:“能不能有点追求啦,Set那底层实现都是红黑树什么的,你依靠别人的设计虽说没什么问题,但是为了知识水平的提高,自己学习一下还是很有必要的嘛!”</p>
+<p>“但是……这么短的时间里,你让我学红黑树,我也一时半会学不会吧。”小Ho表示为难。</p>
+<p>“没让你用红黑树,我今天就教你一个非常简单的维护集合的方法——并查集。”小Hi道:“这个方法非常简单,就是在每个集合里选出一个代表元素,并且令这个集合里面的每一个元素都指向这个代表元素。像你之前所说‘一开始我将每个人视作一个仅由他们自己组成的集合’,也就是对于每一个人<code>Name_i</code>,都令<code>represent[Name\_i]=Name_i</code>。”</p>
+<p>“那合并怎么办呢?”小Ho问道。</p>
+<p>“合并的话首先你要看这两个人A和B所在的集合是不是同一个集合,也就是represent[A]和represent[B]是否相同,如果相同自然无需合并,否则就要把这两个集合合并是吧?”</p>
+<p>“你这话不等于没说么……”小Ho表示抗议。</p>
+<p>小Hi无视了这抗议继续说道:“如果我令A'=represent[A],B'=represent[B],那么我令represent[A']=B'是否就在某种意义上将这两个集合合并了?”</p>
+<p>小Ho道:“你这个……只改变了A所在集合中一个元素A'的represent值,但是这个集合中其他元素的represent值都没有发生改变啊?”</p>
+<p>小Hi挥了挥手道:“别着急,你看,所有原来A所在集合中的元素都指向A',而A'指向了B',那么也就是A所在集合里的所有元素如果顺着这条链一直找寻下去,最终找到的那个就一定是它所在集合的代表元素?”</p>
+<p>“没错……”</p>
+<p>“所以我们就可以将寻找代表元素,也就是求解represent值这个过程做成一个迭代的过程,比如求解X所在集合的represent值,我先令X'=represent[X],如果X'=X的话,那么就能说明X所在集合的代表元素就是X本身,否则就令X''=represent[X'],如果X''=X'的话那么就能说明X所在集合的代表元素就是X'……一直持续这样的操作就能够找到最终的集合代表元素了。”小Hi说着说着在纸上写了几行代码递了过来:“就像这样。”</p>
+<p><img alt="" src="http://media.hihocoder.com/problem_images/20141004/14124123125145.png" /></p>
+<p>小Ho仔细想了想,继续问道:“但是如果每次合并都是将一条链接到另外一个点上,这样的操作会不会特别的没有效率,接近O(N^2)了?”</p>
+<p>“是会有这个问题,但是你很容易就注意到——合并这个操作是不可逆的,也就是说如果我求解出了X所在集合的代表元素是X_r的话,那么我就可以直接令represent[X]=X_r,这样就可以避免在下一次询问X所在集合的代表元素的时候再进行一次这样的计算了。”言罢,小Hi将之前写下的代码稍作修改,又递了过来。</p>
+<p><img alt="" src="http://media.hihocoder.com/problem_images/20141004/14124123126858.png" /></p>
+<p>“原来是这样,那么我的合并操作实际上就是令represent[find_represent(A)]=find_represent(B),而询问操作就是判断find_represent(A)和find_represent(B)是否想通了?”小Ho道。</p>
+<p>“没错呢!所以赶紧开始写把!,呆久了我可不知道会发生什么呢!”</p>
+<ul>
+<li><strong>输入输出</strong></li>
+</ul>
+<blockquote>
+<ul>
+<li><strong>输入</strong></li>
+</ul>
+</blockquote>
+<p>每个测试点(输入文件)有且仅有一组测试数据。</p>
+<p>每组测试数据的第1行为一个整数N,表示黑叔叔总共进行的操作次数。</p>
+<p>每组测试数据的第2~N+1行,每行分别描述黑叔叔的一次操作,其中第i+1行为一个整数op_i和两个由大小写字母组成的字符串<code>Name1_i</code>, <code>Name2_i</code>,其中<code>op_i</code>只可能为0或1,当op_i=0时,表示黑叔叔判定Name1_i和Name2_i是同一阵营的,当op_i=1时,表示黑叔叔希望知道<code>Name1_i</code>和<code>Name2_i</code>是否为同一阵营的。</p>
+<p>对于100%的数据,满足N&lt;=10^5, 且数据中所有涉及的人物中不存在两个名字相同的人(即姓名唯一的确定了一个人),对于所有的i,满足<code>Name1_i</code>和<code>Name2_i</code>是不同的两个人。</p>
+<blockquote>
+<ul>
+<li><strong>输出</strong></li>
+</ul>
+</blockquote>
+<p>对于每组测试数据,对于黑叔叔每次op_i=1的操作,输出一行,表示查询的结果:如果根据已知信息(即这次操作之前的所有op_i=0的操作),可以判定询问中的两个人是同一阵营的,则输出yes,否则输出no。</p>
+<p>样例输入</p>
+<pre><code class="sh">10
+0 Steven David
+0 Lcch Dzx
+1 Lcch Dzx
+1 David Dzx
+0 Lcch David
+0 Frank Dzx
+1 Steven Dzx
+1 Frank David
+0 Steven Dzx
+0 Dzx Frank
+</code></pre>
+
+<p>样例输出</p>
+<pre><code class="sh">yes
+no
+yes
+yes
+</code></pre>
+
+<ul>
+<li><strong>解题代码</strong></li>
+</ul>
+<pre><code class="c">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+map&lt;string,int&gt; H;
+int r[100010],o,n,c=0,A,B;
+int f(int i){return r[i]==i?i:r[i]=f(r[i]);}
+string a,b;
+int main(int argc, char* argv[]){
+    for(cin&gt;&gt;n;n--;){
+        cin&gt;&gt;o&gt;&gt;a&gt;&gt;b;
+        if(!(A=H[a]))A=H[a]=++c,r[c]=c;
+        if(!(B=H[b]))B=H[b]=++c,r[c]=c;
+        if(o)puts(f(A)==f(B)?&quot;yes&quot;:&quot;no&quot;);
+        else r[f(A)]=f(B);
+    }
+}
+</code></pre>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    <br>
+</div>
+
+</body>
+</html>

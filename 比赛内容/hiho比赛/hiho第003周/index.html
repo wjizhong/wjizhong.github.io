@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/hiho%E6%AF%94%E8%B5%9B/hiho%E7%AC%AC003%E5%91%A8/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>hiho第003周:KMP算法 - 图像/视频算法</title>
+    <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "hiho\u7b2c003\u5468:KMP\u7b97\u6cd5", url: "#_top", level:1, children: [
+          ]},
+        ];
+    </script>
+    <script src="../../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+    <h1 id="hiho003kmp">hiho第003周:KMP算法</h1>
+<ul>
+<li><strong>题目描述</strong></li>
+</ul>
+<p>小Hi和小Ho是一对好朋友,出生在信息化社会的他们对编程产生了莫大的兴趣,他们约定好互相帮助,在编程的学习道路上一同前进。</p>
+<p>这一天,他们遇到了一只河蟹,于是河蟹就向小Hi和小Ho提出了那个经典的问题:“小Hi和小Ho,你们能不能够<strong>判断一段文字(原串)里面是不是存在那么一些……特殊……的文字(模式串)</strong>?”</p>
+<p>小Hi和小Ho仔细思考了一下,觉得只能想到很简单的做法,但是又觉得既然河蟹先生这么说了,就肯定不会这么容易的让他们回答了,于是他们只能说道:“抱歉,河蟹先生,我们只能想到时间复杂度为(文本长度<code>*</code>特殊文字总长度)的方法,即对于每个模式串分开判断,然后依次枚举起始位置并检查是否能够匹配,但是这不是您想要的方法是吧?”</p>
+<p>河蟹点了点头,说道:”看来你们的水平还有待提高,这样吧,如果我说<strong>只有一个特殊文字</strong>,你能不能做到呢?“</p>
+<p>小Ho这时候还有点晕晕乎乎的,但是小Hi很快开口道:”我知道!这就是一个很经典的模式匹配问题!可以使用KMP算法进行求解!“</p>
+<p>河蟹满意的点了点头,对小Hi说道:”既然你知道就好办了,你去把小Ho教会,下周我有重要的任务交给你们!“</p>
+<p>”保证完成任务!”小Hi点头道。</p>
+<blockquote>
+<ul>
+<li><strong>提示一:KMP的思路</strong></li>
+</ul>
+</blockquote>
+<p>小Hi和小Ho回到了学校,为了完成河蟹托付的伟大使命,小Hi立马把小Ho抓到了机房开始上课。</p>
+<p>“小Ho,你来看看这样一段原串和模式串~”小Hi说着递上了一张纸条。</p>
+<pre><code class="sh">原串:   bababababababababb
+模式串: bababb
+</code></pre>
+
+<p>“嗯,这个例子中模式串bababb在原串中第13个字符开始的地方出现了”小Ho看了看,回答道。</p>
+<p>“我们假设仍然使用最普通的方法来进行判断,即我们先枚举原串中的一个起始位置,然后判断从这个位置开始的字符串是否能和模式串进行完匹配。”小HI说道,“然后我们来看这个过程中有没有什么可以缩减的计算量。”</p>
+<p>“好的!”小Ho点点头。</p>
+<p>“你看,在起始点为1的时候,匹配到第6个字符的时候发生了失败,这个时候我们应当做的是是不是将模式串右移一位,然后从头开始判断,就像这样?”小Hi又在纸上画了画,递给了小Ho。“</p>
+<pre><code class="sh">原串:  bababababababababb
+模式串: bababb
+
+原串:  bababababababababb
+模式串:  bababb
+</code></pre>
+
+<p>”是的,然后我们发现第一位就发现不能进行匹配。“小Ho老老实实的回答。</p>
+<p>”然后我们再将模式串右移一位,然后再从头开始判断,这次我们成功的越过了原串的第7个字符,在第8个字符产生了不同。“小Hi继续往下推演。</p>
+<pre><code class="sh">原串:  bababababababababb
+模式串:   bababb
+</code></pre>
+
+<p>”然后之后的剧情非常的相似,都是要么最后一个字符匹配不成功,要么就是第一个字符就匹配不成功,一直到了最后一次机会的时候才匹配成功。“小Ho做了总结。</p>
+<p>”那你觉得这个过程中有没有什么没有必要计算的呢?“小Hi于是问道。</p>
+<p>”我是这么认为的,你看这条线。“小Ho在两个串上对着的一个位置画了一条线。</p>
+<pre><code class="sh">原串:   babab | ababababababb
+模式串: babab | b
+</code></pre>
+
+<p>”嗯?”</p>
+<p>“这是我们第一次产生了字符不匹配的情况,那么接下来的过程中一定会出现两种情况之一:一种情况是模式串与原串的对齐点(即枚举的原串中的起点位置)越过了这条线,仍然没能匹配成功,而另一种情况是原串中这个位置的字符与模式串中某个位置的字符匹配上了。”小Ho分析道:”我们先不考虑第一种情况,而来看看第二种情况会发生什么。“</p>
+<pre><code class="sh">原串:            babab | ababababababb
+模式串(对齐点=1):  babab | b
+模式串(对齐点=3)     bab | a
+</code></pre>
+
+<p>”看不出嘛,小Ho你今天变成聪明了嘛!~”小Hi由衷的赞叹道。</p>
+<p>“那当然,毕竟我最近在讨论区解答了很多问题,这很锻炼人的好么!“小Ho笑嘻嘻的回答道。</p>
+<p>”那我也得表现下,接下来换我来说吧,反正你肯定也就差不多想到这么多是吧!“小Hi也是看破了小Ho的底细,这般说道。于是小Ho点了点头,让小Hi接着说。</p>
+<p>”我相信一个很容易注意到的事实就在于,如果我用i表示原串和模式串产生分歧的位置(模式串上的位置,注意!这个和对齐点是不一样的东西,一个在原串上,一个在模式串上),用j表示为了匹配掉位置i上产生分歧的字符而将模式串的对齐点移动到的位置,我们会发现,模式串[1, i-j]的这一段和[j, i - 1]这一段是相同的。比如在这个例子中i=6,j=3,我们会发现模式串[1, 3]和[3,5]是相同的。“小Hi整理了下思路,如是说道。</p>
+<pre><code class="sh">原串:         ba | bab | a babababababb
+模式串(i=1):   ba | bab | b
+模式串(i=3):      | bab | a
+</code></pre>
+
+<p>”而我们同时也会发现,只有在存在一个长度k,使得模式串[1, i-k]和[k, i-1]这两段相同的情况下,将模式串对其到位置k,才能保证原串和模式串的匹配过程能够进入到原串的位置i是否和模式串的对应字符相同的判定,在别的情况下,根本都进入不到位置i的判断就会发生不一致的情况了。”说着小Hi又抛出了另外一个命题。</p>
+<p>“我已经开始有点晕了!”小Ho提出了抗议。</p>
+<p>“那你就好好的读一遍我刚才说的话!然后自己在草稿纸上演算一下这个样例,很快就可以得出结果的!”小Hi如是说道。”总而言之我们现在需要的一个数据是,这个长度k最长是多少,而且我们对于模式串的每一个位置i,都要计算这个值。”而这就是KMP中最为重要的一个点——NEXT数组。</p>
+<ul>
+<li><strong>提示二:NEXT数组的使用</strong></li>
+</ul>
+<p>“那么,为了能够充分理解NEXT数组,我们再来回顾一下如何使用NEXT数组~"小Hi摆出一副老师的样子,说道。”首先我们来给出NEXT数组的数学定义~“</p>
+<blockquote>
+<ul>
+<li>NEXT[0] = -1</li>
+<li>NEXT[i] = max{ 0&lt;=k&lt; i | str.substring(1, k) == str.substring(i - k +1 , i) } 其中str.substring(i, j)表示str从位置i到位置j的子串,如果i&gt;j则,substring为空</li>
+</ul>
+</blockquote>
+<p>”那么我们对之前例子中的模式串进行求解,可以得到这样的NEXT数组。“小Hi在纸上写了又写,画了又画。</p>
+<pre><code class="sh">模式串:    b a b a b b
+NEXT:     0 0 1 2 3 1
+</code></pre>
+
+<p>”然后再来看这个NEXT数组是如何使用的!为了表明NEXT的所有使用情况,我们换一个原串。然后首先,我们第一次匹配,如果用ori表示原串,用par表示模式串,用p表示原串的下标(从1开始),用q表示模式串的下标(从1开始)的话,会发现最多匹配到p=5, q=5就不能往下匹配了,因为此时ori[p +1]不等于par[q + 1]“小Hi为了使说明更加简洁,先下了一堆定义。</p>
+<p>”好的!小Hi老师好棒!“小Ho在一旁煽风点火道。</p>
+<pre><code class="sh">原串(p=5):    babab | abcbababababb
+模式串(q=5):   babab | b
+</code></pre>
+
+<p>”此时,令q = NEXT[q],并将ori[1..p]和par[1..q]对齐,便会发现ori[1..p]和par[1..q]仍然是一一对应的。“</p>
+<pre><code class="sh">原串(p=5):        babab | abcbababababb
+模式串(q=3):         bab | abb
+</code></pre>
+
+<p>“此时,ori[p+1]和par[q+1]相同了,于是可以继续往下匹配,但是到了p=7,q=5的时候又发现不能够接着匹配了。”</p>
+<pre><code class="sh">原串(p=7):      bababab | cbababababb
+模式串(q=5):       babab | b
+</code></pre>
+
+<p>”此时,令q = NEXT[q],并将ori[1..p]和par[1..q]对齐,便会发现ori[1..p]和par[1..q]仍然是一一对应的,这和之前是一样的。”</p>
+<pre><code class="sh">原串(p=7):  bababab | cbababababb
+模式串(q=3):     bab | abb
+</code></pre>
+
+<p>“此时,ori[p+1]和par[q+1]仍然不相同,于是还得令q=NEXT[q]。”</p>
+<pre><code class="sh">原串(p=7):    bababab | cbababababb
+模式串(q=1):         b | ababb
+</code></pre>
+
+<p>“此时,ori[p+1]和par[q+1]仍然不相同,令q=NEXT[q]。”</p>
+<pre><code class="sh">原串(p=7):    bababab | cbababababb
+模式串(q=0):           | bababb
+</code></pre>
+
+<p>“此时,ori[p+1]和par[q+1]仍然不相同,令q=NEXT[q]。”</p>
+<pre><code class="sh">原串(p=7):    bababab | cbababababb
+模式串(q=-1):          |  bababb
+</code></pre>
+
+<p>”到了这一步,就相当于我们之前所说的模式串与原串的对齐点(即枚举的原串中的起点位置)越过了这条线(当时指C右侧的那条线)的情况,这种情况下,就应当p和q均+1,然后继续之前的操作。”小Hi擦了一把汗,说道。</p>
+<p>“这样一说,我就大致能够理解NEXT数组是怎么用来求解模式匹配问题的了,但是它是如何求的呢?一般的方法不是要O(模式串长度的立方)的么?”小Ho问道。</p>
+<p>“这就是我接下来要和你说的啦!”小Hi笑道:“但是让我先喝口水!”</p>
+<ul>
+<li><strong>提示三:如何求解NEXT数组</strong></li>
+</ul>
+<p>“首先我们不想如何求整个NEXT数组,而是假设我们已经知道了之前例子中模式串的NEXT[1..4],来求NEXT[5]如何?”小Hi建议道。</p>
+<p>“好的!这样我们就只需要平方级的算法就可以算出它的值了!”小Ho高兴道。</p>
+<p>“有点追求好不好!”小Hi深深的吸了一口气:“你这样和之前的解法有什么不同么!”</p>
+<p>“似乎没有。。那你说怎么算吧!我反正脑子已经成浆糊了。”小Ho郁闷道。</p>
+<p>“我们把par.substring(1, 5)当做新的原串ori_new,然后把par.substring(1, 4)当做新的模式串par,会如何?”小Hi微微一笑。</p>
+<p>“会。。我来试试!"小Ho接过小Hi手中的纸笔,便开始演算:“首先就直接匹配到了p=4, q=4的情况,这时候严格来说已经算匹配完成了,但是肯定不是就这么结束的,此时par_new[q +1]因为是空字符,所以肯定和ori_new[p+1]匹配不上。于是令q = NEXT[q]”</p>
+<pre><code class="sh">原串(p=4):   baba | b
+模式串(q=4):  baba |
+原串(p=4):   baba | b
+模式串(q=2):    ba | b
+</code></pre>
+
+<p>”然后这时候ori_new[p + 1]就直接和par_new[q + 1]匹配上了,于是新的p=5,q=3,莫非……这个最后的q就是NEXT[5]!“小Ho忽然灵光一闪。</p>
+<p>”没错,就是这样!那你想想现在如何求NEXT[6]。“小Hi继续引导小Ho。</p>
+<p>”首先我们没有必要重新从头开始匹配,直接在原串和模式串的后面加上第6个字符就可以了。“小Ho分析道。</p>
+<pre><code class="sh">原串(p=5):     babab | b
+模式串(q=3):      bab | abb
+</code></pre>
+
+<p>”没法继续匹配,于是令q=NEXT[q]。“</p>
+<pre><code class="sh">原串(p=5):   babab | b
+模式串(q=1):      b | ababb
+</code></pre>
+
+<p>”还是没法继续匹配,于是令q=NEXT[q]。“</p>
+<pre><code class="sh">原串(p=5):    babab | b
+模式串(q=0):         | bababb
+</code></pre>
+
+<p>”此时可以匹配了,新的p=6,q=1,所以NEXT[6]就是1!“小Ho高兴道:”没想到NEXT数组的本身会用一种递归的方式进行求解,真是太巧妙了!“</p>
+<p>”那你要不要赶紧去写一下代码,KMP算法的代码可是可以写的很短很巧妙的哦!~“小Hi建议道。</p>
+<p>”好!“</p>
+<ul>
+<li><strong>输入输出</strong></li>
+</ul>
+<p>输入:</p>
+<p>第一行一个整数N,表示测试数据组数。</p>
+<p>接下来的<code>N*2</code>行,每两行表示一个测试数据。在每一个测试数据中,第一行为模式串,由不超过10^4个大写字母组成,第二行为原串,由不超过10^6个大写字母组成。</p>
+<p>其中N&lt;=20</p>
+<p>输出:对于每一个测试数据,按照它们在输入中出现的顺序输出一行Ans,表示模式串在原串中出现的次数。</p>
+<p>样例输入</p>
+<pre><code class="sh">5
+HA
+HAHAHA
+WQN
+WQN
+ADA
+ADADADA
+BABABB
+BABABABABABABABABB
+DAD
+ADDAADAADDAAADAAD
+</code></pre>
+
+<p>样例输出</p>
+<pre><code class="sh">3
+1
+3
+1
+0
+</code></pre>
+
+<ul>
+<li><strong>解题代码</strong></li>
+</ul>
+<pre><code class="c">#include &lt;iostream&gt;
+#include &lt;cstring&gt;
+#include &lt;cstdio&gt;
+
+using namespace std;
+
+int main(int argc, char** argv){
+    char t[10050],s[1000007];
+    int c;scanf(&quot;%d&quot;,&amp;c);
+    while(c--){
+        scanf(&quot;%s%s&quot;,t,s);
+        int flink[10004]={};
+        int i=0, j=-1;
+        flink[0]=-1;
+
+        int len=strlen(t);
+        while(i&lt;len) {
+            if(j==-1 || t[i]==t[j])
+                flink[++i]=++j;
+            else
+                j=flink[j];
+        }
+        int ans=0;
+
+        i=j=0; int n=len; len=strlen(s);
+        while(i&lt;len) {
+            if(j==-1 || s[i]==t[j]) {
+                ++i;++j;
+            }else{
+                j=flink[j];
+            }
+            if(j==n) ans++;
+        }
+        printf(&quot;%d\n&quot;,ans);
+    }
+    return 0;
+}
+</code></pre>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    <br>
+</div>
+
+</body>
+</html>

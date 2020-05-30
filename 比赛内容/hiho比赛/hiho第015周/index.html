@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/hiho%E6%AF%94%E8%B5%9B/hiho%E7%AC%AC015%E5%91%A8/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>hiho第015周:最近公共祖先·二 - 图像/视频算法</title>
+    <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "hiho\u7b2c015\u5468:\u6700\u8fd1\u516c\u5171\u7956\u5148\u00b7\u4e8c", url: "#_top", level:1, children: [
+          ]},
+        ];
+    </script>
+    <script src="../../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+    <h1 id="hiho015">hiho第015周:最近公共祖先·二</h1>
+<ul>
+<li><strong>题目描述</strong></li>
+</ul>
+<p>上上回说到,小Hi和小Ho用非常拙劣——或者说粗糙的手段山寨出了一个神奇的网站,这个网站可以计算出某两个人的所有共同祖先中辈分最低的一个是谁。远在美国的他们利用了一些奇妙的技术获得了国内许多人的相关信息,并且搭建了一个小小的网站来应付来自四面八方的请求。</p>
+<p>但正如我们所能想象到的……这样一个简单的算法并不能支撑住非常大的访问量,所以摆在小Hi和小Ho面前的无非两种选择:</p>
+<p>其一是购买更为昂贵的服务器,通过提高计算机性能的方式来满足需求——但小Hi和小Ho并没有那么多的钱;其二则是改进他们的算法,通过提高计算机性能的利用率来满足需求——这个主意似乎听起来更加靠谱。</p>
+<p>于是为了他们第一个在线产品的顺利运作,小Hi决定对小Ho进行紧急训练——好好的修改一番他们的算法。</p>
+<p>而为了更好的向小Ho讲述这个问题,小Hi将这个问题抽象成了这个样子:假设现小Ho现在知道了N对父子关系——父亲和儿子的名字,并且这N对父子关系中涉及的所有人都拥有一个共同的祖先(这个祖先出现在这N对父子关系中),他需要对于小Hi的若干次提问——每次提问为两个人的名字(这两个人的名字在之前的父子关系中出现过),告诉小Hi这两个人的所有共同祖先中辈分最低的一个是谁?</p>
+<blockquote>
+<ul>
+<li><strong>提示一:老老实实分情况讨论就不会出错的啦!</strong></li>
+</ul>
+</blockquote>
+<p>“唔……我感觉你这个问题和上次提出的问题没有什么太大区别嘛,还简化了许多……那我就用上次的算法不行么?”小Ho疑问道。</p>
+<p>“NoNoNo,仔细注意一下数据范围,这可不是上次的算法就能够解决的~”小Hi道。</p>
+<p>“是诶,上次无论是人数还是询问数,都远远少于这一次的……那么我该如何进行计算呢?”小Ho不禁问道。</p>
+<p>“我认为有这样两种法子,其中一种呢,就是将一段时间内的询问收集起来统一处理,利用一些与询问个数无关的算法来进行计算,这样时间复杂度在平摊到每个询问的时候就不会很高了。”小Hi缓缓道来。</p>
+<p>“听起来很有道理。”</p>
+<p>“就是很有道理好么!”小Hi道:“我们不妨再抽象这个问题,其实本质就是给你一棵树,然后每次询问是求这棵树种某两个结点的最近公共祖先——所有公共祖先中层数最深的。”</p>
+<p>“是的!而且这个最近公共祖先怎么和之前那一次所说的转折点很类似啊?”小Ho似乎回忆起了什么往事。</p>
+<p>“差不多一个意思把,重点是在于我接下来要说的——用于求解最近公共祖先问题的离线算法,为什么要叫做离线算法呢,因为我需要一次性收集若干个询问之后才能通过这个算法一同计算出这些询问的答案,而不能像一个在线系统一样对于每一个询问都即时的进行计算并给出答复。”小Hi解释道。</p>
+<p>“你说了这么多,可我还是不知道这个算法是怎么回事呢!”小Ho抱怨道。</p>
+<p>“别急,你看这个图——好吧,其实是棵树,代表着我们这个问题的一个输入,而这几个是我们要处理的询问。”小Hi在准备好的黑板上写写画画道。</p>
+<p><img alt="" src="http://media.hihocoder.com/problem_images/20141011/14129981175985.png" /></p>
+<p>“好的。”小Ho点点头。</p>
+<p>“而我现在要做的呢,是以深度优先搜索的顺序来访问这棵树。”小Hi继续道:“在这个过程中,我会给这棵树的结点染色,一开始所有结点都是白色的。而当我第一次经过某个结点的时候,我会将它染成灰色,而当我第二次经过这个结点的时候——也就是离开这棵子树的时候,我会将它染成黑色。”</p>
+<p>“但是这样做的意义何在呢?”小Ho的问题来了。</p>
+<p>“举个例子,当我们深度优先搜索到A结点时,我们发现A结点和B结点是我们需要处理的一组询问。”小Hi在黑板上画着。</p>
+<p>小Ho点了点头。</p>
+<p>“这个时候,这个图的染色情况是这样的。”小Hi顺手就涂上了颜色,继续道:“我们这个时候就要去查看B结点的颜色——灰色,说明我们进入了以B结点为根的子树,但是还没有从这棵子树中出去,你知道这意味着什么吗?”</p>
+<p><img alt="" src="http://media.hihocoder.com/problem_images/20141011/14129981176036.png" /></p>
+<p>“意味着A结点在B结点所在的子树中——那么B结点就是A和B结点的最近公共祖先了?”小Ho答道。</p>
+<p>“没错,但这只是一种简单的情况,如果我询问的不是A和B这两个结点,而是A和C这两个结点,那么在访问到A的时候,C的颜色是黑色的,这时候我该怎么处理呢?”小Hi继续问道。</p>
+<p>“唔……首先肯定只能从所有灰色结点中找——这是A结点的所有祖先结点!那么……就是C结点向上的第一个灰色结点?”小Ho答道。</p>
+<p>“是的,但是你这样做不会和上一次的朴素做法一样低效率么?”小Hi反问道。</p>
+<p>“的确是的……每次都要向上找会很吃不消的。”小Ho困惑了:“那么我该怎么办呢?”</p>
+<p>“先别着急,我们把之前的分情况讨论结束,再来细谈这个问题……那么接下来只有一种可能了,如果询问的时A和P这两个结点,而此时P还是白色的,你觉得怎么处理比较合适?”小Hi道。</p>
+<p>“唔……我觉得把,既然这个时候P还是白色,那么就先不要管这个询问了,毕竟现在关于P的信息一点都不知道。而且反正深度优先搜索会处理到P结点,那个时候A结点肯定已经不是白色了,就可以沿用之前的方法进行解决了!”小Ho沉思了一会,答道。</p>
+<p><img alt="" src="http://media.hihocoder.com/problem_images/20141011/14129981183454.png" /></p>
+<p>“是的!那么你有没有发现,这样一遍处理下来,你就可以求出所有准备好的询问的结果了——我先计算每个结点涉及到的询问,然后在深度优先搜索的过程中对结点染色,如果发现当前访问的结点是涉及到某个询问,那么我就看这个询问中另一个结点的颜色,如果是白色,则留待之后处理,如果是灰色,那么最近公共祖先必然就是这个灰色结点,如果是黑色,那么最近公共祖先就是这个黑色结点向上的第一个灰色结点。”小Hi总结道:“而我们唯一剩下的问题,就是怎么样快速的找到一个黑色结点向上的第一个灰色结点。”</p>
+<p>小Ho若有所思的点了点头。</p>
+<blockquote>
+<ul>
+<li><strong>提示二:并查集其实长得很像一棵树你们不觉得么?</strong></li>
+</ul>
+</blockquote>
+<p>“还记得上周我和你讲的并查集问题么?”小Hi问道。</p>
+<p>“还记得呢!但是那和这个问题又有什么关系呢?”小Ho问道。</p>
+<p>“我们来这样想,当深度优先搜索进行到刚刚第二次经过C结点这一步的时候,是不是以C为根的子树中所有结点,它们向上找的第一个灰色结点都是C结点?”小Hi没有直接回答小Ho的问题,反倒提出了一个新的问题。</p>
+<p><img alt="" src="http://media.hihocoder.com/problem_images/20141011/14129981181455.png" /></p>
+<p>“是的。”</p>
+<p><img alt="" src="http://media.hihocoder.com/problem_images/20141011/14129981181004.png" /></p>
+<p>“那么如果我们将C这棵子树视为一个集合,而将C结点视为这个集合的代表元素的话,那么我在第二次经过C结点之后,将C结点染成黑色后,以C为根的子树中的所有结点的代表元素——或者说向上找的第一个灰色结点都变成了C的父亲结点——D结点?那么这一过程,是不是其实就是将C结点代表的集合合并到了D结点代表的集合中去了?”小Hi问道。</p>
+<p><img alt="" src="http://media.hihocoder.com/problem_images/20141011/14129981186144.png" /></p>
+<p>“唔……还真是,每个结点最开始都是一个独立的集合,每当一个结点由灰转黑的时候,就将它所在的集合合并到其父亲结点所在的集合中去。这样无论什么时候,任意一个黑色结点所在集合的代表元素就是这个结点向上的第一个灰色结点!也就是说,我只要在深度优先搜索的过程中维护这样的一些集合,我就能够对于每一个黑色结点,非常快捷的求出在当前的染色状况下,它向上的第一个灰色结点。”小Ho惊道:“这么一来,之前遗留的问题就得到了解决。”</p>
+<p>“是的呢!而之所以你可以这样做的原因,这是因为这样的染色是不可逆的,对于一个黑色结点来说,它向上找的第一个灰色结点只会越来越高——这和集合的性质是相似的!”</p>
+<p>“原来是这样!”小Ho感慨道。</p>
+<p>“所以你接下来要做的事情,就是在深度优先搜索的过程中,不断的给结点染色,同时维护好这样的一些集合,并且对于询问一一做出回答呢!”小Hi笑道:“这可是有点难度哦~”</p>
+<p>“没事!这对我来说,可是小菜一碟呢!”</p>
+<ul>
+<li><strong>输入输出</strong></li>
+</ul>
+<blockquote>
+<ul>
+<li><strong>输入</strong></li>
+</ul>
+</blockquote>
+<p>每个测试点(输入文件)有且仅有一组测试数据。</p>
+<p>每组测试数据的第1行为一个整数N,意义如前文所述。</p>
+<p>每组测试数据的第2~N+1行,每行分别描述一对父子关系,其中第i+1行为两个由大小写字母组成的字符串<code>Father_i</code>, <code>Son_i</code>,分别表示父亲的名字和儿子的名字。</p>
+<p>每组测试数据的第N+2行为一个整数M,表示小Hi总共询问的次数。</p>
+<p>每组测试数据的第N+3~N+M+2行,每行分别描述一个询问,其中第N+i+2行为两个由大小写字母组成的字符串<code>Name1_i</code>,<code>Name2_i</code>,分别表示小Hi询问中的两个名字。</p>
+<p>对于100%的数据,满足N&lt;=10^5,M&lt;=10^5, 且数据中所有涉及的人物中不存在两个名字相同的人(即姓名唯一的确定了一个人),所有询问中出现过的名字均在之前所描述的N对父子关系中出现过,第一个出现的名字所确定的人是其他所有人的公共祖先。</p>
+<blockquote>
+<ul>
+<li><strong>输出</strong></li>
+</ul>
+</blockquote>
+<p>对于每组测试数据,对于每个小Hi的询问,按照在输入中出现的顺序,各输出一行,表示查询的结果:他们的所有共同祖先中辈分最低的一个人的名字。</p>
+<p>样例输入</p>
+<pre><code class="sh">4
+Adam Sam
+Sam Joey
+Sam Micheal
+Adam Kevin
+3
+Sam Sam
+Adam Sam
+Micheal Kevin
+</code></pre>
+
+<p>样例输出</p>
+<pre><code class="sh">Sam
+Adam
+Adam
+</code></pre>
+
+<ul>
+<li><strong>解题代码</strong></li>
+</ul>
+<pre><code class="c">#include &lt;cstdio&gt;
+using namespace std;
+#define C(c) (c&lt;='Z'?c-'A':c-'a'+26)
+const int N=100100;
+struct _E{
+    int to,id,next;
+}E[2][N&lt;&lt;1];
+int G[2][N],e[2];
+void conn(const int&amp;i,const int&amp;u,const int&amp;v,const int&amp;id=-1){
+    E[i][++e[i]].to=v;
+    E[i][e[i]].id=id;
+    E[i][e[i]].next=G[i][u];
+    G[i][u]=e[i];
+}
+int T[N][46],t,d[N],c;
+char *m[N];
+int H(char *ss){
+    int p=0,v;
+    for(char *s=ss;*s;++s){
+        v=C(*s);
+        if(!(T[p][v]))T[p][v]=++t;
+        p=T[p][v];
+    }
+    if(d[p])return d[p];
+    else{
+        m[++c]=ss;
+        return d[p]=c;
+    }
+}
+char a[N][100],b[N][100];
+int A,B,r[N],n,L[N];
+int F(int i){return r[i]==i?i:r[i]=F(r[i]);}
+
+void dfs(int u,int p){
+    r[u]=u;
+    int v;
+    for(int i=G[0][u];i;i=E[0][i].next)if((v=E[0][i].to)!=p)dfs(v,u);
+    for(int i=G[1][u];i;i=E[1][i].next)if(r[E[1][i].to])L[E[1][i].id]=F(E[1][i].to);
+    r[u]=p;
+}
+
+int main(){
+    scanf(&quot;%d&quot;,&amp;n);
+    for(int i=1;i&lt;=n;++i){
+        scanf(&quot;%s%s&quot;,a[i],b[i]);
+        A=H(a[i]);B=H(b[i]);
+        conn(0,A,B);conn(0,B,A);
+    }
+    scanf(&quot;%d&quot;,&amp;n);
+    for(int i=1;i&lt;=n;++i){
+        scanf(&quot;%s%s&quot;,a[0],b[0]);
+        A=H(a[0]);B=H(b[0]);
+        conn(1,A,B,i);conn(1,B,A,i);
+    }
+    dfs(1,0);
+    for(int i=1;i&lt;=n;++i)puts(m[L[i]]);
+}
+</code></pre>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    <br>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/hiho%E6%AF%94%E8%B5%9B/hiho%E7%AC%AC190%E5%91%A8/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>hiho第190周:震荡数组 - 图像/视频算法</title>
+    <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "hiho\u7b2c190\u5468:\u9707\u8361\u6570\u7ec4", url: "#_top", level:1, children: [
+              {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1", level:2, children: [
+                  {title: "\u8f93\u5165\u8f93\u51fa", url: "#_2", level:3, children: [
+                  ]}, 
+              ]},
+              {title: "\u89e3\u9898\u4ee3\u7801", url: "#_3", level:2, children: [ 
+              ]},
+          ]},
+        ];
+    </script>
+    <script src="../../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+    <h1 id="hiho190">hiho第190周:震荡数组</h1>
+<h2 id="_1">题目描述</h2>
+<p>给定一个长度为N的数组<span><span class="MathJax_Preview">A_1,A_2,...,A_N</span><script type="math/tex">A_1,A_2,...,A_N</script></span>,如果对于任意<span><span class="MathJax_Preview">1&lt;i&lt;N</span><script type="math/tex">1<i<N</script></span>都有<span><span class="MathJax_Preview">A_i&gt;A_{i-1}</span><script type="math/tex">A_i>A_{i-1}</script></span>且<span><span class="MathJax_Preview">A_i&gt;A_{i+1}</span><script type="math/tex">A_i>A_{i+1}</script></span>,或者<span><span class="MathJax_Preview">A_i&lt;A_{i-1}</span><script type="math/tex">A_i<A_{i-1}</script></span>且<span><span class="MathJax_Preview">A_i&lt;A_{i+1}</span><script type="math/tex">A_i<A_{i+1}</script></span>,我们就称A数组是一个震荡数组。</p>
+<p>例如{4,2,3,1,5}就是一个震荡数组;而{1,4,3,2,5}不是一个震荡数组因为4,3,2三个连续的元素不满足条件。</p>
+<p>现在给定一个长度为N的数组组<span><span class="MathJax_Preview">A_1,A_2,...,A_N</span><script type="math/tex">A_1,A_2,...,A_N</script></span>,最少进行多少次两两交换,可以使A变成一个震荡数组?</p>
+<h3 id="_2">输入输出</h3>
+<ul>
+<li>输入</li>
+</ul>
+<p>第一行包含一个整数N,代表数组的长度。(<span><span class="MathJax_Preview">1&lt;= N&lt;30</span><script type="math/tex">1<= N<30</script></span>)</p>
+<p>第二行包含N个整数,A<span><span class="MathJax_Preview">_1, A_2, ... A_N</span><script type="math/tex">_1, A_2, ... A_N</script></span>。(<span><span class="MathJax_Preview">1&lt;=A_i &lt;= N</span><script type="math/tex">1<=A_i <= N</script></span>)</p>
+<p>输入保证<span><span class="MathJax_Preview">A_i</span><script type="math/tex">A_i</script></span>两两不同。</p>
+<ul>
+<li>输出</li>
+</ul>
+<p>输出最少交换的次数。</p>
+<p>样例输入</p>
+<pre><code>5
+1 2 3 4 5
+</code></pre>
+
+<p>样例输出</p>
+<pre><code>1
+</code></pre>
+
+<h2 id="_3">解题代码</h2>
+<pre><code>#include&lt;iostream&gt;
+#include&lt;climits&gt;
+
+using namespace std;
+#define N 32
+
+int a[N],b[N];
+int n,m,k,ans,min_ans;
+
+void print(int *a,int n) {
+    for(int i=1;i&lt;=n;i++)
+        cout&lt;&lt;a[i]&lt;&lt;&quot; &quot;;
+    cout&lt;&lt;endl;
+    ans++;
+}
+
+bool check(int h) {
+    if(h&gt;1 &amp;&amp; h%2==1 &amp;&amp; (a[h]-a[h-1])&lt;0)
+        return true;
+    if(h&gt;1 &amp;&amp; h%2==0 &amp;&amp; (a[h]-a[h-1])&gt;0)
+        return true;
+    return false;
+}
+
+void dfs(int n,int h,int z) {
+    if(h==n+1) {
+        min_ans=min(min_ans,z);
+        return ;
+    }
+    if(z&gt;=min_ans) return ;
+    int temp;
+    if(h&gt;1 &amp;&amp; h%2==1 &amp;&amp;(a[h]-a[h-1])&lt;0)
+        dfs(n,h+1,z);
+    if(h&gt;1 &amp;&amp; h%2==0 &amp;&amp; (a[h]-a[h-1])&gt;0)
+        dfs(n,h+1,z);
+    if(h==1) dfs(n,h+1,z);
+    if(z+1&gt;=min_ans) return ;
+    for(int i=h+1;i&lt;=n;i++){
+        if(check(i)==1) continue;
+        temp=a[h];
+        a[h]=a[i];
+        a[i]=temp;
+        if(h&gt;1 &amp;&amp; h%2==1 &amp;&amp; (a[h]-a[h-1])&lt;0)
+            dfs(n,h+1,z+1);
+            if(h&gt;1 &amp;&amp; h%2==0 &amp;&amp; (a[h]-a[h-1])&gt;0)
+                dfs(n,h+1,z+1);
+            if(h==1) dfs(n,h+1,z+1);
+        temp=a[h];
+        a[h]=a[i];
+        a[i]=temp;
+    }
+}
+
+int main() {
+    int n;
+    while(cin&gt;&gt;n){
+        for(int i=1;i&lt;=n;i++)
+            cin&gt;&gt;a[i];
+        min_ans=INT_MAX;
+        ans=0;
+        dfs(n,1,0);
+
+        for(int i=1;i&lt;=n;i++)
+            a[i]=-a[i];
+        dfs(n,1,0);
+        cout&lt;&lt;min_ans&lt;&lt;endl;
+    }
+    return 0;
+}
+</code></pre>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    <br>
+</div>
+
+</body>
+</html>

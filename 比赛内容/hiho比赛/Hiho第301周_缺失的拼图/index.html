@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/hiho%E6%AF%94%E8%B5%9B/Hiho%E7%AC%AC301%E5%91%A8_%E7%BC%BA%E5%A4%B1%E7%9A%84%E6%8B%BC%E5%9B%BE/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>Hiho第301周:缺失的拼图 - 图像/视频算法</title>
+    <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "Hiho\u7b2c301\u5468:\u7f3a\u5931\u7684\u62fc\u56fe", url: "#_top", level:1, children: [
+              {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1", level:2, children: [ 
+              ]},
+              {title: "\u89e3\u9898\u4ee3\u7801", url: "#_2", level:2, children: [ 
+              ]},
+          ]},
+        ];
+    </script>
+    <script src="../../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+    <h1 id="hiho301">Hiho第301周:缺失的拼图</h1>
+<h2 id="_1">题目描述</h2>
+<p>小Hi在玩一个拼图游戏。如下图所示,整个拼图是由N块小矩形组成的大矩形。现在小Hi发现其中一块小矩形不见了。给定大矩形以及N-1个小矩形的顶点坐标,你能找出缺失的那块小矩形的顶点坐标吗?</p>
+<p><img alt="" src="http://media.hihocoder.com//problem_images/20170813/15025653913001.png" /></p>
+<p><strong>输入</strong></p>
+<p>第一行包含一个整数,N。  </p>
+<p>第二行包含四个整数,(X0, Y0), (X'0, Y'0),代表大矩形左下角和右上角的坐标。  </p>
+<p>以下N-1行每行包含四个整数,(Xi, Yi), (X'i, Y'i),代表其中一个小矩形的左下角和右上角坐标。</p>
+<p>对于30%的数据,1 &lt;= N &lt;= 1000  </p>
+<p>对于100%的数据,1 &lt;= N &lt;= 100000 所有的坐标(X, Y)满足 0 &lt;= X, Y &lt;= 100000000</p>
+<p><strong>输出</strong></p>
+<p>输出四个整数(X, Y), (X', Y')代表缺失的那块小矩形的左下角和右上角的坐标。</p>
+<p>样例输入</p>
+<pre><code>5  
+0 0 4 5  
+0 0 3 1  
+0 1 2 5  
+3 0 4 5  
+2 2 3 5
+</code></pre>
+
+<p>样例输出</p>
+<pre><code>2 1 3 2
+</code></pre>
+
+<h2 id="_2">解题代码</h2>
+<pre><code class="c++">#include &lt;iostream&gt;
+#include &lt;cstring&gt;
+#include &lt;algorithm&gt;
+#include &lt;vector&gt;
+using namespace std;
+typedef long long LL;
+int n, m;
+int aa, bb, cc, dd;
+vector&lt;LL&gt; v, res;
+int main() {
+    scanf(&quot;%d%d%d%d%d&quot;, &amp;n, &amp;aa, &amp;bb, &amp;cc, &amp;dd);
+    m = dd + 1;
+    v.push_back((LL)aa * m + bb);
+    v.push_back((LL)aa * m + dd);
+    v.push_back((LL)cc * m + bb);
+    v.push_back((LL)cc * m + dd);
+    for (int i = 1; i &lt; n; ++i) {
+        int a, b, c, d;
+        scanf(&quot;%d%d%d%d&quot;, &amp;a, &amp;b, &amp;c, &amp;d);
+        v.push_back((LL)a * m + b);
+        v.push_back((LL)a * m + d);
+        v.push_back((LL)c * m + b);
+        v.push_back((LL)c * m + d);
+    }
+    sort(v.begin(), v.end());
+    // for (auto t: v) printf(&quot;%d\n&quot;, t);
+    int i = 0;
+    while (i &lt; v.size()) {
+        int cnt = 0;
+        int j = i + 1;
+        if (v[j] != v[i]) res.push_back(v[i]);
+        else j++;
+        if (res.size() == 4) break;
+        i = j;
+    }
+    // for (auto t: res) printf(&quot;res:%lld\n&quot;, t);
+    printf(&quot;%lld %lld %lld %lld&quot;, res[0] / m, res[0] % m, res[3] / m, res[3] % m);
+    return 0;
+}
+</code></pre>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    <br>
+</div>
+
+</body>
+</html>

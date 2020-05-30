@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/hiho%E6%AF%94%E8%B5%9B/%E7%BC%96%E7%A8%8B%E7%BB%83%E4%B9%A0%E8%B5%9B89/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>编程练习赛89 - 图像/视频算法</title>
+    <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "\u7f16\u7a0b\u7ec3\u4e60\u8d5b89", url: "#_top", level:1, children: [
+              {title: "\u4e00\u3001\u90fd8102\u5e74\u4e86", url: "#8102", level:2, children: [ 
+              ]},
+              {title: "\u4e8c\u3001\u5730\u5f62\u9ad8\u5ea6", url: "#_1", level:2, children: [ 
+              ]},
+              {title: "\u4e09\u3001\u533a\u95f4\u6c42\u5e76", url: "#_2", level:2, children: [ 
+              ]},
+              {title: "\u56db\u3001\u5947\u5076\u4ea4\u9519\u6392\u52172", url: "#2", level:2, children: [ 
+              ]},
+          ]},
+        ];
+    </script>
+    <script src="../../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+    <h1 id="89">编程练习赛89</h1>
+<h2 id="8102">一、都8102年了</h2>
+<ul>
+<li><strong>描述</strong></li>
+</ul>
+<p>"都8102年了"是2018年网络流行语,8102是将今年年份2018的各位数字倒排的结果,常用来表达“都这个年头了,怎么还有某某事情发生"之意。  </p>
+<p>这个梗的关键在于将年份各位数字倒排之后,得到一个非常遥远的未来年份。小Hi想知道,哪些年份适合使用这个梗。具体来说,一个年份Y,倒排之后得到年份X,如果X-Y&gt;=1000,我们就认为Y适合这个梗。  </p>
+<p>给定起止年份,请你判断这段时间内有几个年份适合这个梗。</p>
+<ul>
+<li><strong>输入输出</strong></li>
+</ul>
+<blockquote>
+<ul>
+<li><strong>输入</strong></li>
+</ul>
+</blockquote>
+<p>两个正整数代表年份,A和B。  </p>
+<p>1000 &lt;= A &lt;= B &lt;= 9999</p>
+<blockquote>
+<ul>
+<li><strong>输出</strong></li>
+</ul>
+</blockquote>
+<p>一个整数代表答案</p>
+<p>样例输入</p>
+<pre><code>2018 2020
+</code></pre>
+
+<p>样例输出</p>
+<pre><code>2
+</code></pre>
+
+<ul>
+<li><strong>解题代码</strong></li>
+</ul>
+<pre><code class="c++">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int main() {
+    int A, B, ans = 0;
+    scanf(&quot;%d %d&quot;, &amp;A, &amp;B);
+    for(int i = A; i &lt;= B; ++i) {
+        int j = i, k = 0;
+        for(int t = 0; t &lt; 4; ++t) k = k * 10 + j % 10, j /= 10;
+        if(k - i &gt;= 1000) ans++;
+    }
+    printf(&quot;%d\n&quot;, ans);
+    return 0;
+}
+</code></pre>
+
+<h2 id="_1">二、地形高度</h2>
+<ul>
+<li><strong>描述</strong></li>
+</ul>
+<p>给定一个NxN的01矩阵,代表一张地图。其中0代表海洋,1代表陆地。  </p>
+<p>其中海洋的高度都是0,并且相邻(上下左右)的两个格子的地形高度相差不超过1。  </p>
+<p>请你判断地图上最高的格子的高度可能到达多少?</p>
+<ul>
+<li><strong>输入输出</strong></li>
+</ul>
+<blockquote>
+<ul>
+<li><strong>输入</strong></li>
+</ul>
+</blockquote>
+<p>第一行包含一个整数N。  </p>
+<p>以下N行包含一个NxN的01矩阵。  </p>
+<p>矩阵中至少包含1个0。  </p>
+<p>1 &lt;= N &lt;= 1000</p>
+<blockquote>
+<ul>
+<li><strong>输出</strong></li>
+</ul>
+</blockquote>
+<p>一个整数代表答案</p>
+<p>样例输入</p>
+<pre><code>3
+011
+001
+111
+</code></pre>
+
+<p>样例输出</p>
+<pre><code>2
+</code></pre>
+
+<ul>
+<li><strong>解题代码</strong></li>
+</ul>
+<pre><code class="c++">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+int vis[1111][1111], M[1111][1111];
+typedef pair&lt;int, int&gt; pii;
+queue&lt;pii&gt; q;
+int N;
+
+int dx[] = {-1, 0, 1, 0};
+int dy[] = {0, 1, 0, -1};
+inline bool in(int x, int y) {
+    return x &gt;= 1 &amp;&amp; x &lt;= N &amp;&amp; y &gt;= 1 &amp;&amp; y &lt;= N;
+}
+
+int main() {
+    scanf(&quot;%d&quot;, &amp;N);
+    for(int i = 1; i &lt;= N; ++i)
+        for(int j = 1; j &lt;= N; ++j)
+            M[i][j] = N * N;
+    for(int i = 1; i &lt;= N; ++i) {
+        char s[1111];
+        scanf(&quot;%s&quot;, s + 1);
+        for(int j = 1; j &lt;= N; ++j) {
+            if(s[j] == '0') {
+                q.push(pii(i, j)), M[i][j] = 0, vis[i][j] = 1;
+            }
+        }
+    }
+    while(!q.empty()) {
+        pii tmp = q.front(); q.pop();
+        int x = tmp.first, y = tmp.second;
+        for(int d = 0; d &lt; 4; ++d) {
+            int nx = x + dx[d], ny = y + dy[d];
+            if(in(nx, ny) &amp;&amp; !vis[nx][ny]) {
+                q.push(pii(nx, ny));
+                vis[nx][ny] = 1;
+                M[nx][ny] = M[x][y] + 1;
+            }
+        }
+    }
+    int ans = 0;
+    for(int i = 1; i &lt;= N; ++i)
+        for(int j = 1; j &lt;= N; ++j)
+            ans = max(ans, M[i][j]);
+    printf(&quot;%d\n&quot;, ans);
+    return 0;
+}
+</code></pre>
+
+<h2 id="_2">三、区间求并</h2>
+<ul>
+<li><strong>描述</strong></li>
+</ul>
+<p>给定数轴上的N个区间,这些区间可能是开区间、闭区间或者半开半闭区间。请你求出这些区间的并集,并且用最少数量的区间的并表示这个并集。  </p>
+<p>例如[0, 10), [10, 15], [16, 30), [30, 30] 的并可以表示成[0, 15], [16, 30]的并。</p>
+<ul>
+<li><strong>输入输出</strong></li>
+</ul>
+<blockquote>
+<ul>
+<li><strong>输入</strong></li>
+</ul>
+</blockquote>
+<p>第一行包含一个整数N。  </p>
+<p>以下N行每行一个区间:(A, B)或(A, B]或[A, B)或[A, B]  </p>
+<p>1 &lt;= N &lt;= 100000  </p>
+<p>0 &lt;= A &lt;= B &lt;= 1000000</p>
+<blockquote>
+<ul>
+<li><strong>输出</strong></li>
+</ul>
+</blockquote>
+<p>第一行包含一个整数M,代表最少的区间数量。  </p>
+<p>以下N行按区间从左到右的顺序每行输出一个区间。</p>
+<p>样例输入</p>
+<pre><code>4  
+[10, 15]
+[0, 10)  
+[16, 30)
+[30, 30]
+</code></pre>
+
+<p>样例输出</p>
+<pre><code>2  
+[0, 15]
+[16, 30]
+</code></pre>
+
+<ul>
+<li><strong>解题代码</strong></li>
+</ul>
+<pre><code class="c++">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+struct I {
+    int l, r, cl, cr;
+    I(int _l = 0, int _r = 0, int _cl = 0, int _cr = 0) {
+        l = _l, r = _r, cl = _cl, cr = _cr;
+    }
+    friend bool operator &lt; (I A, I B) {
+        if(A.l != B.l) return A.l &lt; B.l;
+        return A.cl &gt; B.cl;
+    }
+};
+vector&lt;I&gt; v, ans;
+
+int main() {
+    int N;
+    scanf(&quot;%d&quot;, &amp;N); getchar();
+    for(int i = 1; i &lt;= N; ++i) {
+        int l, r, cl = 0, cr = 0;
+        char s[1111];
+        gets(s);
+        int len = strlen(s);
+        for(int j = 0; j &lt; len; ++j) if(s[j] == ',') s[j] = ' ';
+        if(s[0] == '[') cl = 1;
+        if(s[len - 1] == ']') cr = 1;
+        sscanf(s + 1, &quot;%d%d&quot;, &amp;l, &amp;r);
+        v.emplace_back(I(l, r, cl, cr));
+    }
+    sort(v.begin(), v.end());
+    int l = v[0].l, r = v[0].r, cl = v[0].cl, cr = v[0].cr;
+    for(int i = 1; i &lt; v.size(); ++i) {
+        if(v[i].l &gt; r || v[i].l == r &amp;&amp; !cr &amp;&amp; !v[i].cl) {
+            ans.emplace_back(I(l, r, cl, cr));
+            l = v[i].l, r = v[i].r, cl = v[i].cl, cr = v[i].cr;
+        }
+        else if(v[i].r &gt; r) r = v[i].r, cr = v[i].cr;
+        else if(v[i].r == r) cr |= v[i].cr;
+    }
+    ans.emplace_back(I(l, r, cl, cr));
+    printf(&quot;%u\n&quot;, ans.size());
+    for(int i = 0; i &lt; ans.size(); ++i) {
+        putchar(ans[i].cl ? '[' : '(');
+        printf(&quot;%d, %d&quot;, ans[i].l, ans[i].r);
+        puts(ans[i].cr ? &quot;]&quot; : &quot;)&quot;);
+    }
+    return 0;
+}
+</code></pre>
+
+<h2 id="2">四、奇偶交错排列2</h2>
+<ul>
+<li><strong>描述</strong></li>
+</ul>
+<p>如果一个1~N的排列P=[A1, A2, ... AN]满足任意两个相邻整数都是一个奇数另一个偶数,我们就称P是奇偶交错排列。  </p>
+<p>给定两个整数N和K,请你输出所有1~N的奇偶交错排列中按字典序第K小的排列。</p>
+<ul>
+<li><strong>输入输出</strong></li>
+</ul>
+<blockquote>
+<ul>
+<li><strong>输入</strong></li>
+</ul>
+</blockquote>
+<p>两个整数N和K。  </p>
+<p>1 &lt;= N &lt;= 100  </p>
+<p>1 &lt;= K &lt;= 1000000000</p>
+<blockquote>
+<ul>
+<li><strong>输出</strong></li>
+</ul>
+</blockquote>
+<p>输出一个排列。</p>
+<p>样例输入</p>
+<pre><code>4 3
+</code></pre>
+
+<p>样例输出</p>
+<pre><code>2 1 4 3
+</code></pre>
+
+<ul>
+<li><strong>解题代码</strong></li>
+</ul>
+<pre><code class="c++">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+typedef long long ll;
+ll fac[111];
+
+inline ll cal(int odd, int even) {
+    return min(fac[odd] * fac[even], 2000000000ll);
+}
+
+set&lt;int&gt; O, E;
+set&lt;int&gt; :: iterator it;
+
+int main() {
+    fac[0] = 1;
+    for(int i = 1; i &lt; 111; ++i) fac[i] = min(2000000000ll, fac[i - 1] * i);
+    int N, K;
+    scanf(&quot;%d %d&quot;, &amp;N, &amp;K);
+    for(int i = 1; i &lt;= N; ++i)
+        if(i &amp; 1) O.insert(i);
+        else E.insert(i);
+    if(N % 2 == 0) {
+        ll t = cal(N / 2, N / 2 - 1);
+        for(int i = 1; i &lt;= N; ++i) {
+            if(i &amp; 1) {
+                if(i * t &gt;= K) {
+                    O.erase(i); K -= (i - 1) * t;
+                    swap(O, E);
+                    printf(&quot;%d%c&quot;, i, 1 == N ? '\n' : ' ');
+                    break;
+                }
+            }
+            else {
+                if(i * t &gt;= K) {
+                    E.erase(i); K -= (i - 1) * t;
+                    printf(&quot;%d%c&quot;, i, 1 == N ? '\n' : ' ');
+                    break;
+                }
+            }
+        }
+        N--;
+    }
+    for(int i = 1; i &lt;= N; ++i) {
+        int ans = 0;
+        if(i &amp; 1) {
+            it = O.begin();
+            for(int j = 1; j &lt;= O.size(); ++j) {
+                if(j * cal(O.size() - 1, E.size()) &gt;= K) {
+                    ans = *it; O.erase(ans); K -= (j - 1) * cal(O.size(), E.size());
+                    break;
+                }
+                ++it;
+            }
+        }
+        else {
+            it = E.begin();
+            for(int j = 1; j &lt;= E.size(); ++j) {
+                if(j * cal(O.size(), E.size() - 1) &gt;= K) {
+                    ans = *it; E.erase(ans); K -= (j - 1) * cal(O.size(), E.size());
+                    break;
+                }
+                ++it;
+            }
+        }
+        printf(&quot;%d%c&quot;, ans, i == N ? '\n' : ' ');
+    }
+    return 0;
+}
+</code></pre>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    <br>
+</div>
+
+</body>
+</html>

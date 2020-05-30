@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/hiho%E6%AF%94%E8%B5%9B/hiho%E7%AC%AC001%E5%91%A8/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>hiho第001周:最长回文子串 - 图像/视频算法</title>
+    <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "hiho\u7b2c001\u5468:\u6700\u957f\u56de\u6587\u5b50\u4e32", url: "#_top", level:1, children: [
+          ]},
+        ];
+    </script>
+    <script src="../../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+    <h1 id="hiho001">hiho第001周:最长回文子串</h1>
+<ul>
+<li><strong>题目描述</strong></li>
+</ul>
+<p>小Hi和小Ho是一对好朋友,出生在信息化社会的他们对编程产生了莫大的兴趣,他们约定好互相帮助,在编程的学习道路上一同前进。</p>
+<p>这一天,他们遇到了一连串的字符串,于是小Hi就向小Ho提出了那个经典的问题:“小Ho,你能不能分别在这些字符串中找到它们每一个的最长回文子串呢?”</p>
+<p>小Ho奇怪的问道:“什么叫做最长回文子串呢?”</p>
+<p>小Hi回答道:“一个字符串中连续的一段就是这个字符串的子串,而回文串指的是12421这种从前往后读和从后往前读一模一样的字符串,所以最长回文子串的意思就是这个字符串中最长的身为回文串的子串啦~”</p>
+<p>小Ho道:“原来如此!那么我该怎么得到这些字符串呢?我又应该怎么告诉你我所计算出的最长回文子串呢?</p>
+<p>小Hi笑着说道:“这个很容易啦,你只需要写一个程序,先从标准输入读取一个整数N（N&lt;=30),代表我给你的字符串的个数,然后接下来的就是我要给你的那N个字符串（字符串长度&lt;=10^6)啦。而你要告诉我你的答案的话,只要将你计算出的最长回文子串的长度按照我给你的顺序依次输出到标准输出就可以了!你看这就是一个例子。”</p>
+<blockquote>
+<ul>
+<li><strong>提示一</strong></li>
+</ul>
+</blockquote>
+<p>良久,小Ho仍然没有头绪,于是只能向小Hi求助。</p>
+<p>小Hi清了清嗓子,缓缓说道:“让我从简单的说起吧,我给你一个字符串,你能不能告诉我它是不是一个回文串呢?”</p>
+<p>小Ho回答道:“这个我当然可以啦!只要将这个字符串反过来,然后比较和原来的字符串是不是一样的不就行了?”</p>
+<p>小Hi追问道:“也就是说你想要新建一个字符串咯?”</p>
+<p>小Ho道:“那是当然,不然怎么比较呢?”</p>
+<p>小Hi笑道:“但是你有没有注意到你在比较原来的字符串A和新字符串B的时候,A的第一个字符就是B的最后一个字符,而A的最后一个字符就是B的第一个字符,那么这样就比较了两次是不是浪费了效率呢?”</p>
+<p>小Ho恍然道:“似乎是这样的!我知道了,我也不需要新建一个字符串了,我只需要比较A的第一个字符和最后一个字符是否相同,第二个字符和倒数第二个字符是否相同,以此类推,这样就只要比较字符串长度的一半次数就行了是不是?”</p>
+<p>小Hi回答道:“没错!那你对于一个字符串,一一枚举它的子串,然后判断这个子串是不是回文子串,如果是的话就更新当前保存的最长的那一个,是不是就可以了?”</p>
+<p>小Ho开心道:“是的!这个问题是不是就这么解决了?”</p>
+<p>小Hi叹息道:“NONONO!你这最多也就拿个60分吧。”</p>
+<p>小Ho遗憾的说道:“才及格啊,那我要怎么多拿点分呢?”</p>
+<blockquote>
+<ul>
+<li><strong>提示二</strong></li>
+</ul>
+</blockquote>
+<p>小Hi道:“不急不急,待我慢慢道来,你有没有想过之前的解法有没有什么问题?”</p>
+<p>小Ho问道:“有什么问题?”</p>
+<p>小Hi道:“你想想,如果一个字符串的[3, 7]这一段已经不是回文子串了,[2, 8]这一段还有可能是回文子串么?”</p>
+<p>小Ho惊道:“好像不可能,那我之前不是有很多的计算都白费了,有没有什么办法来解决这个问题呢?我得好好想想!”言罢,小Ho沉思了起来。</p>
+<p>良久,代表着成功的微笑出现来的小Ho的嘴边:“我知道了!我在枚举子串的时候换一种方式来进行枚举,不是枚举它的起止位置而是尝试枚举子串的中心位置,然后再从小到大依次枚举这个子串的长度,一旦发现已经不是一个回文串了就继续尝试下一个中心位置,这样,似乎就能够避免掉很多问题呢!”</p>
+<p>小Hi赞许的点了点头,说道:“没错,这样的确会在一些情况下降低用于计算的时间呢,但是一个全是a的字符串,你这样的枚举方法似乎也没有多大用处呢?不过这样你也能拿个80分了哦!”</p>
+<p>小Ho点了点头,说道:“没错,在最坏情况下,这种方法并没有比之前的方法好到哪里去,但是我的直觉告诉我肯定有更加高效的方法来进行计算呢,让我再好好想想吧!。”</p>
+<blockquote>
+<ul>
+<li><strong>提示三</strong></li>
+</ul>
+</blockquote>
+<p>小Ho这一想就是三天,小Hi也是看不下去了,决定来开导开导小Ho:“小Ho,你有没有想过,在之前的计算中,计算出以每一个位置为中心的最长回文子串的长度有没有什么用呢?”</p>
+<p>小Ho答道:“我想想,如果以第5个字符为中心的最长回文子串的长度是5的话,这就告诉了我[3, 7]这一段是一个回文子串,所以呢?”</p>
+<p>小Hi继续提示道:“假设这时候你想要计算以第6个字符为中心的最长回文子串的长度,你有没有什么已知的信息了?”</p>
+<p>小Ho边想边说道:“唔,首先第6个字符和第4个字符是一样的,第7个字符和第3个字符是一样的,而第5个字符本身就肯定和第5个字符一样,那么如果[3, 5]这一段是回文子串的话,那么[5, 7]这一段肯定也是回文子串。也就是说,如果令f[i]表示以第i个字符为中心的最长回文子串的长度,我们就会有f[i] &gt;= f[i–2]?”</p>
+<p>“不对,还要考虑到f[i – 1]的值,如果f[i – 1]太小就没有意义了,应该是f(i)≥min⁡{f(i-2), f(i-1)-2}。”小Ho接着补充道。</p>
+<p>“没错,但是还有一个问题,如果此时我告诉你f(5)=1,但是f(4) = 7, f(2) = 3呢?”小Hi追问道。</p>
+<p>小Ho想了想,回答道:“理论上来说,我可以通过这些信息知道f(6)&gt;=3,但是由于f(5)=1所以我只能计算出来f(6)&gt;=-1我知道了,我不应该是通过f(i – 1)来辅助计算,而是通过使得右边界（j + f(j) / 2）最大的那个j来辅助计算才是,所以公式将变成f(i)≥ min{f(2<em>j-i) , f(j) -2</em>(i-j)}这种形式了!”</p>
+<p>小Hi继续问道:“那知道了这个公式之后,你打算怎么做呢?”</p>
+<p>小Ho想也没想便道:“这简单,我只要在之前枚举中心位置那种方法的基础上,统计使得回文串右边界（j + f(j) / 2）最大的那个j,然后再计算每一个i的时候,都可以通过f(i)≥min⁡{f(2<em>j-i), f(j)-2</em>(i-j)}这个公式来知道f(i)的一个最小值,这样即使是在我们所提到的那种最坏情况下,也可以节省掉很多不必要的计算呢～</p>
+<blockquote>
+<ul>
+<li><strong>提示四</strong></li>
+</ul>
+</blockquote>
+<p>一晃就是一周过去了,小Hi还是没有看到小Ho写的程序,于是决定上门去问问。到了小Ho家,小Hi惊讶的发现小Ho对着电脑屏幕,一脸郁闷的样子,于是他走上前问道:“小Ho小Ho,你怎么了啊?”</p>
+<p>小Ho一点精神也没有的回答道:“就是上周的那个回文子串的程序啊,我写的时候发现我们当时考虑的解决方法只能处理长度为奇数的回文子串,长度为偶数的回文子串似乎要进行一点点细微的修改,但是这样修改过后就不能用我们最后写出的那个公式来互相帮助进行运算了,要进行很复杂的讨论,我就是一直在想有没有很优美的方法能来解决这个问题。”</p>
+<p>小Hi惊讶道:“你就想这个想了一周么?我猜你一定是绕进了分类讨论的这个胡同里走不出来了,为什么不想想有没有别的解决方法呢?”</p>
+<p>小Ho问道:“还有什么解决方法呀?”</p>
+<p>小Hi答道:“既然长度为偶数的回文子串不好处理,我们为什么不去掉这些回文子串,只处理长度为奇数的回文子串呢?”</p>
+<p>小Ho叹息道:“但是长度为偶数的回文子串也可以是答案啊!”</p>
+<p>“除非……”小Hi插嘴道。</p>
+<p>“除非什么?”小H问道。</p>
+<p>“你将所有的长度为偶数的回文子串都变成长度为奇数的回文子串啊,你想想之所以是为偶数,那是因为没有一个中心字符,但是如果我们在原来字符串的基础上,在任意两个相邻的字符间都插入一个特殊字符,是不是无论是原来字符串中长度为奇数的回文子串还是长度为偶数的回文子串,在新的字符串中都有一个长度为奇数的回文子串与之进行对应呢?”</p>
+<p>“哦!我了解了,这样我只需要对新的字符串按照我们之前的算法进行计算,统计出的最长回文子串将那些特殊字符去掉之后,就是原来字符串里的最长回文子串了。”小Ho开心的笑道,一连几天的郁闷也是一扫而空。</p>
+<p>“但是要注意哦,我们希望得到的最长是原来字符串里的最长,而不是新字符串里的最长,毕竟特殊字符的个数会因为中心字符是不是特殊字符而有差别的哦。”小Hi提醒道。</p>
+<p>“恩恩,这样我总能拿到满分了吧?”</p>
+<p>“没错呢!”</p>
+<ul>
+<li><strong>输入输出</strong></li>
+</ul>
+<p>样例输入</p>
+<pre><code class="sh">3
+abababa
+aaaabaa
+acacdas
+</code></pre>
+
+<p>样例输出</p>
+<pre><code class="sh">7
+5
+3
+</code></pre>
+
+<ul>
+<li><strong>解题代码</strong></li>
+</ul>
+<pre><code class="c">#include &lt;cstdio&gt;
+#include &lt;cstring&gt;
+#include &lt;string.h&gt;
+char str[1000002 + 1200];
+
+int fast(char *p) {
+    int ans = 1;
+    for (int i = 1; p[i]; ++i){
+        int s = i, e = i, t;
+        while (p[e + 1] == p[i]) ++e;
+        i = e;
+        while (p[s - 1] == p[e + 1]) --s, ++e;
+        if ((t = e - s + 1) &gt; ans) ans = t;
+    }
+    return ans;
+}
+
+int main(){
+    str[0]='$';
+    int n;
+    scanf(&quot;%d&quot;, &amp;n);
+    while (n--) {
+        scanf(&quot;%s&quot;, str + 1);
+        printf(&quot;%d\n&quot;, fast(str));
+    }
+    return 0;
+}
+</code></pre>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    <br>
+</div>
+
+</body>
+</html>

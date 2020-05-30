@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/hiho%E6%AF%94%E8%B5%9B/hiho%E7%AC%AC010%E5%91%A8/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>hiho第010周:后序遍历 - 图像/视频算法</title>
+    <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "hiho\u7b2c010\u5468:\u540e\u5e8f\u904d\u5386", url: "#_top", level:1, children: [
+          ]},
+        ];
+    </script>
+    <script src="../../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+    <h1 id="hiho010">hiho第010周:后序遍历</h1>
+<ul>
+<li><strong>题目描述</strong></li>
+</ul>
+<p>在参与过了美食节之后,小Hi和小Ho在别的地方又玩耍了一阵子,在这个过程中,小Ho得到了一个非常有意思的玩具——一棵由小球和木棍连接起来的二叉树!</p>
+<p>小Ho对这棵二叉树爱不释手,于是给它的每一个节点都标记了一个标号——一个属于A..Z的大写字母,并且没有任意两个节点的标号是一样的。小Hi也瞅准了这个机会,重新巩固了一下小Ho关于二叉树遍历的基础知识~就这样,日子安稳的过了两天。</p>
+<p>这天,小Ho正好在求解这棵二叉树的前序、中序和后序遍历的结果,但是却在求出前序遍历和中序遍历之后不小心把二叉树摔到了地上,小球和木棍等零件散落了一地!</p>
+<p>小Ho损失了心爱的玩具,正要嚎啕大哭起来,所幸被小Hi发现了,劝说道:“别着急,这不是零件都还在么?拼起来不就是了?”</p>
+<p>“可是我忘记了二叉树长什么样子了!”小Ho沮丧道。</p>
+<p>“这个简单,你不是刚刚求出了这棵二叉树的前序和中序遍历的结果么,利用这两个信息就可以还原出整棵二叉树来哦!”</p>
+<p>“这样么?!!”小Ho止住了泪水,问道:“那要怎么做呢?”</p>
+<p>没错!小Ho在这一周遇到的问题便是:给出一棵二叉树的前序和中序遍历的结果,还原这棵二叉树并输出其后序遍历的结果。</p>
+<blockquote>
+<ul>
+<li><strong>提示:分而治之——化大为小,化小为无</strong></li>
+</ul>
+</blockquote>
+<p>“这可就要从头说起了,我们先找一棵二叉树作为例子吧!”小Hi在纸上画了画,递给了小Ho。</p>
+<p><img alt="" src="http://media.hihocoder.com/problem_images/20140906/14099742763846.jpg" /></p>
+<p>“不妨假设你的二叉树长成这个样子~”小Hi道。</p>
+<p>“可是我的二叉树并不是长成这个样子啊!虽然我读书少,但是你不要骗我好不好!”小Ho一脸气愤道。</p>
+<p>“我都说了是假设!是为了能让你明白如何通用的去解决这样的问题!”小Hi无奈道。</p>
+<p>“好吧……你接着说。”小Ho算是认可了这个说法。</p>
+<p>“那么对于这棵二叉树,你先来计算一下它的前序遍历和中序遍历的结果吧!”小Hi也是毫不含糊就开始下发任务。</p>
+<p>“唔……前序遍历是ABDEGHCFIJ,中序遍历……我想想啊……是DBGEHACIJF!”小Ho并没有花费多长时间就给出了答案。</p>
+<p>“你还记得前序遍历的递归定义么?”小Hi点了点头又继续问道。</p>
+<p>“是‘根节点’+‘左子树的前序遍历’+‘右子树的前序遍历’!”小Ho毫不犹豫的答道:“而在这里体现出来就是‘A'+‘BDEGH’+‘CFIJ’”。</p>
+<p>“那中序遍历呢?”小Hi继续问道。</p>
+<p>“是‘左子树的中序遍历’+‘根节点’+‘右子树的中序遍历’!在这里也就是‘DBGEH’+‘A’+‘CIJF’。”小Ho这次花的时间更少了。</p>
+<p>“还记得动态规划时候我们一般处理的方法么?我们这里也可以这样做哦,如果我们定义<code>post_order(str1, str2)</code>为一棵前序遍历的结果为str1,中序遍历的结果为str2的二叉树的后序遍历的结果的话,我们有没有办法把它化解成为子问题呢?”小Hi道。</p>
+<p>“让我想想……”小Ho拿出纸笔开始演算起来:“如果我要求解<code>post_order(str1, str2)</code>的话,首先不难发现,根据‘前序遍历’str1=‘根节点’+‘左子树的前序遍历’+‘右子树的前序遍历’,我可以知道这棵二叉树的根节点root便是str1的第一个字符!”小Ho道。</p>
+<p>“而我在知道了‘根节点’root之后,我便可以利用‘中序遍历’str2=‘左子树的中序遍历’+‘根节点’+‘右子树的中序遍历’,求解出‘左子树的中序遍历’str2L和‘右子树的中序遍历’str2R!”</p>
+<p>“接下来,由于一棵子树的前序遍历和中序遍历的长度相同,那么仍然是根据‘前序遍历’str1=‘根节点’+‘左子树的前序遍历’+‘右子树的前序遍历’,我可以知道从str1的第2个字符开始的str2L.length()个字符便是‘左子树的前序遍历’str1L,而这之后的部分便是‘右子树的前序遍历’str1R!”小Ho说到这里,顿了顿,希望从小Hi处得到些反馈。</p>
+<p>“没错!那你准备如何求解<code>post_order(str1, str2)</code>呢?”小Hi肯定道。</p>
+<p>“这只要根据之前求出的结果,和‘后序遍历’=‘左子树的后序遍历’+‘右子树的后序遍历’+‘根节点’,便可以知道——<code>post_order(str1, str2)=post_order(str1l, str2l)+post_order(str1r, str2r)+root</code>这样一个式子来!而这个问题的规模——也就是二叉树的大小,是一直在缩小的,所以是能够这样不断的划分做下去的!也就是说我之后可以将当前根节点的左子树又拆分成为两个问题来解决,一直到当前节点是叶子节点了为止!然后慢慢的将这些答案拼成上层的问题的答案,而这个过程只需要使用递归完成就可以了!”</p>
+<p>“听起来很容易的样子呢!那你要不要赶紧去实现了算法,算出你的宝贝二叉树长什么样呢?”小Hi满意的点了点头,随即笑着问道。</p>
+<p>“那是自然!”</p>
+<ul>
+<li><strong>输入输出</strong></li>
+</ul>
+<blockquote>
+<ul>
+<li><strong>输入</strong></li>
+</ul>
+</blockquote>
+<p>每个测试点(输入文件)有且仅有一组测试数据。</p>
+<p>每组测试数据的第一行为一个由大写英文字母组成的字符串,表示该二叉树的前序遍历的结果。</p>
+<p>每组测试数据的第二行为一个由大写英文字母组成的字符串,表示该二叉树的中序遍历的结果。</p>
+<p>对于100%的数据,满足二叉树的节点数小于等于26。</p>
+<blockquote>
+<ul>
+<li><strong>输出</strong></li>
+</ul>
+</blockquote>
+<p>对于每组测试数据,输出一个由大写英文字母组成的字符串,表示还原出的二叉树的后序遍历的结果。</p>
+<p>样例输入</p>
+<pre><code class="sh">AB
+BA
+</code></pre>
+
+<p>样例输出</p>
+<pre><code class="sh">BA
+</code></pre>
+
+<ul>
+<li><strong>解题代码</strong></li>
+</ul>
+<pre><code class="c">#include &lt;cstdio&gt;
+char pre[30], in[30];
+void postorder(int i, int j, int k) {
+    int t;
+    if(!in[j] || j &gt;= k)
+        return;
+    for(t = j; pre[i] != in[t]; t++);
+    postorder(i+1, j, t);
+    postorder(i+t-j+1, t+1, k);
+    printf(&quot;%c&quot;, pre[i]);
+}
+int main() {
+    scanf(&quot;%s%s&quot;, pre, in);
+    postorder(0, 0, 26);
+    printf(&quot;\n&quot;);
+    return 0;
+}
+</code></pre>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    <br>
+</div>
+
+</body>
+</html>

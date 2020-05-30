@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/hiho%E6%AF%94%E8%B5%9B/hiho%E7%AC%AC016%E5%91%A8/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>hiho第016周:RMQ-ST算法 - 图像/视频算法</title>
+    <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "hiho\u7b2c016\u5468:RMQ-ST\u7b97\u6cd5", url: "#_top", level:1, children: [
+          ]},
+        ];
+    </script>
+    <script src="../../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+    <h1 id="hiho016rmq-st">hiho第016周:RMQ-ST算法</h1>
+<ul>
+<li><strong>题目描述</strong></li>
+</ul>
+<p>小Hi和小Ho在美国旅行了相当长的一段时间之后,终于准备要回国啦!而在回国之前,他们准备去超市采购一些当地特产——比如汉堡(大雾)之类的回国。</p>
+<p>但等到了超市之后,小Hi和小Ho发现者超市拥有的商品种类实在太多了——他们实在看不过来了!于是小Hi决定向小Ho委派一个任务:假设整个货架上从左到右拜访了N种商品,并且依次标号为1到N,每次小Hi都给出一段区间[L,R],小Ho要做的是选出标号在这个区间内的所有商品重量最轻的一种,并且告诉小Hi这个商品的重量,于是他们就可以毫不费劲的买上一大堆东西了——多么可悲的选择困难症患者。</p>
+<p>(虽然说每次给出的区间仍然要小Hi来进行决定——但是小Hi最终机智的选择了使用随机数生成这些区间!但是为什么小Hi不直接使用随机数生成购物清单呢?——问那么多做什么!)</p>
+<blockquote>
+<ul>
+<li><strong>提示一:二分法是宇宙至强之法!(真的么?)</strong></li>
+</ul>
+</blockquote>
+<p>虽说小Ho身经百战,但是面对这样一个他从来没有接触过的问题也一时挠头——数据范围的N和Q都在10^6这个级别,这就意味着至少需要一个时间复杂度为O(Nlog(N))才能解决这个问题。</p>
+<p>“如果我对于每个询问都扫描对应的区间,找到最小的值,那么最坏情况和平均情况下都是O(NQ)的时间复杂度,无论数据是不是随即生成的,都不是一个很好的选择。”小Ho如是想道:“这就意味着我需要事先进行一些预处理,使得一些重复计算的东西不再重复计算,才能够将复杂度降低下来。”</p>
+<p>小Ho暗自点头,随即想道:“那么如果我对于这整个区间维护一个线段树,维护每棵子树中的最小值,是不是就可以完美解决这个问题了呢?”,于是对小Hi说道:“我觉得线段树可以很好的解决这个问题!。”</p>
+<p>“没有错呢~但是相比于线段树来说,我有一个更为容易事先的算法,你想不想听?”小Hi点了点头道。</p>
+<p>“更容易实现?就是代码量更小咯?”小Ho作为一个懒病患者自然是很乐意:“快教我!”</p>
+<p>“其实你利用线段树也就是这样来减少复杂度的——先预先计算一些区间的最小值,然后把每个询问都拆成若干个计算了最小值的区间,并且统计这些区间的最小值的最小值,从而得出答案的。”小Hi先总结道:“那么其实我可以将统计的区间这样规定——统计所有长度为2的非负整数次幂的区间。”</p>
+<p>“整数次幂?也就是长度为1、2、4、8之类的区间咯?”小Ho答道:“我想想……如果我统计的是这些长度的区间的话,用pre_calc[L, Len]表示左边界为L,长度为Len的区间中的最小值——那么对于一个询问[Li, Ri],我只要找到小于这个区间长度的最大的2的非负整数次幂——T,那么这个区间中的最小值就是min{pre_calc[Li, T], pre_calc[Ri-T+1, T]}咯?”</p>
+<p>“反应的很快嘛,你看这样对于每一个询问,是不是就可以只用O(1)的时间复杂度就可以作出回答了,而且就只用一条很简单的语句而已。”小Hi笑道。</p>
+<p>“但是我还不知道怎么求这些<code>pre_calc</code>啊?”小Ho不禁问道。</p>
+<p>“我先问你,对于所有的i满足1&lt;=i&lt;=N, <code>pre_calc[i, 1]</code>是不是很好求?”小Hi反问道。</p>
+<p>“唔……是的,<code>pre_calc[i, 1]</code>就是标号为i的物品的重量<code>weight_i</code>。”小Ho答道。</p>
+<p>“那么对于,所有的i, j满足1&lt;=i&lt;=N, 1&lt;2^j&lt;=N,<code>pre_calc[i, 2^j]=min{pre_calc[i, 2^(j-1)]</code>, <code>pre_calc[i+2^(j-1), 2^(j-1)]</code>}是不是成立的?”小Hi继续问道。</p>
+<p>“额……将一个区间,分解成两个一半长度的区间,利用已经求出的值进行计算,非常的合理!”小Ho赞叹道:“甚至于只需要一个二维循环就能够计算出来了。”</p>
+<p>“怎么样!是不是比线段树简单许多呢?”小Hi笑道。</p>
+<blockquote>
+<ul>
+<li><strong>提示二:线段树不也是二分法么?</strong></li>
+</ul>
+</blockquote>
+<p>那这又是为什么呢……我感觉这两种方法都是二分区间啊。”小Ho生出一个疑问。</p>
+<p>“这是由于这道题目的性质决定的啦,这个区间上的值都是已经确定的——如果在询问的过程中,这些商品的重量还会发生改变,那么自然就不是我们之前提到的算法——ST算法能够解决的了。”小Hi点出了一个要点。</p>
+<p>“原来是这样,等等我还发现这和求的是最值有关,如果求的是和值的话,由于[Li,T]和[Ri-T+1,T]这两段区间可能会有重叠的情况,所以也是无法求解的呢!”小Ho很快也找到了另一个问题。</p>
+<p>“是的呢!所以你现在应该知道了把——充分利用题目的特性,就能够很好的减少你编程的复杂度~当然你还要注意到这两种算法的时间复杂度其实是不一样的哦,但是因为这里的N和Q是一个数量级,所以才不会影响到你的解题方法呢。”</p>
+<p>“原来是这样!”小Ho点了点头:“那么我去写程序啦!”</p>
+<p>Tips:在记录<code>pre_calc[i, 2^j]</code>的时候,不要傻乎乎的就这么存了,事实上只要用<code>pre_calc'[i, j]</code>的格式进行存储就可以了!</p>
+<ul>
+<li><strong>输入输出</strong></li>
+</ul>
+<blockquote>
+<ul>
+<li><strong>输入</strong></li>
+</ul>
+</blockquote>
+<p>每个测试点(输入文件)有且仅有一组测试数据。</p>
+<p>每组测试数据的第1行为一个整数N,意义如前文所述。</p>
+<p>每组测试数据的第2行为N个整数,分别描述每种商品的重量,其中第i个整数表示标号为i的商品的重量weight_i。</p>
+<p>每组测试数据的第3行为一个整数Q,表示小Hi总共询问的次数。</p>
+<p>每组测试数据的第N+4~N+Q+3行,每行分别描述一个询问,其中第N+i+3行为两个整数Li, Ri,表示小Hi询问的一个区间[Li, Ri]。</p>
+<p>对于100%的数据,满足N\&lt;=10^6,Q\&lt;=10^6, 1\&lt;=Li\&lt;=Ri\&lt;=N,<code>0&lt;weight\_i&lt;=10^4</code>。</p>
+<p>》 * <strong>输出</strong></p>
+<p>对于每组测试数据,对于每个小Hi的询问,按照在输入中出现的顺序,各输出一行,表示查询的结果:标号在区间[Li, Ri]中的所有商品中重量最轻的商品的重量。</p>
+<p>样例输入</p>
+<pre><code class="sh">10
+7334
+1556
+8286
+1640
+2699
+4807
+8068
+981
+4120
+2179
+5
+3 4
+2 8
+2 4
+6 8
+7 10
+</code></pre>
+
+<p>样例输出</p>
+<pre><code class="sh">1640
+981
+1556
+981
+981
+</code></pre>
+
+<ul>
+<li><strong>解题代码</strong></li>
+</ul>
+<pre><code class="c">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+int f[1000010][20],n,a,b,c;
+int main(){
+    cin&gt;&gt;n;
+    for(int i=1;i&lt;=n;++i)scanf(&quot;%d&quot;,&amp;f[i][0]);
+    for(int i=1;(1&lt;&lt;i)&lt;=n;++i)for(int j=1;j+(1&lt;&lt;i)-1&lt;=n;++j)f[j][i]=min(f[j][i-1],f[j+(1&lt;&lt;i-1)][i-1]);
+    for(cin&gt;&gt;n;n--;){
+        scanf(&quot;%d%d&quot;,&amp;a,&amp;b);
+        c=int(log(b-a+1)/log(2));
+        printf(&quot;%d\n&quot;,min(f[a][c],f[b-(1&lt;&lt;c)+1][c]));
+    }
+    return 0;
+}
+</code></pre>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    <br>
+</div>
+
+</body>
+</html>
