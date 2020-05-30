@@ -37,11 +37,11 @@
               ]},
               {title: "\u4e8c\u3001\u5fc3\u5f62\u66f2\u7ebf", url: "#_3", level:2, children: [ 
               ]},
-              {title: "Mandelbrot\u96c6\u5408", url: "#mandelbrot", level:2, children: [ 
+              {title: "\u4e09\u3001Mandelbrot\u96c6\u5408", url: "#mandelbrot", level:2, children: [ 
               ]},
               {title: "Newton\u5206\u5f62", url: "#newton", level:2, children: [ 
               ]},
-              {title: "\u6d1b\u4f26\u8328\u5438\u5f15\u5b50", url: "#_4", level:2, children: [ 
+              {title: "\u56db\u3001\u6d1b\u4f26\u8328\u5438\u5f15\u5b50", url: "#_4", level:2, children: [ 
               ]},
           ]},
         ];
@@ -114,20 +114,16 @@ y = np.cos(t)*(np.e**np.cos(t) - 2*np.cos(4*t)-np.sin(t/12)**5)
 plt.figure(figsize=(8,6))
 plt.axis('off')
 plt.plot(x,y,color='blue',linewidth = '2')
-plt.savefig(&quot;butter.png&quot;,format='png',bbox_inches='tight',transparent=True,dpi=400)
+plt.savefig(&quot;butter.jpg&quot;,dpi=400)
 </code></pre>
 
-<p><img alt="" src="../images/butter.png" /></p>
+<p><img alt="" src="http://wx1.sinaimg.cn/large/006HJ6Ndly1g57uy4mht9j31400u0aug.jpg" /></p>
 <h2 id="_3">二、心形曲线</h2>
 <div>
-<div class="MathJax_Preview">
-(x^2+y^2-1)^3-x^2y^3=0
+<div class="MathJax_Preview">(x^2+y^2-1)^3-x^2y^3=0</div>
+<script type="math/tex; mode=display">(x^2+y^2-1)^3-x^2y^3=0</script>
 </div>
-<script type="math/tex; mode=display">
-(x^2+y^2-1)^3-x^2y^3=0
-</script>
-</div>
-<p><code>python</code>程序:</p>
+<p>python程序:</p>
 <pre><code class="python">import numpy as np
 import matplotlib.pyplot as plt
 
@@ -163,15 +159,11 @@ plt.savefig(&quot;heart.jpg&quot;,dpi=400)
 </code></pre>
 
 <p><img alt="" src="http://wx3.sinaimg.cn/large/006HJ6Ndly1g57v839l5dj30u02301cz.jpg" /></p>
-<h2 id="mandelbrot"><code>Mandelbrot</code>集合</h2>
+<h2 id="mandelbrot">三、Mandelbrot集合</h2>
 <p>曼德博集合可以用复二次多项式来定义:</p>
 <div>
-<div class="MathJax_Preview">
-f_{c}(z)=z^{2}+c
-</div>
-<script type="math/tex; mode=display">
-f_{c}(z)=z^{2}+c
-</script>
+<div class="MathJax_Preview">f_{c}(z)=z^{2}+c</div>
+<script type="math/tex; mode=display">f_{c}(z)=z^{2}+c</script>
 </div>
 <p>其中<span><span class="MathJax_Preview">c</span><script type="math/tex">c</script></span>是一个复数参数。</p>
 <p>从<span><span class="MathJax_Preview">z=0</span><script type="math/tex">z=0</script></span>开始对<span><span class="MathJax_Preview">f_{c}(z)</span><script type="math/tex">f_{c}(z)</script></span>进行迭代:</p>
@@ -186,7 +178,7 @@ f_{c}(z)=z^{2}+c
 <p>每次迭代的值依序如以下序列所示:<span><span class="MathJax_Preview">(0,f_{c}(0),f_{c}(f_{c}(0)),f_{c}(f_{c}(f_{c}(0))),\ldots )</span><script type="math/tex">(0,f_{c}(0),f_{c}(f_{c}(0)),f_{c}(f_{c}(f_{c}(0))),\ldots )</script></span></p>
 <p>不同的参数<span><span class="MathJax_Preview">c</span><script type="math/tex">c</script></span>可能使序列的绝对值逐渐发散到无限大,也可能收敛在有限的区域内。曼德博集合<span><span class="MathJax_Preview">M</span><script type="math/tex">M</script></span>就是使序列不延伸至无限大的所有复数<span><span class="MathJax_Preview">c</span><script type="math/tex">c</script></span>的集合。</p>
 <p>曼德博集合有一些特性和定理,可参考:<a href="http://zh.wikipedia.org/zh-hans/%E6%9B%BC%E5%BE%B7%E5%8D%9A%E9%9B%86%E5%90%88">曼德博集合</a></p>
-<p><code>python</code>代码</p>
+<p>python代码</p>
 <pre><code class="python">import numpy as np
 import matplotlib.pylab as plt
 
@@ -235,7 +227,7 @@ x_{n+1} = x_n - \frac{f(x_n)}{f^{'}(x_n)}
 <p><img alt="" src="http://pic1.zhimg.com/80/v2-999dfa2dea9ec9df7ba991d9e0f8b25c_hd.jpg" /></p>
 <p>在<span><span class="MathJax_Preview">x_1</span><script type="math/tex">x_1</script></span>处沿着方向<span><span class="MathJax_Preview">\frac{f(x_1)}{f'(x_1)}</span><script type="math/tex">\frac{f(x_1)}{f'(x_1)}</script></span>下降,与<span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span>轴的交点即为<span><span class="MathJax_Preview">x_2</span><script type="math/tex">x_2</script></span>,循环往复就能得到方程的根。</p>
 <p>学过中学数学的我们都知道, n次方程在复数域上有<code>n</code>个根,那么用牛顿法收敛的根就可能有n个目标。牛顿法收敛到哪个根取决于迭代的起始值。根据最后的收敛结果,我们把所有收敛到同一个根的起始点画上同一种颜色,最终就形成了牛顿分形图。</p>
-<p><code>python</code>代码</p>
+<p>python代码</p>
 <pre><code class="python">import numpy as np
 import matplotlib.pyplot as plt
 from numba import jit
@@ -273,7 +265,7 @@ fig.savefig('newton.jpg')
 </code></pre>
 
 <p><img alt="" src="http://wx4.sinaimg.cn/large/006HJ6Ndly1g57vuwkfx8j30go0goq7r.jpg" /></p>
-<h2 id="_4">洛伦茨吸引子</h2>
+<h2 id="_4">四、洛伦茨吸引子</h2>
 <p>含时间参数的形式:</p>
 <div>
 <div class="MathJax_Preview">
@@ -292,7 +284,7 @@ fig.savefig('newton.jpg')
 </script>
 </div>
 <p><span><span class="MathJax_Preview">\sigma</span><script type="math/tex">\sigma</script></span>称为普兰特尔数,<span><span class="MathJax_Preview">\rho</span><script type="math/tex">\rho</script></span> 称为瑞利数。所有的<span><span class="MathJax_Preview">\sigma,\rho,\beta&gt;0</span><script type="math/tex">\sigma,\rho,\beta>0</script></span>,但通常<span><span class="MathJax_Preview">\sigma=10,\beta=8/3,\rho</span><script type="math/tex">\sigma=10,\beta=8/3,\rho</script></span>不定。若<span><span class="MathJax_Preview">\rho&lt;1</span><script type="math/tex">\rho<1</script></span>,则吸引子为原点,没有任何其他稳定点。<span><span class="MathJax_Preview">1≤\rho&lt;13.927</span><script type="math/tex">1≤\rho<13.927</script></span>时,螺线轨迹接近两点(这相当于存在阻尼振子),两点的位置由下列式子决定:<span><span class="MathJax_Preview">x=\pm \sqrt{b(\rho-1)},y=\pm \sqrt{b(\rho-1)}、z=\rho-1</span><script type="math/tex">x=\pm \sqrt{b(\rho-1)},y=\pm \sqrt{b(\rho-1)}、z=\rho-1</script></span> 。</p>
-<p><code>python</code>代码:</p>
+<p>python代码:</p>
 <pre><code class="python">import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.animation import FuncAnimation
@@ -357,7 +349,7 @@ anim = FuncAnimation(fig, animate, init_func=init, interval=20, frames=2000, bli
 anim.save('lorenz.mp4', writer='ffmpeg', fps=30, dpi=200,bitrate=1000, codec='libx264', extra_args=['-crf', '10'])
 </code></pre>
 
-<video src="../media/000f38c7lx07vGmvENUs01041200Dbzo0E010.mp4" width="600px" controls></video>
+<video src="./media/000f38c7lx07vGmvENUs01041200Dbzo0E010.mp4" width="600px" controls></video>
 
   <br>
     <style>
