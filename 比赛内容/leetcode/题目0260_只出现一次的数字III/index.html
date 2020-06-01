@@ -125,10 +125,10 @@ class Solution:
 <p><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9waWMubGVldGNvZGUtY24uY29tL0ZpZ3VyZXMvMjYwL2lzb2xhdGUzLnBuZw?x-oss-process=image/format,png" style="width: 45%"></p>
 <p><strong>算法:</strong></p>
 <p>首先计算<code>bitmask ^= x</code>,则<code>bitmask</code>不会保留出现两次数字的值,因为相同数字的异或值为<code>0</code>。但是<code>bitmask</code>会保留只出现一次的两个数字(<code>x</code>和<code>y</code>)之间的差异。</p>
-<p><img alt="" src="http://imgconvert.csdnimg.cn/aHR0cHM6Ly9waWMubGVldGNvZGUtY24uY29tL0ZpZ3VyZXMvMjYwL2RpZmZfbmV3LnBuZw?x-oss-process=image/format,png" /></p>
+<p><img src="http://imgconvert.csdnimg.cn/aHR0cHM6Ly9waWMubGVldGNvZGUtY24uY29tL0ZpZ3VyZXMvMjYwL2RpZmZfbmV3LnBuZw?x-oss-process=image/format,png" style="width: 45%"></p>
 <p>我们可以直接从<code>bitmask</code>中提取<code>x</code>和<code>y</code>吗?不能,但是我们可以用<code>bitmask</code>作为标记来分离<code>x</code>和<code>y</code>。</p>
 <p>我们通过<code>bitmask &amp; (-bitmask)</code>保留<code>bitmask</code>最右边的<code>1</code>,这个<code>1</code>要么来自<code>x</code>,要么来自<code>y</code>。</p>
-<p><img alt="" src="http://imgconvert.csdnimg.cn/aHR0cHM6Ly9waWMubGVldGNvZGUtY24uY29tL0ZpZ3VyZXMvMjYwL2lzb2xhdGUyX25ldy5wbmc?x-oss-process=image/format,png" /></p>
+<p><img src="http://imgconvert.csdnimg.cn/aHR0cHM6Ly9waWMubGVldGNvZGUtY24uY29tL0ZpZ3VyZXMvMjYwL2lzb2xhdGUyX25ldy5wbmc?x-oss-process=image/format,png" style="width: 45%"></p>
 <p>当我们找到了<code>x</code>,那么<code>y = bitmask^x</code>。</p>
 <pre><code class="python">class Solution:
     def singleNumber(self, nums: int) -&gt; List[int]:
