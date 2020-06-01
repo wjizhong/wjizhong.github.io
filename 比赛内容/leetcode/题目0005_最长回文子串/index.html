@@ -35,17 +35,7 @@
           {title: "\u9898\u76ee0005:\u6700\u957f\u56de\u6587\u5b50\u4e32", url: "#_top", level:1, children: [
               {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1", level:2, children: [ 
               ]},
-              {title: "\u89e3\u7b54\u6280\u5de7", url: "#_2", level:2, children: [
-                  {title: "\u65b9\u6cd5\u4e00:\u6700\u957f\u516c\u5171\u5b50\u4e32", url: "#_3", level:3, children: [
-                  ]},
-                  {title: "\u65b9\u6cd5\u4e8c:\u66b4\u529b\u6cd5", url: "#_4", level:3, children: [
-                  ]},
-                  {title: "\u65b9\u6cd5\u4e09:\u52a8\u6001\u89c4\u5212", url: "#_5", level:3, children: [
-                  ]},
-                  {title: "\u65b9\u6cd5\u56db:\u4e2d\u5fc3\u6269\u5c55\u7b97\u6cd5", url: "#_6", level:3, children: [
-                  ]},
-                  {title: "\u65b9\u6cd5\u4e94:Manacher \u7b97\u6cd5", url: "#manacher", level:3, children: [
-                  ]}, 
+              {title: "\u89e3\u7b54\u6280\u5de7", url: "#_2", level:2, children: [ 
               ]},
           ]},
         ];
@@ -105,7 +95,9 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>输出: "bb"</p>
 </blockquote>
 <h2 id="_2">解答技巧</h2>
-<h3 id="_3">方法一:最长公共子串</h3>
+<ul>
+<li><strong>方法一:最长公共子串</strong></li>
+</ul>
 <p>有些人会忍不住提出一个快速的解决方案,不幸的是,这个解决方案有缺陷(但是可以很容易地纠正):</p>
 <blockquote>
 <p>反转S,使之变成S'。找到S和S'之间最长的公共子串,这也必然是最长的回文子串。这似乎是可行的,让我们看看下面的一些例子。</p>
@@ -150,7 +142,9 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </code></pre>
 
 <p>这给我们提供了一个复杂度为<span><span class="MathJax_Preview">O(n^2)</span><script type="math/tex">O(n^2)</script></span>动态规划解法,它将占用<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>的空间。</p>
-<h3 id="_4">方法二:暴力法</h3>
+<ul>
+<li><strong>方法二:暴力法</strong></li>
+</ul>
 <p>很明显,暴力法将选出所有子字符串可能的开始和结束位置,并检验它是不是回文。</p>
 <p>复杂度分析</p>
 <blockquote>
@@ -184,7 +178,9 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 };
 </code></pre>
 
-<h3 id="_5">方法三:动态规划</h3>
+<ul>
+<li><strong>方法三:动态规划</strong></li>
+</ul>
 <p>为了改进暴力法,我们首先观察如何避免在验证回文时进行不必要的重复计算。考虑"ababa"这个示例。如果我们已经知道"bab"是回文,那么很明显,"ababa"一定是回文,因为它的左首字母和右尾字母是相同的。</p>
 <p>我们给出<span><span class="MathJax_Preview">P(i,j)</span><script type="math/tex">P(i,j)</script></span>的定义如下:</p>
 <div>
@@ -236,7 +232,9 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>时间复杂度:<span><span class="MathJax_Preview">O(n^2)</span><script type="math/tex">O(n^2)</script></span>,这里给出我们的运行时间复杂度为<span><span class="MathJax_Preview">O(n^2)</span><script type="math/tex">O(n^2)</script></span>。</p>
 <p>空间复杂度:<span><span class="MathJax_Preview">O(n^2)</span><script type="math/tex">O(n^2)</script></span>,该方法使用<span><span class="MathJax_Preview">O(n^2)</span><script type="math/tex">O(n^2)</script></span> 的空间来存储表。</p>
 </blockquote>
-<h3 id="_6">方法四:中心扩展算法</h3>
+<ul>
+<li><strong>方法四:中心扩展算法</strong></li>
+</ul>
 <p>事实上,只需使用恒定的空间,我们就可以在<span><span class="MathJax_Preview">O(n^2)</span><script type="math/tex">O(n^2)</script></span>的时间内解决这个问题。我们观察到回文中心的两侧互为镜像。因此,回文可以从它的中心展开,并且只有<span><span class="MathJax_Preview">2n - 1</span><script type="math/tex">2n - 1</script></span>个这样的中心。你可能会问,为什么会是<span><span class="MathJax_Preview">2n - 1</span><script type="math/tex">2n - 1</script></span>个,而不是<code>n</code>个中心?原因在于所含字母数为偶数的回文的中心可以处于两字母之间(例如<code>"abba"</code>的中心在两个<code>'b'</code>之间)。</p>
 <pre><code class="c++">class Solution {
     public:
@@ -269,25 +267,23 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>时间复杂度:<span><span class="MathJax_Preview">O(n^2)</span><script type="math/tex">O(n^2)</script></span>,由于围绕中心来扩展回文会耗去<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>的时间,所以总的复杂度为<span><span class="MathJax_Preview">O(n^2)</span><script type="math/tex">O(n^2)</script></span>。</p>
 <p>空间复杂度:<span><span class="MathJax_Preview">O(1)</span><script type="math/tex">O(1)</script></span>。</p>
 </blockquote>
-<h3 id="manacher">方法五:Manacher 算法</h3>
+<ul>
+<li><strong>方法五:Manacher算法</strong></li>
+</ul>
 <p>还有一个复杂度为<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>的Manacher算法。然而,这是一个非同寻常的算法,在45分钟的编码时间内提出这个算法将会是一个不折不扣的挑战。理解它,我保证这将是非常有趣的。</p>
 <p>马拉车算法Manacher‘s Algorithm是用来查找一个字符串的最长回文子串的线性方法,由一个叫Manacher的人在1975年发明的,这个方法的最大贡献是在于将时间复杂度提升到了线性。</p>
 <p>首先我们解决下奇数和偶数的问题,在每个字符间插入"#",并且为了使得扩展的过程中,到边界后自动结束,在两端分别插入"^"和 "$",两个不可能在字符串中出现的字符,这样中心扩展的时候,判断两端字符是否相等的时候,如果到了边界就一定会不相等,从而出了循环。经过处理,字符串的长度永远都是奇数了。</p>
-<p><img alt="" src="https://pic.leetcode-cn.com/ad2b5e0da4a3a35b60f60c9a5a2be07a8074f9be0fe1597351eeff7dc460789a-image.png" /></p>
+<p><img alt="" src="http://pic.leetcode-cn.com/ad2b5e0da4a3a35b60f60c9a5a2be07a8074f9be0fe1597351eeff7dc460789a-image.png" /></p>
 <p>首先我们用一个数组P保存从中心扩展的最大个数,而它刚好也是去掉"#"的原字符串的总长度。例如下图中下标是6的地方,可以看到P[6]等于5,所以它是从左边扩展5个字符,相应的右边也是扩展5个字符,也就是<code>"#c#b#c#b#c#"</code>。而去掉#恢复到原来的字符串,变成"cbcbc",它的长度刚好也就是5。</p>
-<p><img alt="" src="https://pic.leetcode-cn.com/ae2c30d48d35faa7f3d0d8bc4fe18d0691f3d13dcfc5846ddce1bf7a002681f5-image.png" /></p>
-<ul>
-<li>求原字符串下标</li>
-</ul>
+<p><img alt="" src="http://pic.leetcode-cn.com/ae2c30d48d35faa7f3d0d8bc4fe18d0691f3d13dcfc5846ddce1bf7a002681f5-image.png" /></p>
+<p><strong>求原字符串下标</strong></p>
 <p>用P的下标i减去P[i],再除以2,就是原字符串的开头下标了。</p>
 <p>例如我们找到P[i]的最大值为5,也就是回文串的最大长度是5,对应的下标是6,所以原字符串的开头下标是(6-5)/2= 0。所以我们只需要返回原字符串的第0到第(5-1)位就可以了。</p>
-<ul>
-<li>求每个P[i]</li>
-</ul>
+<p><strong>求每个P[i]</strong></p>
 <p>接下来是算法的关键了,它充分利用了回文串的对称性。</p>
 <p>我们用C表示回文串的中心,用R表示回文串的右边半径。所以R=C+P[i]。C和R所对应的回文串是当前循环中R最靠右的回文串。</p>
 <p>让我们考虑求P[i]的时候,如下图。用i_mirror表示当前需要求的第i个字符关于C对应的下标。</p>
-<p><img alt="" src="https://pic.leetcode-cn.com/29eb66280ca149c3bf5d9906e066b4a2b39d1bf8f9dd0533ca00479aca6f4f39-image.png" /></p>
+<p><img alt="" src="http://pic.leetcode-cn.com/29eb66280ca149c3bf5d9906e066b4a2b39d1bf8f9dd0533ca00479aca6f4f39-image.png" /></p>
 <p>我们现在要求P[i],如果是用中心扩展法,那就向两边扩展比对就行了。但是我们其实可以利用回文串C的对称性。i 关于C的对称点是i_mirror,P[i_mirror]=3,所以P[i]也等于3。</p>
 <p>但是有三种情况将会造成直接赋值为P[i_mirror]是不正确的,下边一一讨论。</p>
 <blockquote>
@@ -295,14 +291,14 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <li>超出了R</li>
 </ol>
 </blockquote>
-<p><img alt="" src="https://pic.leetcode-cn.com/b0d52a5f30747e55ef09b3c7b7cfc23026e37040edc41f387263e8f8a0ba8f49-image.png" /></p>
+<p><img alt="" src="http://pic.leetcode-cn.com/b0d52a5f30747e55ef09b3c7b7cfc23026e37040edc41f387263e8f8a0ba8f49-image.png" /></p>
 <p>当我们要求P[i]的时候,P[mirror]=7,而此时P[i]并不等于7,为什么呢,因为我们从i开始往后数7个,等于22,已经超过了最右的R,此时不能利用对称性了,但我们一定可以扩展到R的,所以P[i]至少等于R-i= 20-15=5,会不会更大呢,我们只需要比较T[R+1] 和T[R+1]关于i的对称点就行了,就像中心扩展法一样一个个扩展。</p>
 <blockquote>
 <ol>
 <li>P[i_mirror]遇到了原字符串的左边界</li>
 </ol>
 </blockquote>
-<p><img alt="" src="https://pic.leetcode-cn.com/714e6f768e67304fb7162ecac3ae85fcf23ad82a21456e8ca55ac2c8cfd2609e-image.png" /></p>
+<p><img alt="" src="http://pic.leetcode-cn.com/714e6f768e67304fb7162ecac3ae85fcf23ad82a21456e8ca55ac2c8cfd2609e-image.png" /></p>
 <p>此时P[i_mirror]=1,但是P[i]赋值成1是不正确的,出现这种情况的原因是P[i_mirror]在扩展的时候首先是"#"=="#",之后遇到了"^"和另一个字符比较,也就是到了边界,才终止循环的。而P[i]并没有遇到边界,所以我们可以继续通过中心扩展法一步一步向两边扩展就行了。</p>
 <blockquote>
 <ol>
@@ -314,7 +310,7 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>考虑C和R的更新</p>
 </blockquote>
 <p>就这样一步一步的求出每个P[i],当求出的P[i]的右边界大于当前的R时,我们就需要更新C和R为当前的回文串了。因为我们必须保证i在R里面,所以一旦有更右边的R就要更新R。</p>
-<p><img alt="" src="https://pic.leetcode-cn.com/5fbe52880634a9d5fa60ad5e126e8c5c38c5a6eadd0c901a3495dc1307d46d6b-image.png" /></p>
+<p><img alt="" src="http://pic.leetcode-cn.com/5fbe52880634a9d5fa60ad5e126e8c5c38c5a6eadd0c901a3495dc1307d46d6b-image.png" /></p>
 <p>此时的P[i]求出来将会是3,P[i]对应的右边界将是10+3=13,所以大于当前的R,我们需要把C更新成i的值,也就是10,R更新成13。继续下边的循环。</p>
 <pre><code class="c++">class Solution {
     public:

@@ -35,7 +35,7 @@
           {title: "\u9898\u76ee1318:\u6216\u8fd0\u7b97\u7684\u6700\u5c0f\u7ffb\u8f6c\u6b21\u6570", url: "#_top", level:1, children: [
               {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1", level:2, children: [ 
               ]},
-              {title: "\u9898\u89e3", url: "#_2", level:2, children: [ 
+              {title: "\u89e3\u7b54\u6280\u5de7", url: "#_2", level:2, children: [ 
               ]},
           ]},
         ];
@@ -104,7 +104,7 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>1 &lt;= b &lt;= 10^9</p>
 <p>1 &lt;= c &lt;= 10^9</p>
 </blockquote>
-<h2 id="_2">题解</h2>
+<h2 id="_2">解答技巧</h2>
 <p>本题需要用到一些位运算的知识:</p>
 <ul>
 <li>对于十进制整数<code>x</code>,我们可以用<code>x &amp; 1</code>得到<code>x</code>的二进制表示的最低位,它等价于<code>x % 2</code>:<ul>
@@ -117,14 +117,18 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <li>例如当<code>x = 5</code>时,<code>x</code>的二进制表示为<code>101</code>,<code>x &amp; (1 &lt;&lt; 1) = 101 &amp; 10 = 0</code>,说明第<code>1</code>位不为<code>1</code>。</li>
 </ul>
 </li>
-<li>对于十进制整数<code>x</code>,我们可以用<code>(x &gt;&gt; k) &amp; 1</code>得到<code>x</code>二进制表示的第<code>k</code>位(最低位为第<code>0</code>位)。如果<code>x</code>二进制表示的位数小于<code>k</code>,那么该表达式的值为零:<ul>
+<li>
+<p>对于十进制整数<code>x</code>,我们可以用<code>(x &gt;&gt; k) &amp; 1</code>得到<code>x</code>二进制表示的第<code>k</code>位(最低位为第<code>0</code>位)。如果<code>x</code>二进制表示的位数小于<code>k</code>,那么该表达式的值为零:</p>
+<ul>
 <li>例如当<code>x = 3</code>时,<code>x</code>的二进制表示为<code>11</code>,<code>(x &gt;&gt; 1) &amp; 1 = 1 &amp; 1 = 1</code>,说明第<code>1</code>位为<code>1</code>;</li>
 <li>例如当<code>x = 5</code>时,<code>x</code>的二进制表示为<code>101</code>,<code>(x &gt;&gt; 1) &amp; 1 = 10 &amp; 1 = 0</code>,说明第<code>1</code>位为<code>0</code>。</li>
 <li>例如当<code>x = 6</code>时,<code>x</code>的二进制表示为<code>110</code>,<code>(x &gt;&gt; 3) &amp; 1 = 0 &amp; 1 = 0</code>,说明第<code>3</code>位为<code>0</code>。</li>
 </ul>
 </li>
-</ul>
+<li>
 <p><strong>枚举+位运算</strong></p>
+</li>
+</ul>
 <p>由于在或(OR)运算中,二进制表示的每一位都是独立的,即修改<code>a</code>或<code>b</code>二进制表示中的第<code>i</code>位,只会影响<code>a OR b</code>中第<code>i</code>位的值,因此我们可以依次枚举并考虑每一位。注意到<code>a、b</code>和<code>c</code>均小于<code>10^9</code>,它们的二进制表示最多有<code>30</code>位(包含<code>31</code>个二进制位的数最小为<code>2^30 = 1073741824</code>,已经大于<code>10^9</code>),因此我们只需要从低位到高位枚举这<code>30</code>位即可。</p>
 <p>设<code>a、b</code>和<code>c</code>二进制表示的第<code>i</code>位分别为<code>bit_a、bit_b</code>和<code>bit_c</code>,根据<code>bit_c</code>的值,会有以下两种情况:</p>
 <ul>
