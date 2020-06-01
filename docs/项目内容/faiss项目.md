@@ -2677,6 +2677,7 @@ namespace faiss {
 ```
 
 
+
 ### 4.3 Index相关文件
 
 #### 4.3.1 MetricType.h文件
@@ -2723,6 +2724,14 @@ namespace faiss {
 
 ```
 
+
+#### 4.3.3 Clustering.h和Clustering.cpp文件
+
+* **Clustering.h文件**
+
+```c++
+
+```
 #### 4.3.3 Index.h和Index.cpp文件
 
 * **Index.h文件**
