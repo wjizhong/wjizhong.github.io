@@ -3,7 +3,7 @@ body {
     font-family: "Times New Roman", "KaiTi", "STKaiti", "Microsoft YaHei", "微软雅黑", STXihei, "华文细黑", serif;
 }
 img {
-    width:45%;
+    max-width:45%;
 }
 
 /***********************************************************************
