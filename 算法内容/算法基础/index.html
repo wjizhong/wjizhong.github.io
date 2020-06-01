@@ -113,10 +113,6 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
     
 
     <h1 id="_1">机器学习基础</h1>
-<p>https://www.zhihu.com/question/291032522/answer/605843215</p>
-<p>https://www.zhihu.com/question/312556066/answer/600228264</p>
-<p>https://cloud.tencent.com/developer/article/1352583</p>
-<p>https://zhuanlan.zhihu.com/p/44106492</p>
 <p>机器学习的特点就是:以计算机为工具和平台,以数据为研究对象,以学习方法为中心;是概率论、线性代数、数值计算、信息论、最优化理论和计算机科学等多个领域的交叉学科。</p>
 <h2 id="_2">一、线性代数</h2>
 <h3 id="11">1.1 基本概念</h3>
@@ -172,10 +168,8 @@ a_{m1} & a_{m2} & \cdots & a_{mn} \\
 </div>
 <p>所以:</p>
 <blockquote>
-<ul>
-<li>L1范数<span><span class="MathJax_Preview">\left| \left| x \right| \right|</span><script type="math/tex">\left| \left| x \right| \right|</script></span> :为x向量各个元素绝对值之和;</li>
-<li>L2范数<span><span class="MathJax_Preview">\left| \left| x \right| \right|_{2}</span><script type="math/tex">\left| \left| x \right| \right|_{2}</script></span> :为x向量各个元素平方和的开方。</li>
-</ul>
+<p>L1范数<span><span class="MathJax_Preview">\left| \left| x \right| \right|</span><script type="math/tex">\left| \left| x \right| \right|</script></span> :为x向量各个元素绝对值之和;</p>
+<p>L2范数<span><span class="MathJax_Preview">\left| \left| x \right| \right|_{2}</span><script type="math/tex">\left| \left| x \right| \right|_{2}</script></span> :为x向量各个元素平方和的开方。</p>
 </blockquote>
 <p>这里先说明一下,在机器学习中,L1范数和L2范数很常见,主要用在损失函数中起到一个限制模型参数复杂度的作用。</p>
 <h3 id="12-biasvariance">1.2 偏差(Bias)与方差(Variance)</h3>
@@ -190,11 +184,9 @@ a_{m1} & a_{m2} & \cdots & a_{mn} \\
 <p><strong>简述偏差、方差、噪声</strong></p>
 <p>如果我们能够获得所有可能的数据集合,并在这个数据集合上将损失最小化,那么学习得到的模型就可以称之为“真实模型”。当然,在现实生活中我们不可能获取并训练所有可能的数据,所以“真实模型”肯定存在,但是无法获得。我们的最终目的是学习一个模型使其更加接近这个真实模型。Bias和Variance分别从两个方面来描述我们学习到的模型与真实模型之间的差距。</p>
 <blockquote>
-<ul>
-<li>Bias是用所有可能的训练数据集训练出的所有模型的输出的平均值与真实模型的输出值之间的差异。</li>
-<li>Variance是不同的训练数据集训练出的模型输出值之间的差异。</li>
-<li>噪声的存在是学习算法所无法解决的问题,数据的质量决定了学习的上限。假设在数据已经给定的情况下,此时上限已定,我们要做的就是尽可能的接近这个上限。</li>
-</ul>
+<p>Bias是用所有可能的训练数据集训练出的所有模型的输出的平均值与真实模型的输出值之间的差异。</p>
+<p>Variance是不同的训练数据集训练出的模型输出值之间的差异。</p>
+<p>噪声的存在是学习算法所无法解决的问题,数据的质量决定了学习的上限。假设在数据已经给定的情况下,此时上限已定,我们要做的就是尽可能的接近这个上限。</p>
 </blockquote>
 <p>注意:我们能够用来学习的训练数据集只是全部数据中的一个子集。想象一下,我们现在收集几组不同的数据,因为每一组数据的不同,我们学习到模型的最小损失值也会有所不同,它们与“真实模型”的最小损失也是不一样的。</p>
 <p><strong>数学公式定义偏差、方差、噪声</strong></p>
@@ -330,7 +322,7 @@ E(f;D) &=\mathbb{E}_D[(f(x;D)-y_D)^2] \\
 </script>
 </div>
 <p>于是,最终得到:</p>
-<p><img alt="" src="http://pic3.zhimg.com/80/v2-69a3c3949b21f1c016dbb01780ebdeca_hd.jpg" /></p>
+<p><img src="http://pic3.zhimg.com/80/v2-69a3c3949b21f1c016dbb01780ebdeca_hd.jpg" style="width:15%" ></p>
 <p>“偏差-方差分解”说明,泛化性能是由学习算法的能力、数据的充分性以及学习任务本身的难度所共同决定的。给定学习任务,为了取得好的泛化性能,则需使偏差较小,即能够充分拟合数据,并且使方差较小,即使得数据扰动产生的影响小。</p>
 <ul>
 <li><strong>用图形解释偏差和方差</strong></li>
