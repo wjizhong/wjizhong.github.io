@@ -61,6 +61,8 @@
                   {title: "5.2 \u5206\u7c7b(Classification)\u6307\u6807", url: "#52-classification", level:3, children: [
                   ]},
                   {title: "5.3 \u805a\u7c7b\u6307\u6807", url: "#53", level:3, children: [
+                  ]},
+                  {title: "5.4 scikit-learn\u6307\u6807\u4ee3\u7801", url: "#54-scikit-learn", level:3, children: [
                   ]}, 
               ]},
               {title: "\u4e03\u3001\u5377\u79ef", url: "#_8", level:2, children: [
@@ -1779,6 +1781,18 @@ TPR = \frac {TP}{TP+FN}
 <li><strong>轮廓系数</strong></li>
 <li><strong>互信息</strong></li>
 </ul>
+<h3 id="54-scikit-learn">5.4 scikit-learn指标代码</h3>
+<ul>
+<li><strong>准确率</strong></li>
+</ul>
+<pre><code class="python">if y_type.startswith('multilabel'):
+  differing_labels = count_nonzero(y_true - y_pred, axis=1)
+  score = differing_labels == 0
+else:
+  score = y_true == y_pred
+score=_weighted_sum(score, sample_weight, normalize)
+</code></pre>
+
 <h2 id="_8">七、卷积</h2>
 <h3 id="61">6.1 卷积的解释</h3>
 <p>从数学上讲,卷积就是一种运算。某种运算,能被定义出来,至少有以下特征:</p>
