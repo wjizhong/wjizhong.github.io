@@ -1423,10 +1423,8 @@ R^2(y,\hat{y}) &= 1 - \frac{\rm SSE}{\rm SST}=1-\frac{\sum\limits_{i=1}^{m}(y_i-
 </div>
 <p>在信息检索领域,精确率和召回率又被称为查准率和查全率:</p>
 <blockquote>
-<ul>
-<li>查准率＝检索出的相关信息量 / 检索出的信息总量</li>
-<li>查全率＝检索出的相关信息量 / 系统中的相关信息总量</li>
-</ul>
+<p>查准率＝检索出的相关信息量 / 检索出的信息总量</p>
+<p>查全率＝检索出的相关信息量 / 系统中的相关信息总量</p>
 </blockquote>
 <ul>
 <li><strong>准确率(Accuracy)</strong></li>
@@ -1652,24 +1650,22 @@ TPR = \frac {TP}{TP+FN}
 </div>
 <p>为了更好地理解ROC曲线,我们使用具体的实例来说明:</p>
 <p>如在医学诊断的主要任务是尽量把生病的人群都找出来,也就是TPR越高越好。而尽量降低没病误诊为有病的人数,也就是FPR越低越好。不难发现,这两个指标之间是相互制约的。如果某个医生对于有病的症状比较敏感,稍微的小症状都判断为有病,那么他的TPR应该会很高,但是FPR也就相应地变高。最极端的情况下,他把所有的样本都看做有病,那么TPR达到1,FPR也为1。以FPR为横轴,TPR为纵轴,得到如下ROC空间。</p>
-<p><img alt="" src="http://pic1.zhimg.com/v2-6d498ba1302f3c073c6c8ce1cd014e50_r.jpg" /></p>
+<p><img src="http://pic1.zhimg.com/v2-6d498ba1302f3c073c6c8ce1cd014e50_r.jpg" style="width:50%"></p>
 <p>可以看出,左上角的点(TPR=1,FPR=0)为完美分类,也就是这个医生医术高明,诊断全对。点A(TPR>FPR),医生A的判断大体是正确的。中线上的点B(TPR=FPR),也就是医生B全都是蒙的,蒙对一半,蒙错一半;下半平面的点C(TPR\&lt;FPR),这个医生说你有病,那么你很可能没有病,医生C的话我们要反着听,为真庸医。上图中一个阈值,得到一个点。现在我们需要一个独立于阈值的评价指标来衡量这个医生的医术如何,也就是遍历所有的阈值,得到ROC曲线。</p>
 <p>假设下图是某医生的诊断统计图,为未得病人群(上图)和得病人群(下图)的模型输出概率分布图(横坐标表示模型输出概率,纵坐标表示概率对应的人群的数量),显然未得病人群的概率值普遍低于得病人群的输出概率值(即正常人诊断出疾病的概率小于得病人群诊断出疾病的概率)。</p>
-<p><img alt="" src="http://pic2.zhimg.com/v2-b6a3d08daaf2136ff6a072b90f8fe151_r.jpg" /></p>
+<p><img src="http://pic2.zhimg.com/v2-b6a3d08daaf2136ff6a072b90f8fe151_r.jpg" style="width: 50%" ></p>
 <p>竖线代表阈值。显然,图中给出了某个阈值对应的混淆矩阵,通过改变不同的阈值<span><span class="MathJax_Preview">1.0 \rightarrow 0</span><script type="math/tex">1.0 \rightarrow 0</script></span>,得到一系列的混淆矩阵,进而得到一系列的TPR和FPR,绘制出ROC曲线。</p>
 <p>阈值为1时,不管你什么症状,医生均未诊断出疾病(预测值都为N,此时绿色和红色区域的面积为0,因此FPR=TPR=0,位于左下。随着阈值的减小,红色和绿色区域增大,紫色和蓝色区域减小。阈值为0时,不管你什么症状,医生都诊断结果都是得病(预测值都为P),此时绿色和红色区域均占整个区域,即紫色和蓝色区域的面积为0,此时 FPR=TPR=1,位于右上。</p>
 <p><strong>AUC</strong>:AUC值为ROC曲线所覆盖的区域面积,显然,AUC越大,分类器分类效果越好。</p>
 <blockquote>
-<ul>
-<li>AUC=1,是完美分类器。</li>
-<li>0.5\&lt;AUC\&lt;1,优于随机猜测,有预测价值。</li>
-<li>AUC=0.5,跟随机猜测一样(例:丢铜板),没有预测价值。</li>
-<li>AUC &lt; 0.5,比随机猜测还差;但只要总是反预测而行,就优于随机猜测。</li>
-</ul>
+<p>AUC=1,是完美分类器。</p>
+<p>0.5\&lt;AUC\&lt;1,优于随机猜测,有预测价值。</p>
+<p>AUC=0.5,跟随机猜测一样(例:丢铜板),没有预测价值。</p>
+<p>AUC &lt; 0.5,比随机猜测还差;但只要总是反预测而行,就优于随机猜测。</p>
 </blockquote>
 <p><strong>注:</strong> 对于AUC小于0.5的模型,我们可以考虑取反(模型预测为positive,那我们就取negtive),这样就可以保证模型的性能不可能比随机猜测差。</p>
 <p>以下为ROC曲线和AUC值的实例:</p>
-<p><img alt="" src="http://pic4.zhimg.com/v2-92a524d44d915a4a043b267c238643b3_r.jpg" /></p>
+<p><img src="http://pic4.zhimg.com/v2-92a524d44d915a4a043b267c238643b3_r.jpg" style="width:50%" > </p>
 <p>AUC的物理意义:正样本的预测结果大于负样本的预测结果的概率。所以AUC反应的是分类器对样本的排序能力。另外值得注意的是,AUC对样本类别是否均衡并不敏感,这也是不均衡样本通常用AUC评价分类器性能的一个原因。AUC只关注正负样本之间的排序,并不关心正样本内部,或者负样本内部的排序。这也体现了AUC的本质:任意个正样本的概率都大于负样本的概率的能力</p>
 <p>AUC的计算:</p>
 <blockquote>
@@ -1678,36 +1674,22 @@ TPR = \frac {TP}{TP+FN}
 <li>根据AUC的物理意义,我们计算正样本预测结果大于负样本预测结果的概率。取<span><span class="MathJax_Preview">n_1*n_0</span><script type="math/tex">n_1*n_0</script></span>(<span><span class="MathJax_Preview">n_1</span><script type="math/tex">n_1</script></span>为正样本数,<span><span class="MathJax_Preview">n_0</span><script type="math/tex">n_0</script></span>为负样本数)个二元组,比较score(预测结果),最后得到AUC。时间复杂度为<span><span class="MathJax_Preview">O(N*M)</span><script type="math/tex">O(N*M)</script></span>。</li>
 <li>首先把所有样本按照score排序,依次用rank表示他们,如最大score的样本,<span><span class="MathJax_Preview">rank=n(n=n_0+n_1</span><script type="math/tex">rank=n(n=n_0+n_1</script></span>,其中<span><span class="MathJax_Preview">n_0</span><script type="math/tex">n_0</script></span>为负样本个数,<span><span class="MathJax_Preview">n_1</span><script type="math/tex">n_1</script></span>为正样本个数),其次为n-1。对于正样本中rank最大的样本<span><span class="MathJax_Preview">rank\_max</span><script type="math/tex">rank\_max</script></span>,有<span><span class="MathJax_Preview">n_1-1</span><script type="math/tex">n_1-1</script></span>个其他正样本比它小。有<span><span class="MathJax_Preview">rank\_max-n_1</span><script type="math/tex">rank\_max-n_1</script></span>个负样本比它小。其次为<span><span class="MathJax_Preview">rank\_second-(n_1-1)</span><script type="math/tex">rank\_second-(n_1-1)</script></span>。最后我们得到正样本大于负样本的概率为:</li>
 </ol>
-</blockquote>
 <div>
-<div class="MathJax_Preview">
-AUC=\frac{\sum_{\text{正样本}}rank(core)-n_1*(n_1+2)/2}{n_0*n_1}
+<div class="MathJax_Preview">AUC=\frac{\sum_{\text{正样本}}rank(core)-n_1*(n_1+2)/2}{n_0*n_1}</div>
+<script type="math/tex; mode=display">AUC=\frac{\sum_{\text{正样本}}rank(core)-n_1*(n_1+2)/2}{n_0*n_1}</script>
 </div>
-<script type="math/tex; mode=display">
-AUC=\frac{\sum_{\text{正样本}}rank(core)-n_1*(n_1+2)/2}{n_0*n_1}
-</script>
-</div>
-<blockquote>
 <ol>
 <li>计算复杂度为<span><span class="MathJax_Preview">O(N+M)</span><script type="math/tex">O(N+M)</script></span>。</li>
 </ol>
 </blockquote>
 <p><strong>ROC和AUC都能应用于非均衡的分类问题</strong>:ROC曲线只与横坐标(FPR)和纵坐标(TPR)有关系,其中:</p>
 <div>
-<div class="MathJax_Preview">
-FPR = \frac {FP}{FP+TN}
-</div>
-<script type="math/tex; mode=display">
-FPR = \frac {FP}{FP+TN}
-</script>
+<div class="MathJax_Preview">FPR = \frac {FP}{FP+TN}</div>
+<script type="math/tex; mode=display">FPR = \frac {FP}{FP+TN}</script>
 </div>
 <div>
-<div class="MathJax_Preview">
-TPR = \frac {TP}{TP+FN}
-</div>
-<script type="math/tex; mode=display">
-TPR = \frac {TP}{TP+FN}
-</script>
+<div class="MathJax_Preview">TPR = \frac {TP}{TP+FN}</div>
+<script type="math/tex; mode=display">TPR = \frac {TP}{TP+FN}</script>
 </div>
 <p>以及混淆矩阵:</p>
 <p><img alt="" src="http://pic2.zhimg.com/v2-971343041d399b14e4ba379fce0c6d25_r.jpg" /></p>
@@ -1718,32 +1700,22 @@ TPR = \frac {TP}{TP+FN}
 <p>KS值是在模型中用于区分预测正负样本分隔程度的评价指标,一般应用于金融风控领域。与ROC曲线相似,ROC是以FPR作为横坐标,TPR作为纵坐标,通过改变不同阈值,从而得到ROC曲线。而在KS曲线中,则是以阈值作为横坐标,以FPR和TPR作为纵坐标,ks曲线则为TPR-FPR,ks曲线的最大值通常为ks值。</p>
 <p>为什么这样求KS值呢?我们知道,当阈值减小时,TPR和FPR会同时减小,当阈值增大时,TPR和FPR会同时增大。而在实际工程中,我们希望TPR更大一些,FPR更小一些,即TPR-FPR越大越好,即ks值越大越好。KS值的取值范围是[0,1]。通常来说,值越大,模型区分正负样本的能力越强(一般0.3以上,说明模型的效果比较好)。</p>
 <p>以下为KS曲线的实例 :</p>
-<p><img alt="" src="http://pic3.zhimg.com/80/v2-d84017e07e95e3b43f11b04663c3cb1e_r.jpg" /></p>
+<p><img src="http://pic3.zhimg.com/80/v2-d84017e07e95e3b43f11b04663c3cb1e_r.jpg" style="width: 35%" > </p>
 <ul>
 <li><strong>micro与macro</strong></li>
 </ul>
 <p>假如我们有n个二分类混淆矩阵,评价模型通常有两种方式一种叫macro,一种叫micro。</p>
 <blockquote>
-<ol>
-<li>macro方法</li>
-</ol>
+<p><strong>macro方法</strong></p>
 </blockquote>
 <p>计算出各混淆矩阵的Recall,Precision,记为<span><span class="MathJax_Preview">(P_1,R_1),(P_2,R_2),\cdots,(P_n,R_n)</span><script type="math/tex">(P_1,R_1),(P_2,R_2),\cdots,(P_n,R_n)</script></span>:</p>
 <div>
-<div class="MathJax_Preview">
-P_i = \frac{TP_i}{TP_i + FP_i}
-</div>
-<script type="math/tex; mode=display">
-P_i = \frac{TP_i}{TP_i + FP_i}
-</script>
+<div class="MathJax_Preview">P_i = \frac{TP_i}{TP_i + FP_i}</div>
+<script type="math/tex; mode=display">P_i = \frac{TP_i}{TP_i + FP_i}</script>
 </div>
 <div>
-<div class="MathJax_Preview">
-R_i = \frac{TP_i}{TP_i + FN_i}
-</div>
-<script type="math/tex; mode=display">
-R_i = \frac{TP_i}{TP_i + FN_i}
-</script>
+<div class="MathJax_Preview">R_i = \frac{TP_i}{TP_i + FN_i}</div>
+<script type="math/tex; mode=display">R_i = \frac{TP_i}{TP_i + FN_i}</script>
 </div>
 <p>对各个混淆矩阵的Recall,Precision求平均,然后再根据求得的Recall,Precision计算F1。</p>
 <div>
@@ -1763,9 +1735,7 @@ R_i = \frac{TP_i}{TP_i + FN_i}
 </script>
 </div>
 <blockquote>
-<ol>
-<li>micro方法</li>
-</ol>
+<p><strong>micro方法</strong></p>
 </blockquote>
 <p>将各混淆矩阵对应的元素进行平均,得到平均混淆矩阵:</p>
 <div>
