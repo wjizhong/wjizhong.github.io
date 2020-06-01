@@ -456,8 +456,8 @@ CV = \frac{1}{K} \sum_{k = 1}^{K}{\frac{1}{m}\sum_{i = 1}^{m}(\hat{f^k} - y_i)^2
 <script type="math/tex; mode=display">\begin{bmatrix} 3 & 0 \\ 0 & 1 \end{bmatrix} \begin{bmatrix} x \\ y \end{bmatrix} = \begin{bmatrix} 3x \\ y \end{bmatrix}</script>
 </div>
 <p>其几何意义为在水平<span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span>方向上拉伸3倍,<span><span class="MathJax_Preview">y</span><script type="math/tex">y</script></span>方向保持不变的线性变换。换言之对角矩阵起到作用是将水平垂直网格作水平拉伸(或者反射后水平拉伸)的线性变换。</p>
-<p><img alt="" src="https://pic2.zhimg.com/012f667312babcd48d6548740b263645_b.jpg" /></p>
-<p><img alt="" src="https://pic1.zhimg.com/83c8636e531a0df1795db6ca4f4f3758_b.jpg" /></p>
+<p><img alt="" src="http://pic2.zhimg.com/012f667312babcd48d6548740b263645_b.jpg" /></p>
+<p><img alt="" src="http://pic1.zhimg.com/83c8636e531a0df1795db6ca4f4f3758_b.jpg" /></p>
 <p>如果<span><span class="MathJax_Preview">M</span><script type="math/tex">M</script></span>不是对角矩阵,而是一个对称矩阵</p>
 <div>
 <div class="MathJax_Preview">M= \begin{bmatrix} 2 &amp; 1 \\ 1 &amp; 2 \end{bmatrix}</div>
@@ -483,19 +483,27 @@ CV = \frac{1}{K} \sum_{k = 1}^{K}{\frac{1}{m}\sum_{i = 1}^{m}(\hat{f^k} - y_i)^2
 <p>是否存在唯一的映射将A映射到B取决于问题的形式。</p>
 <p>如果矩阵A的行数大于列数,那么上述方程可能没有解;如果矩阵A的行数小于列数,那么上述方程可能有多个解。</p>
 <p>Moore-Penrose伪逆使我们能够解决这种情况,矩阵A的伪逆定义为:</p>
-<p><img alt="" src="http://pic4.zhimg.com/80/v2-1581c66947da5c30172f4ef80dd0b70f_hd.jpg" /></p>
+<p><img src="http://pic4.zhimg.com/80/v2-1581c66947da5c30172f4ef80dd0b70f_hd.jpg" style="width:15%" ></p>
 <p>但是计算伪逆的实际算法没有基于这个式子,而是使用下面的公式:</p>
-<p><img alt="" src="http://pic2.zhimg.com/80/v2-2845b623dc537e3bae0db22c4938e9c1_hd.jpg" /></p>
-<p>其中,矩阵U,D和V 是矩阵A奇异值分解后得到的矩阵。对角矩阵D的伪逆D+是其非零元素取倒之后再转置得到的。</p>
+<p><img src="http://pic2.zhimg.com/80/v2-2845b623dc537e3bae0db22c4938e9c1_hd.jpg" style="width:15%" ></p>
+<p>其中,矩阵U,D和V是矩阵A奇异值分解后得到的矩阵。对角矩阵D的伪逆D+是其非零元素取倒之后再转置得到的。</p>
 <h3 id="14">1.4 几种常用的距离</h3>
 <p>上面大致说过, 在机器学习里,我们的运算一般都是基于向量的,一条用户具有100个特征,那么他对应的就是一个100维的向量,通过计算两个用户对应向量之间的距离值大小,有时候能反映出这两个用户的相似程度。这在后面的KNN算法和K-means算法中很明显。</p>
 <p>一般而言,定义一个距离函数<span><span class="MathJax_Preview">d(x,y)</span><script type="math/tex">d(x,y)</script></span>,需要满足下面几个准则:</p>
 <blockquote>
 <ol>
-<li><span><span class="MathJax_Preview">d(x,x)=0</span><script type="math/tex">d(x,x)=0</script></span>,到自己的距离为0</li>
-<li><span><span class="MathJax_Preview">d(x,y)&gt;= 0</span><script type="math/tex">d(x,y)>= 0</script></span>,距离非负</li>
-<li><span><span class="MathJax_Preview">d(x,y)=d(y,x)</span><script type="math/tex">d(x,y)=d(y,x)</script></span>,对称性,如果A到B距离是a,那么B到A的距离也应该是a</li>
-<li><span><span class="MathJax_Preview">d(x,k)+d(k,y)&gt;= d(x,y)</span><script type="math/tex">d(x,k)+d(k,y)>= d(x,y)</script></span>,三角形法则:(两边之和大于第三边)</li>
+<li>
+<p><span><span class="MathJax_Preview">d(x,x)=0</span><script type="math/tex">d(x,x)=0</script></span>,到自己的距离为0</p>
+</li>
+<li>
+<p><span><span class="MathJax_Preview">d(x,y)&gt;= 0</span><script type="math/tex">d(x,y)>= 0</script></span>,距离非负</p>
+</li>
+<li>
+<p><span><span class="MathJax_Preview">d(x,y)=d(y,x)</span><script type="math/tex">d(x,y)=d(y,x)</script></span>,对称性,如果A到B距离是a,那么B到A的距离也应该是a</p>
+</li>
+<li>
+<p><span><span class="MathJax_Preview">d(x,k)+d(k,y)&gt;= d(x,y)</span><script type="math/tex">d(x,k)+d(k,y)>= d(x,y)</script></span>,三角形法则:(两边之和大于第三边)</p>
+</li>
 </ol>
 </blockquote>
 <p>设有两个n维变量<span><span class="MathJax_Preview">A=\left[ x_{11}, x_{12},...,x_{1n} \right]</span><script type="math/tex">A=\left[ x_{11}, x_{12},...,x_{1n} \right]</script></span>和<span><span class="MathJax_Preview">B=\left[ x_{21} ,x_{22} ,...,x_{2n} \right]</span><script type="math/tex">B=\left[ x_{21} ,x_{22} ,...,x_{2n} \right]</script></span>,则一些常用的距离公式定义如下:</p>
@@ -606,12 +614,10 @@ z^Tz &=(L^{-1}(x-\mu))^T(L^{-1}(x-\mu)) \\
 </div>
 <p><strong>马氏距离的问题</strong>:</p>
 <blockquote>
-<ul>
-<li>协方差矩阵必须满秩:里面有求逆矩阵的过程,不满秩不行,要求数据要有原维度个特征值,如果没有可以考虑先进行PCA,这种情况下PCA不会损失信息</li>
-<li>不能处理非线性流形(manifold)上的问题:只对线性空间有效,如果要处理流形,只能在局部定义,可以用来建立KNN图</li>
-</ul>
+<p>协方差矩阵必须满秩:里面有求逆矩阵的过程,不满秩不行,要求数据要有原维度个特征值,如果没有可以考虑先进行PCA,这种情况下PCA不会损失信息</p>
+<p>不能处理非线性流形(manifold)上的问题:只对线性空间有效,如果要处理流形,只能在局部定义,可以用来建立KNN图</p>
 </blockquote>
-<p><code>python</code>代码:</p>
+<p>python代码:</p>
 <pre><code class="python">import numpy as np
 import pylab as pl
 import scipy.spatial.distance as dist
@@ -663,7 +669,7 @@ cos\theta =\frac{AB}{\left| A \right| \left|B \right| } =\frac{\sum_{k=1}^{n}{x_
 cos\theta =\frac{AB}{\left| A \right| \left|B \right| } =\frac{\sum_{k=1}^{n}{x_{1k}x_{2k} } }{\sqrt{\sum_{k=1}^{n}{x_{1k}^{2} } } \sqrt{\sum_{k=1}^{n}{x_{2k}^{2} } } } 
 </script>
 </div>
-<p>夹角余弦的Python实现:</p>
+<p>夹角余弦的python实现:</p>
 <pre><code class="python">from numpy import *
 vector1 = mat([1,2,3])
 vector2 = mat([4,5,6])
@@ -674,7 +680,7 @@ print(dot(vector1,vector2)/(linalg.norm(vector1)*linalg.norm(vector2)))
 <li><strong>汉明距离</strong></li>
 </ul>
 <p>汉明距离定义的是两个字符串中不相同位数的数目。例如:字符串‘1111’与‘1001’之间的汉明距离为2。信息编码中一般应使得编码间的汉明距离尽可能的小。</p>
-<p>汉明距离的Python实现:</p>
+<p>汉明距离的python实现:</p>
 <pre><code class="python">from numpy import *
 matV = mat([1,1,1,1],[1,0,0,1])
 smstr = nonzero(matV[0]-matV[1])
@@ -706,7 +712,7 @@ J_{\sigma} =1-J\left( A,B \right) =\frac{\left| A\cup B \right| -\left| A\cap B 
 J_{\sigma} =1-J\left( A,B \right) =\frac{\left| A\cup B \right| -\left| A\cap B \right| }{\left| A\cup B \right| } 
 </script>
 </div>
-<p>杰卡德距离的Python实现:</p>
+<p>杰卡德距离的python实现:</p>
 <pre><code class="python">from numpy import *
 import scipy.spatial.distance as dist
 matV = mat([1,1,1,1],[1,0,0,1])
@@ -717,7 +723,7 @@ print(dist.pdist(matV,'jaccard'))
 <p>概率论是用于表示不确定性陈述的数学框架,即它是对事物不确定性的度量。</p>
 <p>在人工智能领域,我们主要以两种方式来使用概率论。首先,概率法则告诉我们AI系统应该如何推理,所以我们设计一些算法来计算或者近似由概率论导出的表达式。其次,我们可以用概率和统计从理论上分析我们提出的AI系统的行为。</p>
 <p>计算机科学的许多分支处理的对象都是完全确定的实体,但机器学习却大量使用概率论。实际上如果你了解机器学习的工作原理你就会觉得这个很正常。因为机器学习大部分时候处理的都是不确定量或随机量。</p>
-<p><img alt="" src="http://www.math.wm.edu/~leemis/chart/UDR/BaseImage.png" /></p>
+<p><img src="http://www.math.wm.edu/~leemis/chart/UDR/BaseImage.png" style="width:80%" ></p>
 <ul>
 <li><strong>随机变量</strong></li>
 </ul>
