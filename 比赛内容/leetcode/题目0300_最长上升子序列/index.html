@@ -104,7 +104,7 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <script type="math/tex; mode=display">\text{LIS}_{\textit{length}}= \text{max}(dp[i]), \text{其中} \, 0\leq i < n</script>
 </div>
 <p>以下动画演示了该方法:</p>
-<p><img alt="" src="http://pic.leetcode-cn.com/Figures/300_LISSlide1.PNG" /></p>
+<p><img alt="" src="../../static/images/leetcode/300_LISSlide.gif" /></p>
 <pre><code class="c++">class Solution {
     public:
         int lengthOfLIS(vector&lt;int&gt;&amp; nums) {
@@ -138,11 +138,13 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>我们依次遍历数组<span><span class="MathJax_Preview">\textit{nums}[]</span><script type="math/tex">\textit{nums}[]</script></span>中的每个元素,并更新数组<span><span class="MathJax_Preview">d[]</span><script type="math/tex">d[]</script></span>和<code>len</code>的值。如果<span><span class="MathJax_Preview">\textit{nums}[i] &gt; d[\textit{len}]</span><script type="math/tex">\textit{nums}[i] > d[\textit{len}]</script></span>则更新<code>len = len + 1</code>,否则在<span><span class="MathJax_Preview">d[1 \ldots len]</span><script type="math/tex">d[1 \ldots len]</script></span>中找满足<span><span class="MathJax_Preview">d[i - 1] &lt; \textit{nums}[j] &lt; d[i]</span><script type="math/tex">d[i - 1] < \textit{nums}[j] < d[i]</script></span>的下标<code>i</code>,并更新<span><span class="MathJax_Preview">d[i] = \textit{nums}[j]</span><script type="math/tex">d[i] = \textit{nums}[j]</script></span>。</p>
 <p>根据<code>d</code>数组的单调性,我们可以使用二分查找寻找下标<code>i</code>,优化时间复杂度。</p>
 <p>最后整个算法流程为:</p>
-<p>设当前已求出的最长上升子序列的长度为<span><span class="MathJax_Preview">\textit{len}</span><script type="math/tex">\textit{len}</script></span>(初始时为<code>1</code>),从前往后遍历数组<span><span class="MathJax_Preview">\textit{nums}</span><script type="math/tex">\textit{nums}</script></span>,在遍历到<span><span class="MathJax_Preview">\textit{nums}[i]</span><script type="math/tex">\textit{nums}[i]</script></span>时:</p>
-<blockquote>
-<p>如果<span><span class="MathJax_Preview">\textit{nums}[i] &gt; d[\textit{len}]</span><script type="math/tex">\textit{nums}[i] > d[\textit{len}]</script></span>,则直接加入到<code>d</code>数组末尾,并更新<span><span class="MathJax_Preview">\textit{len} = \textit{len} + 1</span><script type="math/tex">\textit{len} = \textit{len} + 1</script></span>;</p>
-<p>否则,在<code>d</code>数组中二分查找,找到第一个比<span><span class="MathJax_Preview">\textit{nums}[i]</span><script type="math/tex">\textit{nums}[i]</script></span>小的数<span><span class="MathJax_Preview">d[k]</span><script type="math/tex">d[k]</script></span>,并更新<span><span class="MathJax_Preview">d[k + 1] = \textit{nums}[i]</span><script type="math/tex">d[k + 1] = \textit{nums}[i]</script></span>。</p>
-</blockquote>
+<ul>
+<li>设当前已求出的最长上升子序列的长度为<span><span class="MathJax_Preview">\textit{len}</span><script type="math/tex">\textit{len}</script></span>(初始时为<code>1</code>),从前往后遍历数组<span><span class="MathJax_Preview">\textit{nums}</span><script type="math/tex">\textit{nums}</script></span>,在遍历到<span><span class="MathJax_Preview">\textit{nums}[i]</span><script type="math/tex">\textit{nums}[i]</script></span>时:<ul>
+<li>如果<span><span class="MathJax_Preview">\textit{nums}[i] &gt; d[\textit{len}]</span><script type="math/tex">\textit{nums}[i] > d[\textit{len}]</script></span>,则直接加入到<code>d</code>数组末尾,并更新<span><span class="MathJax_Preview">\textit{len} = \textit{len} + 1</span><script type="math/tex">\textit{len} = \textit{len} + 1</script></span>;</li>
+<li>否则,在<code>d</code>数组中二分查找,找到第一个比<span><span class="MathJax_Preview">\textit{nums}[i]</span><script type="math/tex">\textit{nums}[i]</script></span>小的数<span><span class="MathJax_Preview">d[k]</span><script type="math/tex">d[k]</script></span>,并更新<span><span class="MathJax_Preview">d[k + 1] = \textit{nums}[i]</span><script type="math/tex">d[k + 1] = \textit{nums}[i]</script></span>。</li>
+</ul>
+</li>
+</ul>
 <p>以输入序列<code>[0, 8, 4, 12, 2]</code>为例:</p>
 <blockquote>
 <p>第一步插入<code>0</code>,<code>d = [0]</code>;</p>

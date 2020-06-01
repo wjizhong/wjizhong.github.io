@@ -110,7 +110,7 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <li><strong>动态规划思路</strong></li>
 </ul>
 <p>第一步,一定要明确<code>dp</code>数组的含义。对于两个字符串的动态规划问题,套路是通用的。比如说对于字符串<code>s1</code>和<code>s2</code>,一般来说都要构造一个这样的<code>DP table</code>:</p>
-<p><img alt="" src="https://pic.leetcode-cn.com/5722d0bb29dfdf4ba276424fa0901b49ac69a75b32cb009514dca50e2a43c1c4-file_1578114778808" /></p>
+<p><img src="http://pic.leetcode-cn.com/5722d0bb29dfdf4ba276424fa0901b49ac69a75b32cb009514dca50e2a43c1c4-file_1578114778808" style="width: 40%" ></p>
 <p>为了方便理解此表,我们暂时认为索引是从<code>1</code>开始的,待会的代码中只要稍作调整即可。其中,<code>dp[i][j]</code>的含义是:对于<code>s1[1..i]</code>和<code>s2[1..j]</code>,它们的<code>LCS</code>长度是<code>dp[i][j]</code>。</p>
 <p>比如上图的例子,<code>d[2][4]</code>的含义就是:对于"ac"和"babc",它们的<code>LCS</code>长度是2。我们最终想得到的答案应该是<code>dp[3][6]</code>。</p>
 <p>第二步,定义<code>base case</code>。</p>
@@ -119,8 +119,8 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>第三步,找状态转移方程。</p>
 <p>这是动态规划最难的一步,不过好在这种字符串问题的套路都差不多,权且借这道题来聊聊处理这类问题的思路。</p>
 <p>状态转移说简单些就是做选择,比如说这个问题,是求<code>s1</code>和<code>s2</code>的最长公共子序列,不妨称这个子序列为<code>lcs</code>。那么对于<code>s1</code>和<code>s2</code>中的每个字符,有什么选择?很简单,两种选择,要么在<code>lcs</code>中,要么不在。</p>
-<p><img alt="" src="https://pic.leetcode-cn.com/416b6347372edfba27b298e225a2b90cfcb8efe5dac8ffb79fced89e996005e8-file_1578114778851" /></p>
-<p>这个<code>在</code>和<code>不在</code>就是选择,关键是,应该如何选择呢?这个需要动点脑筋:如果某个字符应该在<code>lcs</code>中,那么这个字符肯定同时存在于<code>s1</code>和<code>s2</code>中,因为<code>lcs</code>是最长公共子序列嘛。所以本题的思路是这样:</p>
+<p><img src="http://pic.leetcode-cn.com/416b6347372edfba27b298e225a2b90cfcb8efe5dac8ffb79fced89e996005e8-file_1578114778851" style="width: 35%" ></p>
+<p>这个在和不在就是选择,关键是,应该如何选择呢?这个需要动点脑筋:如果某个字符应该在<code>lcs</code>中,那么这个字符肯定同时存在于<code>s1</code>和<code>s2</code>中,因为<code>lcs</code>是最长公共子序列嘛。所以本题的思路是这样:</p>
 <p>用两个指针<code>i</code>和<code>j</code>从后往前遍历<code>s1</code>和<code>s2</code>,如果<code>s1[i]==s2[j]</code>,那么这个字符一定在<code>lcs</code>中;否则的话,<code>s1[i]</code>和<code>s2[j]</code>这两个字符至少有一个不在<code>lcs</code>中,需要丢弃一个。先看一下递归解法,比较容易理解:</p>
 <pre><code class="python">def longestCommonSubsequence(str1, str2) -&gt; int:
     def dp(i, j):
@@ -158,8 +158,8 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 
 <p>第四步,空间压缩</p>
 <p>从<code>i</code>的角度来看, 只与前一行有关,其他行无关。可以根据此进行空间压缩,准备一个<code>dp n+1</code>的长度,其实的0位置存放一个空字符串</p>
-<p><img alt="" src="https://pic.leetcode-cn.com/19821b27a70589cebc36f6bd0d6fd5c0b5a37c00c5c8565bb4448e70fce5122b.jpg" /></p>
-<p><img alt="" src="https://pic.leetcode-cn.com/25caad73c8883a127aa1feb34f55d94efbf182398ed16a8cbe4d0b7a25956667.jpg" /></p>
+<p><img alt="" src="http://pic.leetcode-cn.com/19821b27a70589cebc36f6bd0d6fd5c0b5a37c00c5c8565bb4448e70fce5122b.jpg" /></p>
+<p><img alt="" src="http://pic.leetcode-cn.com/25caad73c8883a127aa1feb34f55d94efbf182398ed16a8cbe4d0b7a25956667.jpg" /></p>
 <p>准备几个变量:</p>
 <blockquote>
 <p><code>last</code>:表示是当前<code>dp[j]</code>(<code>dp[i][j]</code>)左上角的数,相当于<code>dp[i-1][j-1]</code>,初始化的时候为0</p>
