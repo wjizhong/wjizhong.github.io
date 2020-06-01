@@ -792,7 +792,7 @@ P\left( AB \right)=P\left( B|A \right)P\left( A \right)=P\left( A|B \right)P\lef
 <script type="math/tex; mode=display">P\left( B_{i}|A \right)=\frac{P\left( A|B_{i} \right)\cdot P\left( B_{i} \right)}{\sum_{i=1}^{N}{P\left( A|B_{i} \right) \cdot P\left( B_{i}\right)} }</script>
 </div>
 <p>在这个例子里就是:</p>
-<p><img alt="" src="http://pic2.zhimg.com/80/v2-e3e7a3aa9fb146d662591612b3cac465_hd.jpg" /></p>
+<p><img src="http://pic2.zhimg.com/80/v2-e3e7a3aa9fb146d662591612b3cac465_hd.jpg" style="width:28%" ></p>
 <p>贝叶斯公式贯穿了机器学习中随机问题分析的全过程。从文本分类到概率图模型,其基本分类都是贝叶斯公式。</p>
 <p>期望、方差、协方差等主要反映数据的统计特征,机器学习的一个很大应用就是数据挖掘等,因此这些基本的统计概念也是很有必要掌握。另外,像后面的EM算法中,就需要用到期望的相关概念和性质。</p>
 <ul>
@@ -937,7 +937,7 @@ P\left( X=k \right) =\left( 1-p \right) ^{k-1} p
 </ul>
 <p>对于一般的求极值问题我们都知道,求导等于0就可以了。但是如果我们不但要求极值,还要求一个满足一定约束条件的极值,那么此时就可以构造Lagrange函数,其实就是把约束项添加到原函数上,然后对构造的新函数求导。</p>
 <p>对于一个要求极值的函数<span><span class="MathJax_Preview">f\left( x,y \right)</span><script type="math/tex">f\left( x,y \right)</script></span>,图上的蓝圈就是这个函数的等高图,就是说<span><span class="MathJax_Preview">f\left( x,y \right) =c_{1} ,c_{2} ,...,c_{n}</span><script type="math/tex">f\left( x,y \right) =c_{1} ,c_{2} ,...,c_{n}</script></span>分别代表不同的数值(每个值代表一圈,等高图),我要找到一组<span><span class="MathJax_Preview">\left( x,y \right)</span><script type="math/tex">\left( x,y \right)</script></span> ,使它的<span><span class="MathJax_Preview">c_{i}</span><script type="math/tex">c_{i}</script></span>值越大越好,但是这点必须满足约束条件<span><span class="MathJax_Preview">g\left( x,y \right)</span><script type="math/tex">g\left( x,y \right)</script></span>(在黄线上)。</p>
-<p><img alt="" src="http://pic3.zhimg.com/80/v2-806fd987177e32a33e698caa74d69942_hd.jpg" /></p>
+<p><img src="http://pic3.zhimg.com/80/v2-806fd987177e32a33e698caa74d69942_hd.jpg" style="width:20%" ></p>
 <p>也就是说<span><span class="MathJax_Preview">f(x,y)</span><script type="math/tex">f(x,y)</script></span>和<span><span class="MathJax_Preview">g(x,y)</span><script type="math/tex">g(x,y)</script></span>相切,或者说它们的梯度▽f和▽g平行,因此它们的梯度(偏导)成倍数关系;那我么就假设为<span><span class="MathJax_Preview">\lambda</span><script type="math/tex">\lambda</script></span>倍,然后把约束条件加到原函数后再对它求导,其实就等于满足了下图上的式子。</p>
 <p>在支持向量机模型(SVM)的推导中一步很关键的就是利用拉格朗日对偶性将原问题转化为对偶问题。</p>
 <ul>
@@ -949,8 +949,10 @@ P\left( X=k \right) =\left( 1-p \right) ^{k-1} p
 <p>求极大似然函数估计值的一般步骤:</p>
 <blockquote>
 <ol>
-<li>写出似然函数;
-<img alt="" src="http://pic3.zhimg.com/80/v2-84eef0a858928f3cc28fd03bd7286b3a_hd.jpg" /></li>
+<li>写出似然函数;</li>
+</ol>
+<p><img src="http://pic3.zhimg.com/80/v2-84eef0a858928f3cc28fd03bd7286b3a_hd.jpg" style="width:15%" ></p>
+<ol>
 <li>对似然函数取对数;</li>
 <li>两边同时求导数;</li>
 <li>令导数为0解出似然方程。</li>
