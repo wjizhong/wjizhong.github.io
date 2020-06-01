@@ -1,0 +1,2114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E7%AE%97%E6%B3%95%E5%86%85%E5%AE%B9/%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>算法基础 - 图像/视频算法</title>
+    <link href="../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "\u673a\u5668\u5b66\u4e60\u57fa\u7840", url: "#_top", level:1, children: [
+              {title: "\u4e00\u3001\u7ebf\u6027\u4ee3\u6570", url: "#_2", level:2, children: [
+                  {title: "1.1 \u57fa\u672c\u6982\u5ff5", url: "#11", level:3, children: [
+                  ]},
+                  {title: "1.2 \u504f\u5dee(Bias)\u4e0e\u65b9\u5dee(Variance)", url: "#12-biasvariance", level:3, children: [
+                  ]},
+                  {title: "1.3 \u7279\u5f81\u5206\u89e3", url: "#13", level:3, children: [
+                  ]},
+                  {title: "1.4 \u51e0\u79cd\u5e38\u7528\u7684\u8ddd\u79bb", url: "#14", level:3, children: [
+                  ]}, 
+              ]},
+              {title: "\u4e8c\u3001\u6982\u7387", url: "#_3", level:2, children: [ 
+              ]},
+              {title: "\u4e09\u3001\u4fe1\u606f\u8bba", url: "#_4", level:2, children: [
+                  {title: "3.1 \u57fa\u7840\u6982\u5ff5", url: "#31", level:3, children: [
+                  ]}, 
+              ]},
+              {title: "\u56db\u3001\u6570\u503c\u8ba1\u7b97\u548c\u6700\u4f18\u5316", url: "#_5", level:2, children: [
+                  {title: "4.1 \u57fa\u7840\u6982\u5ff5", url: "#41", level:3, children: [
+                  ]}, 
+              ]},
+              {title: "\u56db\u3001\u6700\u4f18\u5316", url: "#_6", level:2, children: [ 
+              ]},
+              {title: "\u4e94\u3001\u8bc4\u4f30\u6307\u6807", url: "#_7", level:2, children: [
+                  {title: "5.1 \u56de\u5f52(Regression)\u7b97\u6cd5\u6307\u6807", url: "#51-regression", level:3, children: [
+                  ]},
+                  {title: "5.2 \u5206\u7c7b(Classification)\u6307\u6807", url: "#52-classification", level:3, children: [
+                  ]},
+                  {title: "5.3 \u805a\u7c7b\u6307\u6807", url: "#53", level:3, children: [
+                  ]}, 
+              ]},
+              {title: "\u4e03\u3001\u5377\u79ef", url: "#_8", level:2, children: [
+                  {title: "6.1 \u5377\u79ef\u7684\u89e3\u91ca", url: "#61", level:3, children: [
+                  ]},
+                  {title: "6.2 \u5377\u79ef\u7c7b\u578b", url: "#62", level:3, children: [
+                  ]},
+                  {title: "6.2 \u5377\u79ef\u795e\u7ecf\u7f51\u7edc(CNN)\u7684\u7ed3\u6784\u8bbe\u8ba1", url: "#62-cnn", level:3, children: [
+                  ]},
+                  {title: "1*1\u5377\u79ef(\u57fa\u4e8e\u5347\u7ef4\u964d\u7ef4\u7684\u8bbe\u8ba1)", url: "#11_1", level:3, children: [
+                  ]}, 
+              ]},
+          ]},
+        ];
+    </script>
+    <script src="../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    
+
+    <h1 id="_1">机器学习基础</h1>
+<p>https://www.zhihu.com/question/291032522/answer/605843215</p>
+<p>https://www.zhihu.com/question/312556066/answer/600228264</p>
+<p>https://cloud.tencent.com/developer/article/1352583</p>
+<p>https://zhuanlan.zhihu.com/p/44106492</p>
+<p>机器学习的特点就是:以计算机为工具和平台,以数据为研究对象,以学习方法为中心;是概率论、线性代数、数值计算、信息论、最优化理论和计算机科学等多个领域的交叉学科。</p>
+<h2 id="_2">一、线性代数</h2>
+<h3 id="11">1.1 基本概念</h3>
+<p><strong>标量</strong>:一个标量就是一个单独的数,一般用小写的的变量名称表示。</p>
+<p><strong>向量</strong>:一个向量就是一列数,这些数是有序排列的。通常会赋予向量粗体的小写名称。当我们需要明确表示向量中的元素时,我们会将元素排列成一个方括号包围的纵柱:</p>
+<div>
+<div class="MathJax_Preview">
+\boldsymbol{x}=\begin{bmatrix}
+x_1 \\ x_2 \\ \vdots \\x_n
+\end{bmatrix}
+</div>
+<script type="math/tex; mode=display">
+\boldsymbol{x}=\begin{bmatrix}
+x_1 \\ x_2 \\ \vdots \\x_n
+\end{bmatrix}
+</script>
+</div>
+<p>我们可以把向量看作空间中的点,每个元素是不同的坐标轴上的坐标。</p>
+<p><strong>矩阵</strong>:矩阵是二维数组,其中的每一个元素被两个索引而非一个所确定。我们通常会赋予矩阵粗体的大写变量名称,比如<span><span class="MathJax_Preview">A</span><script type="math/tex">A</script></span>。如果一个实数矩阵高度为m,宽度为n,那么我们说<span><span class="MathJax_Preview">A\in R^{m\times n}</span><script type="math/tex">A\in R^{m\times n}</script></span> 。</p>
+<div>
+<div class="MathJax_Preview">
+A=\begin{bmatrix}
+a_{11} &amp; a_{12} &amp; \cdots &amp; a_{1n} \\
+a_{21} &amp; a_{22} &amp; \cdots &amp; a_{2n} \\
+a_{31} &amp; a_{32} &amp; \cdots &amp; a_{1n} \\
+\cdots &amp; \cdots &amp; \cdots &amp; \cdots \\
+a_{m1} &amp; a_{m2} &amp; \cdots &amp; a_{mn} \\
+\end{bmatrix}
+</div>
+<script type="math/tex; mode=display">
+A=\begin{bmatrix}
+a_{11} & a_{12} & \cdots & a_{1n} \\
+a_{21} & a_{22} & \cdots & a_{2n} \\
+a_{31} & a_{32} & \cdots & a_{1n} \\
+\cdots & \cdots & \cdots & \cdots \\
+a_{m1} & a_{m2} & \cdots & a_{mn} \\
+\end{bmatrix}
+</script>
+</div>
+<p><strong>张量</strong>:几何代数中定义的张量是基于向量和矩阵的推广,通俗一点理解的话,我们可以将标量视为零阶张量,矢量视为一阶张量,那么矩阵就是二阶张量。</p>
+<p>例如,可以将任意一张彩色图片表示成一个三阶张量,三个维度分别是图片的高度、宽度和色彩数据。将这张图用张量表示出来,就是最下方的那张表格:</p>
+<p><img alt="" src="http://pic1.zhimg.com/80/v2-c0c16793d4662bfcdd7e112030096f94_hd.jpg" /></p>
+<p>其中表的横轴表示图片的宽度值,这里只截取0~319;表的纵轴表示图片的高度值,这里只截取0~4;表格中每个方格代表一个像素点,比如第一行第一列的表格数据为[1.0,1.0,1.0],代表的就是RGB三原色在图片的这个位置的取值情况(即R=1.0,G=1.0,B=1.0)。</p>
+<p>当然我们还可以将这一定义继续扩展,即:我们可以用四阶张量表示一个包含多张图片的数据集,这四个维度分别是:图片在数据集中的编号,图片高度、宽度,以及色彩数据。张量在深度学习中是一个很重要的概念,因为它是一个深度学习框架中的一个核心组件,后续的所有运算和优化算法几乎都是基于张量进行的。</p>
+<p><strong>范数</strong>:有时我们需要衡量一个向量的大小。在机器学习中,我们经常使用被称为范数(norm) 的函数衡量矩阵大小。<span><span class="MathJax_Preview">L_p</span><script type="math/tex">L_p</script></span>范数如下:</p>
+<div>
+<div class="MathJax_Preview">
+\left| \left| x \right| \right| _{p}^{} =\left( \sum_{i}^{}{\left| x_{i} \right| ^{p} } \right) _{}^{\frac{1}{p} } 
+</div>
+<script type="math/tex; mode=display">
+\left| \left| x \right| \right| _{p}^{} =\left( \sum_{i}^{}{\left| x_{i} \right| ^{p} } \right) _{}^{\frac{1}{p} } 
+</script>
+</div>
+<p>所以:</p>
+<blockquote>
+<ul>
+<li>L1范数<span><span class="MathJax_Preview">\left| \left| x \right| \right|</span><script type="math/tex">\left| \left| x \right| \right|</script></span> :为x向量各个元素绝对值之和;</li>
+<li>L2范数<span><span class="MathJax_Preview">\left| \left| x \right| \right|_{2}</span><script type="math/tex">\left| \left| x \right| \right|_{2}</script></span> :为x向量各个元素平方和的开方。</li>
+</ul>
+</blockquote>
+<p>这里先说明一下,在机器学习中,L1范数和L2范数很常见,主要用在损失函数中起到一个限制模型参数复杂度的作用。</p>
+<h3 id="12-biasvariance">1.2 偏差(Bias)与方差(Variance)</h3>
+<ul>
+<li><strong>为什么会有偏差和方差?</strong></li>
+</ul>
+<p>对学习算法除了通过实验估计其泛化性能之外,人们往往还希望了解它为什么具有这样的性能。“偏差-方差分解”(bias-variance decomposition)就是从偏差和方差的角度来解释学习算法泛化性能的一种重要工具。</p>
+<p>在机器学习中,我们用训练数据集去训练一个模型,通常的做法是定义一个误差函数,通过将这个误差的最小化过程,来提高模型的性能。然而我们学习一个模型的目的是为了解决训练数据集这个领域中的一般化问题,单纯地将训练数据集的损失最小化,并不能保证在解决更一般的问题时模型仍然是最优,甚至不能保证模型是可用的。这个训练数据集的损失与一般化的数据集的损失之间的差异就叫做泛化误差(generalization error)。而泛化误差可以分解为偏差(Biase)、方差(Variance)和噪声(Noise)。</p>
+<ul>
+<li><strong>偏差、方差、噪声是什么?</strong></li>
+</ul>
+<p><strong>简述偏差、方差、噪声</strong></p>
+<p>如果我们能够获得所有可能的数据集合,并在这个数据集合上将损失最小化,那么学习得到的模型就可以称之为“真实模型”。当然,在现实生活中我们不可能获取并训练所有可能的数据,所以“真实模型”肯定存在,但是无法获得。我们的最终目的是学习一个模型使其更加接近这个真实模型。Bias和Variance分别从两个方面来描述我们学习到的模型与真实模型之间的差距。</p>
+<blockquote>
+<ul>
+<li>Bias是用所有可能的训练数据集训练出的所有模型的输出的平均值与真实模型的输出值之间的差异。</li>
+<li>Variance是不同的训练数据集训练出的模型输出值之间的差异。</li>
+<li>噪声的存在是学习算法所无法解决的问题,数据的质量决定了学习的上限。假设在数据已经给定的情况下,此时上限已定,我们要做的就是尽可能的接近这个上限。</li>
+</ul>
+</blockquote>
+<p>注意:我们能够用来学习的训练数据集只是全部数据中的一个子集。想象一下,我们现在收集几组不同的数据,因为每一组数据的不同,我们学习到模型的最小损失值也会有所不同,它们与“真实模型”的最小损失也是不一样的。</p>
+<p><strong>数学公式定义偏差、方差、噪声</strong></p>
+<p>要进一步理解偏差、方差、噪声,我们需要看看它们的数学公式。</p>
+<table>
+<thead>
+<tr>
+<th align="left">符号</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span></td>
+<td align="left">测试样本</td>
+</tr>
+<tr>
+<td align="left"><span><span class="MathJax_Preview">D</span><script type="math/tex">D</script></span></td>
+<td align="left">数据集</td>
+</tr>
+<tr>
+<td align="left"><span><span class="MathJax_Preview">y_D</span><script type="math/tex">y_D</script></span></td>
+<td align="left"><span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span>在数据中的标记</td>
+</tr>
+<tr>
+<td align="left"><span><span class="MathJax_Preview">y</span><script type="math/tex">y</script></span></td>
+<td align="left"><span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span>的真实标记</td>
+</tr>
+<tr>
+<td align="left"><span><span class="MathJax_Preview">f</span><script type="math/tex">f</script></span></td>
+<td align="left">训练集<span><span class="MathJax_Preview">D</span><script type="math/tex">D</script></span>学到的模型</td>
+</tr>
+<tr>
+<td align="left"><span><span class="MathJax_Preview">f(x;D)</span><script type="math/tex">f(x;D)</script></span></td>
+<td align="left">由训练集D学到的模型<span><span class="MathJax_Preview">f</span><script type="math/tex">f</script></span>对<span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span>的预测输出</td>
+</tr>
+<tr>
+<td align="left"><span><span class="MathJax_Preview">\bar{f}(x)</span><script type="math/tex">\bar{f}(x)</script></span></td>
+<td align="left">模型<span><span class="MathJax_Preview">f</span><script type="math/tex">f</script></span>对x的期望输出</td>
+</tr>
+</tbody>
+</table>
+<p>以回归任务为例,学习算法的期望预测为:</p>
+<div>
+<div class="MathJax_Preview">
+\bar{f}(x) = \mathbb{E}_D[f(x;D)]
+</div>
+<script type="math/tex; mode=display">
+\bar{f}(x) = \mathbb{E}_D[f(x;D)]
+</script>
+</div>
+<p>这里的期望预测也就是针对不同数据集D,模型f对样本x的预测值取其期望,也叫做平均预测(average predicted)。</p>
+<blockquote>
+<ul>
+<li>方差定义:</li>
+</ul>
+</blockquote>
+<p>使用样本数相同的不同训练集产生的方差为:</p>
+<div>
+<div class="MathJax_Preview">
+var(x)=\mathbb{E}_D[(f(x;D)-\bar{f}(x))^2]
+</div>
+<script type="math/tex; mode=display">
+var(x)=\mathbb{E}_D[(f(x;D)-\bar{f}(x))^2]
+</script>
+</div>
+<p><strong>方差的含义:方差度量了同样大小的训练集的变动所导致的学习性能的变化,即刻画了数据扰动所造成的影响。</strong></p>
+<blockquote>
+<ul>
+<li>偏差定义:</li>
+</ul>
+</blockquote>
+<p>期望输出与真实标记的差别称为偏差(bias),即:</p>
+<div>
+<div class="MathJax_Preview">
+bias^2(x)=(\bar{f}(x)-y)^2
+</div>
+<script type="math/tex; mode=display">
+bias^2(x)=(\bar{f}(x)-y)^2
+</script>
+</div>
+<p><strong>偏差的含义:偏差度量了学习算法的期望预测与真实结果的偏离程度,即刻画了学习算法本身的拟合能力。</strong></p>
+<blockquote>
+<ul>
+<li>噪声:</li>
+</ul>
+</blockquote>
+<p>噪声为:</p>
+<div>
+<div class="MathJax_Preview">
+\varepsilon^{2}=\mathbb{E}_D[(y_D-y)^2]
+</div>
+<script type="math/tex; mode=display">
+\varepsilon^{2}=\mathbb{E}_D[(y_D-y)^2]
+</script>
+</div>
+<p><strong>噪声的含义:噪声则表达了在当前任务上任何学习算法所能达到的期望泛化误差的下界,即刻画了学习问题本身的难度。</strong></p>
+<ul>
+<li><strong>泛化误差、偏差和方差的关系?</strong></li>
+</ul>
+<div>
+<div class="MathJax_Preview">
+\text{泛化误差}=\text{错误率(error)}=bias^{2}(x)+var(x)+\varepsilon^{2}
+</div>
+<script type="math/tex; mode=display">
+\text{泛化误差}=\text{错误率(error)}=bias^{2}(x)+var(x)+\varepsilon^{2}
+</script>
+</div>
+<p>也就是说,泛化误差可以通过一系列公式分解运算证明:泛化误差为偏差、方差与噪声之和。证明过程如下:</p>
+<p>为了便于讨论,我们假定噪声期望为零,即<span><span class="MathJax_Preview">E_{D}[y_{D}-y]=0</span><script type="math/tex">E_{D}[y_{D}-y]=0</script></span>。通过简单的多项式展开合并,可对算法的期望泛化误差进行分解:</p>
+<div>
+<div class="MathJax_Preview">
+\begin{aligned}
+E(f;D) &amp;=\mathbb{E}_D[(f(x;D)-y_D)^2] \\
+       &amp;= \mathbb{E}_D[(f(x;D-\bar{f}(x)+\bar{f}(x)-y_D)^2] \\
+       &amp;= \mathbb{E}_D[(f(x;D-\bar{f}(x))^2] + \mathbb{E}_D[(\bar{f}(x)-y_D)^2] + \mathbb{E}_D[2(f(x;D-\bar{f}(x)))(\bar{f}(x)-y_D)] \\
+       &amp;= \mathbb{E}_D[(f(x;D-\bar{f}(x))^2] + \mathbb{E}_D[(\bar{f}(x)-y_D)^2] \\
+       &amp;= \mathbb{E}_D[(f(x;D-\bar{f}(x))^2] + \mathbb{E}_D[(\bar{f}(x)-y+y-y_D)^2] \\
+       &amp;= \mathbb{E}_D[(f(x;D-\bar{f}(x))^2] + \mathbb{E}_D[(\bar{f}(x)-y)^2] + \mathbb{E}_D[(y-y_D)^2] + 2\mathbb{E}_D[(\bar{f}(x)-y)*y-y_D)] \\
+       &amp;= \mathbb{E}_D[(f(x;D-\bar{f}(x))^2] + \mathbb{E}_D[(\bar{f}(x)-y)^2] + \mathbb{E}_D[(y-y_D)^2]
+\end{aligned}
+</div>
+<script type="math/tex; mode=display">
+\begin{aligned}
+E(f;D) &=\mathbb{E}_D[(f(x;D)-y_D)^2] \\
+       &= \mathbb{E}_D[(f(x;D-\bar{f}(x)+\bar{f}(x)-y_D)^2] \\
+       &= \mathbb{E}_D[(f(x;D-\bar{f}(x))^2] + \mathbb{E}_D[(\bar{f}(x)-y_D)^2] + \mathbb{E}_D[2(f(x;D-\bar{f}(x)))(\bar{f}(x)-y_D)] \\
+       &= \mathbb{E}_D[(f(x;D-\bar{f}(x))^2] + \mathbb{E}_D[(\bar{f}(x)-y_D)^2] \\
+       &= \mathbb{E}_D[(f(x;D-\bar{f}(x))^2] + \mathbb{E}_D[(\bar{f}(x)-y+y-y_D)^2] \\
+       &= \mathbb{E}_D[(f(x;D-\bar{f}(x))^2] + \mathbb{E}_D[(\bar{f}(x)-y)^2] + \mathbb{E}_D[(y-y_D)^2] + 2\mathbb{E}_D[(\bar{f}(x)-y)*y-y_D)] \\
+       &= \mathbb{E}_D[(f(x;D-\bar{f}(x))^2] + \mathbb{E}_D[(\bar{f}(x)-y)^2] + \mathbb{E}_D[(y-y_D)^2]
+\end{aligned}
+</script>
+</div>
+<p>于是,最终得到:</p>
+<p><img alt="" src="http://pic3.zhimg.com/80/v2-69a3c3949b21f1c016dbb01780ebdeca_hd.jpg" /></p>
+<p>“偏差-方差分解”说明,泛化性能是由学习算法的能力、数据的充分性以及学习任务本身的难度所共同决定的。给定学习任务,为了取得好的泛化性能,则需使偏差较小,即能够充分拟合数据,并且使方差较小,即使得数据扰动产生的影响小。</p>
+<ul>
+<li><strong>用图形解释偏差和方差</strong></li>
+</ul>
+<p>我们从下面的靶心图来对偏差和方差有个直观的感受。(图片来自:<a href="http://scott.fortmann-roe.com/docs/BiasVariance.html">Understanding the Bias-Variance Tradeoff</a>)</p>
+<p><img alt="" src="http://pic2.zhimg.com/v2-237e06cf5d700137a7370e7d2cf246c5_r.jpg" /></p>
+<p>假设红色的靶心区域是学习算法完美的正确预测值,蓝色点为训练数据集所训练出的模型对样本的预测值,当我们从靶心逐渐往外移动时,预测效果逐渐变差。</p>
+<p>从上面的图片中很容易可以看到,左边一列的蓝色点比较集中,右边一列的蓝色点比较分散,它们描述的是方差的两种情况。比较集中的属于方差比较小,比较分散的属于方差比较大的情况。</p>
+<p>我们再从蓝色点与红色靶心区域的位置关系来看,靠近红色靶心的属于偏差较小的情况,远离靶心的属于偏差较大的情况。</p>
+<p>Variance的对象是多个模型,是相同分布的不同数据集训练出模型的输出值之间的差异。它刻画的是数据扰动对模型的影响。</p>
+<ul>
+<li><strong>偏差、方差窘境</strong></li>
+</ul>
+<p>一般来说,偏差与方差是有冲突的,这称为偏差-方差窘境(bias-variance dilemma)。下图给出了一个示意图。给定学习任务,假定我们能控制学习算法的训练程度,则在训练不足时,学习器的拟合能力不够强,训练数据的扰动不足以使学习器产生显著变化,此时偏差主导了泛化错误率;随着训练程度的加深,学习器的拟合能力逐渐增强,训练数据发生的扰动渐渐能被学习器学到,方差逐渐主导了泛化错误率;在训练程度充足后,学习器的拟合能力已经非常强,训练数据发生的轻微扰动都会导致学习器发生显著变化,若训练数据自身的、非全局的特性被学习器学到了,则将发生过拟合。</p>
+<p><img alt="" src="https://pic1.zhimg.com/v2-7f56516f55463656e81d55edc5c069e8_r.jpg" /></p>
+<ul>
+<li><strong>偏差、方差与过拟合、欠拟合的关系?</strong></li>
+</ul>
+<p>一般来说,简单的模型会有一个较大的偏差和较小的方差,复杂的模型偏差较小方差较大。</p>
+<p><strong>欠拟合:模型不能适配训练样本,有一个很大的偏差。</strong></p>
+<p>举个例子:我们可能有本质上是多项式的连续非线性数据,但模型只能表示线性关系。在此情况下,我们向模型提供多少数据不重要,因为模型根本无法表示数据的基本关系,模型不能适配训练样本,有一个很大的偏差,因此我们需要更复杂的模型。那么,是不是模型越复杂拟合程度越高越好呢?也不是,因为还有方差。</p>
+<p><strong>过拟合:模型很好的适配训练样本,但在测试集上表现很糟,有一个很大的方差。</strong></p>
+<p>方差就是指模型过于拟合训练数据,以至于没办法把模型的结果泛化。而泛化正是机器学习要解决的问题,如果一个模型只能对一组特定的数据有效,换了数据就无效,我们就说这个模型过拟合。这就是模型很好的适配训练样本,但在测试集上表现很糟,有一个很大的方差。</p>
+<ul>
+<li><strong>偏差、方差与模型复杂度的关系</strong></li>
+</ul>
+<p>由前面偏差和方差的介绍,我们来总结一下偏差和方差的来源:我们训练的机器学习模型,必不可少地对数据依赖。但是,如果你不清楚数据服从一个什么样的分布,或是没办法拿到所有可能的数据(肯定拿不到所有数据),那么我们训练出来的模型和真实模型之间存在不一致性。这种不一致性表现在两个方面:偏差和方差。</p>
+<p>那么,既然偏差和方差是这么来的,而且还是无法避免的,那么我们有什么办法尽量减少它对模型的影响呢?</p>
+<p>一个好的办法就是正确选择模型的复杂度。复杂度高的模型通常对训练数据有很好的拟合能力,但是对测试数据就不一定了。而复杂度太低的模型又不能很好的拟合训练数据,更不能很好的拟合测试数据。因此,模型复杂度和模型偏差和方差具有如下图所示关系。</p>
+<ul>
+<li><strong>偏差、方差与bagging、boosting的关系?</strong></li>
+</ul>
+<p>Bagging算法是对训练样本进行采样,产生出若干不同的子集,再从每个数据子集中训练出一个分类器,取这些分类器的平均,所以是降低模型的方差(variance)。Bagging算法和Random Forest这种并行算法都有这个效果。</p>
+<p>Boosting则是迭代算法,每一次迭代都根据上一次迭代的预测结果对样本进行权重调整,所以随着迭代不断进行,误差会越来越小,所以模型的偏差(bias)会不断降低。</p>
+<ul>
+<li><strong>偏差、方差和K折交叉验证的关系?</strong></li>
+</ul>
+<p>K-fold Cross Validation的思想:将原始数据分成K组(一般是均分),将每个子集数据分别做一次验证集,其余的K-1组子集数据作为训练集,这样会得到K个模型,用这K个模型最终的验证集的分类准确率的平均数作为此K-CV下分类器的性能指标。</p>
+<p>对于一系列模型<span><span class="MathJax_Preview">F(\hat{f}, \theta)</span><script type="math/tex">F(\hat{f}, \theta)</script></span>, 我们使用Cross Validation的目的是获得预测误差的无偏估计量CV,从而可以用来选择一个最优的Theta*,使得CV最小。假设K-folds cross validation,CV统计量定义为每个子集中误差的平均值,而K的大小和CV平均值的bias和variance是有关的:</p>
+<div>
+<div class="MathJax_Preview">
+CV = \frac{1}{K} \sum_{k = 1}^{K}{\frac{1}{m}\sum_{i = 1}^{m}(\hat{f^k} - y_i)^2}
+</div>
+<script type="math/tex; mode=display">
+CV = \frac{1}{K} \sum_{k = 1}^{K}{\frac{1}{m}\sum_{i = 1}^{m}(\hat{f^k} - y_i)^2}
+</script>
+</div>
+<p>其中,m = N/K 代表每个子集的大小, N是总的训练样本量,K是子集的数目。</p>
+<p>当K较大时,m较小,模型建立在较大的N-m上,经过更多次数的平均可以学习得到更符合真实数据分布的模型,Bias就小了,但是这样一来模型就更加拟合训练数据集,再去测试集上预测的时候预测误差的期望值就变大了,从而Variance就大了;k较小的时候,模型不会过度拟合训练数据,从而Bias较大,但是正因为没有过度拟合训练数据,Variance也较小。</p>
+<ul>
+<li><strong>如何解决偏差、方差问题?</strong></li>
+</ul>
+<p>整体思路:首先,要知道偏差和方差是无法完全避免的,只能尽量减少其影响。</p>
+<blockquote>
+<ul>
+<li>在避免偏差时,需尽量选择正确的模型,一个非线性问题而我们一直用线性模型去解决,那无论如何,高偏差是无法避免的。</li>
+<li>有了正确的模型,我们还要慎重选择数据集的大小,通常数据集越大越好,但大到数据集已经对整体所有数据有了一定的代表性后,再多的数据已经不能提升模型了,反而会带来计算量的增加。而训练数据太小一定是不好的,这会带来过拟合,模型复杂度太高,方差很大,不同数据集训练出来的模型变化非常大。</li>
+<li>最后,要选择合适的模型复杂度,复杂度高的模型通常对训练数据有很好的拟合能力。</li>
+</ul>
+</blockquote>
+<p>针对偏差和方差的思路:</p>
+<p><strong>偏差:实际上也可以称为避免欠拟合。</strong></p>
+<blockquote>
+<ul>
+<li>寻找更好的特征 -- 具有代表性。</li>
+<li>用更多的特征 -- 增大输入向量的维度。(增加模型复杂度)</li>
+</ul>
+</blockquote>
+<p><strong>方差:避免过拟合</strong></p>
+<blockquote>
+<ul>
+<li>增大数据集合 -- 使用更多的数据,减少数据扰动所造成的影响</li>
+<li>减少数据特征 -- 减少数据维度,减少模型复杂度</li>
+<li>正则化方法</li>
+<li>交叉验证法</li>
+</ul>
+</blockquote>
+<h3 id="13">1.3 特征分解</h3>
+<p>许多数学对象可以通过将它们分解成多个组成部分。特征分解是使用最广的矩阵分解之一,即将矩阵分解成一组特征向量和特征值。</p>
+<p>方阵A的特征向量是指与A相乘后相当于对该向量进行缩放的非零向量<span><span class="MathJax_Preview">\nu</span><script type="math/tex">\nu</script></span>:</p>
+<div>
+<div class="MathJax_Preview">
+A\nu =\lambda \nu 
+</div>
+<script type="math/tex; mode=display">
+A\nu =\lambda \nu 
+</script>
+</div>
+<p>标量<span><span class="MathJax_Preview">\lambda</span><script type="math/tex">\lambda</script></span>被称为这个特征向量对应的特征值。</p>
+<p>使用特征分解去分析矩阵A时,得到特征向量构成的矩阵V和特征值构成的向量<span><span class="MathJax_Preview">\lambda</span><script type="math/tex">\lambda</script></span>,我们可以重新将A写作:</p>
+<div>
+<div class="MathJax_Preview">
+A=Vdiag\left( \lambda \right) V^{-1} 
+</div>
+<script type="math/tex; mode=display">
+A=Vdiag\left( \lambda \right) V^{-1} 
+</script>
+</div>
+<ul>
+<li><strong>奇异值分解(Singular Value Decomposition,SVD)</strong></li>
+</ul>
+<p>矩阵的特征分解是有前提条件的,那就是只有对可对角化的矩阵才可以进行特征分解。但实际中很多矩阵往往不满足这一条件,甚至很多矩阵都不是方阵,就是说连矩阵行和列的数目都不相等。这时候怎么办呢?人们将矩阵的特征分解进行推广,得到了一种叫作“矩阵的奇异值分解”的方法,简称SVD。通过奇异分解,我们会得到一些类似于特征分解的信息。</p>
+<p>它的具体做法是将一个普通矩阵分解为奇异向量和奇异值。比如将矩阵A分解成三个矩阵的乘积:<span><span class="MathJax_Preview">A=UDV^{T}</span><script type="math/tex">A=UDV^{T}</script></span> </p>
+<p>假设A是一个<span><span class="MathJax_Preview">m\times n</span><script type="math/tex">m\times n</script></span>矩阵,那么U是一个<span><span class="MathJax_Preview">m\times m</span><script type="math/tex">m\times m</script></span>矩阵,D是一个<span><span class="MathJax_Preview">m\times n</span><script type="math/tex">m\times n</script></span>矩阵,V是一个<span><span class="MathJax_Preview">n\times n</span><script type="math/tex">n\times n</script></span>矩阵。</p>
+<p>这些矩阵每一个都拥有特殊的结构,其中U和V都是正交矩阵,D是对角矩阵(注意,D不一定是方阵)。对角矩阵D对角线上的元素被称为矩阵A的奇异值。矩阵U的列向量被称为左奇异向量,矩阵V的列向量被称右奇异向量。</p>
+<p>SVD最有用的一个性质可能是拓展矩阵求逆到非方矩阵上。另外,SVD可用于推荐系统中。</p>
+<p><strong>奇异值的物理意义</strong></p>
+<p>参考: http://www.ams.org/publicoutreach/feature-column/fcarc-svd</p>
+<p><img alt="" src="https://pic2.zhimg.com/7aba604694157b53ab901ee4908312cd_r.jpg" /></p>
+<p>图片实际上对应着一个矩阵,矩阵的大小就是像素大小,比如这张图对应的矩阵阶数就是<code>450*333</code>,矩阵上每个元素的数值对应着像素值。我们记这个像素矩阵为<span><span class="MathJax_Preview">A</span><script type="math/tex">A</script></span>。</p>
+<p>现在我们对矩阵<span><span class="MathJax_Preview">A</span><script type="math/tex">A</script></span>进行奇异值分解。直观上,奇异值分解将矩阵分解成若干个秩一矩阵之和,用公式表示就是:</p>
+<div>
+<div class="MathJax_Preview">A = \sigma_1 u_1v_1^{\rm T}+\sigma_2 u_2v_2^{\rm T}+...+\sigma_r u_rv_r^{\rm T}</div>
+<script type="math/tex; mode=display">A = \sigma_1 u_1v_1^{\rm T}+\sigma_2 u_2v_2^{\rm T}+...+\sigma_r u_rv_r^{\rm T}</script>
+</div>
+<p>其中等式右边每一项前的系数<span><span class="MathJax_Preview">\sigma</span><script type="math/tex">\sigma</script></span>就是奇异值,<span><span class="MathJax_Preview">u</span><script type="math/tex">u</script></span>和<span><span class="MathJax_Preview">v</span><script type="math/tex">v</script></span>分别表示列向量,秩一矩阵的意思是矩阵秩为1。注意到每一项<span><span class="MathJax_Preview">uv^{\rm T}</span><script type="math/tex">uv^{\rm T}</script></span>都是秩为1的矩阵。我们假定奇异值满足<span><span class="MathJax_Preview">\sigma_1\geq\sigma_2\geq...\geq\sigma_r&gt;0</span><script type="math/tex">\sigma_1\geq\sigma_2\geq...\geq\sigma_r>0</script></span>(奇异值大于0是个重要的性质,但这里先别在意),如果不满足的话重新排列顺序即可,这无非是编号顺序的问题。</p>
+<p>既然奇异值有从大到小排列的顺序,自然要问,如果只保留大的奇异值,舍去较小的奇异值,这样式中的等式自然不再成立,那会得到怎样的矩阵——也就是图像?</p>
+<p>令<span><span class="MathJax_Preview">A_1=\sigma_1 u_1v_1^{\rm T}</span><script type="math/tex">A_1=\sigma_1 u_1v_1^{\rm T}</script></span>,这只保留等式右边第一项,然后作图:</p>
+<p><img alt="" src="http://pic2.zhimg.com/ba727031b6fe9449ad3d67caeecf9795_b.jpg" /></p>
+<p>结果就是完全看不清是啥……我们试着多增加几项进来:<span><span class="MathJax_Preview">A_5=\sigma_1 u_1v_1^{\rm T}+\sigma_2 u_2v_2^{\rm T}+\sigma_3 u_3v_3^{\rm T}+\sigma_4 u_4v_4^{\rm T}+\sigma_5 u_5v_5^{\rm T}</span><script type="math/tex">A_5=\sigma_1 u_1v_1^{\rm T}+\sigma_2 u_2v_2^{\rm T}+\sigma_3 u_3v_3^{\rm T}+\sigma_4 u_4v_4^{\rm T}+\sigma_5 u_5v_5^{\rm T}</script></span>,再作图</p>
+<p><img alt="" src="https://pic1.zhimg.com/26af24cb31adec4d4e16939798fe4f18_b.jpg" /></p>
+<p>隐约可以辨别这是短发伽椰子的脸……但还是很模糊,毕竟我们只取了5个奇异值而已。下面我们取20个奇异值试试,也就是等式右边取前20项构成<span><span class="MathJax_Preview">A_{20}</span><script type="math/tex">A_{20}</script></span></p>
+<p><img alt="" src="https://pic2.zhimg.com/7f70625c040ddfc9ed2681365c37c8e5_b.jpg" /></p>
+<p>虽然还有些马赛克般的模糊,但我们总算能辨别出这是Juri酱的脸。当我们取到等式右边前50项时:</p>
+<p><img alt="" src="https://pic2.zhimg.com/15eecd833bd9c0c6d5a4d33c044f5945_b.jpg" /></p>
+<p>我们得到和原图差别不大的图像。也就是说当<span><span class="MathJax_Preview">k</span><script type="math/tex">k</script></span>从1不断增大时,<span><span class="MathJax_Preview">A_k</span><script type="math/tex">A_k</script></span>不断的逼近<span><span class="MathJax_Preview">A</span><script type="math/tex">A</script></span>。让我们回到公式</p>
+<div>
+<div class="MathJax_Preview">A = \sigma_1 u_1v_1^{\rm T}+\sigma_2 u_2v_2^{\rm T}+...+\sigma_r u_rv_r^{\rm T}</div>
+<script type="math/tex; mode=display">A = \sigma_1 u_1v_1^{\rm T}+\sigma_2 u_2v_2^{\rm T}+...+\sigma_r u_rv_r^{\rm T}</script>
+</div>
+<p>矩阵<span><span class="MathJax_Preview">A</span><script type="math/tex">A</script></span>表示一个<code>450*333</code>的矩阵,需要保存<code>450x333=149850</code>个元素的值。等式右边<span><span class="MathJax_Preview">u</span><script type="math/tex">u</script></span>和<span><span class="MathJax_Preview">v</span><script type="math/tex">v</script></span>分别是<code>450*1</code>和<code>333*1</code>的向量,每一项有<code>1+450+333=784</code>个元素。如果我们要存储很多高清的图片,而又受限于存储空间的限制,在尽可能保证图像可被识别的精度的前提下,我们可以保留奇异值较大的若干项,舍去奇异值较小的项即可。例如在上面的例子中,如果我们只保留奇异值分解的前50项,则需要存储的元素为<code>784x50=39200</code>,和存储原始矩阵<span><span class="MathJax_Preview">A</span><script type="math/tex">A</script></span>相比,存储量仅为后者的26%。</p>
+<p>奇异值往往对应着矩阵中隐含的重要信息,且重要性和奇异值大小正相关。每个矩阵<span><span class="MathJax_Preview">A</span><script type="math/tex">A</script></span>都可以表示为一系列秩为1的"小矩阵"之和,而奇异值则衡量了这些"小矩阵"对于<span><span class="MathJax_Preview">A</span><script type="math/tex">A</script></span>的权重。</p>
+<p>在图像处理领域,奇异值不仅可以应用在数据压缩上,还可以对图像去噪。如果一副图像包含噪声,我们有理由相信那些较小的奇异值就是由于噪声引起的。当我们强行令这些较小的奇异值为0时,就可以去除图片中的噪声。如下是一张25*15的图像</p>
+<p><img alt="" src="https://pic4.zhimg.com/39f209faded179e3ba45b9304d137b77_b.jpg" /></p>
+<p>但往往我们只能得到如下带有噪声的图像(和无噪声图像相比,下图的部分白格子中带有灰色):</p>
+<p><img alt="" src="https://pic1.zhimg.com/154413815249e578abad23acaf6dfe98_b.jpg" /></p>
+<p>通过奇异值分解,我们发现矩阵的奇异值从大到小分别为:<code>14.15,4.67,3.00,0.21,……,0.05</code>。除了前3个奇异值较大以外,其余奇异值相比之下都很小。强行令这些小奇异值为0,然后只用前3个奇异值构造新的矩阵,得到</p>
+<p><img alt="" src="https://pic3.zhimg.com/1df92ac5dc018d63b14c30ae92eff222_b.jpg" /></p>
+<p>可以明显看出噪声减少了(白格子上灰白相间的图案减少了)。</p>
+<p>奇异值分解还广泛的用于主成分分析(Principle Component Analysis,简称PCA)和推荐系统(如Netflex的电影推荐系统)等。在这些应用领域,奇异值也有相应的意义。</p>
+<p><strong>奇异值的几何含义</strong></p>
+<p>下面的讨论需要一点点线性代数的知识。线性代数中最让人印象深刻的一点是,要将矩阵和空间中的线性变换视为同样的事物。比如对角矩阵<span><span class="MathJax_Preview">M</span><script type="math/tex">M</script></span>作用在任何一个向量上</p>
+<div>
+<div class="MathJax_Preview">\begin{bmatrix} 3 &amp; 0 \\ 0 &amp; 1 \end{bmatrix} \begin{bmatrix} x \\ y \end{bmatrix} = \begin{bmatrix} 3x \\ y \end{bmatrix}</div>
+<script type="math/tex; mode=display">\begin{bmatrix} 3 & 0 \\ 0 & 1 \end{bmatrix} \begin{bmatrix} x \\ y \end{bmatrix} = \begin{bmatrix} 3x \\ y \end{bmatrix}</script>
+</div>
+<p>其几何意义为在水平<span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span>方向上拉伸3倍,<span><span class="MathJax_Preview">y</span><script type="math/tex">y</script></span>方向保持不变的线性变换。换言之对角矩阵起到作用是将水平垂直网格作水平拉伸(或者反射后水平拉伸)的线性变换。</p>
+<p><img alt="" src="https://pic2.zhimg.com/012f667312babcd48d6548740b263645_b.jpg" /></p>
+<p><img alt="" src="https://pic1.zhimg.com/83c8636e531a0df1795db6ca4f4f3758_b.jpg" /></p>
+<p>如果<span><span class="MathJax_Preview">M</span><script type="math/tex">M</script></span>不是对角矩阵,而是一个对称矩阵</p>
+<div>
+<div class="MathJax_Preview">M= \begin{bmatrix} 2 &amp; 1 \\ 1 &amp; 2 \end{bmatrix}</div>
+<script type="math/tex; mode=display">M= \begin{bmatrix} 2 & 1 \\ 1 & 2 \end{bmatrix}</script>
+</div>
+<p>那么,我们也总可以找到一组网格线,使得矩阵作用在该网格上仅仅表现为(反射)拉伸变换,而没有旋转变换</p>
+<p><img alt="" src="https://pic2.zhimg.com/8acc7767cfbb297043a13b2e8f2e9329_b.jpg" /></p>
+<p><img alt="" src="https://pic1.zhimg.com/3f9674bd72eaa879f353a0d368033824_b.jpg" /></p>
+<p>考虑更一般的非对称矩阵</p>
+<div>
+<div class="MathJax_Preview">M= \begin{bmatrix} 1 &amp; 1 \\ 0 &amp; 1 \end{bmatrix}</div>
+<script type="math/tex; mode=display">M= \begin{bmatrix} 1 & 1 \\ 0 & 1 \end{bmatrix}</script>
+</div>
+<p>很遗憾,此时我们再也找不到一组网格,使得矩阵作用在该网格上之后只有拉伸变换(找不到背后的数学原因是对一般非对称矩阵无法保证在实数域上可对角化,不明白也不要在意)。我们退求其次,找一组网格,使得矩阵作用在该网格上之后允许有拉伸变换和旋转变换,但要保证变换后的网格依旧互相垂直。这是可以做到的</p>
+<p><img alt="" src="https://pic2.zhimg.com/356babf4c08d6c0fefc05195ab5da6c1_b.jpg" /></p>
+<p><img alt="" src="https://pic1.zhimg.com/73a69c76a7de9ec012f0ad0240cad6b8_b.jpg" /></p>
+<p>奇异值分解的几何含义为:对于任何的一个矩阵,我们要找到一组两两正交单位向量序列,使得矩阵作用在此向量序列上后得到新的向量序列保持两两正交。奇异值与矩阵分解的不同是奇异值可以是投影。</p>
+<ul>
+<li><strong>Moore-Penrose伪逆</strong></li>
+</ul>
+<p>对于非方矩阵而言,其逆矩阵没有定义。假设在下面问题中,我们想通过矩阵A的左逆B来求解线性方程:<span><span class="MathJax_Preview">Ax=y</span><script type="math/tex">Ax=y</script></span></p>
+<p>等式两边同时左乘左逆B后,得到:<span><span class="MathJax_Preview">x=By</span><script type="math/tex">x=By</script></span></p>
+<p>是否存在唯一的映射将A映射到B取决于问题的形式。</p>
+<p>如果矩阵A的行数大于列数,那么上述方程可能没有解;如果矩阵A的行数小于列数,那么上述方程可能有多个解。</p>
+<p>Moore-Penrose伪逆使我们能够解决这种情况,矩阵A的伪逆定义为:</p>
+<p><img alt="" src="http://pic4.zhimg.com/80/v2-1581c66947da5c30172f4ef80dd0b70f_hd.jpg" /></p>
+<p>但是计算伪逆的实际算法没有基于这个式子,而是使用下面的公式:</p>
+<p><img alt="" src="http://pic2.zhimg.com/80/v2-2845b623dc537e3bae0db22c4938e9c1_hd.jpg" /></p>
+<p>其中,矩阵U,D和V 是矩阵A奇异值分解后得到的矩阵。对角矩阵D的伪逆D+是其非零元素取倒之后再转置得到的。</p>
+<h3 id="14">1.4 几种常用的距离</h3>
+<p>上面大致说过, 在机器学习里,我们的运算一般都是基于向量的,一条用户具有100个特征,那么他对应的就是一个100维的向量,通过计算两个用户对应向量之间的距离值大小,有时候能反映出这两个用户的相似程度。这在后面的KNN算法和K-means算法中很明显。</p>
+<p>一般而言,定义一个距离函数<span><span class="MathJax_Preview">d(x,y)</span><script type="math/tex">d(x,y)</script></span>,需要满足下面几个准则:</p>
+<blockquote>
+<ol>
+<li><span><span class="MathJax_Preview">d(x,x)=0</span><script type="math/tex">d(x,x)=0</script></span>,到自己的距离为0</li>
+<li><span><span class="MathJax_Preview">d(x,y)&gt;= 0</span><script type="math/tex">d(x,y)>= 0</script></span>,距离非负</li>
+<li><span><span class="MathJax_Preview">d(x,y)=d(y,x)</span><script type="math/tex">d(x,y)=d(y,x)</script></span>,对称性,如果A到B距离是a,那么B到A的距离也应该是a</li>
+<li><span><span class="MathJax_Preview">d(x,k)+d(k,y)&gt;= d(x,y)</span><script type="math/tex">d(x,k)+d(k,y)>= d(x,y)</script></span>,三角形法则:(两边之和大于第三边)</li>
+</ol>
+</blockquote>
+<p>设有两个n维变量<span><span class="MathJax_Preview">A=\left[ x_{11}, x_{12},...,x_{1n} \right]</span><script type="math/tex">A=\left[ x_{11}, x_{12},...,x_{1n} \right]</script></span>和<span><span class="MathJax_Preview">B=\left[ x_{21} ,x_{22} ,...,x_{2n} \right]</span><script type="math/tex">B=\left[ x_{21} ,x_{22} ,...,x_{2n} \right]</script></span>,则一些常用的距离公式定义如下:</p>
+<ul>
+<li><strong>曼哈顿距离</strong></li>
+</ul>
+<p>曼哈顿距离也称为城市街区距离,数学定义如下:</p>
+<div>
+<div class="MathJax_Preview">
+d_{12} =\sum_{k=1}^{n}{\left| x_{1k}-x_{2k} \right| } 
+</div>
+<script type="math/tex; mode=display">
+d_{12} =\sum_{k=1}^{n}{\left| x_{1k}-x_{2k} \right| } 
+</script>
+</div>
+<p>曼哈顿距离的Python实现:</p>
+<pre><code class="python">from numpy import *
+vector1 = mat([1,2,3])
+vector2 = mat([4,5,6])
+print(sum(abs(vector1-vector2)))
+</code></pre>
+
+<ul>
+<li><strong>欧氏距离</strong></li>
+</ul>
+<p>欧氏距离其实就是L2范数,数学定义如下:</p>
+<div>
+<div class="MathJax_Preview">
+d_{12} =\sqrt{\sum_{k=1}^{n}{\left( x_{1k} -x_{2k} \right) ^{2} } } 
+</div>
+<script type="math/tex; mode=display">
+d_{12} =\sqrt{\sum_{k=1}^{n}{\left( x_{1k} -x_{2k} \right) ^{2} } } 
+</script>
+</div>
+<p>欧氏距离的Python实现:</p>
+<pre><code class="python">from numpy import *
+vector1 = mat([1,2,3])
+vector2 = mat([4,5,6])
+print(sqrt((vector1-vector2)*(vector1-vector2).T))
+</code></pre>
+
+<ul>
+<li><strong>切比雪夫距离</strong></li>
+</ul>
+<p>切比雪夫距离就是<span><span class="MathJax_Preview">L_{\infty}</span><script type="math/tex">L_{\infty}</script></span>,即无穷范数,数学表达式如下:</p>
+<div>
+<div class="MathJax_Preview">
+d_{12} =max\left( \left| x_{1k}-x_{2k} \right| \right)
+</div>
+<script type="math/tex; mode=display">
+d_{12} =max\left( \left| x_{1k}-x_{2k} \right| \right)
+</script>
+</div>
+<p>切比雪夫距离额Python实现如下:</p>
+<pre><code class="python">from numpy import *
+vector1 = mat([1,2,3])
+vector2 = mat([4,5,6])
+print(sqrt(abs(vector1-vector2).max))
+</code></pre>
+
+<ul>
+<li><strong>闵可夫斯基距离</strong></li>
+</ul>
+<p>从严格意义上讲,闵可夫斯基距离不是一种距离,而是一组距离的定义:</p>
+<div>
+<div class="MathJax_Preview">
+d_{12} =\sqrt[p]{\sum_{k=1}^{n}{\left( x_{1k} -x_{2k} \right) ^{p} } } 
+</div>
+<script type="math/tex; mode=display">
+d_{12} =\sqrt[p]{\sum_{k=1}^{n}{\left( x_{1k} -x_{2k} \right) ^{p} } } 
+</script>
+</div>
+<p>该距离最常用的p是2和1,前者是欧几里得距离(Euclidean distance),后者是曼哈顿距离(Manhattan distance)。假设在曼哈顿街区乘坐出租车从P点到Q点,白色表示高楼大厦,灰色表示街道:</p>
+<p><img alt="" src="http://images.cnitblog.com/blog/533521/201308/07220530-1c87c470c5984305932cb5f5fc91656f.png" /></p>
+<p>绿色的斜线表示欧几里得距离,在现实中是不可能的。其他三条折线表示了曼哈顿距离,这三条折线的长度是相等的。当p趋近于无穷大时,闵可夫斯基距离转化成切比雪夫距离(Chebyshev distance)。</p>
+<p>我们知道平面上到原点欧几里得距离(p=2)为1的点所组成的形状是一个圆,当p取其他数值的时候呢?</p>
+<p><img alt="" src="http://images.cnitblog.com/blog/533521/201308/07220559-ae662025d1394f90bfd62f7c21c3d895.png" /></p>
+<p>注意,当p&lt;1时,闵可夫斯基距离不再符合三角形法则,举个例子:当p&lt;1,(0,0)到(1,1)的距离等于(1+1)^{1/p}&gt;2,而(0,1)到这两个点的距离都是1。</p>
+<p>闵可夫斯基距离比较直观,但是它与数据的分布有关,具有一定的局限性,如果x方向的幅值远远大于y方向的值,这个距离公式就会过度放大x维度的作用。所以,在计算距离之前,我们可能还需要对数据进行z-transform 处理,即减去均值,除以标准差:</p>
+<div>
+<div class="MathJax_Preview">
+(x_1,y_1)\rightarrow (\frac{x_1-\mu_x}{\sigma_x},\frac{y_1-\mu_y}{\sigma_y})
+</div>
+<script type="math/tex; mode=display">
+(x_1,y_1)\rightarrow (\frac{x_1-\mu_x}{\sigma_x},\frac{y_1-\mu_y}{\sigma_y})
+</script>
+</div>
+<p>其中<span><span class="MathJax_Preview">\mu</span><script type="math/tex">\mu</script></span>为该维度上的均值,<span><span class="MathJax_Preview">\sigma</span><script type="math/tex">\sigma</script></span>为该维度上的标准差。</p>
+<p>可以看到,上述处理开始体现数据的统计特性了。这种方法在假设数据各个维度不相关的情况下利用数据分布的特性计算出不同的距离。如果维度相互之间数据相关(例如:身高较高的信息很有可能会带来体重较重的信息,因为两者是有关联的),这时候就要用到马氏距离(Mahalanobis distance)了。</p>
+<p>可以看到,上述处理开始体现数据的统计特性了。这种方法在假设数据各个维度不相关的情况下利用数据分布的特性计算出不同的距离。如果维度相互之间数据相关(例如:身高较高的信息很有可能会带来体重较重的信息,因为两者是有关联的),这时候就要用到马氏距离（Mahalanobis distance)了。</p>
+<ul>
+<li><strong>马氏距离</strong></li>
+</ul>
+<p>马氏距离实际上是利用Cholesky transformation来消除不同维度之间的相关性和尺度不同的性质。假设样本点(列向量)之间的协方差对称矩阵是<span><span class="MathJax_Preview">\Sigma</span><script type="math/tex">\Sigma</script></span>, 通过Cholesky Decomposition(实际上是对称矩阵LU分解的一种特殊形式)可以转化为下三角矩阵和上三角矩阵的乘积:<span><span class="MathJax_Preview">\Sigma=LL^T</span><script type="math/tex">\Sigma=LL^T</script></span>。消除不同维度之间的相关性和尺度不同,只需要对样本点x做如下处理:<span><span class="MathJax_Preview">z=L^{-1}(x-\mu)</span><script type="math/tex">z=L^{-1}(x-\mu)</script></span>。处理之后的欧几里得距离就是原样本的马氏距离):</p>
+<div>
+<div class="MathJax_Preview">
+\begin{aligned}
+z^Tz &amp;=(L^{-1}(x-\mu))^T(L^{-1}(x-\mu)) \\
+     &amp;=(x-\mu)^T\Sigma^{-1}(x-\mu)
+\end{aligned}
+</div>
+<script type="math/tex; mode=display">
+\begin{aligned}
+z^Tz &=(L^{-1}(x-\mu))^T(L^{-1}(x-\mu)) \\
+     &=(x-\mu)^T\Sigma^{-1}(x-\mu)
+\end{aligned}
+</script>
+</div>
+<p><strong>马氏距离的问题</strong>:</p>
+<blockquote>
+<ul>
+<li>协方差矩阵必须满秩:里面有求逆矩阵的过程,不满秩不行,要求数据要有原维度个特征值,如果没有可以考虑先进行PCA,这种情况下PCA不会损失信息</li>
+<li>不能处理非线性流形(manifold)上的问题:只对线性空间有效,如果要处理流形,只能在局部定义,可以用来建立KNN图</li>
+</ul>
+</blockquote>
+<p><code>python</code>代码:</p>
+<pre><code class="python">import numpy as np
+import pylab as pl
+import scipy.spatial.distance as dist
+
+def plotSamples(x, y, z=None):
+    stars = np.matrix([[3., -2., 0.], [3., 2., 0.]])
+    if z is not None:
+        x, y = z * np.matrix([x, y])
+        stars = z * stars
+    pl.scatter(x, y, s=10)    # 画 gaussian 随机点
+    pl.scatter(np.array(stars[0]), np.array(stars[1]), s=200, marker='*', color='r')  # 画三个指定点
+    pl.axhline(linewidth=2, color='g') # 画 x 轴
+    pl.axvline(linewidth=2, color='g')  # 画 y 轴
+
+    pl.axis('equal')
+    pl.axis([-5, 5, -5, 5])
+    pl.show()
+
+# 产生高斯分布的随机点
+mean = [0, 0]      # 平均值
+cov = [[2, 1], [1, 2]]   # 协方差
+x, y = np.random.multivariate_normal(mean, cov, 1000).T
+plotSamples(x, y)
+
+covMat = np.matrix(np.cov(x, y))    # 求 x 与 y 的协方差矩阵
+Z = np.linalg.cholesky(covMat).I  # 仿射矩阵
+plotSamples(x, y, Z)
+
+# 求马氏距离 
+print('\n到原点的马氏距离分别是:')
+print(dist.mahalanobis([0,0], [3,3], covMat.I), dist.mahalanobis([0,0], [-2,2], covMat.I))
+
+# 求变换后的欧几里得距离
+dots = (Z * np.matrix([[3, -2, 0], [3, 2, 0]])).T
+print('\n变换后到原点的欧几里得距离分别是:')
+print(dist.minkowski([0, 0], np.array(dots[0]), 2), dist.minkowski([0, 0], np.array(dots[1]), 2))
+</code></pre>
+
+<ul>
+<li><strong>夹角余弦</strong></li>
+</ul>
+<p>夹角余弦的取值范围为[-1,1],可以用来衡量两个向量方向的差异;夹角余弦越大,表示两个向量的夹角越小;当两个向量的方向重合时,夹角余弦取最大值1;当两个向量的方向完全相反时,夹角余弦取最小值-1。</p>
+<p>机器学习中用这一概念来衡量样本向量之间的差异,其数学表达式如下:</p>
+<div>
+<div class="MathJax_Preview">
+cos\theta =\frac{AB}{\left| A \right| \left|B \right| } =\frac{\sum_{k=1}^{n}{x_{1k}x_{2k} } }{\sqrt{\sum_{k=1}^{n}{x_{1k}^{2} } } \sqrt{\sum_{k=1}^{n}{x_{2k}^{2} } } } 
+</div>
+<script type="math/tex; mode=display">
+cos\theta =\frac{AB}{\left| A \right| \left|B \right| } =\frac{\sum_{k=1}^{n}{x_{1k}x_{2k} } }{\sqrt{\sum_{k=1}^{n}{x_{1k}^{2} } } \sqrt{\sum_{k=1}^{n}{x_{2k}^{2} } } } 
+</script>
+</div>
+<p>夹角余弦的Python实现:</p>
+<pre><code class="python">from numpy import *
+vector1 = mat([1,2,3])
+vector2 = mat([4,5,6])
+print(dot(vector1,vector2)/(linalg.norm(vector1)*linalg.norm(vector2)))
+</code></pre>
+
+<ul>
+<li><strong>汉明距离</strong></li>
+</ul>
+<p>汉明距离定义的是两个字符串中不相同位数的数目。例如:字符串‘1111’与‘1001’之间的汉明距离为2。信息编码中一般应使得编码间的汉明距离尽可能的小。</p>
+<p>汉明距离的Python实现:</p>
+<pre><code class="python">from numpy import *
+matV = mat([1,1,1,1],[1,0,0,1])
+smstr = nonzero(matV[0]-matV[1])
+print(smstr)
+</code></pre>
+
+<ul>
+<li><strong>杰卡德相似系数</strong></li>
+</ul>
+<p>两个集合A和B的交集元素在A和B的并集中所占的比例称为两个集合的杰卡德相似系数,用符号<span><span class="MathJax_Preview">J(A,B)</span><script type="math/tex">J(A,B)</script></span>表示,数学表达式为:</p>
+<div>
+<div class="MathJax_Preview">
+J\left( A,B \right) =\frac{\left| A\cap B\right| }{\left|A\cup B \right| } 
+</div>
+<script type="math/tex; mode=display">
+J\left( A,B \right) =\frac{\left| A\cap B\right| }{\left|A\cup B \right| } 
+</script>
+</div>
+<p>杰卡德相似系数是衡量两个集合的相似度的一种指标。一般可以将其用在衡量样本的相似度上。</p>
+<ul>
+<li><strong>杰卡德距离</strong></li>
+</ul>
+<p>与杰卡德相似系数相反的概念是杰卡德距离,其定义式为:</p>
+<div>
+<div class="MathJax_Preview">
+J_{\sigma} =1-J\left( A,B \right) =\frac{\left| A\cup B \right| -\left| A\cap B \right| }{\left| A\cup B \right| } 
+</div>
+<script type="math/tex; mode=display">
+J_{\sigma} =1-J\left( A,B \right) =\frac{\left| A\cup B \right| -\left| A\cap B \right| }{\left| A\cup B \right| } 
+</script>
+</div>
+<p>杰卡德距离的Python实现:</p>
+<pre><code class="python">from numpy import *
+import scipy.spatial.distance as dist
+matV = mat([1,1,1,1],[1,0,0,1])
+print(dist.pdist(matV,'jaccard'))
+</code></pre>
+
+<h2 id="_3">二、概率</h2>
+<p>概率论是用于表示不确定性陈述的数学框架,即它是对事物不确定性的度量。</p>
+<p>在人工智能领域,我们主要以两种方式来使用概率论。首先,概率法则告诉我们AI系统应该如何推理,所以我们设计一些算法来计算或者近似由概率论导出的表达式。其次,我们可以用概率和统计从理论上分析我们提出的AI系统的行为。</p>
+<p>计算机科学的许多分支处理的对象都是完全确定的实体,但机器学习却大量使用概率论。实际上如果你了解机器学习的工作原理你就会觉得这个很正常。因为机器学习大部分时候处理的都是不确定量或随机量。</p>
+<p><img alt="" src="http://www.math.wm.edu/~leemis/chart/UDR/BaseImage.png" /></p>
+<ul>
+<li><strong>随机变量</strong></li>
+</ul>
+<p>随机变量可以随机地取不同值的变量。我们通常用小写字母来表示随机变量本身,而用带数字下标的小写字母来表示随机变量能够取到的值。例如,<span><span class="MathJax_Preview">x_{1}</span><script type="math/tex">x_{1}</script></span>和<span><span class="MathJax_Preview">x_{2}</span><script type="math/tex">x_{2}</script></span>都是随机变量X可能的取值。</p>
+<p>对于向量值变量,我们会将随机变量写成X,它的一个值为x。就其本身而言,一个随机变量只是对可能的状态的描述;它必须伴随着一个概率分布来指定每个状态的可能性。</p>
+<p>随机变量可以是离散的或者连续的。</p>
+<ul>
+<li><strong>概率分布</strong></li>
+</ul>
+<p>给定某随机变量的取值范围,概率分布就是导致该随机事件出现的可能性。</p>
+<p>从机器学习的角度来看,概率分布就是符合随机变量取值范围的某个对象属于某个类别或服从某种趋势的可能性。</p>
+<ul>
+<li><strong>条件概率</strong></li>
+</ul>
+<p>很多情况下,我们感兴趣的是某个事件在给定其它事件发生时出现的概率,这种概率叫条件概率。</p>
+<p>我们将给定<span><span class="MathJax_Preview">X=x</span><script type="math/tex">X=x</script></span>时<span><span class="MathJax_Preview">Y=y</span><script type="math/tex">Y=y</script></span>发生的概率记为<span><span class="MathJax_Preview">P\left( Y=y|X=x \right)</span><script type="math/tex">P\left( Y=y|X=x \right)</script></span>,这个概率可以通过下面的公式来计算:</p>
+<div>
+<div class="MathJax_Preview">
+P\left( Y=y|X=x \right) =\frac{P\left( Y=y,X=x \right) }{P\left( X=x \right) }
+</div>
+<script type="math/tex; mode=display">
+P\left( Y=y|X=x \right) =\frac{P\left( Y=y,X=x \right) }{P\left( X=x \right) }
+</script>
+</div>
+<ul>
+<li><strong>贝叶斯公式</strong></li>
+</ul>
+<p>先看看什么是“先验概率”和“后验概率”,以一个例子来说明:</p>
+<blockquote>
+<p>假设某种病在人群中的发病率是0.001,即1000人中大概会有1个人得病,则有:P(患病)=0.1%;即:在没有做检验之前,我们预计的患病率为P(患病)=0.1%,这个就叫作"先验概率"。</p>
+</blockquote>
+<p>再假设现在有一种该病的检测方法,其检测的准确率为95%;即:如果真的得了这种病,该检测法有95%的概率会检测出阳性,但也有5%的概率检测出阴性;或者反过来说,但如果没有得病,采用该方法有95%的概率检测出阴性,但也有5%的概率检测为阳性。用概率条件概率表示即为:P(显示阳性|患病)=95%</p>
+<p>现在我们想知道的是:在做完检测显示为阳性后,某人的患病率P(患病|显示阳性),这个其实就称为"后验概率"。</p>
+<p>而这个叫贝叶斯的人其实就是为我们提供了一种可以利用先验概率计算后验概率的方法,我们将其称为“贝叶斯公式”。</p>
+<p>这里先了解条件概率公式:</p>
+<div>
+<div class="MathJax_Preview">
+P\left( B|A \right)=\frac{P\left( AB \right)}{P\left( A \right)} , P\left( A|B \right)=\frac{P\left( AB \right)}{P\left( B \right)}
+</div>
+<script type="math/tex; mode=display">
+P\left( B|A \right)=\frac{P\left( AB \right)}{P\left( A \right)} , P\left( A|B \right)=\frac{P\left( AB \right)}{P\left( B \right)}
+</script>
+</div>
+<p>由条件概率可以得到乘法公式:</p>
+<div>
+<div class="MathJax_Preview">
+P\left( AB \right)=P\left( B|A \right)P\left( A \right)=P\left( A|B \right)P\left( B \right)
+</div>
+<script type="math/tex; mode=display">
+P\left( AB \right)=P\left( B|A \right)P\left( A \right)=P\left( A|B \right)P\left( B \right)
+</script>
+</div>
+<p>将条件概率公式和乘法公式结合可以得到:</p>
+<div>
+<div class="MathJax_Preview">P\left( B|A \right)=\frac{P\left( A|B \right)\cdot P\left( B \right)}{P\left( A \right)}</div>
+<script type="math/tex; mode=display">P\left( B|A \right)=\frac{P\left( A|B \right)\cdot P\left( B \right)}{P\left( A \right)}</script>
+</div>
+<p>再由全概率公式:</p>
+<div>
+<div class="MathJax_Preview">P\left( A \right)=\sum_{i=1}^{N}{P\left( A|B_{i} \right) \cdot P\left( B_{i}\right)}</div>
+<script type="math/tex; mode=display">P\left( A \right)=\sum_{i=1}^{N}{P\left( A|B_{i} \right) \cdot P\left( B_{i}\right)}</script>
+</div>
+<p>代入可以得到贝叶斯公式:</p>
+<div>
+<div class="MathJax_Preview">P\left( B_{i}|A \right)=\frac{P\left( A|B_{i} \right)\cdot P\left( B_{i} \right)}{\sum_{i=1}^{N}{P\left( A|B_{i} \right) \cdot P\left( B_{i}\right)} }</div>
+<script type="math/tex; mode=display">P\left( B_{i}|A \right)=\frac{P\left( A|B_{i} \right)\cdot P\left( B_{i} \right)}{\sum_{i=1}^{N}{P\left( A|B_{i} \right) \cdot P\left( B_{i}\right)} }</script>
+</div>
+<p>在这个例子里就是:</p>
+<p><img alt="" src="http://pic2.zhimg.com/80/v2-e3e7a3aa9fb146d662591612b3cac465_hd.jpg" /></p>
+<p>贝叶斯公式贯穿了机器学习中随机问题分析的全过程。从文本分类到概率图模型,其基本分类都是贝叶斯公式。</p>
+<p>期望、方差、协方差等主要反映数据的统计特征,机器学习的一个很大应用就是数据挖掘等,因此这些基本的统计概念也是很有必要掌握。另外,像后面的EM算法中,就需要用到期望的相关概念和性质。</p>
+<ul>
+<li><strong>期望</strong></li>
+</ul>
+<p>在概率论和统计学中,数学期望是试验中每次可能结果的概率乘以其结果的总和。它是最基本的数学特征之一,反映随机变量平均值的大小。</p>
+<p>假设X是一个离散随机变量,其可能的取值有:<span><span class="MathJax_Preview">\left\{ x_{1} ,x_{2} ,......,x_{n} \right\}</span><script type="math/tex">\left\{ x_{1} ,x_{2} ,......,x_{n} \right\}</script></span>,各个取值对应的概率取值为:<span><span class="MathJax_Preview">P\left(x_{k} \right),k=1,2,\dots,n</span><script type="math/tex">P\left(x_{k} \right),k=1,2,\dots,n</script></span>,则其数学期望被定义为:</p>
+<div>
+<div class="MathJax_Preview">E\left(X \right) =\sum_{k=1}^{n}{x_{k} P\left( x_{k} \right) }</div>
+<script type="math/tex; mode=display">E\left(X \right) =\sum_{k=1}^{n}{x_{k} P\left( x_{k} \right) }</script>
+</div>
+<p>假设X是一个连续型随机变量,其概率密度函数为<span><span class="MathJax_Preview">P\left( x \right)</span><script type="math/tex">P\left( x \right)</script></span> 则其数学期望被定义为:</p>
+<div>
+<div class="MathJax_Preview">E\left( x \right) =\int_{-\infty }^{+\infty } xf\left( x \right) dx</div>
+<script type="math/tex; mode=display">E\left( x \right) =\int_{-\infty }^{+\infty } xf\left( x \right) dx</script>
+</div>
+<ul>
+<li><strong>方差</strong></li>
+</ul>
+<p>概率中,方差用来衡量随机变量与其数学期望之间的偏离程度;统计中的方差为样本方差,是各个样本数据分别与其平均数之差的平方和的平均数。数学表达式如下: </p>
+<div>
+<div class="MathJax_Preview">
+Var\left( x \right) =E\left\{ \left[ x-E\left( x \right) \right] ^{2} \right\} =E\left( x^{2} \right) -\left[ E\left( x \right) \right] ^{2} 
+</div>
+<script type="math/tex; mode=display">
+Var\left( x \right) =E\left\{ \left[ x-E\left( x \right) \right] ^{2} \right\} =E\left( x^{2} \right) -\left[ E\left( x \right) \right] ^{2} 
+</script>
+</div>
+<ul>
+<li><strong>协方差</strong></li>
+</ul>
+<p>在概率论和统计学中,协方差被用于衡量两个随机变量X和Y之间的总体误差。数学定义式为:</p>
+<div>
+<div class="MathJax_Preview">
+Cov\left( X,Y \right) =E\left[ \left( X-E\left[ X \right] \right) \left( Y-E\left[ Y \right] \right) \right] =E\left[ XY \right] -E\left[ X \right] E\left[ Y \right] 
+</div>
+<script type="math/tex; mode=display">
+Cov\left( X,Y \right) =E\left[ \left( X-E\left[ X \right] \right) \left( Y-E\left[ Y \right] \right) \right] =E\left[ XY \right] -E\left[ X \right] E\left[ Y \right] 
+</script>
+</div>
+<ul>
+<li><strong>常见分布函数</strong></li>
+</ul>
+<blockquote>
+<ul>
+<li>0-1分布</li>
+</ul>
+</blockquote>
+<p>0-1分布是单个二值型离散随机变量的分布,其概率分布函数为:</p>
+<div>
+<div class="MathJax_Preview">
+P\left( X=1 \right) =p;P\left( X=0 \right) =1-p
+</div>
+<script type="math/tex; mode=display">
+P\left( X=1 \right) =p;P\left( X=0 \right) =1-p
+</script>
+</div>
+<blockquote>
+<ul>
+<li>几何分布</li>
+</ul>
+</blockquote>
+<p>几何分布是离散型概率分布,其定义为:在n次伯努利试验中,试验k次才得到第一次成功的机率。即:前k-1次皆失败,第k次成功的概率。其概率分布函数为:</p>
+<div>
+<div class="MathJax_Preview">
+P\left( X=k \right) =\left( 1-p \right) ^{k-1} p
+</div>
+<script type="math/tex; mode=display">
+P\left( X=k \right) =\left( 1-p \right) ^{k-1} p
+</script>
+</div>
+<p>性质: <span><span class="MathJax_Preview">E\left( X \right) =\frac{1}{p}\quad Var\left( X \right) =\frac{1-p}{p^{2} }</span><script type="math/tex">E\left( X \right) =\frac{1}{p}\quad Var\left( X \right) =\frac{1-p}{p^{2} }</script></span></p>
+<blockquote>
+<ul>
+<li>二项分布</li>
+</ul>
+</blockquote>
+<p>二项分布即重复n次伯努利试验,各次试验之间都相互独立,并且每次试验中只有两种可能的结果,而且这两种结果发生与否相互对立。如果每次试验时,事件发生的概率为p,不发生的概率为1-p,则n次重复独立试验中发生k次的概率为:</p>
+<div>
+<div class="MathJax_Preview">P\left( X=k \right) =C_{n}^{k} p^{k} \left( 1-p \right) ^{n-k}</div>
+<script type="math/tex; mode=display">P\left( X=k \right) =C_{n}^{k} p^{k} \left( 1-p \right) ^{n-k}</script>
+</div>
+<p>性质: <span><span class="MathJax_Preview">E\left( X \right) =npVar\left( X \right) =np\left( 1-p \right)</span><script type="math/tex">E\left( X \right) =npVar\left( X \right) =np\left( 1-p \right)</script></span></p>
+<blockquote>
+<ul>
+<li>高斯分布</li>
+</ul>
+</blockquote>
+<p>高斯分布又叫正态分布,其曲线呈钟型,两头低,中间高,左右对称因其曲线呈钟形,如下图所示:</p>
+<p><img alt="" src="http://pic1.zhimg.com/80/v2-a0811acc8ab121a3ad8f2e37ff6c37cc_hd.jpg" /></p>
+<p>若随机变量X服从一个数学期望为<span><span class="MathJax_Preview">\mu</span><script type="math/tex">\mu</script></span>,方差为<span><span class="MathJax_Preview">\sigma ^{2}</span><script type="math/tex">\sigma ^{2}</script></span>的正态分布,则我们将其记为:<span><span class="MathJax_Preview">N\left( \mu ,\sigma^{2} \right)</span><script type="math/tex">N\left( \mu ,\sigma^{2} \right)</script></span> 。其期望值<span><span class="MathJax_Preview">\mu</span><script type="math/tex">\mu</script></span>决定了正态分布的位置,其标准差<span><span class="MathJax_Preview">\sigma</span><script type="math/tex">\sigma</script></span>(方差的开方)决定了正态分布的幅度。</p>
+<blockquote>
+<ul>
+<li>指数分布</li>
+</ul>
+</blockquote>
+<p>指数分布是事件的时间间隔的概率,它的一个重要特征是无记忆性。例如:如果某一元件的寿命的寿命为T,已知元件使用了t小时,它总共使用至少t+s小时的条件概率,与从开始使用时算起它使用至少s小时的概率相等。下面这些都属于指数分布:</p>
+<blockquote>
+<p>婴儿出生的时间间隔</p>
+<p>网站访问的时间间隔</p>
+<p>奶粉销售的时间间隔</p>
+</blockquote>
+<p>指数分布的公式可以从泊松分布推断出来。如果下一个婴儿要间隔时间t,就等同于t之内没有任何婴儿出生,即:</p>
+<div>
+<div class="MathJax_Preview">P\left( X\geq t \right) =P\left( N\left( t \right) =0 \right) =\frac{\left( \lambda t \right) ^{0}\cdot e^{-\lambda t} }{0!}=e^{-\lambda t}</div>
+<script type="math/tex; mode=display">P\left( X\geq t \right) =P\left( N\left( t \right) =0 \right) =\frac{\left( \lambda t \right) ^{0}\cdot e^{-\lambda t} }{0!}=e^{-\lambda t}</script>
+</div>
+<p>则: <span><span class="MathJax_Preview">P\left( X\leq t \right) =1-P\left( X\geq t \right) =1-e^{-\lambda t}</span><script type="math/tex">P\left( X\leq t \right) =1-P\left( X\geq t \right) =1-e^{-\lambda t}</script></span> </p>
+<p>如:接下来15分钟,会有婴儿出生的概率为:</p>
+<div>
+<div class="MathJax_Preview">P\left( X\leq \frac{1}{4} \right) =1-e^{-3\cdot \frac{1}{4} } \approx 0.53</div>
+<script type="math/tex; mode=display">P\left( X\leq \frac{1}{4} \right) =1-e^{-3\cdot \frac{1}{4} } \approx 0.53</script>
+</div>
+<p>指数分布的图像如下:</p>
+<p><img alt="" src="http://pic3.zhimg.com/80/v2-a58c37c481e032bbb53ff17113754ef6_hd.jpg" /></p>
+<blockquote>
+<ul>
+<li>泊松分布</li>
+</ul>
+</blockquote>
+<p>日常生活中,大量事件是有固定频率的,比如:</p>
+<blockquote>
+<p>某医院平均每小时出生3个婴儿</p>
+<p>某网站平均每分钟有2次访问</p>
+<p>某超市平均每小时销售4包奶粉</p>
+</blockquote>
+<p>它们的特点就是,我们可以预估这些事件的总数,但是没法知道具体的发生时间。已知平均每小时出生3个婴儿,请问下一个小时,会出生几个?有可能一下子出生6个,也有可能一个都不出生,这是我们没法知道的。</p>
+<p><strong>泊松分布就是描述某段时间内,事件具体的发生概率</strong>。其概率函数为:<span><span class="MathJax_Preview">P\left( N\left( t \right) =n \right) =\frac{\left( \lambda t \right) ^{n}e^{-\lambda t} }{n!}</span><script type="math/tex">P\left( N\left( t \right) =n \right) =\frac{\left( \lambda t \right) ^{n}e^{-\lambda t} }{n!}</script></span></p>
+<p>其中:P表示概率,N表示某种函数关系,t表示时间,n表示数量,1小时内出生3个婴儿的概率,就表示为<span><span class="MathJax_Preview">P(N(1) = 3)</span><script type="math/tex">P(N(1) = 3)</script></span>;<span><span class="MathJax_Preview">\lambda</span><script type="math/tex">\lambda</script></span>表示事件的频率。</p>
+<p>还是以上面医院平均每小时出生3个婴儿为例,则<span><span class="MathJax_Preview">\lambda =3</span><script type="math/tex">\lambda =3</script></span>;那么,接下来两个小时,一个婴儿都不出生的概率可以求得为:</p>
+<div>
+<div class="MathJax_Preview">P\left( N\left(2 \right) =0 \right) =\frac{\left( 3\cdot 2 \right) ^{o} \cdot e^{-3\cdot 2} }{0!} \approx 0.0025</div>
+<script type="math/tex; mode=display">P\left( N\left(2 \right) =0 \right) =\frac{\left( 3\cdot 2 \right) ^{o} \cdot e^{-3\cdot 2} }{0!} \approx 0.0025</script>
+</div>
+<p>同理,我们可以求接下来一个小时,至少出生两个婴儿的概率:</p>
+<div>
+<div class="MathJax_Preview">P\left( N\left( 1 \right) \geq 2 \right) =1-P\left( N\left( 1 \right)=0 \right) - P\left( N\left( 1 \right)=1 \right)\approx 0.8</div>
+<script type="math/tex; mode=display">P\left( N\left( 1 \right) \geq 2 \right) =1-P\left( N\left( 1 \right)=0 \right) - P\left( N\left( 1 \right)=1 \right)\approx 0.8</script>
+</div>
+<ul>
+<li><strong>Lagrange乘子法</strong></li>
+</ul>
+<p>对于一般的求极值问题我们都知道,求导等于0就可以了。但是如果我们不但要求极值,还要求一个满足一定约束条件的极值,那么此时就可以构造Lagrange函数,其实就是把约束项添加到原函数上,然后对构造的新函数求导。</p>
+<p>对于一个要求极值的函数<span><span class="MathJax_Preview">f\left( x,y \right)</span><script type="math/tex">f\left( x,y \right)</script></span>,图上的蓝圈就是这个函数的等高图,就是说<span><span class="MathJax_Preview">f\left( x,y \right) =c_{1} ,c_{2} ,...,c_{n}</span><script type="math/tex">f\left( x,y \right) =c_{1} ,c_{2} ,...,c_{n}</script></span>分别代表不同的数值(每个值代表一圈,等高图),我要找到一组<span><span class="MathJax_Preview">\left( x,y \right)</span><script type="math/tex">\left( x,y \right)</script></span> ,使它的<span><span class="MathJax_Preview">c_{i}</span><script type="math/tex">c_{i}</script></span>值越大越好,但是这点必须满足约束条件<span><span class="MathJax_Preview">g\left( x,y \right)</span><script type="math/tex">g\left( x,y \right)</script></span>(在黄线上)。</p>
+<p><img alt="" src="http://pic3.zhimg.com/80/v2-806fd987177e32a33e698caa74d69942_hd.jpg" /></p>
+<p>也就是说<span><span class="MathJax_Preview">f(x,y)</span><script type="math/tex">f(x,y)</script></span>和<span><span class="MathJax_Preview">g(x,y)</span><script type="math/tex">g(x,y)</script></span>相切,或者说它们的梯度▽f和▽g平行,因此它们的梯度(偏导)成倍数关系;那我么就假设为<span><span class="MathJax_Preview">\lambda</span><script type="math/tex">\lambda</script></span>倍,然后把约束条件加到原函数后再对它求导,其实就等于满足了下图上的式子。</p>
+<p>在支持向量机模型(SVM)的推导中一步很关键的就是利用拉格朗日对偶性将原问题转化为对偶问题。</p>
+<ul>
+<li><strong>最大似然估计</strong></li>
+</ul>
+<p>最大似然也称为最大概似估计,即:在“模型已定,参数<span><span class="MathJax_Preview">\theta</span><script type="math/tex">\theta</script></span>未知”的情况下,通过观测数据估计未知参数<span><span class="MathJax_Preview">\theta</span><script type="math/tex">\theta</script></span>的一种思想或方法。</p>
+<p>其基本思想是: 给定样本取值后,该样本最有可能来自参数<span><span class="MathJax_Preview">\theta</span><script type="math/tex">\theta</script></span>为何值的总体。即:寻找<span><span class="MathJax_Preview">\tilde{\theta }_{ML}</span><script type="math/tex">\tilde{\theta }_{ML}</script></span>使得观测到样本数据的可能性最大。</p>
+<p>举个例子,假设我们要统计全国人口的身高,首先假设这个身高服从服从正态分布,但是该分布的均值与方差未知。由于没有足够的人力和物力去统计全国每个人的身高,但是可以通过采样(所有的采样要求都是独立同分布的),获取部分人的身高,然后通过最大似然估计来获取上述假设中的正态分布的均值与方差。</p>
+<p>求极大似然函数估计值的一般步骤:</p>
+<blockquote>
+<ol>
+<li>写出似然函数;
+<img alt="" src="http://pic3.zhimg.com/80/v2-84eef0a858928f3cc28fd03bd7286b3a_hd.jpg" /></li>
+<li>对似然函数取对数;</li>
+<li>两边同时求导数;</li>
+<li>令导数为0解出似然方程。</li>
+</ol>
+</blockquote>
+<p>在机器学习中也会经常见到极大似然的影子。比如后面的逻辑斯特回归模型(LR),其核心就是构造对数损失函数后运用极大似然估计。</p>
+<h2 id="_4">三、信息论</h2>
+<p>信息论本来是通信中的概念,但是其核心思想“熵”在机器学习中也得到了广泛的应用。比如决策树模型ID3,C4.5中是利用信息增益来划分特征而生成一颗决策树的,而信息增益就是基于这里所说的熵。所以它的重要性也是可想而知。</p>
+<h3 id="31">3.1 基础概念</h3>
+<p><strong>熵</strong>:如果一个随机变量X的可能取值为<span><span class="MathJax_Preview">X=\left\{ x_{1},x_{2} ,.....,x_{n} \right\}</span><script type="math/tex">X=\left\{ x_{1},x_{2} ,.....,x_{n} \right\}</script></span> ,其概率分布为<span><span class="MathJax_Preview">P\left( X=x_{i} \right) =p_{i} ,i=1,2,.....,n</span><script type="math/tex">P\left( X=x_{i} \right) =p_{i} ,i=1,2,.....,n</script></span>,则随机变量X的熵定义为H(X):</p>
+<div>
+<div class="MathJax_Preview">
+H\left( X \right) =-\sum_{i=1}^{n}{P\left( x_{i} \right) logP\left( x_{i} \right) } =\sum_{i=1}^{n}{P\left( x_{i} \right) \frac{1}{logP\left( x_{i} \right) } } 
+</div>
+<script type="math/tex; mode=display">
+H\left( X \right) =-\sum_{i=1}^{n}{P\left( x_{i} \right) logP\left( x_{i} \right) } =\sum_{i=1}^{n}{P\left( x_{i} \right) \frac{1}{logP\left( x_{i} \right) } } 
+</script>
+</div>
+<p><strong>联合熵</strong>:两个随机变量X和Y的联合分布可以形成联合熵,定义为联合自信息的数学期望,它是二维随机变量XY的不确定性的度量,用H(X,Y)表示:</p>
+<div>
+<div class="MathJax_Preview">
+H\left( X,Y \right) =-\sum_{i=1}^{n}{\sum_{j=1}^{n}{P\left( x_{i} ,y_{j} \right)} logP\left( x_{i},y_{j} \right) } 
+</div>
+<script type="math/tex; mode=display">
+H\left( X,Y \right) =-\sum_{i=1}^{n}{\sum_{j=1}^{n}{P\left( x_{i} ,y_{j} \right)} logP\left( x_{i},y_{j} \right) } 
+</script>
+</div>
+<p><strong>条件熵</strong>:在随机变量X发生的前提下,随机变量Y发生新带来的熵,定义为Y的条件熵,用<span><span class="MathJax_Preview">H(Y|X)</span><script type="math/tex">H(Y|X)</script></span>表示:</p>
+<div>
+<div class="MathJax_Preview">
+H\left(Y|X \right) =-\sum_{x,y}^{}{P\left( x,y \right) logP\left( y|x \right) } 
+</div>
+<script type="math/tex; mode=display">
+H\left(Y|X \right) =-\sum_{x,y}^{}{P\left( x,y \right) logP\left( y|x \right) } 
+</script>
+</div>
+<p>条件熵用来衡量在已知随机变量X的条件下,随机变量Y的不确定性。</p>
+<p>实际上,熵、联合熵和条件熵之间存在以下关系:</p>
+<div>
+<div class="MathJax_Preview">
+H\left( Y|X \right) =H\left( X,Y\right) -H\left( X \right) 
+</div>
+<script type="math/tex; mode=display">
+H\left( Y|X \right) =H\left( X,Y\right) -H\left( X \right) 
+</script>
+</div>
+<p>推导过程如下:</p>
+<p><img alt="" src="http://pic3.zhimg.com/80/v2-adc57281fa54b0702906a8c42cbd7e5a_hd.jpg" /></p>
+<p>其中:</p>
+<blockquote>
+<p>第二行推到第三行的依据是边缘分布P(x)等于联合分布P(x,y)的和;</p>
+<p>第三行推到第四行的依据是把公因子logP(x)乘进去,然后把x,y写在一起;</p>
+<p>第四行推到第五行的依据是:因为两个sigma都有<span><span class="MathJax_Preview">P(x,y)</span><script type="math/tex">P(x,y)</script></span>,故提取公因子P(x,y)放到外边,然后把里边的<span><span class="MathJax_Preview">-(log P(x,y) - log P(x))</span><script type="math/tex">-(log P(x,y) - log P(x))</script></span>写成<span><span class="MathJax_Preview">-log (P(x,y) / P(x) )</span><script type="math/tex">-log (P(x,y) / P(x) )</script></span>;</p>
+<p>第五行推到第六行的依据是:<span><span class="MathJax_Preview">P(x,y) = P(x) * P(y|x)</span><script type="math/tex">P(x,y) = P(x) * P(y|x)</script></span>,故<span><span class="MathJax_Preview">P(x,y) / P(x) = P(y|x)</span><script type="math/tex">P(x,y) / P(x) = P(y|x)</script></span>。</p>
+</blockquote>
+<p><strong>相对熵</strong>:相对熵又称互熵、交叉熵、KL散度、信息增益,是描述两个概率分布P和Q差异的一种方法,记为D(P||Q)。在信息论中,D(P||Q)表示当用概率分布Q来拟合真实分布P时,产生的信息损耗,其中P表示真实分布,Q表示P的拟合分布。</p>
+<p>对于一个离散随机变量的两个概率分布P和Q来说,它们的相对熵定义为:</p>
+<div>
+<div class="MathJax_Preview">
+D\left( P||Q \right) =\sum_{i=1}^{n}{P\left( x_{i} \right) log\frac{P\left( x_{i} \right) }{Q\left( x_{i} \right) } } 
+</div>
+<script type="math/tex; mode=display">
+D\left( P||Q \right) =\sum_{i=1}^{n}{P\left( x_{i} \right) log\frac{P\left( x_{i} \right) }{Q\left( x_{i} \right) } } 
+</script>
+</div>
+<p>注意:<span><span class="MathJax_Preview">D(P||Q) ≠ D(Q||P)</span><script type="math/tex">D(P||Q) ≠ D(Q||P)</script></span></p>
+<p>相对熵又称KL散度( Kullback–Leibler divergence),KL散度也是一个机器学习中常考的概念。</p>
+<p><strong>互信息</strong>:两个随机变量X,Y的互信息定义为X,Y的联合分布和各自独立分布乘积的相对熵称为互信息,用I(X,Y)表示。互信息是信息论里一种有用的信息度量方式,它可以看成是一个随机变量中包含的关于另一个随机变量的信息量,或者说是一个随机变量由于已知另一个随机变量而减少的不肯定性。</p>
+<div>
+<div class="MathJax_Preview">
+I\left( X,Y \right) =\sum_{x\in X}^{}{\sum_{y\in Y}^{}{P\left( x,y \right) } log\frac{P\left( x,y \right) }{P\left( x \right) P\left( y \right) } } 
+</div>
+<script type="math/tex; mode=display">
+I\left( X,Y \right) =\sum_{x\in X}^{}{\sum_{y\in Y}^{}{P\left( x,y \right) } log\frac{P\left( x,y \right) }{P\left( x \right) P\left( y \right) } } 
+</script>
+</div>
+<p>互信息、熵和条件熵之间存在以下关系: <span><span class="MathJax_Preview">H\left( Y|X \right) =H\left( Y \right) -I\left( X,Y \right)</span><script type="math/tex">H\left( Y|X \right) =H\left( Y \right) -I\left( X,Y \right)</script></span></p>
+<p>推导过程如下:</p>
+<p><img alt="" src="http://pic3.zhimg.com/80/v2-6f41bffde009999cbc370f7f38cab092_hd.jpg" /></p>
+<p>通过上面的计算过程发现有:<span><span class="MathJax_Preview">H(Y|X) = H(Y) - I(X,Y)</span><script type="math/tex">H(Y|X) = H(Y) - I(X,Y)</script></span>,又由前面条件熵的定义有:<span><span class="MathJax_Preview">H(Y|X) = H(X,Y) - H(X)</span><script type="math/tex">H(Y|X) = H(X,Y) - H(X)</script></span>,于是有<span><span class="MathJax_Preview">I(X,Y)= H(X) + H(Y) - H(X,Y)</span><script type="math/tex">I(X,Y)= H(X) + H(Y) - H(X,Y)</script></span>,此结论被多数文献作为互信息的定义。</p>
+<p><strong>最大熵模型</strong>:最大熵原理是概率模型学习的一个准则,它认为:学习概率模型时,在所有可能的概率分布中,熵最大的模型是最好的模型。通常用约束条件来确定模型的集合,所以,最大熵模型原理也可以表述为:在满足约束条件的模型集合中选取熵最大的模型。</p>
+<p>前面我们知道,若随机变量X的概率分布是<span><span class="MathJax_Preview">P\left( x_{i} \right)</span><script type="math/tex">P\left( x_{i} \right)</script></span> ,则其熵定义如下:</p>
+<div>
+<div class="MathJax_Preview">
+H\left( X \right) =-\sum_{i=1}^{n}{P\left( x_{i} \right) logP\left( x_{i} \right) } =\sum_{i=1}^{n}{P\left( x_{i} \right) \frac{1}{logP\left( x_{i} \right) } } 
+</div>
+<script type="math/tex; mode=display">
+H\left( X \right) =-\sum_{i=1}^{n}{P\left( x_{i} \right) logP\left( x_{i} \right) } =\sum_{i=1}^{n}{P\left( x_{i} \right) \frac{1}{logP\left( x_{i} \right) } } 
+</script>
+</div>
+<p>熵满足下列不等式:</p>
+<div>
+<div class="MathJax_Preview">
+0\leq H\left( X \right) \leq log\left| X \right| 
+</div>
+<script type="math/tex; mode=display">
+0\leq H\left( X \right) \leq log\left| X \right| 
+</script>
+</div>
+<p>式中,<span><span class="MathJax_Preview">|X|</span><script type="math/tex">|X|</script></span>是X的取值个数,当且仅当X的分布是均匀分布时右边的等号成立。也就是说,当X服从均匀分布时,熵最大。</p>
+<p>直观地看,最大熵原理认为:要选择概率模型,首先必须满足已有的事实,即约束条件;在没有更多信息的情况下,那些不确定的部分都是“等可能的”。最大熵原理通过熵的最大化来表示等可能性;“等可能”不易操作,而熵则是一个可优化的指标。</p>
+<h2 id="_5">四、数值计算和最优化</h2>
+<h3 id="41">4.1 基础概念</h3>
+<p><strong>上溢和下溢</strong>:在数字计算机上实现连续数学的基本困难是:我们需要通过有限数量的位模式来表示无限多的实数,这意味着我们在计算机中表示实数时几乎都会引入一些近似误差。在许多情况下,这仅仅是舍入误差。如果在理论上可行的算法没有被设计为最小化舍入误差的累积,可能会在实践中失效,因此舍入误差是有问题的,特别是在某些操作复合时。</p>
+<p>一种特别毁灭性的舍入误差是下溢。当接近零的数被四舍五入为零时发生下溢。许多函数会在其参数为零而不是一个很小的正数时才会表现出质的不同。例如,我们通常要避免被零除。</p>
+<p>另一个极具破坏力的数值错误形式是上溢(overflow)。当大量级的数被近似为<span><span class="MathJax_Preview">\infty</span><script type="math/tex">\infty</script></span> 或<span><span class="MathJax_Preview">-\infty</span><script type="math/tex">-\infty</script></span>时发生上溢。进一步的运算通常将这些无限值变为非数字。</p>
+<p>必须对上溢和下溢进行数值稳定的一个例子是softmax 函数。softmax函数经常用于预测与multinoulli分布相关联的概率,定义为:</p>
+<p><img alt="" src="http://pic1.zhimg.com/80/v2-7283f680255ba0da3a69f2df58b58ae0_hd.jpg" /></p>
+<p>softmax函数在多分类问题中非常常见。这个函数的作用就是使得在负无穷到0的区间趋向于0,在0到正无穷的区间趋向于1。上面表达式其实是多分类问题中计算某个样本<span><span class="MathJax_Preview">x_{i}</span><script type="math/tex">x_{i}</script></span>的类别标签<span><span class="MathJax_Preview">y_{i}</span><script type="math/tex">y_{i}</script></span>属于K个类别的概率,最后判别<span><span class="MathJax_Preview">y_{i}</span><script type="math/tex">y_{i}</script></span>所属类别时就是将其归为对应概率最大的那一个。</p>
+<p>当式中的<span><span class="MathJax_Preview">w_{k} x_{i} +b</span><script type="math/tex">w_{k} x_{i} +b</script></span>都是很小的负数时,<span><span class="MathJax_Preview">e^{w_{k} x_{i} +b }</span><script type="math/tex">e^{w_{k} x_{i} +b }</script></span> 就会发生下溢,这意味着上面函数的分母会变成0,导致结果是未定的;同理,当式中的<span><span class="MathJax_Preview">x_{w_{k} x_{i} +b}</span><script type="math/tex">x_{w_{k} x_{i} +b}</script></span>是很大的正数时,<span><span class="MathJax_Preview">e^{w_{k} x_{i} +b }</span><script type="math/tex">e^{w_{k} x_{i} +b }</script></span>就会发生上溢导致结果是未定的。</p>
+<p><strong>计算复杂性与NP问题</strong>:</p>
+<blockquote>
+<ul>
+<li>算法复杂性</li>
+</ul>
+</blockquote>
+<p>现实中大多数问题都是离散的数据集,为了反映统计规律,有时数据量很大,而且多数目标函数都不能简单地求得解析解。这就带来一个问题:算法的复杂性。</p>
+<p>算法理论被认为是解决各类现实问题的方法论。衡量算法有两个重要的指标:时间复杂度和空间复杂度,这是对算法执行所需要的两类资源——时间和空间的估算。</p>
+<p>一般,衡量问题是否可解的重要指标是:该问题能否在多项式时间内求解,还是只能在指数时间内求解?在各类算法理论中,通常使用多项式时间算法即可解决的问题看作是易解问题,需要指数时间算法解决的问题看作是难解问题。</p>
+<p>指数时间算法的计算时间随着问题规模的增长而呈指数化上升,这类问题虽然有解,但并不适用于大规模问题。所以当前算法研究的一个重要任务就是将指数时间算法变换为多项式时间算法。</p>
+<blockquote>
+<p>确定性和非确定性</p>
+</blockquote>
+<p>除了问题规模与运算时间的比较,衡量一个算法还需要考虑确定性和非确定性的概念。</p>
+<p>这里先介绍一下“自动机”的概念。自动机实际上是指一种基于状态变化进行迭代的算法。在算法领域常把这类算法看作一个机器,比较知名的有图灵机、玻尔兹曼机、支持向量机等。</p>
+<p>所谓确定性,是指针对各种自动机模型,根据当时的状态和输入,若自动机的状态转移是唯一确定的,则称确定性;若在某一时刻自动机有多个状态可供选择,并尝试执行每个可选择的状态,则称为非确定性。</p>
+<p>换个说法就是:确定性是程序每次运行时产生下一步的结果是唯一的,因此返回的结果也是唯一的;非确定性是程序在每个运行时执行的路径是并行且随机的,所有路径都可能返回结果,也可能只有部分返回结果,也可能不返回结果,但是只要有一个路径返回结果,那么算法就结束。</p>
+<p>在求解优化问题时,非确定性算法可能会陷入局部最优。</p>
+<blockquote>
+<p>NP问题</p>
+</blockquote>
+<p>有了时间上的衡量标准和状态转移的确定性与非确定性的概念,我们来定义一下问题的计算复杂度。</p>
+<p><strong>P类问题</strong>就是能够以多项式时间的确定性算法来对问题进行判定或求解,实现它的算法在每个运行状态都是唯一的,最终一定能够确定一个唯一的结果——最优的结果。</p>
+<p><strong>NP问题</strong>是指可以用多项式时间的非确定性算法来判定或求解,即这类问题求解的算法大多是非确定性的,但时间复杂度有可能是多项式级别的。</p>
+<p>但是,NP问题还要一个子类称为NP完全问题,它是NP问题中最难的问题,其中任何一个问题至今都没有找到多项式时间的算法。</p>
+<p>机器学习中多数算法都是针对NP问题(包括NP完全问题)的。</p>
+<ul>
+<li><strong>数值计算</strong></li>
+</ul>
+<p>上面已经分析了,大部分实际情况中,计算机其实都只能做一些近似的数值计算,而不可能找到一个完全精确的值,这其实有一门专门的学科来研究这个问题,这门学科就是——数值分析(有时也叫作“计算方法”);运用数值分析解决问题的过程为:实际问题→数学模型→数值计算方法→程序设计→上机计算求出结果。</p>
+<p>计算机在做这些数值计算的过程中,经常会涉及到的一个东西就是“迭代运算”,即通过不停的迭代计算,逐渐逼近真实值(当然是要在误差收敛的情况下)。</p>
+<h2 id="_6">四、最优化</h2>
+<p>本节介绍机器学习中的一种重要理论——最优化方法。</p>
+<ul>
+<li><strong>最优化理论</strong></li>
+</ul>
+<p>无论做什么事,人们总希望以最小的代价取得最大的收益。在解决一些工程问题时,人们常会遇到多种因素交织在一起与决策目标相互影响的情况;这就促使人们创造一种新的数学理论来应对这一挑战,也因此,最早的优化方法——线性规划诞生了。</p>
+<p>在李航博士的《统计学习方法》中,其将机器学习总结为如下表达式:<code>机器学习 = 模型 + 策略 + 算法</code></p>
+<p>可以看得出,算法在机器学习中的重要性。实际上,这里的算法指的就是优化算法。在面试机器学习的岗位时,优化算法也是一个特别高频的问题,大家如果真的想学好机器学习,那还是需要重视起来的。</p>
+<ul>
+<li><strong>最优化问题的数学描述</strong></li>
+</ul>
+<p>最优化的基本数学模型如下:</p>
+<p><img alt="" src="http://pic3.zhimg.com/80/v2-f35226b3e0fa018db6a4b233c51eccbe_hd.jpg" /></p>
+<p>它有三个基本要素,即:</p>
+<blockquote>
+<p>设计变量:x是一个实数域范围内的n维向量,被称为决策变量或问题的解;<br></p>
+<p>目标函数:f(x)为目标函数;
+. </p>
+<p>约束条件:<span><span class="MathJax_Preview">h_{i} \left( x \right) =0</span><script type="math/tex">h_{i} \left( x \right) =0</script></span>称为等式约束,<span><span class="MathJax_Preview">g_{i} \left( x \right) \leq 0</span><script type="math/tex">g_{i} \left( x \right) \leq 0</script></span>为不等式约束,<span><span class="MathJax_Preview">i=0,1,2,...</span><script type="math/tex">i=0,1,2,...</script></span></p>
+</blockquote>
+<ul>
+<li><strong>凸集与凸集分离定理</strong></li>
+</ul>
+<blockquote>
+<p>凸集</p>
+</blockquote>
+<p>实数域R上(或复数C上)的向量空间中,如果集合S中任两点的连线上的点都在S内,则称集合S为凸集,如下图所示:</p>
+<p><img alt="" src="http://pic1.zhimg.com/80/v2-608f89f47688c41e4c3f83cfad095c84_hd.jpg" /></p>
+<p><strong>数学定义为</strong>:</p>
+<p>设集合<span><span class="MathJax_Preview">D\subset R^{n}</span><script type="math/tex">D\subset R^{n}</script></span> ,若对于任意两点<span><span class="MathJax_Preview">x,y\in D</span><script type="math/tex">x,y\in D</script></span>,及实数<span><span class="MathJax_Preview">\lambda \left( 0\leq \lambda \leq 1 \right)</span><script type="math/tex">\lambda \left( 0\leq \lambda \leq 1 \right)</script></span> 都有:<span><span class="MathJax_Preview">\lambda x+\left( 1-\lambda \right) y\in D</span><script type="math/tex">\lambda x+\left( 1-\lambda \right) y\in D</script></span>,则称集合D为凸集。</p>
+<blockquote>
+<p>超平面和半空间</p>
+</blockquote>
+<p>实际上,二维空间的超平面就是一条线(可以使曲线),三维空间的超平面就是一个面(可以是曲面)。其数学表达式如下:</p>
+<p>超平面:<span><span class="MathJax_Preview">H=\left\{ x\in R^{n} |a_{1}x-1 +a_{2}x_2+...+a_{n}x_n =b \right\}</span><script type="math/tex">H=\left\{ x\in R^{n} |a_{1}x-1 +a_{2}x_2+...+a_{n}x_n =b \right\}</script></span></p>
+<p>半空间:<span><span class="MathJax_Preview">H^{+} =\left\{ x\in R^{n} |a_{1}x-1 +a_{2}x_2+...+a_{n}x_n \geq b \right\}</span><script type="math/tex">H^{+} =\left\{ x\in R^{n} |a_{1}x-1 +a_{2}x_2+...+a_{n}x_n \geq b \right\}</script></span></p>
+<blockquote>
+<p>凸集分离定理</p>
+</blockquote>
+<p>所谓两个凸集分离,直观地看是指两个凸集合没有交叉和重合的部分,因此可以用一张超平面将两者隔在两边,如下图所示:</p>
+<p><img alt="" src="http://pic2.zhimg.com/80/v2-4116a3bda12faa5e2421ce27efb7fb71_hd.jpg" /></p>
+<blockquote>
+<p>凸函数</p>
+</blockquote>
+<p>凸函数就是一个定义域在某个向量空间的凸子集C上的实值函数。</p>
+<p><img alt="" src="http://pic3.zhimg.com/80/v2-f1b39d0aad4388433158679221f813d2_hd.jpg" /></p>
+<p>数学定义为:对于函数<span><span class="MathJax_Preview">f(x)</span><script type="math/tex">f(x)</script></span>,如果其定义域C是凸的,且对于<span><span class="MathJax_Preview">∀x,y∈C,0\leq \alpha \leq 1</span><script type="math/tex">∀x,y∈C,0\leq \alpha \leq 1</script></span>,有:<span><span class="MathJax_Preview">f\left( \theta x+\left( 1-\theta \right) y \right) \leq \theta f\left( x \right) +\left( 1-\theta \right) f\left( y \right)</span><script type="math/tex">f\left( \theta x+\left( 1-\theta \right) y \right) \leq \theta f\left( x \right) +\left( 1-\theta \right) f\left( y \right)</script></span>,则<span><span class="MathJax_Preview">f(x)</span><script type="math/tex">f(x)</script></span>是凸函数。</p>
+<p>注:如果一个函数是凸函数,则其局部最优点就是它的全局最优点。这个性质在机器学习算法优化中有很重要的应用,因为机器学习模型最后就是在求某个函数的全局最优点,一旦证明该函数(机器学习里面叫“损失函数”)是凸函数,那相当于我们只用求它的局部最优点了。</p>
+<ul>
+<li><strong>梯度下降算法</strong></li>
+</ul>
+<blockquote>
+<p>引入</p>
+</blockquote>
+<p>前面讲数值计算的时候提到过,计算机在运用迭代法做数值计算(比如求解某个方程组的解)时,只要误差能够收敛,计算机最后经过一定次数的迭代后是可以给出一个跟真实解很接近的结果的。</p>
+<p>这里进一步提出一个问题,如果我们得到的目标函数是非线性的情况下,按照哪个方向迭代求解误差的收敛速度会最快呢?</p>
+<p>答案就是沿梯度方向。这就引入了我们的梯度下降法。</p>
+<blockquote>
+<p>梯度下降法</p>
+</blockquote>
+<p>在多元微分学中,梯度就是函数的导数方向。</p>
+<p>梯度法是求解无约束多元函数极值最早的数值方法,很多机器学习的常用算法都是以它作为算法框架,进行改进而导出更为复杂的优化方法。</p>
+<p>在求解目标函数<span><span class="MathJax_Preview">f\left( x \right)</span><script type="math/tex">f\left( x \right)</script></span>的最小值时,为求得目标函数的一个凸函数,在最优化方法中被表示为:
+math
+minf\left( x \right) </p>
+<p>根据导数的定义,函数<span><span class="MathJax_Preview">f\left( x \right)</span><script type="math/tex">f\left( x \right)</script></span>的导函数就是目标函数在x上的变化率。在多元的情况下,目标函数<span><span class="MathJax_Preview">f\left( x,y,z \right)</span><script type="math/tex">f\left( x,y,z \right)</script></span>在某点的梯度<span><span class="MathJax_Preview">grad f\left( x,y,z \right) =\left( \frac{\partial f}{\partial x} ,\frac{\partial f}{\partial y},\frac{\partial f}{\partial z} \right)</span><script type="math/tex">grad f\left( x,y,z \right) =\left( \frac{\partial f}{\partial x} ,\frac{\partial f}{\partial y},\frac{\partial f}{\partial z} \right)</script></span> 是一个由各个分量的偏导数构成的向量,负梯度方向是<span><span class="MathJax_Preview">f\left( x,y,z \right)</span><script type="math/tex">f\left( x,y,z \right)</script></span>减小最快的方向。</p>
+<p><img alt="" src="http://pic1.zhimg.com/80/v2-e61c38f10e34badf5b2c1f3b9c9bcfa0_hd.jpg" /></p>
+<p>如上图所示,当需要求<span><span class="MathJax_Preview">f\left( x \right)</span><script type="math/tex">f\left( x \right)</script></span>的最小值时(机器学习中的<span><span class="MathJax_Preview">f\left( x \right)</span><script type="math/tex">f\left( x \right)</script></span> 一般就是损失函数,而我们的目标就是希望损失函数最小化),我们就可以先任意选取一个函数的初始点<span><span class="MathJax_Preview">x_{0}</span><script type="math/tex">x_{0}</script></span>(三维情况就是<span><span class="MathJax_Preview">\left( x_{0} ,y_{0} ,z_{0} \right)</span><script type="math/tex">\left( x_{0} ,y_{0} ,z_{0} \right)</script></span> ),让其沿着途中红色箭头(负梯度方向)走,依次到<span><span class="MathJax_Preview">x_{1} ,x_{2} ,...,x_{n}</span><script type="math/tex">x_{1} ,x_{2} ,...,x_{n}</script></span>(迭代n次)这样可最快达到极小值点。</p>
+<p>梯度下降法过程如下:</p>
+<p>输入:目标函数<span><span class="MathJax_Preview">f\left( x \right)</span><script type="math/tex">f\left( x \right)</script></span> ,梯度函数<span><span class="MathJax_Preview">g\left( x \right) =grad f\left( x \right)</span><script type="math/tex">g\left( x \right) =grad f\left( x \right)</script></span> ,计算精度<span><span class="MathJax_Preview">\varepsilon</span><script type="math/tex">\varepsilon</script></span> </p>
+<p>输出:<span><span class="MathJax_Preview">f\left( x \right)</span><script type="math/tex">f\left( x \right)</script></span> 的极小值点<span><span class="MathJax_Preview">x^{*}</span><script type="math/tex">x^{*}</script></span></p>
+<blockquote>
+<ol>
+<li>任取取初始值<span><span class="MathJax_Preview">x_{0}</span><script type="math/tex">x_{0}</script></span> ,置k=0;</li>
+<li>计算<span><span class="MathJax_Preview">f\left( x_{k} \right)</span><script type="math/tex">f\left( x_{k} \right)</script></span>;</li>
+<li>计算梯度<span><span class="MathJax_Preview">g_{k} =grad f\left( x_{k} \right)</span><script type="math/tex">g_{k} =grad f\left( x_{k} \right)</script></span> ,当<span><span class="MathJax_Preview">\left| \left| g_{k} \right| \right| &lt;\varepsilon</span><script type="math/tex">\left| \left| g_{k} \right| \right| <\varepsilon</script></span> 时停止迭代,令<span><span class="MathJax_Preview">x^{*} =x_{k}</span><script type="math/tex">x^{*} =x_{k}</script></span>;</li>
+<li>否则令<span><span class="MathJax_Preview">P_{k} =-g_{k}</span><script type="math/tex">P_{k} =-g_{k}</script></span>,求<span><span class="MathJax_Preview">\lambda _{k}</span><script type="math/tex">\lambda _{k}</script></span> 使<span><span class="MathJax_Preview">f\left( x_{k+1} \right) =minf\left( x_{k} +\lambda _{k} P_{k} \right)</span><script type="math/tex">f\left( x_{k+1} \right) =minf\left( x_{k} +\lambda _{k} P_{k} \right)</script></span>;</li>
+<li>置<span><span class="MathJax_Preview">x_{k+1} =x_{k} +\lambda _{k} P_{k}</span><script type="math/tex">x_{k+1} =x_{k} +\lambda _{k} P_{k}</script></span> ,计算<span><span class="MathJax_Preview">f\left( x_{k+1}\right)</span><script type="math/tex">f\left( x_{k+1}\right)</script></span> ,当<span><span class="MathJax_Preview">\left| \left| f\left( x_{k+1}\right) -f\left( x_{k}\right) \right| \right| &lt;\varepsilon</span><script type="math/tex">\left| \left| f\left( x_{k+1}\right) -f\left( x_{k}\right) \right| \right| <\varepsilon</script></span> 或<span><span class="MathJax_Preview">\left| \left| x_{k+1} -x_{k} \right| \right| &lt;\varepsilon</span><script type="math/tex">\left| \left| x_{k+1} -x_{k} \right| \right| <\varepsilon</script></span> 时,停止迭代,令<span><span class="MathJax_Preview">x^{*} =x_{k+1}</span><script type="math/tex">x^{*} =x_{k+1}</script></span>;</li>
+<li>否则,置k=k+1,转3。</li>
+</ol>
+</blockquote>
+<ul>
+<li><strong>随机梯度下降算法</strong></li>
+</ul>
+<p>上面可以看到,在梯度下降法的迭代中,除了梯度值本身的影响外,还有每一次取的步长<span><span class="MathJax_Preview">\lambda _{k}</span><script type="math/tex">\lambda _{k}</script></span>也很关键:步长值取得越大,收敛速度就会越快,但是带来的可能后果就是容易越过函数的最优点,导致发散;步长取太小,算法的收敛速度又会明显降低。因此我们希望找到一种比较好的方法能够平衡步长。</p>
+<p>随机梯度下降法并没有新的算法理论,仅仅是引进了随机样本抽取方式,并提供了一种动态步长取值策略。目的就是又要优化精度,又要满足收敛速度。</p>
+<p>也就是说,上面的批量梯度下降法每次迭代时都会计算训练集中所有的数据,而随机梯度下降法每次迭代只是随机取了训练集中的一部分样本数据进行梯度计算,这样做最大的好处是可以避免有时候陷入局部极小值的情况(因为批量梯度下降法每次都使用全部数据,一旦到了某个局部极小值点可能就停止更新了;而随机梯度法由于每次都是随机取部分数据,所以就算局部极小值点,在下一步也还是可以跳出)</p>
+<p>两者的关系可以这样理解:随机梯度下降方法以损失很小的一部分精确度和增加一定数量的迭代次数为代价,换取了总体的优化效率的提升。增加的迭代次数远远小于样本的数量。</p>
+<ul>
+<li><strong>牛顿法</strong></li>
+</ul>
+<blockquote>
+<p>牛顿法介绍</p>
+</blockquote>
+<p>牛顿法也是求解无约束最优化问题常用的方法,最大的优点是收敛速度快。</p>
+<p>从本质上去看,牛顿法是二阶收敛,梯度下降是一阶收敛,所以牛顿法就更快。通俗地说,比如你想找一条最短的路径走到一个盆地的最底部,梯度下降法 每次只从你当前所处位置选一个坡度最大的方向走一步,牛顿法在选择方向时,不仅会考虑坡度是否够大,还会考虑你走了一步之后,坡度是否会变得更大。所以, 可以说牛顿法比梯度下降法看得更远一点,能更快地走到最底部。</p>
+<p><img alt="" src="http://pic3.zhimg.com/80/v2-e22ea8c565434e945a17a80bec5630b6_hd.jpg" /></p>
+<p>或者从几何上说,牛顿法就是用一个二次曲面去拟合你当前所处位置的局部曲面,而梯度下降法是用一个平面去拟合当前的局部曲面,通常情况下,二次曲面的拟合会比平面更好,所以牛顿法选择的下降路径会更符合真实的最优下降路径。</p>
+<blockquote>
+<p>牛顿法的推导</p>
+</blockquote>
+<p>将目标函数<span><span class="MathJax_Preview">f\left( x \right)</span><script type="math/tex">f\left( x \right)</script></span> 在<span><span class="MathJax_Preview">x_{k}</span><script type="math/tex">x_{k}</script></span> 处进行二阶泰勒展开,可得:</p>
+<div>
+<div class="MathJax_Preview">f\left( x \right) =f\left( x_{k} \right) +f^{'} \left( x_{k} \right) \left( x-x_{k} \right) +\frac{1}{2} f^{''}\left( x_{k} \right) \left( x-x_{k} \right) ^{2}</div>
+<script type="math/tex; mode=display">f\left( x \right) =f\left( x_{k} \right) +f^{'} \left( x_{k} \right) \left( x-x_{k} \right) +\frac{1}{2} f^{''}\left( x_{k} \right) \left( x-x_{k} \right) ^{2}</script>
+</div>
+<p>因为目标函数<span><span class="MathJax_Preview">f\left( x \right)</span><script type="math/tex">f\left( x \right)</script></span>有极值的必要条件是在极值点处一阶导数为0,即:<span><span class="MathJax_Preview">f^{'} \left( x \right) =0</span><script type="math/tex">f^{'} \left( x \right) =0</script></span>。</p>
+<p>所以对上面的展开式两边同时求导(注意x才是变量,<span><span class="MathJax_Preview">x_{k}</span><script type="math/tex">x_{k}</script></span>是常量<span><span class="MathJax_Preview">\Rightarrow f^{'} \left( x_{k} \right) ,f^{''} \left( x_{k} \right)</span><script type="math/tex">\Rightarrow f^{'} \left( x_{k} \right) ,f^{''} \left( x_{k} \right)</script></span> 都是常量),并令<span><span class="MathJax_Preview">f^{'} \left( x \right) =0</span><script type="math/tex">f^{'} \left( x \right) =0</script></span>可得:</p>
+<div>
+<div class="MathJax_Preview">f^{'} \left( x_{k} \right) +f^{''} \left( x_{k} \right) \left( x-x_{k} \right) =0</div>
+<script type="math/tex; mode=display">f^{'} \left( x_{k} \right) +f^{''} \left( x_{k} \right) \left( x-x_{k} \right) =0</script>
+</div>
+<p>即:<span><span class="MathJax_Preview">x=x_{k} -\frac{f^{'} \left( x_{k} \right) }{f^{''} \left( x_{k} \right) }</span><script type="math/tex">x=x_{k} -\frac{f^{'} \left( x_{k} \right) }{f^{''} \left( x_{k} \right) }</script></span> </p>
+<p>于是可以构造如下的迭代公式:<span><span class="MathJax_Preview">x_{k+1} =x_{k} -\frac{f^{'} \left( x_{k} \right) }{f^{''} \left( x_{k} \right) }</span><script type="math/tex">x_{k+1} =x_{k} -\frac{f^{'} \left( x_{k} \right) }{f^{''} \left( x_{k} \right) }</script></span>。</p>
+<p>这样,我们就可以利用该迭代式依次产生的序列<span><span class="MathJax_Preview">\left\{x_{1},x_{2},...., x_{k} \right\}</span><script type="math/tex">\left\{x_{1},x_{2},...., x_{k} \right\}</script></span>才逐渐逼近<span><span class="MathJax_Preview">f\left( x \right)</span><script type="math/tex">f\left( x \right)</script></span>的极小值点了。</p>
+<p>牛顿法的迭代示意图如下:</p>
+<p><img alt="" src="http://pic3.zhimg.com/80/v2-e908f9721cc82415fa7e70c763351f3a_hd.jpg" /></p>
+<p>上面讨论的是2维情况,高维情况的牛顿迭代公式是:</p>
+<p><img alt="" src="http://pic1.zhimg.com/80/v2-a6964736afb3dd077c029c36dbbc41e4_hd.jpg" /></p>
+<p>式中,▽f是<span><span class="MathJax_Preview">f\left( x \right)</span><script type="math/tex">f\left( x \right)</script></span> 的梯度,即:</p>
+<p><img alt="" src="http://pic2.zhimg.com/80/v2-71df54a8e32e172596dcaa07e6b31899_hd.jpg" /></p>
+<p>H是Hessen矩阵,即:</p>
+<p><img alt="" src="http://pic2.zhimg.com/80/v2-2891044fd02769c3148649e2a1a01fd5_hd.jpg" /></p>
+<blockquote>
+<p>牛顿法的过程</p>
+<ol>
+<li>给定初值<span><span class="MathJax_Preview">x_{0}</span><script type="math/tex">x_{0}</script></span>和精度阈值<span><span class="MathJax_Preview">\varepsilon</span><script type="math/tex">\varepsilon</script></span>,并令k=0;</li>
+<li>计算<span><span class="MathJax_Preview">x_{k}</span><script type="math/tex">x_{k}</script></span>和<span><span class="MathJax_Preview">H_{k}</span><script type="math/tex">H_{k}</script></span>;</li>
+<li>若<span><span class="MathJax_Preview">\left| \left| g_{k} \right| \right| &lt;\varepsilon</span><script type="math/tex">\left| \left| g_{k} \right| \right| <\varepsilon</script></span>则停止迭代;否则确定搜索方向:<span><span class="MathJax_Preview">d_{k} =-H_{k}^{-1} \cdot g_{k}</span><script type="math/tex">d_{k} =-H_{k}^{-1} \cdot g_{k}</script></span>;</li>
+<li>计算新的迭代点:<span><span class="MathJax_Preview">x_{k+1} =x_{k} +d_{k}</span><script type="math/tex">x_{k+1} =x_{k} +d_{k}</script></span>;</li>
+<li>令k=k+1,转至2。</li>
+</ol>
+</blockquote>
+<ul>
+<li><strong>阻尼牛顿法</strong></li>
+</ul>
+<p>注意到,牛顿法的迭代公式中没有步长因子,是定步长迭代。对于非二次型目标函数,有时候会出现<span><span class="MathJax_Preview">f\left( x_{k+1} \right) &gt;f\left( x_{k} \right)</span><script type="math/tex">f\left( x_{k+1} \right) >f\left( x_{k} \right)</script></span>的情况,这表明,原始牛顿法不能保证函数值稳定的下降。在严重的情况下甚至会造成序列发散而导致计算失败。</p>
+<p>为消除这一弊病,人们又提出阻尼牛顿法。阻尼牛顿法每次迭代的方向仍然是<span><span class="MathJax_Preview">x_{k}</span><script type="math/tex">x_{k}</script></span>,但每次迭代会沿此方向做一维搜索,寻求最优的步长因子<span><span class="MathJax_Preview">\lambda _{k}</span><script type="math/tex">\lambda _{k}</script></span> ,即:</p>
+<div>
+<div class="MathJax_Preview">\lambda _{k} = minf\left( x_{k} +\lambda d_{k} \right)</div>
+<script type="math/tex; mode=display">\lambda _{k} = minf\left( x_{k} +\lambda d_{k} \right)</script>
+</div>
+<p>算法过程:</p>
+<blockquote>
+<ol>
+<li>给定初值<span><span class="MathJax_Preview">x_{0}</span><script type="math/tex">x_{0}</script></span>和精度阈值<span><span class="MathJax_Preview">\varepsilon</span><script type="math/tex">\varepsilon</script></span>,并令k=0;</li>
+<li>计算<span><span class="MathJax_Preview">g_{k}</span><script type="math/tex">g_{k}</script></span> (<span><span class="MathJax_Preview">f\left( x \right)</span><script type="math/tex">f\left( x \right)</script></span> 在<span><span class="MathJax_Preview">x_{k}</span><script type="math/tex">x_{k}</script></span>处的梯度值)和<span><span class="MathJax_Preview">H_{k}</span><script type="math/tex">H_{k}</script></span>;</li>
+<li>若<span><span class="MathJax_Preview">\left| \left| g_{k} \right| \right| &lt;\varepsilon</span><script type="math/tex">\left| \left| g_{k} \right| \right| <\varepsilon</script></span> 则停止迭代;否则确定搜索方向:<span><span class="MathJax_Preview">d_{k} =-H_{k}^{-1} \cdot g_{k}</span><script type="math/tex">d_{k} =-H_{k}^{-1} \cdot g_{k}</script></span>;</li>
+<li>利用<span><span class="MathJax_Preview">d_{k} =-H_{k}^{-1} \cdot g_{k}</span><script type="math/tex">d_{k} =-H_{k}^{-1} \cdot g_{k}</script></span> 得到步长<span><span class="MathJax_Preview">\lambda _{k}</span><script type="math/tex">\lambda _{k}</script></span> ,并令<span><span class="MathJax_Preview">x_{k+1} =x_{k} +\lambda _{k} d_{k}</span><script type="math/tex">x_{k+1} =x_{k} +\lambda _{k} d_{k}</script></span></li>
+<li>令k=k+1,转至2。</li>
+</ol>
+</blockquote>
+<ul>
+<li><strong>拟牛顿法</strong></li>
+</ul>
+<p>由于牛顿法每一步都要求解目标函数的Hessen矩阵的逆矩阵,计算量比较大(求矩阵的逆运算量比较大),因此提出一种改进方法,即通过正定矩阵近似代替Hessen矩阵的逆矩阵,简化这一计算过程,改进后的方法称为拟牛顿法。</p>
+<p>拟牛顿法的推导:</p>
+<p>先将目标函数在<span><span class="MathJax_Preview">x_{k+1}</span><script type="math/tex">x_{k+1}</script></span>处展开,得到:</p>
+<div>
+<div class="MathJax_Preview">f\left( x \right) =f\left( x_{k+1} \right) +f^{'} \left( x_{k+1} \right) \left( x-x_{k+1} \right) +\frac{1}{2} f^{''}\left( x_{k+1} \right) \left( x-x_{k+1} \right) ^{2}</div>
+<script type="math/tex; mode=display">f\left( x \right) =f\left( x_{k+1} \right) +f^{'} \left( x_{k+1} \right) \left( x-x_{k+1} \right) +\frac{1}{2} f^{''}\left( x_{k+1} \right) \left( x-x_{k+1} \right) ^{2}</script>
+</div>
+<p>两边同时取梯度,得:</p>
+<div>
+<div class="MathJax_Preview">f^{'}\left( x \right) = f^{'} \left( x_{k+1} \right) +f^{''} \left( x_{k+1} \right) \left( x-x_{k+1} \right)</div>
+<script type="math/tex; mode=display">f^{'}\left( x \right) = f^{'} \left( x_{k+1} \right) +f^{''} \left( x_{k+1} \right) \left( x-x_{k+1} \right)</script>
+</div>
+<p>取上式中的<span><span class="MathJax_Preview">x=x_{k}</span><script type="math/tex">x=x_{k}</script></span>,得:</p>
+<div>
+<div class="MathJax_Preview">f^{'}\left( x_{k} \right) = f^{'} \left( x_{k+1} \right) +f^{''} \left( x_{k+1} \right) \left( x-x_{k+1} \right)</div>
+<script type="math/tex; mode=display">f^{'}\left( x_{k} \right) = f^{'} \left( x_{k+1} \right) +f^{''} \left( x_{k+1} \right) \left( x-x_{k+1} \right)</script>
+</div>
+<p>即:<span><span class="MathJax_Preview">g_{k+1} -g_{k} =H_{k+1} \cdot \left( x_{k+1} -x_{k} \right)</span><script type="math/tex">g_{k+1} -g_{k} =H_{k+1} \cdot \left( x_{k+1} -x_{k} \right)</script></span></p>
+<p>可得:<span><span class="MathJax_Preview">H_{k}^{-1} \cdot \left( g_{k+1} -g_{k} \right) =x_{k+1} -x_{k}</span><script type="math/tex">H_{k}^{-1} \cdot \left( g_{k+1} -g_{k} \right) =x_{k+1} -x_{k}</script></span>。</p>
+<p>上面这个式子称为“拟牛顿条件”,由它来对Hessen矩阵做约束。</p>
+<h2 id="_7">五、评估指标</h2>
+<p>代价函数:<span><span class="MathJax_Preview">f(\theta,y)</span><script type="math/tex">f(\theta,y)</script></span>,又称Cost function,loss function objective function。一般用在训练过程中,用来定义预测值和真实值之间的距离(也就是衡量模型在训练集上的性能),作为模型调整参数的反馈。代价函数越小,模型性能越好。</p>
+<p>评判指标:<span><span class="MathJax_Preview">f(\hat y,y)</span><script type="math/tex">f(\hat y,y)</script></span>,一般用于训练和测试过程中,用于评估模型好坏。评判指标越大(或越小),模型越好。</p>
+<p>本质上代价函数和评判指标都是一家人,只他们的应用场景不同,分工不同。代价函数是用来优化模型参数的,评价指标是用来评判模型好坏的。</p>
+<p>作为代价函数所具备的条件:</p>
+<pre><code>函数光滑且可导:可用梯度下降求解极值
+函数为凸函数:可用梯度下降求解最优解
+......
+</code></pre>
+
+<p>例如我们经常使用的分类器评判指标AUC就不能直接被优化,因此我们常采用交叉熵来代替AUC进行优化。一般情况下,交叉熵越小,AUC就会越大。</p>
+<h3 id="51-regression">5.1 回归(Regression)算法指标</h3>
+<p><img alt="" src="http://pic3.zhimg.com/v2-32c48e2a576d9c2157a071f05e2d6d7a_r.jpg" /></p>
+<ul>
+<li><strong>平均绝对误差(Mean Absolute Error)</strong></li>
+</ul>
+<p>平均绝对误差MAE(Mean Absolute Error)又被称为l1范数损失(l1-norm loss):</p>
+<div>
+<div class="MathJax_Preview">
+{\rm MAE}(y, \hat{y})=\frac{1}{m}\sum\limits_{i=1}^{n}|y_i-\hat{y}_i| 
+</div>
+<script type="math/tex; mode=display">
+{\rm MAE}(y, \hat{y})=\frac{1}{m}\sum\limits_{i=1}^{n}|y_i-\hat{y}_i| 
+</script>
+</div>
+<p>MAE不足:MAE虽能较好衡量回归模型的好坏,但是绝对值的存在导致函数不光滑,在某些点上不能求导,可以考虑将绝对值改为残差的平方,这就是均方误差。</p>
+<ul>
+<li><strong>均方误差(Mean Squared Error)</strong></li>
+</ul>
+<p>均方误差MSE(Mean Squared Error)又被称为l2范数损失(l2-norm loss):</p>
+<div>
+<div class="MathJax_Preview">
+{\rm MSE}(y, \hat{y})=\frac{1}{m}\sum\limits_{i=1}^{m}(y_i-\hat{y}_i)^2
+</div>
+<script type="math/tex; mode=display">
+{\rm MSE}(y, \hat{y})=\frac{1}{m}\sum\limits_{i=1}^{m}(y_i-\hat{y}_i)^2
+</script>
+</div>
+<p>MSE和方差的性质比较类似,与我们的目标变量的量纲不一致,为了保证量纲一致性,我们需要对MSE进行开方得到RMSE。</p>
+<ul>
+<li><strong>均方根误差(Root Mean Squared Error)</strong></li>
+</ul>
+<p>开方之后的MSE称为RMSE,是标准差的表兄弟,如下式所示:</p>
+<div>
+<div class="MathJax_Preview">
+{\rm RMSE}(y, \hat{y})=\sqrt {\frac{1}{m}\sum\limits_{i=1}^{m}(y_i-\hat{y}_i)^2} 
+</div>
+<script type="math/tex; mode=display">
+{\rm RMSE}(y, \hat{y})=\sqrt {\frac{1}{m}\sum\limits_{i=1}^{m}(y_i-\hat{y}_i)^2} 
+</script>
+</div>
+<p>上面的几种衡量标准的取值大小与具体的应用场景有关系,很难定义统一的规则来衡量模型的好坏。比如说利用机器学习算法预测上海的房价RMSE在2000元,我们是可以接受的,但是当四五线城市的房价RMSE为2000元,我们还可以接受吗?</p>
+<ul>
+<li><strong>决定系数(Coefficient of determination)</strong></li>
+</ul>
+<p>变量之所以有价值,就是因为变量是变化的。什么意思呢?比如说一组因变量为[0,0,0,0,0],显然该因变量的结果是一个常数0,我们也没有必要建模对该因变量进行预测。假如一组的因变量为[1,3,7,10,12],该因变量是变化的,也就是有变异,因此需要通过建立回归模型进行预测。这里的变异可以理解为一组数据的方差不为0。</p>
+<p>决定系数又称为<span><span class="MathJax_Preview">R^2</span><script type="math/tex">R^2</script></span> score,反应因变量的全部变异能通过回归关系被自变量解释的比例。</p>
+<div>
+<div class="MathJax_Preview">
+\begin{aligned}
+&amp; \text{SST} = \sum \limits_i^m(y_i - \bar y)^2 \qquad \text{SST = total sum of squares} \\
+&amp; \text{SSR} = \sum \limits_i^m(\hat y_i - \bar y)^2 \qquad \text{SSR = sum of due to regression} \\
+&amp; \text{SSE} = \sum \limits_i^m(\hat y_i - y_i)^2 \qquad \text{SSE = sum of due to erros} \\
+&amp; \text{SST = SSR + SSE} \\
+&amp; R^2(y,\hat{y})= \frac{\rm SSR}{\rm SST}
+\end{aligned}
+</div>
+<script type="math/tex; mode=display">
+\begin{aligned}
+& \text{SST} = \sum \limits_i^m(y_i - \bar y)^2 \qquad \text{SST = total sum of squares} \\
+& \text{SSR} = \sum \limits_i^m(\hat y_i - \bar y)^2 \qquad \text{SSR = sum of due to regression} \\
+& \text{SSE} = \sum \limits_i^m(\hat y_i - y_i)^2 \qquad \text{SSE = sum of due to erros} \\
+& \text{SST = SSR + SSE} \\
+& R^2(y,\hat{y})= \frac{\rm SSR}{\rm SST}
+\end{aligned}
+</script>
+</div>
+<p>如果结果是0,就说明模型预测不能预测因变量。如果结果是1。就说明是函数关系。如果结果是0~1之间的数,就是我们模型的好坏程度。化简上面的公式,分子就变成了我们的均方误差MSE,下面分母就变成了方差:</p>
+<div>
+<div class="MathJax_Preview">
+\begin{aligned}
+R^2(y,\hat{y}) &amp;= 1 - \frac{\rm SSE}{\rm SST}=1-\frac{\sum\limits_{i=1}^{m}(y_i-\hat{y}_i)^2}{\sum\limits_{i=1}^{m}(y_i-\bar{y})^2} \\
+&amp;=1-\frac{\sum\limits_{i=1}^{m}(y_i-\hat{y}_i)^2/m}{\sum\limits_{i=1}^{m}(y_i-\bar{y})^2/m}= 1 - \frac{\rm MSE(\hat y, y)}{\rm Var(y)} 
+\end{aligned}
+</div>
+<script type="math/tex; mode=display">
+\begin{aligned}
+R^2(y,\hat{y}) &= 1 - \frac{\rm SSE}{\rm SST}=1-\frac{\sum\limits_{i=1}^{m}(y_i-\hat{y}_i)^2}{\sum\limits_{i=1}^{m}(y_i-\bar{y})^2} \\
+&=1-\frac{\sum\limits_{i=1}^{m}(y_i-\hat{y}_i)^2/m}{\sum\limits_{i=1}^{m}(y_i-\bar{y})^2/m}= 1 - \frac{\rm MSE(\hat y, y)}{\rm Var(y)} 
+\end{aligned}
+</script>
+</div>
+<p>以上的评估指标是基于误差的均值对进行评估的,均值对异常点(outliers)较敏感,如果样本中有一些异常值出现,会对以上指标的值有较大影响,即均值是非鲁棒的。</p>
+<ul>
+<li><strong>解决评估指标鲁棒性问题</strong></li>
+</ul>
+<p>我们通常用一下两种方法解决评估指标的鲁棒性问题:</p>
+<blockquote>
+<ul>
+<li>剔除异常值</li>
+</ul>
+</blockquote>
+<p>设定一个相对误差<span><span class="MathJax_Preview">\frac{|y_i-\hat{y_i}|}{y_i}</span><script type="math/tex">\frac{|y_i-\hat{y_i}|}{y_i}</script></span>,当该值超过一定的阈值时,则认为其是一个异常点,剔除这个异常点,将异常点剔除之后。再计算平均误差来对模型进行评价。</p>
+<blockquote>
+<ul>
+<li>使用误差的分位数来代替</li>
+</ul>
+</blockquote>
+<p>如利用中位数来代替平均数。例如MAPE:<span><span class="MathJax_Preview">MAPE=median(|y_i-\hat{y_i}|/y_i)</span><script type="math/tex">MAPE=median(|y_i-\hat{y_i}|/y_i)</script></span>,MAPE是一个相对误差的中位数,当然也可以使用别的分位数。</p>
+<h3 id="52-classification">5.2 分类(Classification)指标</h3>
+<p><img alt="" src="http://pic1.zhimg.com/v2-49a657a2ec9fa94edb976ca1a7d33afc_r.jpg" /></p>
+<ul>
+<li><strong>混淆矩阵</strong></li>
+</ul>
+<p>在预测系统中,牵扯到预测值,真实值,以及真实值和预测值之间的关系,进而产生了混淆矩阵:</p>
+<table>
+    <tr>
+        <td style="width: 40%;"><img width="100%"  src="http://pic4.zhimg.com/v2-b97dab4ad52b9d0c7dac87c9b81acebf.jpg" /></td>
+        <td><img width="50%" src="http://pic3.zhimg.com/80/v2-76b9176719868e9b85bedf5192e722d3_hd.jpg" /></td>
+    </tr><tr>
+        <td style="color:orange;font-size:13px;color:#995;">多分类下的混淆矩阵</td>
+        <td style="color:orange;font-size:13px;color:#995;">二分类下的混淆矩阵</td>
+    </tr>
+</table>
+
+<p>混淆矩阵又被称为错误矩阵,在每个类别下,模型预测错误的结果数量,以及错误预测的类别和正确预测的数量都在一个矩阵下面显示出来,方便直观的评估模型分类的结果。</p>
+<p>通常取预测值和真实值之间的关系、预测值对矩阵进行划分:</p>
+<blockquote>
+<ul>
+<li>True positive(TP):真实值为Positive,预测正确(预测值为Positive)</li>
+<li>True negative(TN):真实值为Negative,预测正确(预测值为Negative)</li>
+<li>False positive(FP):真实值为Negative,预测错误(预测值为Positive),第一类错误,Type I error。</li>
+<li>False negative(FN): 真实值为Positive,预测错误(预测值为 Negative),第二类错误,Type II error。</li>
+</ul>
+</blockquote>
+<ul>
+<li><strong>精确率(Precision)</strong></li>
+</ul>
+<p>精确率是针对我们预测结果而言的,它表示的是预测为正的样本中有多少是真正的正样本。那么预测为正就有两种可能了,一种就是把正类预测为正类(TP),另一种就是把负类预测为正类(FP),也就是</p>
+<div>
+<div class="MathJax_Preview">P = \frac{TP}{TP+FP}</div>
+<script type="math/tex; mode=display">P = \frac{TP}{TP+FP}</script>
+</div>
+<p>精确率取值范围为[0,1],取值越大,模型预测能力越好。</p>
+<ul>
+<li><strong>召回率(Recall)</strong></li>
+</ul>
+<p>针对我们原来的样本而言的,它表示的是样本中的正例有多少被预测正确了。那也有两种可能,一种是把原来的正类预测成正类(TP),另一种就是把原来的正类预测为负类(FN)。其实就是分母不同,一个分母是预测为正的样本数,另一个是原来样本中所有的正样本数。</p>
+<div>
+<div class="MathJax_Preview">R=\frac{TP}{TP+FN}</div>
+<script type="math/tex; mode=display">R=\frac{TP}{TP+FN}</script>
+</div>
+<p>在信息检索领域,精确率和召回率又被称为查准率和查全率:</p>
+<blockquote>
+<ul>
+<li>查准率＝检索出的相关信息量 / 检索出的信息总量</li>
+<li>查全率＝检索出的相关信息量 / 系统中的相关信息总量</li>
+</ul>
+</blockquote>
+<ul>
+<li><strong>准确率(Accuracy)</strong></li>
+</ul>
+<p>针对所有的样本,样本预测正确的数量占总数据:</p>
+<div>
+<div class="MathJax_Preview">
+Acc=\frac{TP+TN}{TP+FN+FP+TN}
+</div>
+<script type="math/tex; mode=display">
+Acc=\frac{TP+TN}{TP+FN+FP+TN}
+</script>
+</div>
+<ul>
+<li><strong>引申指标</strong></li>
+</ul>
+<p>用样本中的正类和负类进行计算的定义</p>
+<table>
+<thead>
+<tr>
+<th>缩写</th>
+<th>全称</th>
+<th>等价称呼</th>
+<th>计算公式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TPR</td>
+<td>True Positive Rate</td>
+<td>真正类率,Recall Sensitivity</td>
+<td><span><span class="MathJax_Preview">\frac{TP}{TP+FN}</span><script type="math/tex">\frac{TP}{TP+FN}</script></span></td>
+</tr>
+<tr>
+<td>FNR</td>
+<td>False Negative Rate</td>
+<td>假负类率,Miss rate Type rs error</td>
+<td><span><span class="MathJax_Preview">\frac{TN}{TP+FN}</span><script type="math/tex">\frac{TN}{TP+FN}</script></span></td>
+</tr>
+<tr>
+<td>FPR</td>
+<td>False Positive Rate</td>
+<td>假正类率,fall-out Type 1 error</td>
+<td><span><span class="MathJax_Preview">frac{FP}{FP+FN}=1-TNR</span><script type="math/tex">frac{FP}{FP+FN}=1-TNR</script></span></td>
+</tr>
+<tr>
+<td>TNR</td>
+<td>True Negative Rate</td>
+<td>真负类率,Specificity</td>
+<td><span><span class="MathJax_Preview">\frac{TN}{TN+FP}</span><script type="math/tex">\frac{TN}{TN+FP}</script></span></td>
+</tr>
+</tbody>
+</table>
+<p>用预测结果的正类和负类进行计算的定义</p>
+<table>
+<thead>
+<tr>
+<th>缩写</th>
+<th>全称</th>
+<th>等价称呼</th>
+<th>计算公式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PPV</td>
+<td>Positive Predictive Value</td>
+<td>正类预测率,Precision</td>
+<td><span><span class="MathJax_Preview">\frac{TP}{TP+FP}</span><script type="math/tex">\frac{TP}{TP+FP}</script></span></td>
+</tr>
+<tr>
+<td>FOR</td>
+<td>False Omission Rata</td>
+<td>假错误率</td>
+<td><span><span class="MathJax_Preview">\frac{FN}{TN+FN}=1-NPV</span><script type="math/tex">\frac{FN}{TN+FN}=1-NPV</script></span></td>
+</tr>
+<tr>
+<td>FDR</td>
+<td>False Discovery Rate</td>
+<td>假发现率</td>
+<td><span><span class="MathJax_Preview">\frac{FP}{TP+FP}</span><script type="math/tex">\frac{FP}{TP+FP}</script></span></td>
+</tr>
+<tr>
+<td>NPV</td>
+<td>Negative Predictive Value</td>
+<td>负类预测率</td>
+<td><span><span class="MathJax_Preview">\frac{TN}{TN+FN}</span><script type="math/tex">\frac{TN}{TN+FN}</script></span></td>
+</tr>
+</tbody>
+</table>
+<p>其他定义概念</p>
+<table>
+<thead>
+<tr>
+<th>缩写</th>
+<th>全称</th>
+<th>等价称呼</th>
+<th>计算公式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ACC</td>
+<td>Accuracy</td>
+<td>准确率</td>
+<td><span><span class="MathJax_Preview">\frac{TP+TN}{TP+FN+FP+TN}</span><script type="math/tex">\frac{TP+TN}{TP+FN+FP+TN}</script></span></td>
+</tr>
+<tr>
+<td>LR+</td>
+<td>Positive Likelihood Ratio</td>
+<td>正类似然比</td>
+<td><span><span class="MathJax_Preview">\frac{TPR}{FPR}</span><script type="math/tex">\frac{TPR}{FPR}</script></span></td>
+</tr>
+<tr>
+<td>LR-</td>
+<td>Negative likelihood ratio</td>
+<td>负类似然比</td>
+<td><span><span class="MathJax_Preview">\frac{FNR}{TNR}</span><script type="math/tex">\frac{FNR}{TNR}</script></span></td>
+</tr>
+<tr>
+<td>DOR</td>
+<td>Diagnostic odds ratio</td>
+<td>诊断胜算比</td>
+<td><span><span class="MathJax_Preview">\frac{LR+}{LR-}</span><script type="math/tex">\frac{LR+}{LR-}</script></span></td>
+</tr>
+<tr>
+<td>F1 score</td>
+<td>F1 test measure</td>
+<td>F1值</td>
+<td><span><span class="MathJax_Preview">\frac{2*Recall*Precision}{Recall+Precision}</span><script type="math/tex">\frac{2*Recall*Precision}{Recall+Precision}</script></span></td>
+</tr>
+<tr>
+<td>MCC</td>
+<td>Matthews Correlation coefficient</td>
+<td>马修斯相关性系数</td>
+<td><span><span class="MathJax_Preview">\frac{TP*TN-FP*FN}{\sqrt{(TP+FP)(TP+FN)(TN+FP)(TN+FN)}}</span><script type="math/tex">\frac{TP*TN-FP*FN}{\sqrt{(TP+FP)(TP+FN)(TN+FP)(TN+FN)}}</script></span></td>
+</tr>
+<tr>
+<td>BM</td>
+<td>Bookmaker Informedness</td>
+<td>Informedness</td>
+<td><span><span class="MathJax_Preview">TPR+TNR-1</span><script type="math/tex">TPR+TNR-1</script></span></td>
+</tr>
+</tbody>
+</table>
+<p>LR+/-指的是似然比,LR+越大表示模型对正类的分类越好,LR-越大表示模型对负类的分类效果越好。F1值是精确值和召回率的调和均值,其实原公式是<span><span class="MathJax_Preview">F_{\beta}=(1+\beta^2)\times\frac{\text{P}\times\text{R}}{\beta^2\times\text{P}+\text{R}}</span><script type="math/tex">F_{\beta}=(1+\beta^2)\times\frac{\text{P}\times\text{R}}{\beta^2\times\text{P}+\text{R}}</script></span>,这里的<span><span class="MathJax_Preview">\beta</span><script type="math/tex">\beta</script></span>表示:<strong>召回率的权重是准确率的<span><span class="MathJax_Preview">\beta</span><script type="math/tex">\beta</script></span>倍</strong>。即F值是一种精确率和召回率的综合指标,权重由<span><span class="MathJax_Preview">\beta</span><script type="math/tex">\beta</script></span>决定。MCC值在[-1,1]之间,靠近1表示完全预测正确m靠近-1表示完全悖论,0表示随机预测</p>
+<ul>
+<li><strong>AP与mAP</strong></li>
+</ul>
+<p>二分类问题的P-R曲线(precision-recall curve),P-R曲线下面与x轴围成的面积称为average precision(AP)。显然通过积分来计算</p>
+<div>
+<div class="MathJax_Preview">
+AP=\int_0^1P(r)dr
+</div>
+<script type="math/tex; mode=display">
+AP=\int_0^1P(r)dr
+</script>
+</div>
+<p>但通常情况下都是使用估算或者插值的方式计算。</p>
+<p>mAP(mean average precision)的意义是为了评估你整个目标检测模型的准确度。方法是:计算每个分类的AP,求和再平均,得到的就是mAP</p>
+<ul>
+<li><strong><span><span class="MathJax_Preview">F_\beta</span><script type="math/tex">F_\beta</script></span> Score</strong></li>
+</ul>
+<p>Precision和Recall是互相影响的,理想情况下肯定是做到两者都高,但是一般情况下Precision高、Recall就低,Recall高、Precision就低。为了均衡两个指标,我们可以采用Precision和Recall的加权调和平均(weighted harmonic mean)来衡量,即<span><span class="MathJax_Preview">F_\beta</span><script type="math/tex">F_\beta</script></span> Score,公式如下:</p>
+<div>
+<div class="MathJax_Preview">
+F_{\beta}=(1+\beta^2)\times\frac{\text{P}\times\text{R}}{\beta^2\times\text{P}+\text{R}}
+</div>
+<script type="math/tex; mode=display">
+F_{\beta}=(1+\beta^2)\times\frac{\text{P}\times\text{R}}{\beta^2\times\text{P}+\text{R}}
+</script>
+</div>
+<p><span><span class="MathJax_Preview">\beta</span><script type="math/tex">\beta</script></span>表示权重,</p>
+<div>
+<div class="MathJax_Preview">
+\begin{aligned}
+F_{\beta}&amp; = \frac{(1+\beta^2)\times\text{P}\times\text{R}}{\beta^2\times\text{P}+\text{R}} \\
+&amp; = \frac {1}{\frac{\beta^2}{(1+\beta^2)\times R}+\frac{1}{(1+\beta^2)\times P}}\\ 
+&amp; = \frac {1}{\frac{1}{(1+\frac{1}{\beta^2})\times R}+\frac{1}{(1+\beta^2)\times P}} 
+\end{aligned}
+</div>
+<script type="math/tex; mode=display">
+\begin{aligned}
+F_{\beta}& = \frac{(1+\beta^2)\times\text{P}\times\text{R}}{\beta^2\times\text{P}+\text{R}} \\
+& = \frac {1}{\frac{\beta^2}{(1+\beta^2)\times R}+\frac{1}{(1+\beta^2)\times P}}\\ 
+& = \frac {1}{\frac{1}{(1+\frac{1}{\beta^2})\times R}+\frac{1}{(1+\beta^2)\times P}} 
+\end{aligned}
+</script>
+</div>
+<p>当<span><span class="MathJax_Preview">\beta \rightarrow 0 : F_{\beta} \approx P</span><script type="math/tex">\beta \rightarrow 0 : F_{\beta} \approx P</script></span>;当<span><span class="MathJax_Preview">\beta \rightarrow \infty:F_{\beta} \approx R</span><script type="math/tex">\beta \rightarrow \infty:F_{\beta} \approx R</script></span>。通俗的语言就是:<span><span class="MathJax_Preview">\beta</span><script type="math/tex">\beta</script></span>越大,Recall的权重越大,<span><span class="MathJax_Preview">\beta</span><script type="math/tex">\beta</script></span>越小,Precision的权重越大。</p>
+<p>随着如<span><span class="MathJax_Preview">\beta=1</span><script type="math/tex">\beta=1</script></span>为<span><span class="MathJax_Preview">F_\beta</span><script type="math/tex">F_\beta</script></span>此时Precision和Recall的权重相等,公式如下:</p>
+<div>
+<div class="MathJax_Preview">
+F_{\beta}=F_{1}=\frac{2\times\text{P}\times\text{R}}{\text{P}+\text{R}} 
+</div>
+<script type="math/tex; mode=display">
+F_{\beta}=F_{1}=\frac{2\times\text{P}\times\text{R}}{\text{P}+\text{R}} 
+</script>
+</div>
+<p>由于<span><span class="MathJax_Preview">F_\beta</span><script type="math/tex">F_\beta</script></span> Score无法直观反映数据的情况,同时业务含义相对较弱,实际工作用到的不多。</p>
+<ul>
+<li><strong>ROC和AUC</strong></li>
+</ul>
+<p>AUC是一种模型分类指标,且仅仅是二分类模型的评价指标。AUC是Area Under Curve的简称,那么Curve就是ROC(Receiver Operating Characteristic),翻译为"接受者操作特性曲线"。也就是说ROC是一条曲线,AUC是一个面积值。</p>
+<p><strong>ROC</strong>:ROC曲线为FPR与TPR之间的关系曲线,这个组合以 FPR 对TPR,即是以代价(costs)对收益(benefits),显然收益越高,代价越低,模型的性能就越好。</p>
+<p>x轴为假阳性率(FPR):在所有的负样本中,分类器预测错误的比例</p>
+<div>
+<div class="MathJax_Preview">
+FPR = \frac {FP}{FP+TN}
+</div>
+<script type="math/tex; mode=display">
+FPR = \frac {FP}{FP+TN}
+</script>
+</div>
+<p>y轴为真阳性率(TPR):在所有的正样本中,分类器预测正确的比例(等于Recall)</p>
+<div>
+<div class="MathJax_Preview">
+TPR = \frac {TP}{TP+FN}
+</div>
+<script type="math/tex; mode=display">
+TPR = \frac {TP}{TP+FN}
+</script>
+</div>
+<p>为了更好地理解ROC曲线,我们使用具体的实例来说明:</p>
+<p>如在医学诊断的主要任务是尽量把生病的人群都找出来,也就是TPR越高越好。而尽量降低没病误诊为有病的人数,也就是FPR越低越好。不难发现,这两个指标之间是相互制约的。如果某个医生对于有病的症状比较敏感,稍微的小症状都判断为有病,那么他的TPR应该会很高,但是FPR也就相应地变高。最极端的情况下,他把所有的样本都看做有病,那么TPR达到1,FPR也为1。以FPR为横轴,TPR为纵轴,得到如下ROC空间。</p>
+<p><img alt="" src="http://pic1.zhimg.com/v2-6d498ba1302f3c073c6c8ce1cd014e50_r.jpg" /></p>
+<p>可以看出,左上角的点(TPR=1,FPR=0)为完美分类,也就是这个医生医术高明,诊断全对。点A(TPR>FPR),医生A的判断大体是正确的。中线上的点B(TPR=FPR),也就是医生B全都是蒙的,蒙对一半,蒙错一半;下半平面的点C(TPR\&lt;FPR),这个医生说你有病,那么你很可能没有病,医生C的话我们要反着听,为真庸医。上图中一个阈值,得到一个点。现在我们需要一个独立于阈值的评价指标来衡量这个医生的医术如何,也就是遍历所有的阈值,得到ROC曲线。</p>
+<p>假设下图是某医生的诊断统计图,为未得病人群(上图)和得病人群(下图)的模型输出概率分布图(横坐标表示模型输出概率,纵坐标表示概率对应的人群的数量),显然未得病人群的概率值普遍低于得病人群的输出概率值(即正常人诊断出疾病的概率小于得病人群诊断出疾病的概率)。</p>
+<p><img alt="" src="http://pic2.zhimg.com/v2-b6a3d08daaf2136ff6a072b90f8fe151_r.jpg" /></p>
+<p>竖线代表阈值。显然,图中给出了某个阈值对应的混淆矩阵,通过改变不同的阈值<span><span class="MathJax_Preview">1.0 \rightarrow 0</span><script type="math/tex">1.0 \rightarrow 0</script></span>,得到一系列的混淆矩阵,进而得到一系列的TPR和FPR,绘制出ROC曲线。</p>
+<p>阈值为1时,不管你什么症状,医生均未诊断出疾病(预测值都为N,此时绿色和红色区域的面积为0,因此FPR=TPR=0,位于左下。随着阈值的减小,红色和绿色区域增大,紫色和蓝色区域减小。阈值为0时,不管你什么症状,医生都诊断结果都是得病(预测值都为P),此时绿色和红色区域均占整个区域,即紫色和蓝色区域的面积为0,此时 FPR=TPR=1,位于右上。</p>
+<p><strong>AUC</strong>:AUC值为ROC曲线所覆盖的区域面积,显然,AUC越大,分类器分类效果越好。</p>
+<blockquote>
+<ul>
+<li>AUC=1,是完美分类器。</li>
+<li>0.5\&lt;AUC\&lt;1,优于随机猜测,有预测价值。</li>
+<li>AUC=0.5,跟随机猜测一样(例:丢铜板),没有预测价值。</li>
+<li>AUC &lt; 0.5,比随机猜测还差;但只要总是反预测而行,就优于随机猜测。</li>
+</ul>
+</blockquote>
+<p><strong>注:</strong> 对于AUC小于0.5的模型,我们可以考虑取反(模型预测为positive,那我们就取negtive),这样就可以保证模型的性能不可能比随机猜测差。</p>
+<p>以下为ROC曲线和AUC值的实例:</p>
+<p><img alt="" src="http://pic4.zhimg.com/v2-92a524d44d915a4a043b267c238643b3_r.jpg" /></p>
+<p>AUC的物理意义:正样本的预测结果大于负样本的预测结果的概率。所以AUC反应的是分类器对样本的排序能力。另外值得注意的是,AUC对样本类别是否均衡并不敏感,这也是不均衡样本通常用AUC评价分类器性能的一个原因。AUC只关注正负样本之间的排序,并不关心正样本内部,或者负样本内部的排序。这也体现了AUC的本质:任意个正样本的概率都大于负样本的概率的能力</p>
+<p>AUC的计算:</p>
+<blockquote>
+<ol>
+<li>AUC为ROC曲线下的面积,那我们直接计算面积可得。面积为一个个小的梯形面积(曲线)之和。计算的精度与阈值的精度有关。</li>
+<li>根据AUC的物理意义,我们计算正样本预测结果大于负样本预测结果的概率。取<span><span class="MathJax_Preview">n_1*n_0</span><script type="math/tex">n_1*n_0</script></span>(<span><span class="MathJax_Preview">n_1</span><script type="math/tex">n_1</script></span>为正样本数,<span><span class="MathJax_Preview">n_0</span><script type="math/tex">n_0</script></span>为负样本数)个二元组,比较score(预测结果),最后得到AUC。时间复杂度为<span><span class="MathJax_Preview">O(N*M)</span><script type="math/tex">O(N*M)</script></span>。</li>
+<li>首先把所有样本按照score排序,依次用rank表示他们,如最大score的样本,<span><span class="MathJax_Preview">rank=n(n=n_0+n_1</span><script type="math/tex">rank=n(n=n_0+n_1</script></span>,其中<span><span class="MathJax_Preview">n_0</span><script type="math/tex">n_0</script></span>为负样本个数,<span><span class="MathJax_Preview">n_1</span><script type="math/tex">n_1</script></span>为正样本个数),其次为n-1。对于正样本中rank最大的样本<span><span class="MathJax_Preview">rank\_max</span><script type="math/tex">rank\_max</script></span>,有<span><span class="MathJax_Preview">n_1-1</span><script type="math/tex">n_1-1</script></span>个其他正样本比它小。有<span><span class="MathJax_Preview">rank\_max-n_1</span><script type="math/tex">rank\_max-n_1</script></span>个负样本比它小。其次为<span><span class="MathJax_Preview">rank\_second-(n_1-1)</span><script type="math/tex">rank\_second-(n_1-1)</script></span>。最后我们得到正样本大于负样本的概率为:</li>
+</ol>
+</blockquote>
+<div>
+<div class="MathJax_Preview">
+AUC=\frac{\sum_{\text{正样本}}rank(core)-n_1*(n_1+2)/2}{n_0*n_1}
+</div>
+<script type="math/tex; mode=display">
+AUC=\frac{\sum_{\text{正样本}}rank(core)-n_1*(n_1+2)/2}{n_0*n_1}
+</script>
+</div>
+<blockquote>
+<ol>
+<li>计算复杂度为<span><span class="MathJax_Preview">O(N+M)</span><script type="math/tex">O(N+M)</script></span>。</li>
+</ol>
+</blockquote>
+<p><strong>ROC和AUC都能应用于非均衡的分类问题</strong>:ROC曲线只与横坐标(FPR)和纵坐标(TPR)有关系,其中:</p>
+<div>
+<div class="MathJax_Preview">
+FPR = \frac {FP}{FP+TN}
+</div>
+<script type="math/tex; mode=display">
+FPR = \frac {FP}{FP+TN}
+</script>
+</div>
+<div>
+<div class="MathJax_Preview">
+TPR = \frac {TP}{TP+FN}
+</div>
+<script type="math/tex; mode=display">
+TPR = \frac {TP}{TP+FN}
+</script>
+</div>
+<p>以及混淆矩阵:</p>
+<p><img alt="" src="http://pic2.zhimg.com/v2-971343041d399b14e4ba379fce0c6d25_r.jpg" /></p>
+<p>可以发现TPR只是正样本中(第一行)预测正确的概率,在正样本内部进行,并没有牵扯到负样本。而FPR只是负样本中(第二行)预测错误的概率,在负样本内部进行,并没有牵扯到正样本。TPR和FPR的计算并没有涉及正负样本的互动(也就是没有跨行)。和正负样本的比例没有关系。因此ROC的值与实际的正负样本比例无关,因此既可以用于均衡问题,也可以用于非均衡问题。而AUC的几何意义为ROC曲线下的面积,因此也和实际的正负样本比例无关。</p>
+<ul>
+<li><strong>KS(Kolmogorov-Smirnov)</strong></li>
+</ul>
+<p>KS值是在模型中用于区分预测正负样本分隔程度的评价指标,一般应用于金融风控领域。与ROC曲线相似,ROC是以FPR作为横坐标,TPR作为纵坐标,通过改变不同阈值,从而得到ROC曲线。而在KS曲线中,则是以阈值作为横坐标,以FPR和TPR作为纵坐标,ks曲线则为TPR-FPR,ks曲线的最大值通常为ks值。</p>
+<p>为什么这样求KS值呢?我们知道,当阈值减小时,TPR和FPR会同时减小,当阈值增大时,TPR和FPR会同时增大。而在实际工程中,我们希望TPR更大一些,FPR更小一些,即TPR-FPR越大越好,即ks值越大越好。KS值的取值范围是[0,1]。通常来说,值越大,模型区分正负样本的能力越强(一般0.3以上,说明模型的效果比较好)。</p>
+<p>以下为KS曲线的实例 :</p>
+<p><img alt="" src="http://pic3.zhimg.com/80/v2-d84017e07e95e3b43f11b04663c3cb1e_r.jpg" /></p>
+<ul>
+<li><strong>micro与macro</strong></li>
+</ul>
+<p>假如我们有n个二分类混淆矩阵,评价模型通常有两种方式一种叫macro,一种叫micro。</p>
+<blockquote>
+<ol>
+<li>macro方法</li>
+</ol>
+</blockquote>
+<p>计算出各混淆矩阵的Recall,Precision,记为<span><span class="MathJax_Preview">(P_1,R_1),(P_2,R_2),\cdots,(P_n,R_n)</span><script type="math/tex">(P_1,R_1),(P_2,R_2),\cdots,(P_n,R_n)</script></span>:</p>
+<div>
+<div class="MathJax_Preview">
+P_i = \frac{TP_i}{TP_i + FP_i}
+</div>
+<script type="math/tex; mode=display">
+P_i = \frac{TP_i}{TP_i + FP_i}
+</script>
+</div>
+<div>
+<div class="MathJax_Preview">
+R_i = \frac{TP_i}{TP_i + FN_i}
+</div>
+<script type="math/tex; mode=display">
+R_i = \frac{TP_i}{TP_i + FN_i}
+</script>
+</div>
+<p>对各个混淆矩阵的Recall,Precision求平均,然后再根据求得的Recall,Precision计算F1。</p>
+<div>
+<div class="MathJax_Preview">
+\begin{aligned}
+&amp; P_{macro} = \frac1n\sum\limits_{i=1}^n P_i \\
+&amp; R_{macro} = \frac1n\sum\limits_{i=1}^n R_i \\
+&amp; F1_{macro} = \frac{2\times P_{macro} \times R_{macro}}{ P_{macro} + R_{macro}} 
+\end{aligned}
+</div>
+<script type="math/tex; mode=display">
+\begin{aligned}
+& P_{macro} = \frac1n\sum\limits_{i=1}^n P_i \\
+& R_{macro} = \frac1n\sum\limits_{i=1}^n R_i \\
+& F1_{macro} = \frac{2\times P_{macro} \times R_{macro}}{ P_{macro} + R_{macro}} 
+\end{aligned}
+</script>
+</div>
+<blockquote>
+<ol>
+<li>micro方法</li>
+</ol>
+</blockquote>
+<p>将各混淆矩阵对应的元素进行平均,得到平均混淆矩阵:</p>
+<div>
+<div class="MathJax_Preview">
+\begin{aligned}
+&amp; \overline {TP} = \frac1n\sum\limits_{i=1}^n (TP)_i  \\
+&amp; \overline {TN} = \frac1n\sum\limits_{i=1}^n (TN)_i \\
+&amp; \overline {FP} = \frac1n\sum\limits_{i=1}^n (FP)_i \\
+&amp; \overline {FN} = \frac1n\sum\limits_{i=1}^n (FN)_i 
+\end{aligned}
+</div>
+<script type="math/tex; mode=display">
+\begin{aligned}
+& \overline {TP} = \frac1n\sum\limits_{i=1}^n (TP)_i  \\
+& \overline {TN} = \frac1n\sum\limits_{i=1}^n (TN)_i \\
+& \overline {FP} = \frac1n\sum\limits_{i=1}^n (FP)_i \\
+& \overline {FN} = \frac1n\sum\limits_{i=1}^n (FN)_i 
+\end{aligned}
+</script>
+</div>
+<p>再基于平均混淆矩阵计算Recall,Precision,然后再根据求得的Recall,Precision计算F1:</p>
+<div>
+<div class="MathJax_Preview">
+\begin{aligned}
+&amp; {P_{micro}} = \frac{\overline {TP}}{\overline{TP} + \overline{FP}} \\
+&amp; {R_{micro}} = \frac{\overline {TP}}{\overline{TP} + \overline{FN}} \\
+&amp; F1_{micro} = \frac{2\times P_{micro} \times R_{micro}}{ P_{micro} + R_{micro}} \\
+\end{aligned}
+</div>
+<script type="math/tex; mode=display">
+\begin{aligned}
+& {P_{micro}} = \frac{\overline {TP}}{\overline{TP} + \overline{FP}} \\
+& {R_{micro}} = \frac{\overline {TP}}{\overline{TP} + \overline{FN}} \\
+& F1_{micro} = \frac{2\times P_{micro} \times R_{micro}}{ P_{micro} + R_{micro}} \\
+\end{aligned}
+</script>
+</div>
+<h3 id="53">5.3 聚类指标</h3>
+<ul>
+<li><strong>兰德指数</strong></li>
+<li><strong>轮廓系数</strong></li>
+<li><strong>互信息</strong></li>
+</ul>
+<h2 id="_8">七、卷积</h2>
+<h3 id="61">6.1 卷积的解释</h3>
+<p>从数学上讲,卷积就是一种运算。某种运算,能被定义出来,至少有以下特征:</p>
+<blockquote>
+<p>首先是抽象的、符号化的</p>
+<p>其次,在生活、科研中,有着广泛的作用</p>
+</blockquote>
+<p>比如加法:<code>a+b</code>,是抽象的,本身只是一个数学符号。在现实中,有非常多的意义,比如增加、合成、旋转等等。</p>
+<ul>
+<li><strong>卷积的定义</strong></li>
+</ul>
+<p>我们称<span><span class="MathJax_Preview">(f*g)(n)</span><script type="math/tex">(f*g)(n)</script></span>为<span><span class="MathJax_Preview">f,g</span><script type="math/tex">f,g</script></span>的卷积,其连续的定义为:</p>
+<div>
+<div class="MathJax_Preview">(f*g)(n)=\int_{-\infty}^{\infty}f(\tau)g(n-\tau)d\tau</div>
+<script type="math/tex; mode=display">(f*g)(n)=\int_{-\infty}^{\infty}f(\tau)g(n-\tau)d\tau</script>
+</div>
+<p>其离散的定义为:</p>
+<div>
+<div class="MathJax_Preview">(f*g)(n)=\sum _{\tau=-\infty }^{\infty}{f(\tau)g(n-\tau)}</div>
+<script type="math/tex; mode=display">(f*g)(n)=\sum _{\tau=-\infty }^{\infty}{f(\tau)g(n-\tau)}</script>
+</div>
+<p>这两个式子有一个共同的特征:</p>
+<p><img alt="" src="http://pic1.zhimg.com/v2-d3df01f12b869d431c65f97ad307508f_r.jpg" /></p>
+<p>这个特征有什么意义?我们令<span><span class="MathJax_Preview">x=\tau,y=n-\tau</span><script type="math/tex">x=\tau,y=n-\tau</script></span>,那么<span><span class="MathJax_Preview">x+y=n</span><script type="math/tex">x+y=n</script></span>就是下面这些直线:</p>
+<p><img alt="" src="http://pic3.zhimg.com/50/v2-8be52f6bada3f7a21cebfc210d2e7ea0_hd.gif" /></p>
+<p>如果遍历这些直线,就好比,把毛巾沿着角卷起来:</p>
+<p><img alt="" src="http://pic1.zhimg.com/50/v2-1d0c819fc7ca6f8da25435da070a2715_hd.gif" /></p>
+<p>或许,这就是“卷”积名字的来源吧。</p>
+<ul>
+<li><strong>离散卷积的例子:丢骰子</strong></li>
+</ul>
+<p>我有两枚骰子:</p>
+<p><img alt="" src="http://pic4.zhimg.com/80/v2-e279045403bb2b0d8de72262f37562cd_hd.jpg" /></p>
+<p>把这两枚骰子都抛出去:</p>
+<p><img alt="" src="http://pic1.zhimg.com/80/v2-53f1a57bc5e9ee0eb6b6f18ab7654337_hd.jpg" /></p>
+<p>求:</p>
+<p><img alt="" src="http://pic1.zhimg.com/80/v2-e8826b4dfaf68b5af638b0c126cb67a7_hd.jpg" /></p>
+<p>这里问题的关键是,两个骰子加起来要等于4,这正是卷积的应用场景。我们把骰子各个点数出现的概率表示出来:</p>
+<p><img alt="" src="http://pic2.zhimg.com/80/v2-4763fd548536b21640d01d3f8a59c546_hd.jpg" /></p>
+<p>那么,两枚骰子点数加起来为4的情况有:</p>
+<p><img alt="" src="http://pic1.zhimg.com/80/v2-a67a711702ce48cd7632e783ae0a1f42_hd.jpg" /></p>
+<p><img alt="" src="http://pic2.zhimg.com/80/v2-d6ff10bf39c46397ab2bebb971d4b58c_hd.jpg" /></p>
+<p><img alt="" src="http://pic2.zhimg.com/80/v2-d6ff10bf39c46397ab2bebb971d4b58c_hd.jpg" /></p>
+<p>因此,两枚骰子点数加起来为4的概率为:<span><span class="MathJax_Preview">f(1)g(3)+f(2)g(2)+f(3)g(1)</span><script type="math/tex">f(1)g(3)+f(2)g(2)+f(3)g(1)</script></span></p>
+<p>符合卷积的定义,把它写成标准的形式就是:</p>
+<div>
+<div class="MathJax_Preview">
+\displaystyle(f*g)(4)=\sum_{m=1}^{3}f(m)g(4-m)
+</div>
+<script type="math/tex; mode=display">
+\displaystyle(f*g)(4)=\sum_{m=1}^{3}f(m)g(4-m)
+</script>
+</div>
+<ul>
+<li><strong>连续卷积的例子:做馒头</strong></li>
+</ul>
+<p>楼下早点铺子生意太好了,供不应求,就买了一台机器,不断的生产馒头。假设馒头的生产速度是<span><span class="MathJax_Preview">f(t)</span><script type="math/tex">f(t)</script></span>,那么一天后生产出来的馒头总量为:</p>
+<div>
+<div class="MathJax_Preview">
+\int_{0}^{24}f(t)dt
+</div>
+<script type="math/tex; mode=display">
+\int_{0}^{24}f(t)dt
+</script>
+</div>
+<p>馒头生产出来之后,就会慢慢腐败,假设腐败函数为<span><span class="MathJax_Preview">g(t)</span><script type="math/tex">g(t)</script></span>,比如,10个馒头,24小时会腐败:<span><span class="MathJax_Preview">10*g(t)</span><script type="math/tex">10*g(t)</script></span></p>
+<p>想想就知道,第一个小时生产出来的馒头,一天后会经历24小时的腐败,第二个小时生产出来的馒头,一天后会经历23小时的腐败。如此,我们可以知道,一天后,馒头总共腐败了:</p>
+<div>
+<div class="MathJax_Preview">
+\int_{0}^{24}f(t)g(24-t)dt
+</div>
+<script type="math/tex; mode=display">
+\int_{0}^{24}f(t)g(24-t)dt
+</script>
+</div>
+<p>这就是连续的卷积。</p>
+<ul>
+<li><strong>图像处理中的应用</strong></li>
+</ul>
+<p><strong>原理</strong>:有这么一副图像,可以看到,图像上有很多噪点:</p>
+<p><img alt="" src="http://pic3.zhimg.com/v2-8d161328acd72d035e461c0b89b753e5_r.jpg" /></p>
+<p>高频信号,就好像平地耸立的山峰:</p>
+<p><img alt="" src="http://pic1.zhimg.com/80/v2-294698966c5a833cd750df70c0a00c21_hd.jpg" /></p>
+<p>看起来很显眼。平滑这座山峰的办法之一就是,把山峰刨掉一些土,填到山峰周围去。用数学的话来说,就是把山峰周围的高度平均一下。平滑后得到:</p>
+<p><img alt="" src="http://pic1.zhimg.com/80/v2-83b24e8ed70f17df6bc3b921ebe6276c_hd.jpg" /></p>
+<p><strong>计算</strong>:卷积可以帮助实现这个平滑算法。有噪点的原图,可以把它转为一个矩阵:</p>
+<p><img alt="" src="http://pic3.zhimg.com/80/v2-8dd14775ab8c91a09507f52e44f347f3_hd.jpg" /></p>
+<p>然后用下面这个平均矩阵(说明下,原图的处理实际上用的是正态分布矩阵,这里为了简单,就用了算术平均矩阵)来平滑图像:</p>
+<div>
+<div class="MathJax_Preview">
+g=\begin{bmatrix}
+\frac{1}{9}&amp;\frac{1}{9}&amp;\frac{1}{9} \\
+\frac{1}{9}&amp;\frac{1}{9}&amp;\frac{1}{9} \\
+\frac{1}{9}&amp;\frac{1}{9}&amp;\frac{1}{9}
+\end{bmatrix}
+</div>
+<script type="math/tex; mode=display">
+g=\begin{bmatrix}
+\frac{1}{9}&\frac{1}{9}&\frac{1}{9} \\
+\frac{1}{9}&\frac{1}{9}&\frac{1}{9} \\
+\frac{1}{9}&\frac{1}{9}&\frac{1}{9}
+\end{bmatrix}
+</script>
+</div>
+<p>记得刚才说过的算法,把高频信号与周围的数值平均一下就可以平滑山峰。比如我要平滑<span><span class="MathJax_Preview">a_{1,1}</span><script type="math/tex">a_{1,1}</script></span>4点,就在矩阵中,取出<span><span class="MathJax_Preview">a_{1,1}</span><script type="math/tex">a_{1,1}</script></span>点附近的点组成矩阵<span><span class="MathJax_Preview">f</span><script type="math/tex">f</script></span>和<span><span class="MathJax_Preview">g</span><script type="math/tex">g</script></span>进行卷积计算后,再填回去:</p>
+<p><img alt="" src="http://pic2.zhimg.com/80/v2-5ee9a99988137a42d1067deab36c4e51_hd.jpg" /></p>
+<p>要注意一点,为了运用卷积,<span><span class="MathJax_Preview">g</span><script type="math/tex">g</script></span>虽然和4f$同维度,但下标有点不一样:</p>
+<p><img alt="" src="http://pic1.zhimg.com/80/v2-779d4e972dc557be55e6131edbb8db9f_hd.jpg" /></p>
+<p>我用一个动图来说明下计算过程:</p>
+<p><img alt="" src="http://pic3.zhimg.com/50/v2-c658110eafe027eded16864fb6a28f46_hd.gif" /></p>
+<p>写成卷积公式就是:</p>
+<div>
+<div class="MathJax_Preview">
+\displaystyle(f*g)(1,1)=\sum_{k=0}^{2}\sum_{h=0}^{2}f(h,k)g(1-h,1-k)
+</div>
+<script type="math/tex; mode=display">
+\displaystyle(f*g)(1,1)=\sum_{k=0}^{2}\sum_{h=0}^{2}f(h,k)g(1-h,1-k)
+</script>
+</div>
+<p>要求<span><span class="MathJax_Preview">c_{4,5}</span><script type="math/tex">c_{4,5}</script></span>,一样可以套用上面的卷积公式。这样相当于实现了<span><span class="MathJax_Preview">g</span><script type="math/tex">g</script></span>这个矩阵在原来图像上的划动(准确来说,下面这幅图把g矩阵旋转了<span><span class="MathJax_Preview">180^\circ</span><script type="math/tex">180^\circ</script></span>):</p>
+<p><img alt="" src="http://pic1.zhimg.com/50/v2-15fea61b768f7561648dbea164fcb75f_hd.gif" /></p>
+<h3 id="62">6.2 卷积类型</h3>
+<ul>
+<li><strong>卷积</strong></li>
+</ul>
+<p>首先,定义下卷积层的结构参数。</p>
+<p><img alt="" src="https://pic3.zhimg.com/v2-774dce1925ac06a00a0533f6412be2de_b.webp" /></p>
+<p>卷积核为3、步幅为1和带有边界扩充的二维卷积结构</p>
+<blockquote>
+<p><strong>卷积核大小(Kernel Size):</strong>定义了卷积操作的感受野,在二维卷积中,通常设置为3,即卷积核大小为<code>3×3</code>。</p>
+<p><strong>步幅(Stride):</strong>定义了卷积核遍历图像时的步幅大小,其默认值通常设置为1,也可将步幅设置为2后对图像进行下采样,这种方式与最大池化类似。</p>
+<p><strong>边界扩充(Padding):</strong>定义了网络层处理样本边界的方式,当卷积核大于1且不进行边界扩充,输出尺寸将相应缩小;当卷积核以标准方式进行边界扩充,则输出数据的空间尺寸将与输入相等。</p>
+<p><strong>输入与输出通道(Channels)</strong>构建卷积层时需定义输入通道I,并由此确定输出通道O,这样,可算出每个网络层的参数量为<code>I×O×K</code>,其中K为卷积核的参数个数。例某个网络层有64个大小为<code>3×3</code>的卷积核,则对应K值为<code>3×3=9</code>。</p>
+</blockquote>
+<ul>
+<li><strong>转置卷积(去卷积)</strong></li>
+</ul>
+<p>对于很多网络架构的很多应用而言,我们往往需要进行与普通卷积方向相反的转换,即我们希望执行上采样。例子包括生成高分辨率图像以及将低维特征图映射到高维空间,比如在自动编码器或形义分割中。(在后者的例子中,形义分割首先会提取编码器中的特征图,然后在解码器中恢复原来的图像大小,使其可以分类原始图像中的每个像素)。实现上采样的传统方法是应用插值方案或人工创建规则。而神经网络等现代架构则倾向于让网络自己自动学习合适的变换,无需人类干预。为了做到这一点,我们可以使用转置卷积。</p>
+<p>转置卷积在文献中也被称为去卷积或fractionally strided convolution。但是,需要指出去卷积(deconvolution)这个名称并不是很合适,因为转置卷积并非信号/图像处理领域定义的那种真正的去卷积。从技术上讲,信号处理中的去卷积是卷积运算的逆运算。但这里却不是这种运算。因此,某些作者强烈反对将转置卷积称为去卷积。人们称之为去卷积主要是因为这样说很简单。</p>
+<p>我们一直都可以使用直接的卷积实现转置卷积。对于下图的例子,我们在一个 2×2 的输入(周围加了 2×2 的单位步长的零填充)上应用一个 3×3 核的转置卷积。上采样输出的大小是 4×4。</p>
+<p>将 2×2 的输入上采样成 4×4 的输出
+有趣的是,通过应用各种填充和步长,我们可以将同样的 2×2 输入图像映射到不同的图像尺寸。下面,转置卷积被用在了同一张 2×2 输入上(输入之间插入了一个零,并且周围加了 2×2 的单位步长的零填充),所得输出的大小是 5×5。</p>
+<p>将 2×2 的输入上采样成 5×5 的输出
+观察上述例子中的转置卷积能帮助我们构建起一些直观认识。但为了泛化其应用,了解其可以如何通过计算机的矩阵乘法实现是有益的。从这一点上我们也可以看到为何「转置卷积」才是合适的名称。</p>
+<p>在卷积中,我们定义 C 为卷积核,Large 为输入图像,Small 为输出图像。经过卷积(矩阵乘法)后,我们将大图像下采样为小图像。这种矩阵乘法的卷积的实现遵照:C x Large = Small。</p>
+<p>下面的例子展示了这种运算的工作方式。它将输入平展为 16×1 的矩阵,并将卷积核转换为一个稀疏矩阵(4×16)。然后,在稀疏矩阵和平展的输入之间使用矩阵乘法。之后,再将所得到的矩阵（4×1)转换为 2×2 的输出。</p>
+<p>卷积的矩阵乘法:将 Large 输入图像(4×4)转换为 Small 输出图像（2×2)
+现在,如果我们在等式的两边都乘上矩阵的转置 CT,并借助「一个矩阵与其转置矩阵的乘法得到一个单位矩阵」这一性质,那么我们就能得到公式 CT x Small = Large,如下图所示。</p>
+<p>卷积的矩阵乘法:将 Small 输入图像(2×2)转换为 Large 输出图像（4×4)
+这里可以看到,我们执行了从小图像到大图像的上采样。这正是我们想要实现的目标。现在。你就知道「转置卷积」这个名字的由来了。</p>
+<p>转置矩阵的算术解释可参阅:https://arxiv.org/abs/1603.07285</p>
+<p>四、扩张卷积(Atrous 卷积)</p>
+<h3 id="62-cnn">6.2 卷积神经网络(CNN)的结构设计</h3>
+<p><strong>从LeNet5到VGG(基于深度的设计)</strong>:LeNet5不是CNN的起点,但却是它的hello world,让大家看到了卷积神经网络商用的前景。</p>
+<p><img alt="" src="http://pic1.zhimg.com/v2-64d34ee58628919255fa99900b245a9c_r.jpg" /></p>
+<p>AlexNet是CNN向大规模商用打响的第一枪,夺得ImageNet 2012年分类冠军,宣告神经网络的王者归来。VGG以其简单的结构,在提出的若干年内在各大计算机视觉领域都成为了最广泛使用的benchmark。它们都有着简单而又优雅的结构,同出一门。诠释了增加深度是如何提高了深度学习模型的性能。</p>
+<ul>
+<li><strong>LeNet5</strong></li>
+</ul>
+<p>LeNet5有3个卷积层,2个池化层,2个全连接层。卷积层的卷积核都为5*5,stride=1,池化层都为Max pooling,激活函数为Sigmoid,具体网络结构如下图:</p>
+<p><img alt="" src="http://mmbiz.qpic.cn/mmbiz_png/AmjGbfdONykhjgkE6jea7d6LH7xhfZZYoddxB8hz2QpWbTQxX2gibC9FV2vDbt1lFqqjS3XuuNk4CK8ibb1bY7Ww/640" /></p>
+<p>下面我们详细解读一下网络结构,先约定一些称呼。比如featuremap为28*28*6,卷积参数大小为(5*5*1)*6。其中28*28是featuremap的高度,宽度,6是featuremap的通道数。(5*5*1)*6卷积核表示5*5的高度,宽度,通道数为1的卷积核有6个。</p>
+<blockquote>
+<ul>
+<li>Input:输入图像统一归一化为32*32</li>
+<li>C1卷积层:经过(5*5*1)*6卷积核,stride=1,生成featuremap为28*28*6</li>
+<li>S2池化层:经过(2*2)采样核,stride=2,生成featuremap为14*14*6</li>
+<li>C3卷积层:经过(5*5*6)*16卷积核,stride=1,生成featuremap为10*10*16</li>
+<li>S4池化层:经过(2*2)采样核,stride=2,生成featuremap为5*5*16</li>
+<li>C5卷积层:经过(5*5*16)*120卷积核,stride=1,生成featuremap为1*1*120</li>
+<li>F6全连接层:输入为1*1*120,输出为1*1*84,总参数量为120*84</li>
+<li>Output全连接层:输入为1*1*84,输出为1*1*10,总参数量为84*10。10就是分类的类别数。</li>
+</ul>
+</blockquote>
+<ul>
+<li><strong>AlexNet</strong></li>
+</ul>
+<p>2012年,Imagenet比赛冠军—Alexnet直接刷新了ImageNet的识别率,奠定了深度学习在图像识别领域的优势地位。网络结构如下图:</p>
+<p><img alt="" src="http://mmbiz.qpic.cn/mmbiz_png/AmjGbfdONykhjgkE6jea7d6LH7xhfZZYumvx78kpRHHhKiblvE7lIh62hjWt7Ns7JlNMzFpIviaZB95BWcutiatyQ/640" /></p>
+<blockquote>
+<ul>
+<li>Input:输入图像为224*224*3</li>
+<li>Conv1:经过(11*11*3)*96卷积核,stride=4,(224-11)/4+2=55,生成featuremap为55*55*96</li>
+<li>Pool1:经过3*3的池化核,stride=2,(55-3)/2+1=27,生成featuremap为27*27*96</li>
+<li>Norm1:local_size=5,生成featuremap为27*27*96</li>
+<li>Conv2:经过(5*5*96)*256的卷积核,pad=2,group=2,(27+2*2-5)/1+1=27,生成featuremap为27*27*256</li>
+<li>Pool2:经过3*3的池化核,stride=2,(27-3)/2+1=13,生成featuremap为13*13*256</li>
+<li>Norm2:local_size=5, 生成featuremap为13*13*256</li>
+<li>Conv3:经过(3*3*256)*384卷积核,pad=1,(13+1*2-3)/1+1=13,生成featuremap为13*13*384</li>
+<li>Conv4:经过(3*3*384)*384卷积核,pad=1,(13+1*2-3)/1+1=13,生成featuremap为13*13*384</li>
+<li>Conv5:经过(3*3*384)*256卷积核,pad=1,(13+1*2-3)/1+1=13,生成featuremap为13*13*256</li>
+<li>Pool5:经过(3*3)的池化核,stride=2,(13-3)/2+1=6,生成featuremap为6*6*256</li>
+<li>Fc6:输入为(6*6*256)*4096全连接,生成featuremap为1*1*4096</li>
+<li>Dropout6:在训练的时候以1/2概率使得隐藏层的某些神经元的输出为0,这样就丢掉了一半节点的输出,BP的时候也不更新这些节点,以下Droupout同理。</li>
+<li>Fc7:输入为1*1*4096,输出为1*1*4096,总参数量为4096*4096</li>
+<li>Dropout7:生成featuremap为1*1*4096</li>
+<li>Fc8:输入为1*1*4096,输出为1000,总参数量为4096*1000</li>
+</ul>
+</blockquote>
+<p>总结:</p>
+<blockquote>
+<ol>
+<li>网络比LeNet更深,包括5个卷积层和3个全连接层。</li>
+<li>使用relu激活函数,收敛很快,解决了Sigmoid在网络较深时出现的梯度弥散问题。</li>
+<li>加入了dropout层,防止过拟合。</li>
+<li>使用了LRN归一化层,对局部神经元的活动创建竞争机制,抑制反馈较小的神经元放大反应大的神经元,增强了模型的泛化能力。</li>
+<li>使用裁剪翻转等操作做数据增强,增强了模型的泛化能力。预测时使用提取图片四个角加中间五个位置并进行左右翻转一共十幅图片的方法求取平均值,这也是后面刷比赛的基本使用技巧。</li>
+<li>分块训练,当年的GPU没有这么强大,Alexnet创新地将图像分为上下两块分别训练,然后在全连接层合并在一起。</li>
+<li>总体的数据参数大概为240M。</li>
+</ol>
+</blockquote>
+<ul>
+<li><strong>VGG</strong></li>
+</ul>
+<p>VGGNet主要的贡献是利用带有很小卷积核(3*3)的网络结构对逐渐加深的网络进行评估,结果表明通过加深网络深度至16-19层可以极大地改进前人的网络结构。这些发现也是参加2014年ImageNet比赛的基础,并且在这次比赛中,分别在定位和分类跟踪任务中取得第一名和第二名。</p>
+<p>VGGNet的网络结构如下图:</p>
+<p><img alt="" src="http://mmbiz.qpic.cn/mmbiz_png/AmjGbfdONykhjgkE6jea7d6LH7xhfZZYk3wxbDXqo9TiblDsLaMajjtNfUXicXRpYRUHvW2ncGWVSbaxIezmbJdA/640" /></p>
+<p>类型从A到E。此处重点讲解VGG16。也就是图中的类型D。如图中所示,共有13个卷积层,3个全连接层。其全部采用3*3卷积核,步长为1,和2*2最大池化核,步长为2。</p>
+<blockquote>
+<ul>
+<li>Input层:输入图片为224*224*3。</li>
+<li>CONV3-64:经过(3*3*3)*64卷积核,生成featuremap为224*224*64</li>
+<li>CONV3-64:经过(3*3*64)*64卷积核,生成featuremap为224*224*64</li>
+<li>Max pool:经过(2*2)max pool核,生成featuremap为112*112*64</li>
+<li>CONV3-128:经过(3*3*64)*128卷积核,生成featuremap为112*112*128 CONV3-128:经过(3*3*128)*128卷积,生成featuremap为112*112*128</li>
+<li>Max pool:经过(2*2)maxpool,生成featuremap为56*56*128</li>
+<li>CONV3-256:经过(3*3*128)*256卷积核,生成featuremap为56*56*256</li>
+<li>CONV3-256:经过(3*3*256)*256卷积核,生成featuremap为56*56*256</li>
+<li>CONV3-256:经过(3*3*256)*256卷积核,生成featuremap为56*56*256</li>
+<li>Max pool:经过(2*2)maxpool,生成featuremap为28*28*256</li>
+<li>CONV3-512:经过(3*3*256)*512卷积核,生成featuremap为28*28*512</li>
+<li>CONV3-512:经过(3*3*512)*512卷积核,生成featuremap为28*28*512</li>
+<li>CONV3-512:经过(3*3*512)*512卷积核,生成featuremap为28*28*512</li>
+<li>Max pool:经过(2*2)maxpool,生成featuremap为14*14*512</li>
+<li>CONV3-512:经过(3*3*512)*512卷积核,生成featuremap为14*14*512</li>
+<li>CONV3-512:经过(3*3*512)*512卷积核,生成featuremap为14*14*512</li>
+<li>CONV3-512:经过(3*3*512)*512卷积核,生成featuremap为14*14*512</li>
+<li>Max pool:经过2*2卷积,生成featuremap为7*7*512</li>
+<li>FC-4096:输入为7*7*512,输出为1*1*4096,总参数量为7*7*512*4096</li>
+<li>FC-4096:输入为1*1*4096,输出为1*1*4096,总参数量为4096*4096</li>
+<li>FC-1000:输入为1*1*4096,输出为1000,总参数量为4096*1000。</li>
+</ul>
+</blockquote>
+<p>总结:</p>
+<blockquote>
+<ol>
+<li>共包含参数约为550M。</li>
+<li>全部使用3*3的卷积核和2*2的最大池化核。</li>
+<li>简化了卷积神经网络的结构。</li>
+</ol>
+</blockquote>
+<p>https://www.zhihu.com/question/312556066
+https://zhuanlan.zhihu.com/p/44106492
+https://cloud.tencent.com/developer/article/1352583
+https://www.leiphone.com/news/201709/AzBc9Sg44fs57hyY.html</p>
+<h3 id="11_1">1*1卷积(基于升维降维的设计)</h3>
+<p>1<em>1卷积本身只是N</em>N卷积的卷积核半径大小退化为1时的特例,但是由于它以较小的计算代价增强了网络的非线性表达能力,给网络结构在横向和纵向拓展提供了非常好的工具,常用于升维和降维操作,尤其是在深层网络和对计算效率有较高要求的网络中广泛使用。<img src="https://pic4.zhimg.com/50/v2-640b4ffddd0159e929be4b1afb5b5f4b_hd.gif" data-caption="" data-size="normal" data-rawwidth="400" data-rawheight="517" data-thumbnail="https://pic4.zhimg.com/50/v2-640b4ffddd0159e929be4b1afb5b5f4b_hd.jpg" class="content_image" width="400"/>详细解读如下:【模型解读】network in network中的1<em>1卷积,你懂了吗03 GoogLeNet(基于宽度和多尺度的设计)GoogLeNet夺得ImageNet2014年分类冠军,也被称为Inception V1。Inception V1有22层深,参数量为5M。同一时期的VGGNet性能和Inception V1差不多,但是参数量却远大于Inception V1。Inception的优良特性得益于Inception Module,结构如下图:<img src="https://pic2.zhimg.com/50/v2-6a24288c0b6009f50cf7ffa7eb8af281_hd.jpg" data-caption="" data-size="normal" data-rawwidth="876" data-rawheight="422" data-default-watermark-src="https://pic1.zhimg.com/50/v2-28ddb06c8c87355d8526dc8e064f06ca_hd.jpg" class="origin_image zh-lightbox-thumb" width="876" data-original="https://pic2.zhimg.com/v2-6a24288c0b6009f50cf7ffa7eb8af281_r.jpg"/>由1</em>1卷积,3<em>3卷积,5</em>5卷积,3<em>3最大池化四个并行通道运算结果进行融合,提取图像不同尺度的信息。如果说VGG是以深度取胜,那么GoogLeNet可以说是以宽度取胜,当然1</em>1卷积起到了很大的作用,这一点在SqueezeNet中也很关键。详细解读如下:【模型解读】GoogLeNet中的inception结构,你看懂了吗4 MobileNets(基于分组卷积的设计)脱胎于Xception的网络结构MobileNets使用Depthwise Separable Convolution(深度可分离卷积)构建了轻量级的28层神经网络,成为了移动端上的高性能优秀基准模型。<img src="https://pic4.zhimg.com/50/v2-d949356ac18e366af81f4139c90e1526_hd.jpg" data-caption="" data-size="normal" data-rawwidth="998" data-rawheight="750" data-default-watermark-src="https://pic2.zhimg.com/50/v2-b6fd70ebb2ec3a6d6e6c91b1436e38ad_hd.jpg" class="origin_image zh-lightbox-thumb" width="998" data-original="https://pic4.zhimg.com/v2-d949356ac18e366af81f4139c90e1526_r.jpg"/>一个depthwise convolution,专注于该通道内的空间信息,一个pointwise convolution,专注于跨通道的信息融合,两者共同努力,然后强大,在此基础上的一系列模型如shufflenet等都是后话。详细解读如下:【模型解读】说说移动端基准模型MobileNets5 残差网络当深层网络陷身于梯度消失等问题而导致不能很有效地训练更深的网络时,脱胎于highway network的残差网络应运而生,附带着MSRA和何凯明的学术光环,诠释了因为简单,所以有效,但你未必能想到和做到的朴素的道理。<img src="https://pic1.zhimg.com/50/v2-bc88ce9d1f45720932dc4db9f5b03608_hd.jpg" data-caption="" data-size="normal" data-rawwidth="977" data-rawheight="561" data-default-watermark-src="https://pic2.zhimg.com/50/v2-6606df7bec1c0dce852719b8a6346606_hd.jpg" class="origin_image zh-lightbox-thumb" width="977" data-original="https://pic1.zhimg.com/v2-bc88ce9d1f45720932dc4db9f5b03608_r.jpg"/>详细解读如下:【模型解读】resnet中的残差连接,你确定真的看懂了?6 非正常卷积(基于不规则卷积和感受野调整的设计)谁说卷积一定要规规矩矩四四方方呢?MSRA总是一个出新点子的地方,在spatial transform network和active convolution的铺垫下,可变形卷积deformable convolution network如期而至。<img src="https://pic2.zhimg.com/50/v2-28207230d8f5d05476645a93a0f32ff3_hd.jpg" data-caption="" data-size="normal" data-rawwidth="1020" data-rawheight="724" data-default-watermark-src="https://pic4.zhimg.com/50/v2-f937fb9435428799394b3d786c8b305c_hd.jpg" class="origin_image zh-lightbox-thumb" width="1020" data-original="https://pic2.zhimg.com/v2-28207230d8f5d05476645a93a0f32ff3_r.jpg"/>文章依旧写的很简单,这是一个致力于提升CNN对具有不同几何形变物体识别能力的模型,关键在于可变的感受野。【模型解读】“不正经”的卷积神经网络7 密集连接网络(残差网络的升级,极致的不同层间的信息融合)说起来,DenseNet只不过是残差网络的升级版,将网络中的每一层都直接与其前面层相连,把残差做到了极致,提高了特征的利用率;因为可以把网络的每一层设计得很窄,提高计算性能。<img src="https://pic1.zhimg.com/50/v2-decdd9a0540fbad2ff7b8007e0746376_hd.jpg" data-caption="" data-size="normal" data-rawwidth="1080" data-rawheight="769" data-default-watermark-src="https://pic2.zhimg.com/50/v2-247cc28c6021dcfb756025db3c09e3f8_hd.jpg" class="origin_image zh-lightbox-thumb" width="1080" data-original="https://pic1.zhimg.com/v2-decdd9a0540fbad2ff7b8007e0746376_r.jpg"/>不过还是那句话,就算你能想到,也未必能做到,我们还是单独详细解读如下:【模型解读】全连接的卷积网络,有什么好?8 非局部神经网络(充分提高层内感受野的设计)卷积神经网络因为局部连接和权重共享而成功,但是它的感受野是有限的。为了这样,我们不得不使用更深的网络,由此带来了三个问题。(1) 计算效率不高。(2) 感知效率不高。(3) 增加优化难度。这一次又是学神凯明带队出发,从传统降噪算法Non-Local中完成借鉴。<img src="https://pic3.zhimg.com/50/v2-b67df953afe994628a2e4a5f8b625eb4_hd.jpg" data-caption="" data-size="normal" data-rawwidth="1080" data-rawheight="689" data-default-watermark-src="https://pic4.zhimg.com/50/v2-1018f8901660f215a1daacbea0bb03ea_hd.jpg" class="origin_image zh-lightbox-thumb" width="1080" data-original="https://pic3.zhimg.com/v2-b67df953afe994628a2e4a5f8b625eb4_r.jpg"/>虽非真主流,了解一下也无妨。【模型解读】从“局部连接”回到“全连接”的神经网络9 多输入网络(一类有多种应用的网络)见惯了输入一个图像或者视频序列,输出分类,分割,目标检测等结果的网络,是否会想起输入两张,或者多张图片来完成一些任务呢,这就是多输入网络结构。<img src="https://pic4.zhimg.com/50/v2-f626ec00e0553dd900c5c08372f03773_hd.jpg" data-caption="" data-size="normal" data-rawwidth="1080" data-rawheight="517" data-default-watermark-src="https://pic1.zhimg.com/50/v2-8fed46772105619ab71f1a185cae7c02_hd.jpg" class="origin_image zh-lightbox-thumb" width="1080" data-original="https://pic4.zhimg.com/v2-f626ec00e0553dd900c5c08372f03773_r.jpg"/>从检索,比对,到排序,跟踪,它可以做的事情有很多,你应该了解一下。【模型解读】深度学习网络只能有一个输入吗10 3D卷积(将卷积升维到3D空间设计)2D卷积玩腻了,该跳到更加高维的卷积了,常见的也就是3D卷积了。<img src="https://pic4.zhimg.com/50/v2-86e2bd970d07f9d6e1d921b248e45a3a_hd.gif" data-caption="" data-size="normal" data-rawwidth="640" data-rawheight="650" data-thumbnail="https://pic4.zhimg.com/50/v2-86e2bd970d07f9d6e1d921b248e45a3a_hd.jpg" class="origin_image zh-lightbox-thumb" width="640" data-original="https://pic4.zhimg.com/v2-86e2bd970d07f9d6e1d921b248e45a3a_r.jpg"/>虽然3D带来了暴涨的计算量,但是想想可以用于视频分类和分割,3D点云,想想也是有些小激动呢。【模型解读】从2D卷积到3D卷积,都有什么不一样11 RNN和LSTM(时序网络结构模型)不是所有的输入都是一张图片,有很多的信息是非固定长度或者大小的,比如视频,语音,此时就轮到RNN,LSTM出场了。<img src="https://pic3.zhimg.com/50/v2-876596294f0a5933bb7ff7b0ed65ad12_hd.jpg" data-caption="" data-size="normal" data-rawwidth="1080" data-rawheight="360" data-default-watermark-src="https://pic2.zhimg.com/50/v2-71c6d53b9e96196ba408ca3e2ac33c99_hd.jpg" class="origin_image zh-lightbox-thumb" width="1080" data-original="https://pic3.zhimg.com/v2-876596294f0a5933bb7ff7b0ed65ad12_r.jpg"/>话不多说,好好学:【模型解读】浅析RNN到LSTM12 GAN(近两年最火的下一代无监督深度学习网络)近几年来无监督学习领域甚至是深度学习领域里最大的进展非生成对抗网络GAN莫属,被誉为下一代深度学习,不管是研究热度还是论文数量,已经逼近甚至超越传统判别式的CNN架构。在研究者们的热情下,GAN已经从刚开始的一个生成器一个判别器发展到了多个生成器多个判别器等各种各样的结构。<img src="https://pic1.zhimg.com/50/v2-7876af8591afba7209c84f4dffef9019_hd.jpg" data-caption="" data-size="normal" data-rawwidth="474" data-rawheight="206" data-default-watermark-src="https://pic4.zhimg.com/50/v2-4ac5c1417866db2d39095fc92b81d074_hd.jpg" class="origin_image zh-lightbox-thumb" width="474" data-original="https://pic1.zhimg.com/v2-7876af8591afba7209c84f4dffef9019_r.jpg"/>快上车,因为真的快来不及了。【模型解读】历数GAN的5大基本结构 还有很多精力有限,以下是分割线,未完待续┉┉ ∞ ∞ ┉┉┉┉ ∞ ∞ ┉┉┉┉┉ ∞ ∞ ┉┉┉┉ ∞ ∞ ┉┉┉┉┉ ∞ ∞ ┉┉┉┉ ∞ ∞ ┉┉┉编辑于 2019-02-17</p>
+<p>https://www.zhihu.com/question/291032522/answer/605843215
+1471 https://www.zhihu.com/question/312556066</p>
+<p>https://zhuanlan.zhihu.com/p/83578219</p>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 85
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    <br>
+</div>
+
+</body>
+</html>
