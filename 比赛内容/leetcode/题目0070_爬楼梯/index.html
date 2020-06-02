@@ -35,13 +35,7 @@
           {title: "\u9898\u76ee0070:\u722c\u697c\u68af", url: "#_top", level:1, children: [
               {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1", level:2, children: [ 
               ]},
-              {title: "\u9898\u89e3", url: "#_2", level:2, children: [ 
-              ]},
-              {title: "\u65b9\u6cd5\u56db:\u6590\u6ce2\u90a3\u5951\u6570", url: "#_3", level:2, children: [ 
-              ]},
-              {title: "\u65b9\u6cd5\u4e94:Binets \u65b9\u6cd5", url: "#binets", level:2, children: [ 
-              ]},
-              {title: "\u65b9\u6cd5\u516d:\u6590\u6ce2\u90a3\u5951\u516c\u5f0f", url: "#_4", level:2, children: [ 
+              {title: "\u89e3\u9898\u6280\u5de7", url: "#_2", level:2, children: [ 
               ]},
           ]},
         ];
@@ -104,14 +98,14 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
     3. 2阶+1阶
 </code></pre>
 
-<h3 id="_2">题解</h3>
+<h3 id="_2">解题技巧</h3>
 <ul>
 <li><strong>方法一:暴力法</strong></li>
 </ul>
 <p>在暴力法中,我们将会把所有可能爬的阶数进行组合,也就是<code>1</code>和<code>2</code>。而在每一步中我们都会继续调用<code>climbStairsclimbStairs</code>这个函数模拟爬<code>1</code>阶和<code>2</code>阶的情形,并返回两个函数的返回值之和。</p>
 <div>
-<div class="MathJax_Preview">climbStairs(i,n)=(i+1,n)+climbStairs(i+2,n)</div>
-<script type="math/tex; mode=display">climbStairs(i,n)=(i+1,n)+climbStairs(i+2,n)</script>
+<div class="MathJax_Preview">climbStairs(i,n)=climbStairs(i+1,n)+climbStairs(i+2,n)</div>
+<script type="math/tex; mode=display">climbStairs(i,n)=climbStairs(i+1,n)+climbStairs(i+2,n)</script>
 </div>
 <p>其中i定义了当前阶数,而n定义了目标阶数。</p>
 <pre><code class="c">class Solution {
@@ -130,7 +124,7 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>复杂度分析</p>
 <blockquote>
 <p>时间复杂度:<span><span class="MathJax_Preview">O(2^n)</span><script type="math/tex">O(2^n)</script></span>,树形递归的大小为<span><span class="MathJax_Preview">2^n</span><script type="math/tex">2^n</script></span>。在<code>n=5</code>时的递归树将是这样的:</p>
-<p><img alt="" src="http://pic.leetcode-cn.com/07a21d45a33309d39925127eb0a8611fce5212cb932e4a6fe9914b30c885d1f6-file_1555697913334" /></p>
+<p><img src="http://pic.leetcode-cn.com/07a21d45a33309d39925127eb0a8611fce5212cb932e4a6fe9914b30c885d1f6-file_1555697913334" style="width: 40%" > </p>
 <p>空间复杂度:<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>,递归树的深度可以达到<code>n</code>。</p>
 </blockquote>
 <ul>
@@ -166,35 +160,38 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </ul>
 <p>不难发现,这个问题可以被分解为一些包含最优子结构的子问题,即它的最优解可以从其子问题的最优解来有效地构建,我们可以使用动态规划来解决这一问题。</p>
 <p>第i阶可以由以下两种方法得到:</p>
+<blockquote>
 <ol>
 <li>在第(i-1)阶后向上爬一阶。</li>
 <li>在第(i-2)阶后向上爬2阶。</li>
 </ol>
+</blockquote>
 <p>所以到达第i阶的方法总数就是到第(i-1)阶和第(i-2)阶的方法数之和。</p>
 <p>令dp[i]表示能到达第i阶的方法总数:</p>
 <div>
 <div class="MathJax_Preview">dp[i]=dp[i-1]+dp[i-2]</div>
 <script type="math/tex; mode=display">dp[i]=dp[i-1]+dp[i-2]</script>
 </div>
-<p>示例:
+<p>示例:</p>
 <script language="javascript">
     Img = new Array("1","2","3","4","5","6","7");
     function changeImg(){
        Climbing_StairsSlide.src = "https://pic.leetcode-cn.com/Figures/70_Climbing_StairsSlide"+Img[i]+".JPG";
        i++;
-       if (i&gt;=size) i = 0;
+       if (i>=size) i = 0;
        setTimeout("changeImg()",200);
     }
 </script>
-<img id="Climbing_StairsSlide" border="0"></p>
-<p><img alt="" src="https://pic.leetcode-cn.com/Figures/70_Climbing_StairsSlide1.JPG" />
-<img alt="" src="https://pic.leetcode-cn.com/Figures/70_Climbing_StairsSlide2.JPG" />
-<img alt="" src="https://pic.leetcode-cn.com/Figures/70_Climbing_StairsSlide3.JPG" />
-<img alt="" src="https://pic.leetcode-cn.com/Figures/70_Climbing_StairsSlide4.JPG" />
-<img alt="" src="https://pic.leetcode-cn.com/Figures/70_Climbing_StairsSlide5.JPG" />
-<img alt="" src="https://pic.leetcode-cn.com/Figures/70_Climbing_StairsSlide6.JPG" />
-<img alt="" src="https://pic.leetcode-cn.com/Figures/70_Climbing_StairsSlide7.JPG" /></p>
-<pre><code>class Solution {
+
+<p><img id="Climbing_StairsSlide" border="0"></p>
+<p><img alt="" src="http://pic.leetcode-cn.com/Figures/70_Climbing_StairsSlide1.JPG" />
+<img alt="" src="http://pic.leetcode-cn.com/Figures/70_Climbing_StairsSlide2.JPG" />
+<img alt="" src="http://pic.leetcode-cn.com/Figures/70_Climbing_StairsSlide3.JPG" />
+<img alt="" src="http://pic.leetcode-cn.com/Figures/70_Climbing_StairsSlide4.JPG" />
+<img alt="" src="http://pic.leetcode-cn.com/Figures/70_Climbing_StairsSlide5.JPG" />
+<img alt="" src="http://pic.leetcode-cn.com/Figures/70_Climbing_StairsSlide6.JPG" />
+<img alt="" src="http://pic.leetcode-cn.com/Figures/70_Climbing_StairsSlide7.JPG" /></p>
+<pre><code class="c++">class Solution {
     public:
         int climbStairs(int n) {
             vector&lt;int&gt; memo;
@@ -207,18 +204,20 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </code></pre>
 
 <p>复杂度分析</p>
+<blockquote>
+<p>时间复杂度:<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>,单循环到n。</p>
+<p>空间复杂度:<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>,dp数组用了n的空间。</p>
+</blockquote>
 <ul>
-<li>时间复杂度:<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>,单循环到n。</li>
-<li>空间复杂度:<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>,dp数组用了n的空间。</li>
+<li><strong>方法四:斐波那契数</strong></li>
 </ul>
-<h3 id="_3">方法四:斐波那契数</h3>
 <p>在上述方法中,我们使用dp数组,其中<span><span class="MathJax_Preview">dp[i]=dp[i-1]+dp[i-2]</span><script type="math/tex">dp[i]=dp[i-1]+dp[i-2]</script></span>。可以很容易通过分析得出dp[i]其实就是第i个斐波那契数。</p>
 <div>
 <div class="MathJax_Preview">Fib(n)=Fib(n-1)+Fib(n-2)</div>
 <script type="math/tex; mode=display">Fib(n)=Fib(n-1)+Fib(n-2)</script>
 </div>
 <p>现在我们必须找出以1和2作为第一项和第二项的斐波那契数列中的第n个数,也就是说<span><span class="MathJax_Preview">Fib(1)=1</span><script type="math/tex">Fib(1)=1</script></span>且<span><span class="MathJax_Preview">Fib(2)=2</span><script type="math/tex">Fib(2)=2</script></span>。</p>
-<pre><code>class Solution {
+<pre><code class="c++">class Solution {
     public:
         int climbStairs(int n) {
             if(n==1 or n==2) return n;
@@ -234,15 +233,19 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </code></pre>
 
 <p>复杂度分析</p>
+<blockquote>
+<p>时间复杂度:<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>,单循环到n,需要计算第n个斐波那契数。</p>
+<p>空间复杂度:<span><span class="MathJax_Preview">O(1)</span><script type="math/tex">O(1)</script></span>,使用常量级空间。</p>
+</blockquote>
 <ul>
-<li>时间复杂度:<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>,单循环到n,需要计算第n个斐波那契数。</li>
-<li>空间复杂度:<span><span class="MathJax_Preview">O(1)</span><script type="math/tex">O(1)</script></span>,使用常量级空间。</li>
+<li><strong>方法五:Binets方法</strong></li>
 </ul>
-<h3 id="binets">方法五:Binets 方法</h3>
 <p>这里有一种有趣的解法,它使用矩阵乘法来得到第n个斐波那契数。矩阵形式如下:</p>
 <div>
-<div class="MathJax_Preview">\left[ {\begin{array}{cc} F_{n+1} &amp; F_n \\ F_n &amp; F_{n-1} \end{array} } \right] = \left[ {\begin{array}{cc} 1 &amp; 1 \\ 1 &amp; 0 \end{array} } \right]</div>
-<script type="math/tex; mode=display">\left[ {\begin{array}{cc} F_{n+1} & F_n \\ F_n & F_{n-1} \end{array} } \right] = \left[ {\begin{array}{cc} 1 & 1 \\ 1 & 0 \end{array} } \right]</script>
+<div class="MathJax_Preview">
+\left[ {\begin{array}{cc} F_{n+1} &amp; F_n \\ F_n &amp; F_{n-1} \end{array} } \right] = \left[ {\begin{array}{cc} 1 &amp; 1 \\ 1 &amp; 0 \end{array} } \right]</div>
+<script type="math/tex; mode=display">
+\left[ {\begin{array}{cc} F_{n+1} & F_n \\ F_n & F_{n-1} \end{array} } \right] = \left[ {\begin{array}{cc} 1 & 1 \\ 1 & 0 \end{array} } \right]</script>
 </div>
 <p>令<span><span class="MathJax_Preview">Q=\left[ {\begin{array}{cc} F_{n+1} &amp; F_n \\ F_n &amp; F_{n-1} \end{array} } \right]</span><script type="math/tex">Q=\left[ {\begin{array}{cc} F_{n+1} & F_n \\ F_n & F_{n-1} \end{array} } \right]</script></span>。按照此方法,第n个斐波那契数可以由 <span><span class="MathJax_Preview">Q^{n-1}[1,1]</span><script type="math/tex">Q^{n-1}[1,1]</script></span>给出。</p>
 <p>让我们试着证明一下。</p>
@@ -265,7 +268,7 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </div>
 <p>从而, <span><span class="MathJax_Preview">F_{n+1}=Q^{n}[1,1]</span><script type="math/tex">F_{n+1}=Q^{n}[1,1]</script></span>,得证。</p>
 <p>我们需要为我们的问题做的唯一改动就是将斐波那契数列的初始项修改为2和1来代替原来的1和0 。或者,另一种方法是使用相同的初始矩阵Q并使用<span><span class="MathJax_Preview">result = Q^{n}[1,1]</span><script type="math/tex">result = Q^{n}[1,1]</script></span>r得出最后结果。发生这种情况的原因是我们必须使用原斐波那契数列的第2项和第3项作为初始项。</p>
-<pre><code>import numpy as np
+<pre><code class="python">import numpy as np
 class Solution(object):
     def climbStairs(self, n):
         &quot;&quot;&quot;
@@ -279,15 +282,15 @@ class Solution(object):
         return temp_[0][0]
 </code></pre>
 
-<p>复杂度分析</p>
-<ul>
-<li>时间复杂度:<span><span class="MathJax_Preview">O(log(n))</span><script type="math/tex">O(log(n))</script></span>,遍历<span><span class="MathJax_Preview">log(n)</span><script type="math/tex">log(n)</script></span> 位。</li>
-<li>空间复杂度:<span><span class="MathJax_Preview">O(1)</span><script type="math/tex">O(1)</script></span>,使用常量级空间。</li>
-</ul>
+<p>复杂度分析:</p>
+<blockquote>
+<p>时间复杂度:<span><span class="MathJax_Preview">O(log(n))</span><script type="math/tex">O(log(n))</script></span>,遍历<span><span class="MathJax_Preview">log(n)</span><script type="math/tex">log(n)</script></span> 位。</p>
+<p>空间复杂度:<span><span class="MathJax_Preview">O(1)</span><script type="math/tex">O(1)</script></span>,使用常量级空间。</p>
+</blockquote>
 <p>对时间复杂度的证明:</p>
 <p>假设我们需要计算矩阵M的n次幂。假设,n是2的幂。因此,<span><span class="MathJax_Preview">n = 2^i,i\in\mathbb{N}</span><script type="math/tex">n = 2^i,i\in\mathbb{N}</script></span>,其中<span><span class="MathJax_Preview">\mathbb{N}</span><script type="math/tex">\mathbb{N}</script></span>表示自然数的集合(包括0)。我们可以用树形结构进行表示:</p>
-<p><img alt="" src="https://pic.leetcode-cn.com/f2caba82e1703ff580df436aad9c45c47d7ba8aac2f66c1f196e4eeef5b29fbd-file_1555697820512" /></p>
-<p>这意味着:<span><span class="MathJax_Preview">M^n = M^{n/2}.M^{n/2} = .... = \prod_{1}^{n} M^{1}</span><script type="math/tex">M^n = M^{n/2}.M^{n/2} = .... = \prod_{1}^{n} M^{1}</script></span>M </p>
+<p><img alt="" src="http://pic.leetcode-cn.com/f2caba82e1703ff580df436aad9c45c47d7ba8aac2f66c1f196e4eeef5b29fbd-file_1555697820512" /></p>
+<p>这意味着:<span><span class="MathJax_Preview">M^n = M^{n/2}.M^{n/2} = .... = \prod_{1}^{n} M^{1}</span><script type="math/tex">M^n = M^{n/2}.M^{n/2} = .... = \prod_{1}^{n} M^{1}</script></span></p>
 <p>所以,要计算<span><span class="MathJax_Preview">M^{n}</span><script type="math/tex">M^{n}</script></span>,我们先要计算<span><span class="MathJax_Preview">M^{n/2}</span><script type="math/tex">M^{n/2}</script></span>并将其与自身相乘。而为了计算<span><span class="MathJax_Preview">M^{n/2}</span><script type="math/tex">M^{n/2}</script></span>,我们需要对<span><span class="MathJax_Preview">M^{n/4}</span><script type="math/tex">M^{n/4}</script></span>进行类似的操作,并依此类推。</p>
 <p>显然,树的高度为<span><span class="MathJax_Preview">log_{2}</span><script type="math/tex">log_{2}</script></span>。</p>
 <p>让我们来估计一下<span><span class="MathJax_Preview">M^{n}</span><script type="math/tex">M^{n}</script></span>计算所需要的时间。矩阵M在幂运算过程中大小保持不变。因此,进行两矩阵幂乘的空间复杂度是<span><span class="MathJax_Preview">O(1)</span><script type="math/tex">O(1)</script></span>。我们需要执行<span><span class="MathJax_Preview">log_2{n}</span><script type="math/tex">log_2{n}</script></span>次这样的乘法。所以,计算<span><span class="MathJax_Preview">M^{n}</span><script type="math/tex">M^{n}</script></span>的时间复杂度为<span><span class="MathJax_Preview">O(log_{2}n)</span><script type="math/tex">O(log_{2}n)</script></span>。</p>
@@ -302,7 +305,9 @@ class Solution(object):
 <script type="math/tex; mode=display">M^{n} = \prod_{p\in P} M^{2^{p}}</script>
 </div>
 <p>这是我们在实现中使用的方法。 同样,时间复杂度仍为<span><span class="MathJax_Preview">O(log_{2}n)</span><script type="math/tex">O(log_{2}n)</script></span>,因为乘法次数的限制为<span><span class="MathJax_Preview">O(log_{2}n)</span><script type="math/tex">O(log_{2}n)</script></span>。</p>
-<h3 id="_4">方法六:斐波那契公式</h3>
+<ul>
+<li><strong>方法六:斐波那契公式</strong></li>
+</ul>
 <p>我们可以使用这一公式来找出第n个斐波那契数:</p>
 <div>
 <div class="MathJax_Preview">F_n = 1/\sqrt{5}\left[ \left(\frac{1+\sqrt{5}}{2}\right)^{n} - \left(\frac{1-\sqrt{5}}{2}\right)^{n} \right]</div>
@@ -333,7 +338,7 @@ class Solution(object):
 <div class="MathJax_Preview">F_n = 1/\sqrt{5}\left( \left(\frac{1+\sqrt{5}}{2}\right)^{n+1} - \left(\frac{1-\sqrt{5}}{2}\right)^{n+1} \right)</div>
 <script type="math/tex; mode=display">F_n = 1/\sqrt{5}\left( \left(\frac{1+\sqrt{5}}{2}\right)^{n+1} - \left(\frac{1-\sqrt{5}}{2}\right)^{n+1} \right)</script>
 </div>
-<pre><code>class Solution {
+<pre><code class="c++">class Solution {
     public:
         int climbStairs(int n) {
             double sqrt5 = sqrt(5);
@@ -343,11 +348,11 @@ class Solution(object):
 };
 </code></pre>
 
-<p>复杂度分析</p>
-<ul>
-<li>时间复杂度:<span><span class="MathJax_Preview">O(log(n))</span><script type="math/tex">O(log(n))</script></span>,pow方法将会用去<span><span class="MathJax_Preview">log(n)</span><script type="math/tex">log(n)</script></span>的时间。</li>
-<li>空间复杂度:<span><span class="MathJax_Preview">O(1)</span><script type="math/tex">O(1)</script></span>,使用常量级空间。</li>
-</ul>
+<p>复杂度分析:</p>
+<blockquote>
+<p>时间复杂度:<span><span class="MathJax_Preview">O(log(n))</span><script type="math/tex">O(log(n))</script></span>,pow方法将会用去<span><span class="MathJax_Preview">log(n)</span><script type="math/tex">log(n)</script></span>的时间。</p>
+<p>空间复杂度:<span><span class="MathJax_Preview">O(1)</span><script type="math/tex">O(1)</script></span>,使用常量级空间。</p>
+</blockquote>
 
   <br>
     <style>
