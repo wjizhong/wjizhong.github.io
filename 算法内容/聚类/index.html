@@ -132,7 +132,7 @@ Birch   branching factor（分支因子）, threshold（阈值）, optional glob
 <ul>
 <li><strong>标准算法</strong></li>
 </ul>
-<p>最常用的算法使用了迭代优化的技术。它被称为<code>k-means</code>算法而广为使用,有时也被称为Lloyd算法(尤其在计算机科学领域)。已知初始的<span><span class="MathJax_Preview">k</span><script type="math/tex">k</script></span>个均值点<span><span class="MathJax_Preview">m_1^{(1)},\codts,m_k^{(1)}</span><script type="math/tex">m_1^{(1)},\codts,m_k^{(1)}</script></span>,算法的按照下面两个步骤交替进行:</p>
+<p>最常用的算法使用了迭代优化的技术。它被称为<code>k-means</code>算法而广为使用,有时也被称为Lloyd算法(尤其在计算机科学领域)。已知初始的<span><span class="MathJax_Preview">k</span><script type="math/tex">k</script></span>个均值点<span><span class="MathJax_Preview">m_1^{(1)},\cdots,m_k^{(1)}</span><script type="math/tex">m_1^{(1)},\cdots,m_k^{(1)}</script></span>,算法的按照下面两个步骤交替进行:</p>
 <blockquote>
 <ol>
 <li>分配(Assignment):将每个观测分配到聚类中,使得组内平方和(WCSS)达到最小。因为这一平方和就是平方后的欧氏距离,所以很直观地把观测分配到离它最近的均值点即可。(数学上,这意味依照由这些均值点生成的Voronoi图来划分上述观测)。</li>
@@ -162,116 +162,122 @@ Birch   branching factor（分支因子）, threshold（阈值）, optional glob
 <ul>
 <li><strong>复杂度</strong></li>
 </ul>
-<p>在<span><span class="MathJax_Preview">d</span><script type="math/tex">d</script></span>维空间中找到<code>k-means</code>聚类问题的最优解的计算复杂度:</p>
+<p>在<span><span class="MathJax_Preview">d</span><script type="math/tex">d</script></span>维空间中找到k-means聚类问题的最优解的计算复杂度:</p>
 <blockquote>
-<p><code>NP-hard</code>:一般欧式空间中,即使目标聚类数仅为2</p>
-<p><code>NP</code>困难:平面中,不对聚类数目<code>k</code>作限制</p>
+<p>NP-hard:一般欧式空间中,即使目标聚类数仅为2</p>
+<p>NP困难:平面中,不对聚类数目k作限制</p>
 </blockquote>
-<p>如果<code>k</code>和<span><span class="MathJax_Preview">d</span><script type="math/tex">d</script></span>都是固定的,时间复杂度为<span><span class="MathJax_Preview">O(n^{{dk+1}}\log n</span><script type="math/tex">O(n^{{dk+1}}\log n</script></span>),其中<span><span class="MathJax_Preview">n</span><script type="math/tex">n</script></span>为待聚类的观测点数目。相比之下,Lloyds算法的运行时间通常为<span><span class="MathJax_Preview">O(nkdi)</span><script type="math/tex">O(nkdi)</script></span>,<span><span class="MathJax_Preview">k</span><script type="math/tex">k</script></span>和<span><span class="MathJax_Preview">d</span><script type="math/tex">d</script></span>定义如上,<span><span class="MathJax_Preview">i</span><script type="math/tex">i</script></span>为直到收敛时的迭代次数。如果数据本身就有一定的聚类结构,那么收敛所需的迭代数目通常是很少的,并且进行少数迭代之后,再进行迭代的话,对于结果的改善效果很小。鉴于上述原因,Lloyds算法在实践中通常被认为几乎是线性复杂度的。</p>
+<p>如果k和<span><span class="MathJax_Preview">d</span><script type="math/tex">d</script></span>都是固定的,时间复杂度为<span><span class="MathJax_Preview">O(n^{{dk+1}}\log n</span><script type="math/tex">O(n^{{dk+1}}\log n</script></span>),其中<span><span class="MathJax_Preview">n</span><script type="math/tex">n</script></span>为待聚类的观测点数目。相比之下,Lloyds算法的运行时间通常为<span><span class="MathJax_Preview">O(nkdi)</span><script type="math/tex">O(nkdi)</script></span>,<span><span class="MathJax_Preview">k</span><script type="math/tex">k</script></span>和<span><span class="MathJax_Preview">d</span><script type="math/tex">d</script></span>定义如上,<span><span class="MathJax_Preview">i</span><script type="math/tex">i</script></span>为直到收敛时的迭代次数。如果数据本身就有一定的聚类结构,那么收敛所需的迭代数目通常是很少的,并且进行少数迭代之后,再进行迭代的话,对于结果的改善效果很小。鉴于上述原因,Lloyds算法在实践中通常被认为几乎是线性复杂度的。</p>
 <p>下面有几个关于这一算法复杂度的近期研究：</p>
 <blockquote>
-<p>Lloyd's <code>k-means</code>算法具有多项式平滑运行时间。对于落在空间<span><span class="MathJax_Preview">[0,1]^{d}</span><script type="math/tex">[0,1]^{d}</script></span>任意的<span><span class="MathJax_Preview">n</span><script type="math/tex">n</script></span>点集合,如果每一个点都独立地受一个均值为<span><span class="MathJax_Preview">0</span><script type="math/tex">0</script></span>,标准差为<span><span class="MathJax_Preview">\sigma</span><script type="math/tex">\sigma</script></span>的正态分布所影响,那么<code>k-means</code>算法的期望运行时间上界为<span><span class="MathJax_Preview">O(n^{{34}}k^{{34}}d^{{8}}log^{4}(n)/\sigma ^{6})</span><script type="math/tex">O(n^{{34}}k^{{34}}d^{{8}}log^{4}(n)/\sigma ^{6})</script></span>,即对于<code>n</code>,<code>k</code>,<code>i</code>,<code>d</code>和<span><span class="MathJax_Preview">1/\sigma</span><script type="math/tex">1/\sigma</script></span>都是多项式时间的。</p>
-<p>在更简单的情况下,有更好的上界。例如在整数网格<span><span class="MathJax_Preview">\left\{1,...,M\right\}^{d}</span><script type="math/tex">\left\{1,...,M\right\}^{d}</script></span>中,<code>k-means</code>算法运行时间的上界为<span><span class="MathJax_Preview">O(dn^{4}M^{2})</span><script type="math/tex">O(dn^{4}M^{2})</script></span>。</p>
+<p>Lloyd's k-means算法具有多项式平滑运行时间。对于落在空间<span><span class="MathJax_Preview">[0,1]^{d}</span><script type="math/tex">[0,1]^{d}</script></span>任意的<span><span class="MathJax_Preview">n</span><script type="math/tex">n</script></span>点集合,如果每一个点都独立地受一个均值为<span><span class="MathJax_Preview">0</span><script type="math/tex">0</script></span>,标准差为<span><span class="MathJax_Preview">\sigma</span><script type="math/tex">\sigma</script></span>的正态分布所影响,那么k-means算法的期望运行时间上界为<span><span class="MathJax_Preview">O(n^{{34}}k^{{34}}d^{{8}}log^{4}(n)/\sigma ^{6})</span><script type="math/tex">O(n^{{34}}k^{{34}}d^{{8}}log^{4}(n)/\sigma ^{6})</script></span>,即对于n,k,i,d和<span><span class="MathJax_Preview">1/\sigma</span><script type="math/tex">1/\sigma</script></span>都是多项式时间的。</p>
+<p>在更简单的情况下,有更好的上界。例如在整数网格<span><span class="MathJax_Preview">\left\{1,...,M\right\}^{d}</span><script type="math/tex">\left\{1,...,M\right\}^{d}</script></span>中,k-means算法运行时间的上界为<span><span class="MathJax_Preview">O(dn^{4}M^{2})</span><script type="math/tex">O(dn^{4}M^{2})</script></span>。</p>
 </blockquote>
-<p>使得<code>k-means</code>算法效率很高的两个关键特征同时也被经常被视为它最大的缺陷:</p>
+<p>使得k-means算法效率很高的两个关键特征同时也被经常被视为它最大的缺陷:</p>
 <blockquote>
-<p>聚类数目<code>k</code>是一个输入参数。选择不恰当的<code>k</code>值可能会导致糟糕的聚类结果,这也是为什么要进行特征检查来决定数据集的聚类数目了。</p>
+<p>聚类数目k是一个输入参数。选择不恰当的k值可能会导致糟糕的聚类结果,这也是为什么要进行特征检查来决定数据集的聚类数目了。</p>
 <p>收敛到局部最优解,可能导致"反直观"的错误结果。</p>
 </blockquote>
-<p><code>k-means</code>算法的一个重要的局限性即在于它的聚类模型。这一模型的基本思想在于:得到相互分离的球状聚类,在这些聚类中,均值点趋向收敛于聚类中心。一般会希望得到的聚类大小大致相当,这样把每个观测都分配到离它最近的聚类中心(即均值点)就是比较正确的分配方案。<code>k-means</code>聚类的结果也能理解为由均值点生成的Voronoi cells。</p>
+<p>k-means算法的一个重要的局限性即在于它的聚类模型。这一模型的基本思想在于:得到相互分离的球状聚类,在这些聚类中,均值点趋向收敛于聚类中心。一般会希望得到的聚类大小大致相当,这样把每个观测都分配到离它最近的聚类中心(即均值点)就是比较正确的分配方案。k-means聚类的结果也能理解为由均值点生成的Voronoi cells。</p>
 <ul>
 <li><strong>相关应用</strong></li>
 </ul>
-<p><code>k-means</code>聚类(尤其是使用如Lloyd's算法的启发式方法的聚类)即使是在巨大的数据集上也非常容易部署实施。正因为如此,它在很多领域都得到的成功的应用,如市场划分、机器视觉、 地质统计学、天文学和农业等。它经常作为其他算法的预处理步骤,比如要找到一个初始设置。</p>
+<p>k-means聚类(尤其是使用如Lloyd's算法的启发式方法的聚类)即使是在巨大的数据集上也非常容易部署实施。正因为如此,它在很多领域都得到的成功的应用,如市场划分、机器视觉、 地质统计学、天文学和农业等。它经常作为其他算法的预处理步骤,比如要找到一个初始设置。</p>
 <blockquote>
 <ol>
-<li><strong>向量的量化</strong> :<code>k-means</code>起源于信号处理领域,并且现在也能在这一领域找到应用。例如在计算机图形学中,色彩量化的任务,就是要把一张图像的色彩范围减少到一个固定的数目<code>k</code>上来。<code>k-means</code>算法就能很容易地被用来处理这一任务,并得到不错的结果。其它得向量量化的例子有非随机抽样,在这里,为了进一步的分析,使用<code>k-means</code>算法能很容易的从大规模数据集中选出<code>k</code>个合适的不同观测。</li>
-<li><strong>聚类分析</strong> :在聚类分析中,<code>k-means</code>算法被用来将输入数据划分到<code>k</code>个部分(聚类)中。然而,纯粹的<code>k-means</code>算法并不是非常灵活,同样地,在使用上有一定局限(不过上面说到得向量量化,确实是一个理想的应用场景)。特别是,当没有额外的限制条件时,参数<code>k</code>是很难选择的(真如上面讨论过的一样)。算法的另一个限制就是它不能和任意的距离函数一起使用、不能处理非数值数据。而正是为了满足这些使用条件,许多其他的算法才被发展起来。</li>
+<li><strong>向量的量化</strong> :k-means起源于信号处理领域,并且现在也能在这一领域找到应用。例如在计算机图形学中,色彩量化的任务,就是要把一张图像的色彩范围减少到一个固定的数目k上来。k-means算法就能很容易地被用来处理这一任务,并得到不错的结果。其它得向量量化的例子有非随机抽样,在这里,为了进一步的分析,使用k-means算法能很容易的从大规模数据集中选出k个合适的不同观测。</li>
+<li><strong>聚类分析</strong> :在聚类分析中,k-means算法被用来将输入数据划分到k个部分(聚类)中。然而,纯粹的k-means算法并不是非常灵活,同样地,在使用上有一定局限(不过上面说到得向量量化,确实是一个理想的应用场景)。特别是,当没有额外的限制条件时,参数k是很难选择的(真如上面讨论过的一样)。算法的另一个限制就是它不能和任意的距离函数一起使用、不能处理非数值数据。而正是为了满足这些使用条件,许多其他的算法才被发展起来。</li>
 <li><strong>特征学习</strong> :在(半)监督学习或无监督学习中，k-均值聚类被用来进行特征学习(或字典学习)步骤。基本方法是，首先使用输入数据训练出一个k-均值聚类表示,然后把任意的输入数据投射到这一新的特征空间。 k-均值的这一应用能成功地与自然语言处理和计算机视觉中半监督学习的简单线性分类器结合起来。在对象识别任务中，它能展现出与其他复杂特征学习方法（如自动编码器、受限Boltzmann机等）相当的效果。然而，相比复杂方法，它需要更多的数据来达到相同的效果，因为每个数据点都只贡献了一个特征（而不是多重特征）。</li>
-<li><strong>与其他统计机器学习方法的关系</strong> :<code>k-means</code>聚类以及它与EM算法的联系,是高斯混合模型的一个特例。很容易能把<code>k-means</code>问题一般化为高斯混合模型。另一个<code>k-means</code>算法的推广则是<code>k-SVD</code>算法,后者把数据点视为“编码本向量”的稀疏线性组合。而<code>k-means</code>对应于使用单编码本向量的特殊情形(其权重为1)。</li>
-<li><strong><code>Mean Shift</code>聚类</strong> :基本的<code>Mean Shift</code>聚类要维护一个与输入数据集规模大小相同的数据点集。初始时,这一集合就是输入集的副本。然后对于每一个点,用一定距离范围内的所有点的均值来迭代地替换它。与之对比,<code>k-means</code>把这样的迭代更新限制在(通常比输入数据集小得多的)<code>K</code>个点上,而更新这些点时,则利用了输入集中与之相近的所有点的均值(亦即在每个点的Voronoi划分内)。还有一种与<code>k-means</code>类似的<code>Mean shift</code>算法,即似然<code>Mean shift</code>,对于迭代变化的集合,用一定距离内在输入集中所有点的均值来更新集合里的点。<code>Mean Shift</code>聚类与<code>k-means</code>聚类相比,有一个优点就是不用指定聚类数目,因为<code>Mean shift</code>倾向于找到尽可能少的聚类数目。然而<code>Mean shift</code>会比<code>k-means</code>慢得多,并且同样需要选择一个"宽度"参数。和<code>k-means</code>一样,<code>Mean shift</code>算法有许多变体。</li>
-<li><strong>主成分分析(<code>PCA</code>)</strong> :有一些研究表明,<code>k-means</code>的放松形式解(由聚类指示向量表示),可由主成分分析中的主成分给出,并且主成分分析由主方向张成的子空间与聚类图心空间是等价的。不过,主成分分析是<code>k-means</code>聚类的有效放松形式并不是一个新的结果,并且还有的研究结果直接揭示了关于“聚类图心子空间是由主成分方向张成的”这一论述的反例。</li>
-<li><strong>独立成分分析(<code>ICA</code>)</strong> :有研究表明,在稀疏假设以及输入数据经过白化的预处理后,<code>k-means</code>得到的解就是独立成分分析的解。这一结果对于解释<code>k-means</code>在特征学习方面的成功应用很有帮助。</li>
-<li><strong>双向过滤</strong> :<code>k-means</code>算法隐含地假设输入数据的顺序不影响结果。双向过滤与<code>k-means</code>算法和<code>Mean shift</code>算法类似之处在于它同样维护着一个迭代更新的数据集(亦是被均值更新)。然而,双向过滤限制了均值的计算只包含了在输入数据中顺序相近的点,这使得双向过滤能够被应用在图像去噪等数据点的空间安排是非常重要的问题中。</li>
+<li><strong>与其他统计机器学习方法的关系</strong> :k-means聚类以及它与EM算法的联系,是高斯混合模型的一个特例。很容易能把k-means问题一般化为高斯混合模型。另一个k-means算法的推广则是k-SVD算法,后者把数据点视为“编码本向量”的稀疏线性组合。而k-means对应于使用单编码本向量的特殊情形(其权重为1)。</li>
+<li><strong>Mean Shift聚类</strong> :基本的Mean Shift聚类要维护一个与输入数据集规模大小相同的数据点集。初始时,这一集合就是输入集的副本。然后对于每一个点,用一定距离范围内的所有点的均值来迭代地替换它。与之对比,k-means把这样的迭代更新限制在(通常比输入数据集小得多的)K个点上,而更新这些点时,则利用了输入集中与之相近的所有点的均值(亦即在每个点的Voronoi划分内)。还有一种与k-means类似的Mean shift算法,即似然Mean shift,对于迭代变化的集合,用一定距离内在输入集中所有点的均值来更新集合里的点。Mean Shift聚类与k-means聚类相比,有一个优点就是不用指定聚类数目,因为Mean shift倾向于找到尽可能少的聚类数目。然而Mean shift会比k-means慢得多,并且同样需要选择一个"宽度"参数。和k-means一样,Mean shift算法有许多变体。</li>
+<li><strong>主成分分析(PCA)</strong> :有一些研究表明,k-means的放松形式解(由聚类指示向量表示),可由主成分分析中的主成分给出,并且主成分分析由主方向张成的子空间与聚类图心空间是等价的。不过,主成分分析是k-means聚类的有效放松形式并不是一个新的结果,并且还有的研究结果直接揭示了关于“聚类图心子空间是由主成分方向张成的”这一论述的反例。</li>
+<li><strong>独立成分分析(ICA)</strong> :有研究表明,在稀疏假设以及输入数据经过白化的预处理后,k-means得到的解就是独立成分分析的解。这一结果对于解释k-means在特征学习方面的成功应用很有帮助。</li>
+<li><strong>双向过滤</strong> :k-means算法隐含地假设输入数据的顺序不影响结果。双向过滤与k-means算法和Mean shift算法类似之处在于它同样维护着一个迭代更新的数据集(亦是被均值更新)。然而,双向过滤限制了均值的计算只包含了在输入数据中顺序相近的点,这使得双向过滤能够被应用在图像去噪等数据点的空间安排是非常重要的问题中。</li>
 </ol>
 </blockquote>
 <ul>
-<li><strong><code>k-means++</code>算法</strong></li>
+<li><strong>k-means++算法</strong></li>
 </ul>
-<p><code>k-means++</code>算法在聚类中心的初始化过程中的基本原则是使得初始的聚类中心之间的相互距离尽可能远,修改因为初始化聚类中心过短的问题。<code>k-means++</code>算法的初始化过程如下所示:</p>
+<p>k-means++算法在聚类中心的初始化过程中的基本原则是使得初始的聚类中心之间的相互距离尽可能远,修改因为初始化聚类中心过短的问题。k-means++算法的初始化过程如下所示:</p>
 <blockquote>
-<p>在数据集中随机选择一个样本点作为第一个初始化的聚类中心<span><span class="MathJax_Preview">c_1</span><script type="math/tex">c_1</script></span>
-<br>选择出其余的聚类中心:
-<br> - 计算样本中的每一个样本点与已经初始化的聚类中心之间的距离,并选择其中最短的距离,记为<span><span class="MathJax_Preview">D(x)</span><script type="math/tex">D(x)</script></span>
-<br> - 以概率<span><span class="MathJax_Preview">\frac{D(x)}{\sum_{x\in X}D(x)}</span><script type="math/tex">\frac{D(x)}{\sum_{x\in X}D(x)}</script></span>选择距离最大的样本作为新的聚类中心,重复上述过程,直到<span><span class="MathJax_Preview">k</span><script type="math/tex">k</script></span>个聚类中心都被确定
-<br> 对<code>k</code>个初始化的聚类中心,利用<code>k-means</code>算法计算最终的聚类中心。</p>
+<ul>
+<li>在数据集中随机选择一个样本点作为第一个初始化的聚类中心<span><span class="MathJax_Preview">c_1</span><script type="math/tex">c_1</script></span></li>
+<li>选择出其余的聚类中心:</li>
+<li>计算样本中的每一个样本点与已经初始化的聚类中心之间的距离,并选择其中最短的距离,记为<span><span class="MathJax_Preview">D(x)</span><script type="math/tex">D(x)</script></span></li>
+<li>以概率<span><span class="MathJax_Preview">\frac{D(x)}{\sum_{x\in X}D(x)}</span><script type="math/tex">\frac{D(x)}{\sum_{x\in X}D(x)}</script></span>选择距离最大的样本作为新的聚类中心,重复上述过程,直到<span><span class="MathJax_Preview">k</span><script type="math/tex">k</script></span>个聚类中心都被确定</li>
+<li>对k个初始化的聚类中心,利用k-means算法计算最终的聚类中心。</li>
+</ul>
 </blockquote>
 <ul>
-<li><strong><code>ISODATA</code>算法</strong></li>
+<li><strong>ISODATA算法</strong></li>
 </ul>
-<p>正如之前所述,<code>k-means</code>和<code>k-means++</code>的聚类中心数<code>k</code>是固定不变的。而<code>ISODATA</code>算法在运行过程中能够根据各个类别的实际情况进行两种操作来调整聚类中心数<code>k</code>:分裂操作,对应着增加聚类中心数;合并操作,对应着减少聚类中心数。</p>
+<p>正如之前所述,k-means和k-means++的聚类中心数k是固定不变的。而ISODATA算法在运行过程中能够根据各个类别的实际情况进行两种操作来调整聚类中心数k:分裂操作,对应着增加聚类中心数;合并操作,对应着减少聚类中心数。</p>
 <p>下面首先给出ISODATA算法的输入(输入的数据和迭代次数不再单独介绍):</p>
-<p>第一步:输入<span><span class="MathJax_Preview">N</span><script type="math/tex">N</script></span>个模式样本<span><span class="MathJax_Preview">\{x_i,i=1,2,\dots,N\}</span><script type="math/tex">\{x_i,i=1,2,\dots,N\}</script></span>,预选<span><span class="MathJax_Preview">N_c</span><script type="math/tex">N_c</script></span>个初始聚类中心<span><span class="MathJax_Preview">\{z_1,z_2,\dots,z_{N_c}\}</span><script type="math/tex">\{z_1,z_2,\dots,z_{N_c}\}</script></span>,它可以不等于所要求的聚类中心的数目,其初始位置可以从样本中任意选取。预选参数:</p>
+<p><strong>第一步</strong> :输入<span><span class="MathJax_Preview">N</span><script type="math/tex">N</script></span>个模式样本<span><span class="MathJax_Preview">\{x_i,i=1,2,\dots,N\}</span><script type="math/tex">\{x_i,i=1,2,\dots,N\}</script></span>,预选<span><span class="MathJax_Preview">N_c</span><script type="math/tex">N_c</script></span>个初始聚类中心<span><span class="MathJax_Preview">\{z_1,z_2,\dots,z_{N_c}\}</span><script type="math/tex">\{z_1,z_2,\dots,z_{N_c}\}</script></span>,它可以不等于所要求的聚类中心的数目,其初始位置可以从样本中任意选取。预选参数:</p>
 <blockquote>
-<p><span><span class="MathJax_Preview">k_0</span><script type="math/tex">k_0</script></span>,预期的聚类中心数目;
-<br> <span><span class="MathJax_Preview">\theta_N</span><script type="math/tex">\theta_N</script></span>,每一聚类域中最少的样本数目,若少于此数即不作为一个独立的聚类;
-<br> <span><span class="MathJax_Preview">\theta_S</span><script type="math/tex">\theta_S</script></span>,一个聚类域中样本距离分布的标准差;
-<br> <span><span class="MathJax_Preview">\theta_c</span><script type="math/tex">\theta_c</script></span>:两个聚类中心间的最小距离,若小于此数,两个聚类需进行合并;
-<br> <span><span class="MathJax_Preview">L</span><script type="math/tex">L</script></span>:在一次迭代运算中可以合并的聚类中心的最多对数;
-<br> <span><span class="MathJax_Preview">𝐼</span><script type="math/tex">𝐼</script></span>:迭代运算的次数。</p>
+<p><span><span class="MathJax_Preview">k_0</span><script type="math/tex">k_0</script></span>:预期的聚类中心数目;</p>
+<p><span><span class="MathJax_Preview">\theta_N</span><script type="math/tex">\theta_N</script></span>,每一聚类域中最少的样本数目,若少于此数即不作为一个独立的聚类;</p>
+<p><span><span class="MathJax_Preview">\theta_S</span><script type="math/tex">\theta_S</script></span>,一个聚类域中样本距离分布的标准差;</p>
+<p><span><span class="MathJax_Preview">\theta_c</span><script type="math/tex">\theta_c</script></span>:两个聚类中心间的最小距离,若小于此数,两个聚类需进行合并;</p>
+<p><span><span class="MathJax_Preview">L</span><script type="math/tex">L</script></span>:在一次迭代运算中可以合并的聚类中心的最多对数;</p>
+<p><span><span class="MathJax_Preview">I</span><script type="math/tex">I</script></span>:迭代运算的次数。</p>
 </blockquote>
-<p>第二步:将<span><span class="MathJax_Preview">N</span><script type="math/tex">N</script></span>个样本分给最近的聚类<span><span class="MathJax_Preview">S_jj</span><script type="math/tex">S_jj</script></span>,假若<span><span class="MathJax_Preview">D_j=\min\{\|x-z_i\|,i=1,2,\dots,N_c\}</span><script type="math/tex">D_j=\min\{\|x-z_i\|,i=1,2,\dots,N_c\}</script></span>,即<span><span class="MathJax_Preview">\|x-z_j\|</span><script type="math/tex">\|x-z_j\|</script></span>的距离最小,则<span><span class="MathJax_Preview">x\in S_j</span><script type="math/tex">x\in S_j</script></span>。</p>
-<p>第三步:如果<span><span class="MathJax_Preview">S_j</span><script type="math/tex">S_j</script></span>中的样本数目<span><span class="MathJax_Preview">S_j&lt;\theta_N</span><script type="math/tex">S_j<\theta_N</script></span>,则取消该样本子集,此时<span><span class="MathJax_Preview">N_c</span><script type="math/tex">N_c</script></span>减去1。</p>
-<p>第四步:修正各聚类中心</p>
+<p><strong>第二步</strong> :将<span><span class="MathJax_Preview">N</span><script type="math/tex">N</script></span>个样本分给最近的聚类<span><span class="MathJax_Preview">S_j</span><script type="math/tex">S_j</script></span>,假若<span><span class="MathJax_Preview">D_j=\min\{\|x-z_i\|,i=1,2,\dots,N_c\}</span><script type="math/tex">D_j=\min\{\|x-z_i\|,i=1,2,\dots,N_c\}</script></span>,即<span><span class="MathJax_Preview">\|x-z_j\|</span><script type="math/tex">\|x-z_j\|</script></span>的距离最小,则<span><span class="MathJax_Preview">x\in S_j</span><script type="math/tex">x\in S_j</script></span>。</p>
+<p><strong>第三步</strong> :如果<span><span class="MathJax_Preview">S_j</span><script type="math/tex">S_j</script></span>中的样本数目<span><span class="MathJax_Preview">S_j&lt;\theta_N</span><script type="math/tex">S_j<\theta_N</script></span>,则取消该样本子集,此时<span><span class="MathJax_Preview">N_c</span><script type="math/tex">N_c</script></span>减去1。</p>
+<p><strong>第四步</strong> :修正各聚类中心</p>
 <div>
-<div class="MathJax_Preview"> z_j=\frac{1}{N_j}\sum_{s\in S_j}x,i=1,2,\dots,N_c </div>
-<script type="math/tex; mode=display"> z_j=\frac{1}{N_j}\sum_{s\in S_j}x,i=1,2,\dots,N_c </script>
+<div class="MathJax_Preview">z_j=\frac{1}{N_j}\sum_{s\in S_j}x,i=1,2,\dots,N_c </div>
+<script type="math/tex; mode=display">z_j=\frac{1}{N_j}\sum_{s\in S_j}x,i=1,2,\dots,N_c </script>
 </div>
-<p>第五步:计算各聚类域<span><span class="MathJax_Preview">S_j</span><script type="math/tex">S_j</script></span>中样本与各聚类中心间的平均距离</p>
+<p><strong>第五步</strong> :计算各聚类域<span><span class="MathJax_Preview">S_j</span><script type="math/tex">S_j</script></span>中样本与各聚类中心间的平均距离</p>
 <div>
 <div class="MathJax_Preview"> \bar{D}_j = \frac{1}{N_j}\sum_{x\in S_j}\|x-z_j\|,j=1,2,\dots, N_c </div>
 <script type="math/tex; mode=display"> \bar{D}_j = \frac{1}{N_j}\sum_{x\in S_j}\|x-z_j\|,j=1,2,\dots, N_c </script>
 </div>
-<p>第六步:计算全部模式样本和其对应聚类中心的总平均距离</p>
+<p><strong>第六步</strong> :计算全部模式样本和其对应聚类中心的总平均距离</p>
 <div>
 <div class="MathJax_Preview">\bar{D}\frac{1}{N}\sum_{j=1}^{N}N_j\bar{D}_j</div>
 <script type="math/tex; mode=display">\bar{D}\frac{1}{N}\sum_{j=1}^{N}N_j\bar{D}_j</script>
 </div>
-<p>第七步:判别分裂、合并及迭代运算</p>
+<p><strong>第七步</strong> :判别分裂、合并及迭代运算</p>
 <blockquote>
-<p>若迭代运算次数已达到<span><span class="MathJax_Preview">I</span><script type="math/tex">I</script></span>次,即最后一次迭代,则置<span><span class="MathJax_Preview">\theta_c=0</span><script type="math/tex">\theta_c=0</script></span>,转至第十一步
-<br> 若<span><span class="MathJax_Preview">N_c\le \frac{K}{2},即聚类中心的数目小于或等于规定值的一半,则转至第八步,对已有聚类进行分裂处理。
-&lt;br&gt; 若迭代运算的次数是偶数次,或</span><script type="math/tex">N_c\le \frac{K}{2},即聚类中心的数目小于或等于规定值的一半,则转至第八步,对已有聚类进行分裂处理。
-<br> 若迭代运算的次数是偶数次,或</script></span>N_c\ge 2K<span><span class="MathJax_Preview">,不进行分裂处理,转至第十一步;否则(即既不是偶数次迭代,又不满足</span><script type="math/tex">,不进行分裂处理,转至第十一步;否则(即既不是偶数次迭代,又不满足</script></span>N_c\ge 2K$),转至第八步,进行分裂处理。</p>
+<p>若迭代运算次数已达到<span><span class="MathJax_Preview">I</span><script type="math/tex">I</script></span>次,即最后一次迭代,则置<span><span class="MathJax_Preview">\theta_c=0</span><script type="math/tex">\theta_c=0</script></span>,转至第十一步</p>
+<p>若<span><span class="MathJax_Preview">N_c\le \frac{K}{2}</span><script type="math/tex">N_c\le \frac{K}{2}</script></span>,即聚类中心的数目小于或等于规定值的一半,则转至第八步,对已有聚类进行分裂处理。</p>
+<p>若迭代运算的次数是偶数次,或<span><span class="MathJax_Preview">N_c\ge 2K</span><script type="math/tex">N_c\ge 2K</script></span>,不进行分裂处理,转至第十一步;否则(即既不是偶数次迭代,又不满足<span><span class="MathJax_Preview">N_c\ge 2K</span><script type="math/tex">N_c\ge 2K</script></span>),转至第八步,进行分裂处理。</p>
 </blockquote>
-<p>第八步:计算每个聚类中样本距离的标准差向量<span><span class="MathJax_Preview">\sigma_j=(\sigma_1,\sigma_2,\dots,\sigma_{n_j})^T</span><script type="math/tex">\sigma_j=(\sigma_1,\sigma_2,\dots,\sigma_{n_j})^T</script></span>,其中向量的各个分量为:</p>
-<p>$$\sigma_{ij}=\sqrt{\frac{1}{N_j}\sum_{k=1}^{N_j}(x_{ik}-z_{ij})^2}</p>
-<p>式中<span><span class="MathJax_Preview">i=1,2,\dots,n</span><script type="math/tex">i=1,2,\dots,n</script></span>为样本特征向量的维数,<span><span class="MathJax_Preview">j=1,2,\dots,N_c</span><script type="math/tex">j=1,2,\dots,N_c</script></span>为聚类数,<span><span class="MathJax_Preview">N_j</span><script type="math/tex">N_j</script></span>为<span><span class="MathJax_Preview">S_j</span><script type="math/tex">S_j</script></span>中的样本个数。</p>
-<p>第九步:求每一标准差向量<span><span class="MathJax_Preview">\{\sigma_j,j=1,2,\dots,N_c\}</span><script type="math/tex">\{\sigma_j,j=1,2,\dots,N_c\}</script></span>中的最大分量,以<span><span class="MathJax_Preview">\{\sigma_{j_{max}},j=1,2,\dots,N_c\}</span><script type="math/tex">\{\sigma_{j_{max}},j=1,2,\dots,N_c\}</script></span>代表。</p>
-<p>第十步:在任一最大分量集<span><span class="MathJax_Preview">\{\sigma_{j_{max}},j=1,2,\dots,N_c\}</span><script type="math/tex">\{\sigma_{j_{max}},j=1,2,\dots,N_c\}</script></span>中,若有<span><span class="MathJax_Preview">\sigma_{j_{max}}&gt;\theta_S</span><script type="math/tex">\sigma_{j_{max}}>\theta_S</script></span>,同时又满足如下两个条件之一:</p>
-<blockquote>
-<p><span><span class="MathJax_Preview">\bar{D}_j&gt;\bar{D}和</span><script type="math/tex">\bar{D}_j>\bar{D}和</script></span>N_j&gt;2(\theta_N+1)<span><span class="MathJax_Preview">,即</span><script type="math/tex">,即</script></span>S_j$中样本总数超过规定值一倍以上
-<br> $N_c\le \frac{K}/2</p>
-</blockquote>
-<p>则将<span><span class="MathJax_Preview">z_j</span><script type="math/tex">z_j</script></span>分裂为两个新的聚类中心和,且<span><span class="MathJax_Preview">N_c</span><script type="math/tex">N_c</script></span>加1。 中对应于σjmax的分量加上kσjmax，其中；中对应于σjmax的分量减去kσjmax。如果本步骤完成了分裂运算,则转至第二步,否则继续。</p>
-<p>第十一步:计算全部聚类中心的距离:</p>
+<p><strong>第八步</strong> :计算每个聚类中样本距离的标准差向量<span><span class="MathJax_Preview">\sigma_j=(\sigma_1,\sigma_2,\dots,\sigma_{n_j})^T</span><script type="math/tex">\sigma_j=(\sigma_1,\sigma_2,\dots,\sigma_{n_j})^T</script></span>,其中向量的各个分量为:</p>
 <div>
-<div class="MathJax_Preview"> D_{ij} = \|z_i-z_j\|,i=1,2,\dots,N_c-1,j=i+1,dots,N_c </div>
-<script type="math/tex; mode=display"> D_{ij} = \|z_i-z_j\|,i=1,2,\dots,N_c-1,j=i+1,dots,N_c </script>
+<div class="MathJax_Preview">\sigma_{ij}=\sqrt{\frac{1}{N_j}\sum_{k=1}^{N_j}(x_{ik}-z_{ij})^2}</div>
+<script type="math/tex; mode=display">\sigma_{ij}=\sqrt{\frac{1}{N_j}\sum_{k=1}^{N_j}(x_{ik}-z_{ij})^2}</script>
 </div>
-<p>第十二步:比较<span><span class="MathJax_Preview">D_{ij}</span><script type="math/tex">D_{ij}</script></span>与<span><span class="MathJax_Preview">\theta_c</span><script type="math/tex">\theta_c</script></span>的值,将<span><span class="MathJax_Preview">D_{ij}&lt;\theta_c</span><script type="math/tex">D_{ij}<\theta_c</script></span>的值按最小距离次序递增排列,即</p>
+<p>式中<span><span class="MathJax_Preview">i=1,2,\dots,n</span><script type="math/tex">i=1,2,\dots,n</script></span>为样本特征向量的维数,<span><span class="MathJax_Preview">j=1,2,\dots,N_c</span><script type="math/tex">j=1,2,\dots,N_c</script></span>为聚类数,<span><span class="MathJax_Preview">N_j</span><script type="math/tex">N_j</script></span>为<span><span class="MathJax_Preview">S_j</span><script type="math/tex">S_j</script></span>中的样本个数。</p>
+<p><strong>第九步</strong> :求每一标准差向量<span><span class="MathJax_Preview">\{\sigma_j,j=1,2,\dots,N_c\}</span><script type="math/tex">\{\sigma_j,j=1,2,\dots,N_c\}</script></span>中的最大分量,以<span><span class="MathJax_Preview">\{\sigma_{j_{max}},j=1,2,\dots,N_c\}</span><script type="math/tex">\{\sigma_{j_{max}},j=1,2,\dots,N_c\}</script></span>代表。</p>
+<p><strong>第十步</strong>:在任一最大分量集<span><span class="MathJax_Preview">\{\sigma_{j_{max}},j=1,2,\dots,N_c\}</span><script type="math/tex">\{\sigma_{j_{max}},j=1,2,\dots,N_c\}</script></span>中,若有<span><span class="MathJax_Preview">\sigma_{j_{max}}&gt;\theta_S</span><script type="math/tex">\sigma_{j_{max}}>\theta_S</script></span>,同时又满足如下两个条件之一:</p>
+<blockquote>
+<ul>
+<li><span><span class="MathJax_Preview">\bar{D}_j&gt;\bar{D}</span><script type="math/tex">\bar{D}_j>\bar{D}</script></span>和<span><span class="MathJax_Preview">N_j&gt;2(\theta_N+1)</span><script type="math/tex">N_j>2(\theta_N+1)</script></span>,即<span><span class="MathJax_Preview">S_j</span><script type="math/tex">S_j</script></span>中样本总数超过规定值一倍以上</li>
+<li><span><span class="MathJax_Preview">N_c\le \frac{K}/2</span><script type="math/tex">N_c\le \frac{K}/2</script></span></li>
+</ul>
+</blockquote>
+<p>则将<span><span class="MathJax_Preview">z_j</span><script type="math/tex">z_j</script></span>分裂为两个新的聚类中心且<span><span class="MathJax_Preview">N_c</span><script type="math/tex">N_c</script></span>加1。 中对应于σjmax的分量加上kσjmax，其中；中对应于σjmax的分量减去kσjmax。如果本步骤完成了分裂运算,则转至第二步,否则继续。</p>
+<p><strong>第十一步</strong> :计算全部聚类中心的距离:</p>
+<div>
+<div class="MathJax_Preview">D_{ij} = \|z_i-z_j\|,i=1,2,\dots,N_c-1,j=i+1,dots,N_c </div>
+<script type="math/tex; mode=display">D_{ij} = \|z_i-z_j\|,i=1,2,\dots,N_c-1,j=i+1,dots,N_c </script>
+</div>
+<p><strong>第十二步</strong> :比较<span><span class="MathJax_Preview">D_{ij}</span><script type="math/tex">D_{ij}</script></span>与<span><span class="MathJax_Preview">\theta_c</span><script type="math/tex">\theta_c</script></span>的值,将<span><span class="MathJax_Preview">D_{ij}&lt;\theta_c</span><script type="math/tex">D_{ij}<\theta_c</script></span>的值按最小距离次序递增排列,即</p>
 <div>
 <div class="MathJax_Preview">\{D_{i_1j_1},D_{i_2j_2},\dots, D_{i_Lj_L}\}</div>
 <script type="math/tex; mode=display">\{D_{i_1j_1},D_{i_2j_2},\dots, D_{i_Lj_L}\}</script>
 </div>
 <p>式中<span><span class="MathJax_Preview">D_{i_1j_1}&lt;D_{i_2j_2}&lt;\cdots D_{i_Lj_L}</span><script type="math/tex">D_{i_1j_1}<D_{i_2j_2}<\cdots D_{i_Lj_L}</script></span>.</p>
-<p>第十三步:将距离为<span><span class="MathJax_Preview">D_{i_kj_k}</span><script type="math/tex">D_{i_kj_k}</script></span>的两个聚类中心<span><span class="MathJax_Preview">Z_{ik}</span><script type="math/tex">Z_{ik}</script></span>和<span><span class="MathJax_Preview">Z_{jk}</span><script type="math/tex">Z_{jk}</script></span>合并,得新的中心为:</p>
+<p><strong>第十三步</strong> :将距离为<span><span class="MathJax_Preview">D_{i_kj_k}</span><script type="math/tex">D_{i_kj_k}</script></span>的两个聚类中心<span><span class="MathJax_Preview">Z_{ik}</span><script type="math/tex">Z_{ik}</script></span>和<span><span class="MathJax_Preview">Z_{jk}</span><script type="math/tex">Z_{jk}</script></span>合并,得新的中心为:</p>
 <div>
 <div class="MathJax_Preview">z^*=\frac{1}{N_{ik}+N_{jk}}[N_{ik}z_{ik}+N_{ik}z_{jk}],k=1,2,\dots,L</div>
 <script type="math/tex; mode=display">z^*=\frac{1}{N_{ik}+N_{jk}}[N_{ik}z_{ik}+N_{ik}z_{jk}],k=1,2,\dots,L</script>
 </div>
 <p>式中,被合并的两个聚类中心向量分别以其聚类域内的样本数加权,使<span><span class="MathJax_Preview">Z^*_k</span><script type="math/tex">Z^*_k</script></span>为真正的平均向量。</p>
-<p>第十四步:如果是最后一次迭代运算(即第<span><span class="MathJax_Preview">I</span><script type="math/tex">I</script></span>次),则算法结束;否则,若需要操作者改变输入参数,转至第一步;若输入参数不变,转至第二步。在本步运算中,迭代运算的次数每次应加1。</p>
+<p><strong>第十四步</strong> :如果是最后一次迭代运算(即第<span><span class="MathJax_Preview">I</span><script type="math/tex">I</script></span>次),则算法结束;否则,若需要操作者改变输入参数,转至第一步;若输入参数不变,转至第二步。在本步运算中,迭代运算的次数每次应加1。</p>
 <h3 id="22-mean-shift">2.2 <code>Mean Shift</code></h3>
 <p>在<code>K-Means</code>算法中,最终的聚类效果受初始的聚类中心的影响,<code>K-Means++</code>算法的提出,为选择较好的初始聚类中心提供了依据,但是算法中,聚类的类别个数<code>k</code>仍需事先制定,对于类别个数事先未知的数据集,<code>K-Means</code>和<code>K-Means++</code>将很难对其精确求解,对此,有一些改进的算法被提出来处理聚类个数<code>k</code>未知的情形。<code>Mean Shift</code>算法,又被称为均值漂移算法,与<code>K-Means</code>算法一样,都是基于聚类中心的聚类算法,不同的是,<code>Mean Shift</code>算法不需要事先制定类别个数k。</p>
 <p><code>Mean Shift</code>的概念最早是由Fukunage在1975年提出的,在后来由Yizong Cheng对其进行扩充,主要提出了两点的改进:定义了核函数,增加了权重系数。核函数的定义使得偏移值对偏移向量的贡献随之样本与被偏移点的距离的不同而不同。权重系数使得不同样本的权重不同。</p>
