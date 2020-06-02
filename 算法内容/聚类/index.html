@@ -32,10 +32,10 @@
       var is_top_frame = false;
         
         var pageToc = [
-          {title: "\u4e8c\u3001\u805a\u7c7b\u7b97\u6cd5", url: "#_top", level:1, children: [
-              {title: "2.1 k-means", url: "#21-k-means", level:2, children: [ 
-              ]},
-              {title: "2.2 Mean Shift", url: "#22-mean-shift", level:2, children: [ 
+          {title: "\u805a\u7c7b", url: "#_top", level:1, children: [
+              {title: "\u4e00\u3001K-means", url: "#k-means", level:2, children: [
+                  {title: "2.2 Mean Shift", url: "#22-mean-shift", level:3, children: [
+                  ]}, 
               ]},
           ]},
         ];
@@ -70,9 +70,56 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 
 
     
+    
+      
+    
 
-    <h2 id="_1">二、聚类算法</h2>
-<h3 id="21-k-means">2.1 <code>k-means</code></h3>
+    
+
+    <h1 id="_1">聚类</h1>
+<p><img alt="" src="http://sklearn.apachecn.org/docs/master/img/153aceb3cdac953277c6c840339ac023.jpg" /></p>
+<p>scikit-learn中的聚类算法的比较</p>
+<table>
+<thead>
+<tr>
+<th align="left">Method name(方法名称)</th>
+<th align="left">Parameters(参数)</th>
+<th align="left">Scalability(可扩展性)</th>
+<th align="left">Usecase(使用场景)</th>
+<th align="left">Geometry(metric used)(几何图形(公制使用))</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">K-Means(K-均值)</td>
+<td align="left">number of clusters(聚类形成的簇的个数)</td>
+<td align="left">非常大的n_samples,中等的n_clusters使用MiniBatch代码</td>
+<td align="left">通用,均匀的cluster size(簇大小),flat geometry(平面几何),不是太多的clusters(簇)</td>
+<td align="left">Distances between points(点之间的距离)</td>
+</tr>
+<tr>
+<td align="left">Affinity propagation</td>
+<td align="left">damping(阻尼),sample preference(样本偏好)</td>
+<td align="left">Not scalable with n_samples(n_samples不可扩展)</td>
+<td align="left">Many clusters,uneven cluster size,non-flat geometry(许多簇,不均匀的簇大小,非平面几何)</td>
+<td align="left">Graph distance(e.g. nearest-neighbor graph)(图距离(例如,最近邻图))</td>
+</tr>
+<tr>
+<td align="left">Mean-shift</td>
+<td align="left">bandwidth(带宽)</td>
+<td align="left">Not scalable with n_samples(n_samples不可扩展)</td>
+<td align="left">Many clusters,uneven cluster size,non-flat geometry(许多簇,不均匀的簇大小,非平面几何)</td>
+<td align="left">Distances between points(点之间的距离)</td>
+</tr>
+</tbody>
+</table>
+<p>Spectral clustering number of clusters（簇的个数）    中等的 n_samples, 小的 n_clusters    Few clusters, even cluster size, non-flat geometry（几个簇，均匀的簇大小，非平面几何）    Graph distance (e.g. nearest-neighbor graph)（图距离（例如最近邻图））
+Ward hierarchical clustering    number of clusters（簇的个数）    大的 n_samples 和 n_clusters   Many clusters, possibly connectivity constraints（很多的簇，可能连接限制）   Distances between points（点之间的距离）
+Agglomerative clustering    number of clusters（簇的个数）, linkage type（链接类型）, distance（距离）  大的 n_samples 和 n_clusters   Many clusters, possibly connectivity constraints, non Euclidean distances（很多簇，可能连接限制，非欧氏距离） Any pairwise distance（任意成对距离）
+DBSCAN  neighborhood size（neighborhood 的大小） 非常大的 n_samples, 中等的 n_clusters  Non-flat geometry, uneven cluster sizes（非平面几何，不均匀的簇大小）  Distances between nearest points（最近点之间的距离）
+Gaussian mixtures（高斯混合） many（很多）    Not scalable（不可扩展）  Flat geometry, good for density estimation（平面几何，适用于密度估计）    Mahalanobis distances to centers（ 与中心的马氏距离）
+Birch   branching factor（分支因子）, threshold（阈值）, optional global clusterer（可选全局簇）.    大的 n_clusters 和 n_samples   Large dataset, outlier removal, data reduction.（大型数据集，异常值去除，数据简化）   Euclidean distance between points（点之间的欧氏</p>
+<h2 id="k-means">一、K-means</h2>
 <p><code>k-means</code>算法源于信号处理中的一种向量量化方法,现在则更多地作为一种聚类分析方法流行于数据挖掘领域。<code>k-means</code>聚类的目的是:把<span><span class="MathJax_Preview">n</span><script type="math/tex">n</script></span>个点(可以是样本的一次观察或一个实例)划分到<span><span class="MathJax_Preview">k</span><script type="math/tex">k</script></span>个聚类中,使得每个点都属于离他最近的均值(此即聚类中心)对应的聚类,以之作为聚类的标准。这个问题将归结为一个把数据空间划分为<code>Voronoi cells</code>的问题。</p>
 <p>这个问题在计算上是NP困难的,不过存在高效的启发式算法。一般情况下,都使用效率比较高的启发式算法,它们能够快速收敛于一个局部最优解。这些算法通常类似于通过迭代优化方法处理高斯混合分布的最大期望算法(EM算法)。而且,它们都使用聚类中心来为数据建模;然而<code>k-means</code>聚类倾向于在可比较的空间范围内寻找聚类,期望-最大化技术却允许聚类有不同的形状。<code>k-means</code>聚类与<code>k</code>-近邻之间没有任何关系。</p>
 <ul>
@@ -529,6 +576,7 @@ plt.show()
 <p>执行效果:</p>
 <p><img alt="" src="https://www.biaodianfu.com/wp-content/uploads/2018/06/mean_shift_demo.png" /></p>
 <p><code>scikit-learn</code> <code>MeanShift</code>源码:<code>https://github.com/scikit-learn/scikit-learn/blob/master/sklearn/cluster/_mean_shift.py</code></p>
+<p>https://sklearn.apachecn.org/docs/master/24.html#25-%E5%88%86%E8%A7%A3%E6%88%90%E5%88%86%E4%B8%AD%E7%9A%84%E4%BF%A1%E5%8F%B7%EF%BC%88%E7%9F%A9%E9%98%B5%E5%88%86%E8%A7%A3%E9%97%AE%E9%A2%98%EF%BC%89</p>
 
   <br>
     <style>
@@ -547,6 +595,11 @@ MathJax.Hub.Config({
 src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
 
+
+    
+    
+      
+    
 
     <br>
 </div>

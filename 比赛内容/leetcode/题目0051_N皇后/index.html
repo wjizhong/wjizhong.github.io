@@ -79,7 +79,7 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
     <h1 id="0051n">题目0051:N皇后</h1>
 <h2 id="_1">题目描述</h2>
 <p><code>n</code>皇后问题研究的是如何将<code>n</code>个皇后放置在<code>n×n</code>的棋盘上,并且使皇后彼此之间不能相互攻击。</p>
-<p><img alt="" src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/10/12/8-queens.png" /></p>
+<p><img alt="" src="http://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/10/12/8-queens.png" /></p>
 <p>上图为<code>8</code>皇后问题的一种解法。</p>
 <p>给定一个整数<code>n</code>,返回所有不同的<code>n</code>皇后问题的解决方案。</p>
 <p>每一种解法包含一个明确的<code>n</code>皇后问题的棋子放置方案,该方案中<code>'Q'</code>和<code>'.'</code>分别代表了皇后和空位。</p>
@@ -110,12 +110,12 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>第一个叫做约束编程.</p>
 </blockquote>
 <p>它的基本含义是在放置每个皇后以后增加限制。当在棋盘上放置了一个皇后后,立即排除当前行,列和对应的两个对角线。该过程传递了约束从而有助于减少需要考虑情况数。</p>
-<p><img alt="" src="https://pic.leetcode-cn.com/e67ed217a00038ed292ae8cb89c1a8492c7a49e33ec17f633f41c4ece77d6c2c-51_pic.png" /></p>
+<p><img alt="" src="http://pic.leetcode-cn.com/e67ed217a00038ed292ae8cb89c1a8492c7a49e33ec17f633f41c4ece77d6c2c-51_pic.png" /></p>
 <blockquote>
 <p>第二个叫做回溯法.</p>
 </blockquote>
 <p>我们来想象一下,当在棋盘上放置了几个皇后且不会相互攻击。但是选择的方案不是最优的,因为无法放置下一个皇后。此时我们该怎么做?回溯。意思是回退一步,来改变最后放置皇后的位置并且接着往下放置。如果还是不行,再回溯。</p>
-<p><img alt="" src="https://pic.leetcode-cn.com/610377e670ee1d4184c0475edee789139d8fe9ebeb07df267e9c54fbd31c449e-51_backtracking_.png" /></p>
+<p><img alt="" src="http://pic.leetcode-cn.com/610377e670ee1d4184c0475edee789139d8fe9ebeb07df267e9c54fbd31c449e-51_backtracking_.png" /></p>
 <p>在建立算法之前，我们来考虑两个有用的细节。</p>
 <blockquote>
 <p><strong>一行只可能有一个皇后且一列也只可能有一个皇后:</strong>这意味着没有必要再棋盘上考虑所有的方格,只需要按列循环即可。</p>
