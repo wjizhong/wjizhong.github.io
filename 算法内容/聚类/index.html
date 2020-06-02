@@ -120,21 +120,15 @@ DBSCAN  neighborhood size（neighborhood 的大小） 非常大的 n_samples, �
 Gaussian mixtures（高斯混合） many（很多）    Not scalable（不可扩展）  Flat geometry, good for density estimation（平面几何，适用于密度估计）    Mahalanobis distances to centers（ 与中心的马氏距离）
 Birch   branching factor（分支因子）, threshold（阈值）, optional global clusterer（可选全局簇）.    大的 n_clusters 和 n_samples   Large dataset, outlier removal, data reduction.（大型数据集，异常值去除，数据简化）   Euclidean distance between points（点之间的欧氏</p>
 <h2 id="k-means">一、K-means</h2>
-<p>k-means算法源于信号处理中的一种向量量化方法,现在则更多地作为一种聚类分析方法流行于数据挖掘领域。<code>k-means</code>聚类的目的是:把<span><span class="MathJax_Preview">n</span><script type="math/tex">n</script></span>个点(可以是样本的一次观察或一个实例)划分到<span><span class="MathJax_Preview">k</span><script type="math/tex">k</script></span>个聚类中,使得每个点都属于离他最近的均值(此即聚类中心)对应的聚类,以之作为聚类的标准。这个问题将归结为一个把数据空间划分为<code>Voronoi cells</code>的问题。该算法需要指定簇的数量</p>
-<p>这个问题在计算上是NP困难的,不过存在高效的启发式算法。一般情况下,都使用效率比较高的启发式算法,它们能够快速收敛于一个局部最优解。这些算法通常类似于通过迭代优化方法处理高斯混合分布的最大期望算法(EM算法)。而且,它们都使用聚类中心来为数据建模;然而<code>k-means</code>聚类倾向于在可比较的空间范围内寻找聚类,期望-最大化技术却允许聚类有不同的形状。<code>k-means</code>聚类与<code>k</code>-近邻之间没有任何关系。</p>
+<p>k-means算法源于信号处理中的一种向量量化方法,现在则更多地作为一种聚类分析方法流行于数据挖掘领域。k-means聚类的目的是:把<span><span class="MathJax_Preview">n</span><script type="math/tex">n</script></span>个点(可以是样本的一次观察或一个实例)划分到<span><span class="MathJax_Preview">k</span><script type="math/tex">k</script></span>个聚类中,使得每个点都属于离他最近的均值(此即聚类中心)对应的聚类,以之作为聚类的标准。这个问题将归结为一个把数据空间划分为<a href="https://zh.wikipedia.org/wiki/%E6%B2%83%E7%BD%97%E8%AF%BA%E4%BC%8A%E5%9B%BE">Voronoi cells</a>的问题。该算法需要指定簇的数量。</p>
+<p>这个问题在计算上是NP困难的,不过存在高效的启发式算法。一般情况下,都使用效率比较高的启发式算法,它们能够快速收敛于一个局部最优解。这些算法通常类似于通过迭代优化方法处理高斯混合分布的最大期望算法(EM算法)。而且,它们都使用聚类中心来为数据建模;然而k-means聚类倾向于在可比较的空间范围内寻找聚类,期望-最大化技术却允许聚类有不同的形状。k-means聚类与k-近邻之间没有任何关系。</p>
 <p>K-means相关问题描述:</p>
 <p>已知观测集<span><span class="MathJax_Preview">(x_1,x_2,\cdots,x_n)</span><script type="math/tex">(x_1,x_2,\cdots,x_n)</script></span>,其中每个观测都是一个<span><span class="MathJax_Preview">d</span><script type="math/tex">d</script></span>维实向量,<code>k-means</code>聚类要把这<span><span class="MathJax_Preview">n</span><script type="math/tex">n</script></span>个观测划分到<span><span class="MathJax_Preview">k</span><script type="math/tex">k</script></span>个集合中<span><span class="MathJax_Preview">(k\le n)</span><script type="math/tex">(k\le n)</script></span>,使得组内平方和(WCSS within-cluster sum of squares)最小。换句话说,它的目标是找到使得下式满足的聚类<span><span class="MathJax_Preview">S_{i}</span><script type="math/tex">S_{i}</script></span>，</p>
 <div>
-<div class="MathJax_Preview">
-{\underset  {{\mathbf  {S}}}
-{\operatorname {arg\,min}}}\sum _{{i=1}}^{{k}}\sum _{{{\mathbf  x}\in S_{i}}}\left\|{\mathbf  x}-{\boldsymbol  \mu }_{i}\right\|^{2}
+<div class="MathJax_Preview">{\underset{\mathbf{S}}{\operatorname {arg\,min}}}\sum _{i=1}^{k}\sum_{{\mathbf x}\in S_{i}}\left\|{\mathbf x}-{\boldsymbol \mu }_{i}\right\|^{2}</div>
+<script type="math/tex; mode=display">{\underset{\mathbf{S}}{\operatorname {arg\,min}}}\sum _{i=1}^{k}\sum_{{\mathbf x}\in S_{i}}\left\|{\mathbf x}-{\boldsymbol \mu }_{i}\right\|^{2}</script>
 </div>
-<script type="math/tex; mode=display">
-{\underset  {{\mathbf  {S}}}
-{\operatorname {arg\,min}}}\sum _{{i=1}}^{{k}}\sum _{{{\mathbf  x}\in S_{i}}}\left\|{\mathbf  x}-{\boldsymbol  \mu }_{i}\right\|^{2}
-</script>
-</div>
-<p>其中<span><span class="MathJax_Preview">\mu _{i}</span><script type="math/tex">\mu _{i}</script></span>是<span><span class="MathJax_Preview">S_{i}</span><script type="math/tex">S_{i}</script></span>中所有点的均值。</p>
+<p>其中<span><span class="MathJax_Preview">\mu_{i}</span><script type="math/tex">\mu_{i}</script></span>是<span><span class="MathJax_Preview">S_{i}</span><script type="math/tex">S_{i}</script></span>中所有点的均值。</p>
 <ul>
 <li><strong>标准算法</strong></li>
 </ul>
@@ -144,14 +138,16 @@ Birch   branching factor（分支因子）, threshold（阈值）, optional glob
 <li>分配(Assignment):将每个观测分配到聚类中,使得组内平方和(WCSS)达到最小。因为这一平方和就是平方后的欧氏距离,所以很直观地把观测分配到离它最近的均值点即可。(数学上,这意味依照由这些均值点生成的Voronoi图来划分上述观测)。</li>
 </ol>
 <div>
-<div class="MathJax_Preview">S_{i}^{{(t)}}=\left\{x_{p}:\left\|x_{p}-m_{i}^{{(t)}}\right\|^{2}\leq \left\|x_{p}-m_{j}^{{(t)}}\right\|^{2}\forall j,1\leq j\leq k\right\}</div>
-<script type="math/tex; mode=display">S_{i}^{{(t)}}=\left\{x_{p}:\left\|x_{p}-m_{i}^{{(t)}}\right\|^{2}\leq \left\|x_{p}-m_{j}^{{(t)}}\right\|^{2}\forall j,1\leq j\leq k\right\}</script>
+<div class="MathJax_Preview">S_{i}^{(t)}=\left\{x_{p}:\left\|x_{p}-m_{i}^{(t)}\right\|^{2}\leq \left\|x_{p}-m_{j}^{(t)}\right\|^{2}\forall j,1\leq j\leq k\right\}</div>
+<script type="math/tex; mode=display">S_{i}^{(t)}=\left\{x_{p}:\left\|x_{p}-m_{i}^{(t)}\right\|^{2}\leq \left\|x_{p}-m_{j}^{(t)}\right\|^{2}\forall j,1\leq j\leq k\right\}</script>
 </div>
-<p>其中每个<span><span class="MathJax_Preview">x_{p}</span><script type="math/tex">x_{p}</script></span>都只被分配到一个确定的聚类<span><span class="MathJax_Preview">S^{{t}}</span><script type="math/tex">S^{{t}}</script></span>中，尽管在理论上它可能被分配到2个或者更多的聚类。
-2. 更新(Update):对于上一步得到的每一个聚类,以聚类中观测值的图心,作为新的均值点。</p>
+<p>其中每个<span><span class="MathJax_Preview">x_{p}</span><script type="math/tex">x_{p}</script></span>都只被分配到一个确定的聚类<span><span class="MathJax_Preview">S^{{t}}</span><script type="math/tex">S^{{t}}</script></span>中，尽管在理论上它可能被分配到2个或者更多的聚类。</p>
+<ol>
+<li>更新(Update):对于上一步得到的每一个聚类,以聚类中观测值的图心,作为新的均值点。</li>
+</ol>
 <div>
-<div class="MathJax_Preview">m_{i}^{{(t+1)}}={\frac  {1}{\left|S_{i}^{{(t)}}\right|}}\sum _{{x_{j}\in S_{i}^{{(t)}}}}x_{j}</div>
-<script type="math/tex; mode=display">m_{i}^{{(t+1)}}={\frac  {1}{\left|S_{i}^{{(t)}}\right|}}\sum _{{x_{j}\in S_{i}^{{(t)}}}}x_{j}</script>
+<div class="MathJax_Preview">m_{i}^{(t+1)}={\frac {1}{\left|S_{i}^{(t)}\right|}}\sum_{x_{j}\in S_{i}^{{(t)}}}x_{j}</div>
+<script type="math/tex; mode=display">m_{i}^{(t+1)}={\frac {1}{\left|S_{i}^{(t)}\right|}}\sum_{x_{j}\in S_{i}^{{(t)}}}x_{j}</script>
 </div>
 <p>因为算术平均是最小二乘估计，所以这一步同样减小了目标函数组内平方和（WCSS）的值。</p>
 </blockquote>
