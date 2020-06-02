@@ -106,7 +106,7 @@ exection -&gt; execution (插入'u')
 </code></pre>
 
 <h2 id="_2">解题技巧</h2>
-<video src="../static/images/leetcode/8baa8020e1d2454599339422ca92fe45.mp4"></video>
+<video src="../images/8baa8020e1d2454599339422ca92fe45.mp4"></video>
 
 <ul>
 <li><strong>方法一:动态规划</strong></li>
@@ -143,7 +143,7 @@ exection -&gt; execution (插入'u')
 <p>字符串B为空,如从horse转换到,显然编辑距离为字符串A的长度,这里是5。</p>
 </blockquote>
 <p>因此,我们就可以使用动态规划来解决这个问题了。我们用D[i][j]表示A的前i个字母和B的前j个字母之间的编辑距离。</p>
-<p><img alt="" src="https://pic.leetcode-cn.com/426564dbe63a8cdec3de2ebe83ea2a2640bbff41d18c1bac739c9ae4542854af-72_fig1.PNG" /></p>
+<p><img alt="" src="http://pic.leetcode-cn.com/426564dbe63a8cdec3de2ebe83ea2a2640bbff41d18c1bac739c9ae4542854af-72_fig1.PNG" /></p>
 <p>如上所述,当我们获得D[i][j-1],D[i-1][j]和D[i-1][j-1]的值之后就可以计算出 D[i][j]。</p>
 <blockquote>
 <p>D[i][j-1]为A的前i个字符和B的前j-1个字符编辑距离的子问题。即对于B的第j个字符,我们在A的末尾添加了一个相同的字符,那么D[i][j]最小可以为D[i][j-1]+1;</p>
@@ -164,10 +164,10 @@ exection -&gt; execution (插入'u')
 </div>
 </blockquote>
 <p>所以每一步结果都将基于上一步的计算结果,示意如下:</p>
-<p><img alt="" src="https://pic.leetcode-cn.com/3241789f2634b72b917d769a92d4f6e38c341833247391fb1b45eb0441fe5cd2-72_fig2.PNG" /></p>
+<p><img alt="" src="http://pic.leetcode-cn.com/3241789f2634b72b917d769a92d4f6e38c341833247391fb1b45eb0441fe5cd2-72_fig2.PNG" /></p>
 <p>对于边界情况,一个空串和一个非空串的编辑距离为D[i][0]=i和D[0][j]=j,D[i][0]相当于对word1执行i次删除操作,D[0][j]相当于对word1执行j次插入操作。</p>
 <p>综上我们得到了算法的全部流程。</p>
-<p><img alt="" src="../../static/images/leetcode/860fb6ce901f4de52b8bac17131d74bab4cb2b8d633e288ddb36bab1bc20249c.gif" /></p>
+<p><img alt="" src="../images/860fb6ce901f4de52b8bac17131d74bab4cb2b8d633e288ddb36bab1bc20249c.gif" /></p>
 <pre><code class="python">class Solution:
     def minDistance(self, word1, word2):
         &quot;&quot;&quot;

@@ -153,11 +153,11 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>如果我们只是在这里维持计数器,那么只要我们遇到闭合方括号,我们就会知道此处有一个可用的未配对的开口方括号。但是,最近的未配对的开括号是一个花括号,而不是一个方括号,因此计数方法在这里被打破了。</p>
 <p><strong>方法:栈</strong></p>
 <p>关于有效括号表达式的一个有趣属性是有效表达式的子表达式也应该是有效表达式。(不是每个子表达式)例如</p>
-<p><img alt="" src="../../static/images/leetcode/0020_SIMPLE.gif" /></p>
+<p><img alt="" src="../static/images/leetcode/0020_SIMPLE.gif" /></p>
 <p>此外,如果仔细查看上述结构,颜色标识的单元格将标记开闭的括号对。整个表达式是有效的,而它的子表达式本身也是有效的。这为问题提供了一种递归结构。例如,考虑上图中两个绿色括号内的表达式。开括号位于索引<code>1</code>,相应闭括号位于索引<code>6</code>。</p>
 <p>如果每当我们在表达式中遇到一对匹配的括号时,我们只是从表达式中删除它,会发生什么?</p>
 <p>让我们看看下面的这个想法,从整体表达式中一次删除一个较小的表达式,因为这是一个有效的表达式,我们最后剩留下一个空字符串。</p>
-<p><img alt="" src="../../static/images/leetcode/0020_RECURSIVE.gif" /></p>
+<p><img alt="" src="../static/images/leetcode/0020_RECURSIVE.gif" /></p>
 <p>在表示问题的递归结构时,栈数据结构可以派上用场。我们无法真正地从内到外处理这个问题,因为我们对整体结构一无所知。但是,栈可以帮助我们递归地处理这种情况,即从外部到内部。</p>
 <p>让我们看看使用栈作为该问题的中间数据结构的算法。</p>
 <p>算法:</p>
@@ -169,7 +169,7 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>如果到最后我们剩下的栈中仍然有元素，那么这意味着表达式无效。</p>
 </blockquote>
 <p>我们来看一下该算法的动画演示,然后转到实现部分。</p>
-<p><img alt="" src="../../static/images/leetcode/0020_STACK.gif" /></p>
+<p><img alt="" src="../static/images/leetcode/0020_STACK.gif" /></p>
 <p>现在让我们看看该算法是如何实现的。</p>
 <pre><code class="python">class Solution(object):
     def isValid(self, s):
