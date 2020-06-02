@@ -77,7 +77,7 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
     
 
     <h1 id="_1">聚类</h1>
-<p><img alt="" src="http://sklearn.apachecn.org/docs/master/img/153aceb3cdac953277c6c840339ac023.jpg" /></p>
+<p><img src="http://sklearn.apachecn.org/docs/master/img/153aceb3cdac953277c6c840339ac023.jpg" style="width: 70%"></p>
 <p>scikit-learn中的聚类算法的比较</p>
 <table>
 <thead>
@@ -120,15 +120,9 @@ DBSCAN  neighborhood size（neighborhood 的大小） 非常大的 n_samples, �
 Gaussian mixtures（高斯混合） many（很多）    Not scalable（不可扩展）  Flat geometry, good for density estimation（平面几何，适用于密度估计）    Mahalanobis distances to centers（ 与中心的马氏距离）
 Birch   branching factor（分支因子）, threshold（阈值）, optional global clusterer（可选全局簇）.    大的 n_clusters 和 n_samples   Large dataset, outlier removal, data reduction.（大型数据集，异常值去除，数据简化）   Euclidean distance between points（点之间的欧氏</p>
 <h2 id="k-means">一、K-means</h2>
-<p><code>k-means</code>算法源于信号处理中的一种向量量化方法,现在则更多地作为一种聚类分析方法流行于数据挖掘领域。<code>k-means</code>聚类的目的是:把<span><span class="MathJax_Preview">n</span><script type="math/tex">n</script></span>个点(可以是样本的一次观察或一个实例)划分到<span><span class="MathJax_Preview">k</span><script type="math/tex">k</script></span>个聚类中,使得每个点都属于离他最近的均值(此即聚类中心)对应的聚类,以之作为聚类的标准。这个问题将归结为一个把数据空间划分为<code>Voronoi cells</code>的问题。</p>
+<p>k-means算法源于信号处理中的一种向量量化方法,现在则更多地作为一种聚类分析方法流行于数据挖掘领域。<code>k-means</code>聚类的目的是:把<span><span class="MathJax_Preview">n</span><script type="math/tex">n</script></span>个点(可以是样本的一次观察或一个实例)划分到<span><span class="MathJax_Preview">k</span><script type="math/tex">k</script></span>个聚类中,使得每个点都属于离他最近的均值(此即聚类中心)对应的聚类,以之作为聚类的标准。这个问题将归结为一个把数据空间划分为<code>Voronoi cells</code>的问题。该算法需要指定簇的数量</p>
 <p>这个问题在计算上是NP困难的,不过存在高效的启发式算法。一般情况下,都使用效率比较高的启发式算法,它们能够快速收敛于一个局部最优解。这些算法通常类似于通过迭代优化方法处理高斯混合分布的最大期望算法(EM算法)。而且,它们都使用聚类中心来为数据建模;然而<code>k-means</code>聚类倾向于在可比较的空间范围内寻找聚类,期望-最大化技术却允许聚类有不同的形状。<code>k-means</code>聚类与<code>k</code>-近邻之间没有任何关系。</p>
-<ul>
-<li><strong>历史源流</strong></li>
-</ul>
-<p>虽然其思想能够追溯到1957年的Hugo Steinhaus,术语"<code>k-means</code>"于1967年才被James MacQueen首次使用。标准算法则是在1957年被Stuart Lloyd作为一种脉冲码调制的技术所提出,但直到1982年才被贝尔实验室公开出版。在1965年,E.W.Forgy发表了本质上相同的方法,所以这一算法有时被称为Lloyd-Forgy方法。更高效的版本则被Hartigan and Wong提出(1975/1979)。</p>
-<ul>
-<li><strong>算法描述</strong></li>
-</ul>
+<p>K-means相关问题描述:</p>
 <p>已知观测集<span><span class="MathJax_Preview">(x_1,x_2,\cdots,x_n)</span><script type="math/tex">(x_1,x_2,\cdots,x_n)</script></span>,其中每个观测都是一个<span><span class="MathJax_Preview">d</span><script type="math/tex">d</script></span>维实向量,<code>k-means</code>聚类要把这<span><span class="MathJax_Preview">n</span><script type="math/tex">n</script></span>个观测划分到<span><span class="MathJax_Preview">k</span><script type="math/tex">k</script></span>个集合中<span><span class="MathJax_Preview">(k\le n)</span><script type="math/tex">(k\le n)</script></span>,使得组内平方和(WCSS within-cluster sum of squares)最小。换句话说,它的目标是找到使得下式满足的聚类<span><span class="MathJax_Preview">S_{i}</span><script type="math/tex">S_{i}</script></span>，</p>
 <div>
 <div class="MathJax_Preview">
@@ -141,56 +135,52 @@ Birch   branching factor（分支因子）, threshold（阈值）, optional glob
 </script>
 </div>
 <p>其中<span><span class="MathJax_Preview">\mu _{i}</span><script type="math/tex">\mu _{i}</script></span>是<span><span class="MathJax_Preview">S_{i}</span><script type="math/tex">S_{i}</script></span>中所有点的均值。</p>
-<blockquote>
 <ul>
 <li><strong>标准算法</strong></li>
 </ul>
-</blockquote>
 <p>最常用的算法使用了迭代优化的技术。它被称为<code>k-means</code>算法而广为使用,有时也被称为Lloyd算法(尤其在计算机科学领域)。已知初始的<span><span class="MathJax_Preview">k</span><script type="math/tex">k</script></span>个均值点<span><span class="MathJax_Preview">m_1^{(1)},\codts,m_k^{(1)}</span><script type="math/tex">m_1^{(1)},\codts,m_k^{(1)}</script></span>,算法的按照下面两个步骤交替进行:</p>
 <blockquote>
 <ol>
-<li>分配(Assignment):将每个观测分配到聚类中,使得组内平方和(WCSS)达到最小。因为这一平方和就是平方后的欧氏距离,所以很直观地把观测分配到离它最近的均值点即可。(数学上,这意味依照由这些均值点生成的Voronoi图来划分上述观测)。
-$$
-S_{i}^{{(t)}}=\left{x_{p}:\left|x_{p}-m_{i}^{{(t)}}\right|^{2}\leq \left|x_{p}-m_{j}^{{(t)}}\right|^{2}\forall j,1\leq j\leq k\right}
-$$
-其中每个<span><span class="MathJax_Preview">x_{p}</span><script type="math/tex">x_{p}</script></span>都只被分配到一个确定的聚类<span><span class="MathJax_Preview">S^{{t}}</span><script type="math/tex">S^{{t}}</script></span>中，尽管在理论上它可能被分配到2个或者更多的聚类。</li>
-<li>更新(Update):对于上一步得到的每一个聚类,以聚类中观测值的图心,作为新的均值点。
-$$
-m_{i}^{{(t+1)}}={\frac  {1}{\left|S_{i}^{{(t)}}\right|}}\sum <em>{{x</em>{j}\in S_{i}^{{(t)}}}}x_{j}
-$$
-因为算术平均是最小二乘估计，所以这一步同样减小了目标函数组内平方和（WCSS）的值。</li>
+<li>分配(Assignment):将每个观测分配到聚类中,使得组内平方和(WCSS)达到最小。因为这一平方和就是平方后的欧氏距离,所以很直观地把观测分配到离它最近的均值点即可。(数学上,这意味依照由这些均值点生成的Voronoi图来划分上述观测)。</li>
 </ol>
+<div>
+<div class="MathJax_Preview">S_{i}^{{(t)}}=\left\{x_{p}:\left\|x_{p}-m_{i}^{{(t)}}\right\|^{2}\leq \left\|x_{p}-m_{j}^{{(t)}}\right\|^{2}\forall j,1\leq j\leq k\right\}</div>
+<script type="math/tex; mode=display">S_{i}^{{(t)}}=\left\{x_{p}:\left\|x_{p}-m_{i}^{{(t)}}\right\|^{2}\leq \left\|x_{p}-m_{j}^{{(t)}}\right\|^{2}\forall j,1\leq j\leq k\right\}</script>
+</div>
+<p>其中每个<span><span class="MathJax_Preview">x_{p}</span><script type="math/tex">x_{p}</script></span>都只被分配到一个确定的聚类<span><span class="MathJax_Preview">S^{{t}}</span><script type="math/tex">S^{{t}}</script></span>中，尽管在理论上它可能被分配到2个或者更多的聚类。
+2. 更新(Update):对于上一步得到的每一个聚类,以聚类中观测值的图心,作为新的均值点。</p>
+<div>
+<div class="MathJax_Preview">m_{i}^{{(t+1)}}={\frac  {1}{\left|S_{i}^{{(t)}}\right|}}\sum _{{x_{j}\in S_{i}^{{(t)}}}}x_{j}</div>
+<script type="math/tex; mode=display">m_{i}^{{(t+1)}}={\frac  {1}{\left|S_{i}^{{(t)}}\right|}}\sum _{{x_{j}\in S_{i}^{{(t)}}}}x_{j}</script>
+</div>
+<p>因为算术平均是最小二乘估计，所以这一步同样减小了目标函数组内平方和（WCSS）的值。</p>
 </blockquote>
 <p>这一算法将在对于观测的分配不再变化时收敛。由于交替进行的两个步骤都会减小目标函数WCSS的值,并且分配方案只有有限种,所以算法一定会收敛于某一(局部)最优解。注意:使用这一算法无法保证得到全局最优解。</p>
 <p>这一算法经常被描述为"把观测按照距离分配到最近的聚类"。标准算法的目标函数是组内平方和(WCSS),而且按照"最小二乘和"来分配观测,确实是等价于按照最小欧氏距离来分配观测的。如果使用不同的距离函数来代替(平方)欧氏距离,可能使得算法无法收敛。然而,使用不同的距离函数,也能得到<code>k-means</code>聚类的其他变体,如球体k-均值算法和k-中心点算法。</p>
-<blockquote>
 <ul>
 <li><strong>初始化方法</strong></li>
 </ul>
-</blockquote>
-<p>通常使用的初始化方法有Forgy和随机划分(Random Partition)方法。Forgy方法随机地从数据集中选择<code>k</code>个观测作为初始的均值点;而随机划分方法则随机地为每一观测指定聚类,然后运行"更新(Update)"步骤,即计算随机分配的各聚类的图心,作为初始的均值点。Forgy方法易于使得初始均值点散开,随机划分方法则把均值点都放到靠近数据集中心的地方。此随机划分方法一般更适用于k-调和均值和模糊k-均值算法。对于期望-最大化(EM)算法和标准k-均值算法,Forgy方法作为初始化方法的表现会更好一些。</p>
+<p>通常使用的初始化方法有Forgy和随机划分(Random Partition)方法。Forgy方法随机地从数据集中选择k个观测作为初始的均值点;而随机划分方法则随机地为每一观测指定聚类,然后运行"更新(Update)"步骤,即计算随机分配的各聚类的图心,作为初始的均值点。Forgy方法易于使得初始均值点散开,随机划分方法则把均值点都放到靠近数据集中心的地方。此随机划分方法一般更适用于k-调和均值和模糊k-均值算法。对于期望-最大化(EM)算法和标准k-均值算法,Forgy方法作为初始化方法的表现会更好一些。</p>
 <p>这是一个启发式算法,无法保证收敛到全局最优解,并且聚类的结果会依赖于初始的聚类。又因为算法的运行速度通常很快,所以一般都以不同的起始状态运行多次来得到更好的结果。不过,在最差的情况下,k-均值算法会收敛地特别慢:尤其是已经证明了存在这一的点集(甚至在2维空间中),使得k-均值算法收敛的时间达到指数级(<span><span class="MathJax_Preview">2^{\Omega (n)}</span><script type="math/tex">2^{\Omega (n)}</script></span>)。好在在现实中,这样的点集几乎不会出现:因为k-均值算法的平滑运行时间是多项式时间的。</p>
 <p><strong>注:把“分配”步骤视为“期望”步骤,把“更新”步骤视为“最大化步骤”,可以看到,这一算法实际上是广义期望-最大化算法(GEM)的一个变体。</strong></p>
-<blockquote>
 <ul>
 <li><strong>复杂度</strong></li>
 </ul>
-</blockquote>
 <p>在<span><span class="MathJax_Preview">d</span><script type="math/tex">d</script></span>维空间中找到<code>k-means</code>聚类问题的最优解的计算复杂度:</p>
 <blockquote>
-<p><code>NP-hard</code>:一般欧式空间中,即使目标聚类数仅为2
-<br><code>NP</code>困难:平面中,不对聚类数目<code>k</code>作限制</p>
+<p><code>NP-hard</code>:一般欧式空间中,即使目标聚类数仅为2</p>
+<p><code>NP</code>困难:平面中,不对聚类数目<code>k</code>作限制</p>
 </blockquote>
 <p>如果<code>k</code>和<span><span class="MathJax_Preview">d</span><script type="math/tex">d</script></span>都是固定的,时间复杂度为<span><span class="MathJax_Preview">O(n^{{dk+1}}\log n</span><script type="math/tex">O(n^{{dk+1}}\log n</script></span>),其中<span><span class="MathJax_Preview">n</span><script type="math/tex">n</script></span>为待聚类的观测点数目。相比之下,Lloyds算法的运行时间通常为<span><span class="MathJax_Preview">O(nkdi)</span><script type="math/tex">O(nkdi)</script></span>,<span><span class="MathJax_Preview">k</span><script type="math/tex">k</script></span>和<span><span class="MathJax_Preview">d</span><script type="math/tex">d</script></span>定义如上,<span><span class="MathJax_Preview">i</span><script type="math/tex">i</script></span>为直到收敛时的迭代次数。如果数据本身就有一定的聚类结构,那么收敛所需的迭代数目通常是很少的,并且进行少数迭代之后,再进行迭代的话,对于结果的改善效果很小。鉴于上述原因,Lloyds算法在实践中通常被认为几乎是线性复杂度的。</p>
 <p>下面有几个关于这一算法复杂度的近期研究：</p>
 <blockquote>
-<p>Lloyd's <code>k-means</code>算法具有多项式平滑运行时间。对于落在空间<span><span class="MathJax_Preview">[0,1]^{d}</span><script type="math/tex">[0,1]^{d}</script></span>任意的<span><span class="MathJax_Preview">n</span><script type="math/tex">n</script></span>点集合,如果每一个点都独立地受一个均值为<span><span class="MathJax_Preview">0</span><script type="math/tex">0</script></span>,标准差为<span><span class="MathJax_Preview">\sigma</span><script type="math/tex">\sigma</script></span>的正态分布所影响,那么<code>k-means</code>算法的期望运行时间上界为<span><span class="MathJax_Preview">O(n^{{34}}k^{{34}}d^{{8}}log^{4}(n)/\sigma ^{6})</span><script type="math/tex">O(n^{{34}}k^{{34}}d^{{8}}log^{4}(n)/\sigma ^{6})</script></span>,即对于<code>n</code>,<code>k</code>,<code>i</code>,<code>d</code>和<span><span class="MathJax_Preview">1/\sigma</span><script type="math/tex">1/\sigma</script></span>都是多项式时间的。
-<br> 在更简单的情况下,有更好的上界。例如在整数网格<span><span class="MathJax_Preview">\left\{1,...,M\right\}^{d}</span><script type="math/tex">\left\{1,...,M\right\}^{d}</script></span>中,<code>k-means</code>算法运行时间的上界为<span><span class="MathJax_Preview">O(dn^{4}M^{2})</span><script type="math/tex">O(dn^{4}M^{2})</script></span>。</p>
+<p>Lloyd's <code>k-means</code>算法具有多项式平滑运行时间。对于落在空间<span><span class="MathJax_Preview">[0,1]^{d}</span><script type="math/tex">[0,1]^{d}</script></span>任意的<span><span class="MathJax_Preview">n</span><script type="math/tex">n</script></span>点集合,如果每一个点都独立地受一个均值为<span><span class="MathJax_Preview">0</span><script type="math/tex">0</script></span>,标准差为<span><span class="MathJax_Preview">\sigma</span><script type="math/tex">\sigma</script></span>的正态分布所影响,那么<code>k-means</code>算法的期望运行时间上界为<span><span class="MathJax_Preview">O(n^{{34}}k^{{34}}d^{{8}}log^{4}(n)/\sigma ^{6})</span><script type="math/tex">O(n^{{34}}k^{{34}}d^{{8}}log^{4}(n)/\sigma ^{6})</script></span>,即对于<code>n</code>,<code>k</code>,<code>i</code>,<code>d</code>和<span><span class="MathJax_Preview">1/\sigma</span><script type="math/tex">1/\sigma</script></span>都是多项式时间的。</p>
+<p>在更简单的情况下,有更好的上界。例如在整数网格<span><span class="MathJax_Preview">\left\{1,...,M\right\}^{d}</span><script type="math/tex">\left\{1,...,M\right\}^{d}</script></span>中,<code>k-means</code>算法运行时间的上界为<span><span class="MathJax_Preview">O(dn^{4}M^{2})</span><script type="math/tex">O(dn^{4}M^{2})</script></span>。</p>
 </blockquote>
 <p>使得<code>k-means</code>算法效率很高的两个关键特征同时也被经常被视为它最大的缺陷:</p>
 <blockquote>
-<p>聚类数目<code>k</code>是一个输入参数。选择不恰当的<code>k</code>值可能会导致糟糕的聚类结果,这也是为什么要进行特征检查来决定数据集的聚类数目了。
-<br> 收敛到局部最优解,可能导致"反直观"的错误结果。</p>
+<p>聚类数目<code>k</code>是一个输入参数。选择不恰当的<code>k</code>值可能会导致糟糕的聚类结果,这也是为什么要进行特征检查来决定数据集的聚类数目了。</p>
+<p>收敛到局部最优解,可能导致"反直观"的错误结果。</p>
 </blockquote>
 <p><code>k-means</code>算法的一个重要的局限性即在于它的聚类模型。这一模型的基本思想在于:得到相互分离的球状聚类,在这些聚类中,均值点趋向收敛于聚类中心。一般会希望得到的聚类大小大致相当,这样把每个观测都分配到离它最近的聚类中心(即均值点)就是比较正确的分配方案。<code>k-means</code>聚类的结果也能理解为由均值点生成的Voronoi cells。</p>
 <ul>
@@ -198,37 +188,17 @@ $$
 </ul>
 <p><code>k-means</code>聚类(尤其是使用如Lloyd's算法的启发式方法的聚类)即使是在巨大的数据集上也非常容易部署实施。正因为如此,它在很多领域都得到的成功的应用,如市场划分、机器视觉、 地质统计学、天文学和农业等。它经常作为其他算法的预处理步骤,比如要找到一个初始设置。</p>
 <blockquote>
-<p>1、<strong>向量的量化</strong></p>
+<ol>
+<li><strong>向量的量化</strong> :<code>k-means</code>起源于信号处理领域,并且现在也能在这一领域找到应用。例如在计算机图形学中,色彩量化的任务,就是要把一张图像的色彩范围减少到一个固定的数目<code>k</code>上来。<code>k-means</code>算法就能很容易地被用来处理这一任务,并得到不错的结果。其它得向量量化的例子有非随机抽样,在这里,为了进一步的分析,使用<code>k-means</code>算法能很容易的从大规模数据集中选出<code>k</code>个合适的不同观测。</li>
+<li><strong>聚类分析</strong> :在聚类分析中,<code>k-means</code>算法被用来将输入数据划分到<code>k</code>个部分(聚类)中。然而,纯粹的<code>k-means</code>算法并不是非常灵活,同样地,在使用上有一定局限(不过上面说到得向量量化,确实是一个理想的应用场景)。特别是,当没有额外的限制条件时,参数<code>k</code>是很难选择的(真如上面讨论过的一样)。算法的另一个限制就是它不能和任意的距离函数一起使用、不能处理非数值数据。而正是为了满足这些使用条件,许多其他的算法才被发展起来。</li>
+<li><strong>特征学习</strong> :在(半)监督学习或无监督学习中，k-均值聚类被用来进行特征学习(或字典学习)步骤。基本方法是，首先使用输入数据训练出一个k-均值聚类表示,然后把任意的输入数据投射到这一新的特征空间。 k-均值的这一应用能成功地与自然语言处理和计算机视觉中半监督学习的简单线性分类器结合起来。在对象识别任务中，它能展现出与其他复杂特征学习方法（如自动编码器、受限Boltzmann机等）相当的效果。然而，相比复杂方法，它需要更多的数据来达到相同的效果，因为每个数据点都只贡献了一个特征（而不是多重特征）。</li>
+<li><strong>与其他统计机器学习方法的关系</strong> :<code>k-means</code>聚类以及它与EM算法的联系,是高斯混合模型的一个特例。很容易能把<code>k-means</code>问题一般化为高斯混合模型。另一个<code>k-means</code>算法的推广则是<code>k-SVD</code>算法,后者把数据点视为“编码本向量”的稀疏线性组合。而<code>k-means</code>对应于使用单编码本向量的特殊情形(其权重为1)。</li>
+<li><strong><code>Mean Shift</code>聚类</strong> :基本的<code>Mean Shift</code>聚类要维护一个与输入数据集规模大小相同的数据点集。初始时,这一集合就是输入集的副本。然后对于每一个点,用一定距离范围内的所有点的均值来迭代地替换它。与之对比,<code>k-means</code>把这样的迭代更新限制在(通常比输入数据集小得多的)<code>K</code>个点上,而更新这些点时,则利用了输入集中与之相近的所有点的均值(亦即在每个点的Voronoi划分内)。还有一种与<code>k-means</code>类似的<code>Mean shift</code>算法,即似然<code>Mean shift</code>,对于迭代变化的集合,用一定距离内在输入集中所有点的均值来更新集合里的点。<code>Mean Shift</code>聚类与<code>k-means</code>聚类相比,有一个优点就是不用指定聚类数目,因为<code>Mean shift</code>倾向于找到尽可能少的聚类数目。然而<code>Mean shift</code>会比<code>k-means</code>慢得多,并且同样需要选择一个"宽度"参数。和<code>k-means</code>一样,<code>Mean shift</code>算法有许多变体。</li>
+<li><strong>主成分分析(<code>PCA</code>)</strong> :有一些研究表明,<code>k-means</code>的放松形式解(由聚类指示向量表示),可由主成分分析中的主成分给出,并且主成分分析由主方向张成的子空间与聚类图心空间是等价的。不过,主成分分析是<code>k-means</code>聚类的有效放松形式并不是一个新的结果,并且还有的研究结果直接揭示了关于“聚类图心子空间是由主成分方向张成的”这一论述的反例。</li>
+<li><strong>独立成分分析(<code>ICA</code>)</strong> :有研究表明,在稀疏假设以及输入数据经过白化的预处理后,<code>k-means</code>得到的解就是独立成分分析的解。这一结果对于解释<code>k-means</code>在特征学习方面的成功应用很有帮助。</li>
+<li><strong>双向过滤</strong> :<code>k-means</code>算法隐含地假设输入数据的顺序不影响结果。双向过滤与<code>k-means</code>算法和<code>Mean shift</code>算法类似之处在于它同样维护着一个迭代更新的数据集(亦是被均值更新)。然而,双向过滤限制了均值的计算只包含了在输入数据中顺序相近的点,这使得双向过滤能够被应用在图像去噪等数据点的空间安排是非常重要的问题中。</li>
+</ol>
 </blockquote>
-<p><code>k-means</code>起源于信号处理领域,并且现在也能在这一领域找到应用。例如在计算机图形学中,色彩量化的任务,就是要把一张图像的色彩范围减少到一个固定的数目<code>k</code>上来。<code>k-means</code>算法就能很容易地被用来处理这一任务,并得到不错的结果。其它得向量量化的例子有非随机抽样,在这里,为了进一步的分析,使用<code>k-means</code>算法能很容易的从大规模数据集中选出<code>k</code>个合适的不同观测。</p>
-<blockquote>
-<p>2、<strong>聚类分析</strong></p>
-</blockquote>
-<p>在聚类分析中,<code>k-means</code>算法被用来将输入数据划分到<code>k</code>个部分(聚类)中。然而,纯粹的<code>k-means</code>算法并不是非常灵活,同样地,在使用上有一定局限(不过上面说到得向量量化,确实是一个理想的应用场景)。特别是,当没有额外的限制条件时,参数<code>k</code>是很难选择的(真如上面讨论过的一样)。算法的另一个限制就是它不能和任意的距离函数一起使用、不能处理非数值数据。而正是为了满足这些使用条件,许多其他的算法才被发展起来。</p>
-<blockquote>
-<p>3、<strong>特征学习</strong></p>
-</blockquote>
-<p>在(半)监督学习或无监督学习中，k-均值聚类被用来进行特征学习（或字典学习）步骤[18]。基本方法是，首先使用输入数据训练出一个k-均值聚类表示，然后把任意的输入数据投射到这一新的特征空间。 k-均值的这一应用能成功地与自然语言处理和计算机视觉中半监督学习的简单线性分类器结合起来。在对象识别任务中，它能展现出与其他复杂特征学习方法（如自动编码器、受限Boltzmann机等）相当的效果。然而，相比复杂方法，它需要更多的数据来达到相同的效果，因为每个数据点都只贡献了一个特征（而不是多重特征）。</p>
-<blockquote>
-<p>4、<strong>与其他统计机器学习方法的关系</strong></p>
-</blockquote>
-<p><code>k-means</code>聚类以及它与EM算法的联系,是高斯混合模型的一个特例。很容易能把<code>k-means</code>问题一般化为高斯混合模型。另一个<code>k-means</code>算法的推广则是<code>k-SVD</code>算法,后者把数据点视为“编码本向量”的稀疏线性组合。而<code>k-means</code>对应于使用单编码本向量的特殊情形(其权重为1)。</p>
-<blockquote>
-<p>5、<strong><code>Mean Shift</code>聚类</strong></p>
-</blockquote>
-<p>基本的<code>Mean Shift</code>聚类要维护一个与输入数据集规模大小相同的数据点集。初始时,这一集合就是输入集的副本。然后对于每一个点,用一定距离范围内的所有点的均值来迭代地替换它。与之对比,<code>k-means</code>把这样的迭代更新限制在(通常比输入数据集小得多的)<code>K</code>个点上,而更新这些点时,则利用了输入集中与之相近的所有点的均值(亦即在每个点的Voronoi划分内)。还有一种与<code>k-means</code>类似的<code>Mean shift</code>算法,即似然<code>Mean shift</code>,对于迭代变化的集合,用一定距离内在输入集中所有点的均值来更新集合里的点。<code>Mean Shift</code>聚类与<code>k-means</code>聚类相比,有一个优点就是不用指定聚类数目,因为<code>Mean shift</code>倾向于找到尽可能少的聚类数目。然而<code>Mean shift</code>会比<code>k-means</code>慢得多,并且同样需要选择一个"宽度"参数。和<code>k-means</code>一样,<code>Mean shift</code>算法有许多变体。</p>
-<blockquote>
-<p>6、<strong>主成分分析(<code>PCA</code>)</strong></p>
-</blockquote>
-<p>有一些研究表明,<code>k-means</code>的放松形式解(由聚类指示向量表示),可由主成分分析中的主成分给出,并且主成分分析由主方向张成的子空间与聚类图心空间是等价的。不过,主成分分析是<code>k-means</code>聚类的有效放松形式并不是一个新的结果,并且还有的研究结果直接揭示了关于“聚类图心子空间是由主成分方向张成的”这一论述的反例。</p>
-<blockquote>
-<p>7、<strong>独立成分分析(<code>ICA</code>)</strong></p>
-</blockquote>
-<p>有研究表明,在稀疏假设以及输入数据经过白化的预处理后,<code>k-means</code>得到的解就是独立成分分析的解。这一结果对于解释<code>k-means</code>在特征学习方面的成功应用很有帮助。</p>
-<blockquote>
-<p>8、<strong>双向过滤</strong></p>
-</blockquote>
-<p><code>k-means</code>算法隐含地假设输入数据的顺序不影响结果。双向过滤与<code>k-means</code>算法和<code>Mean shift</code>算法类似之处在于它同样维护着一个迭代更新的数据集(亦是被均值更新)。然而,双向过滤限制了均值的计算只包含了在输入数据中顺序相近的点,这使得双向过滤能够被应用在图像去噪等数据点的空间安排是非常重要的问题中。</p>
 <ul>
 <li><strong><code>k-means++</code>算法</strong></li>
 </ul>
