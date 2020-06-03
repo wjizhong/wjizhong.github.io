@@ -25,6 +25,7 @@ nav:
         - python教程:
             - python基础: 工程内容/python教程/python基础.md
             - python日志: 工程内容/python教程/python日志.md
+            - python模块: 工程内容/python教程/python模块.md
     - 算法内容:
         - 算法基础: 算法内容/算法基础.md
         - 聚类: 算法内容/聚类.md
