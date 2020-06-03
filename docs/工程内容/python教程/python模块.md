@@ -1,43 +1,43 @@
 # python模块
-
 ## 一、模块打包
-### 1.1 setup.py编写简易指南
 
-`python`有非常丰富的第三方库可以使用,很多开发者会向pypi上提交自己的`python`包。要想向`pypi`包仓库提交自己开发的包,首先要将自己的代码打包,才能上传分发。
+### 1.1 setup.py编写指南
 
-* **`distutils`简介**
+python有非常丰富的第三方库可以使用,很多开发者会向pypi上提交自己的python包。要想向pypi包仓库提交自己开发的包,首先要将自己的代码打包,才能上传分发。
 
-`distutils`是标准库中负责建立`python`第三方库的安装器,使用它能够进行`python`模块的安装和发布。`distutils`对于简单的分发很有用,但功能缺少。大部分`python`用户会使用更先进的`setuptools`模块。
+* **distutils简介**
 
-* **`setuptools`简介**
+distutils是标准库中负责建立python第三方库的安装器,使用它能够进行python模块的安装和发布。distutils对于简单的分发很有用,但功能缺少。大部分python用户会使用更先进的setuptools模块。
 
-`setuptools`是`distutils`增强版,不包括在标准库中。其扩展了很多功能,能够帮助开发者更好的创建和分发`python`包。大部分`python`用户都会使用更先进的`setuptools`模块。
+* **setuptools简介**
 
-`Setuptools`有一个`fork`分支是`distribute`。它们共享相同的命名空间,因此如果安装了`distribute`,`import setuptools`时实际上将导入使用`distribute`创建的包。`Distribute`已经合并回`setuptools`。
+setuptools是distutils增强版,不包括在标准库中。其扩展了很多功能,能够帮助开发者更好的创建和分发python包。大部分python用户都会使用更先进的setuptools模块。
 
-还有一个大包分发工具是`distutils2`,其试图尝试充分利用`distutils`,`detuptools`和`distribute`并成为`python`标准库中的标准工具。但该计划并没有达到预期的目的,且已经是一个废弃的项目。
+Setuptools有一个fork分支是distribute。它们共享相同的命名空间,因此如果安装了distribute,import setuptools时实际上将导入使用distribute创建的包。Distribute已经合并回setuptools。
 
-因此`setuptools`是一个优秀的，可靠的`python`包安装与分发工具。以下设计到包的安装与分发均针对`setuptools`,并不保证`distutils`可用。
+还有一个大包分发工具是distutils2,其试图尝试充分利用distutils,detuptools和distribute并成为python标准库中的标准工具。但该计划并没有达到预期的目的,且已经是一个废弃的项目。
 
-* **包格式**
+因此setuptools是一个优秀的，可靠的python包安装与分发工具。以下设计到包的安装与分发均针对setuptools,并不保证distutils可用。
 
-`python`库打包的格式包括`wheel`和`egg`。`egg`格式是由`setuptools`在`2004`年引入,而`wheel`格式是由`PEP427`在2012年定义。使用`wheel`和`egg`安装都不需要重新构建和编译,其在发布之前就应该完成测试和构建。
+#### 1.1.1 包格式
 
-`egg`和`wheel`本质上都是一个zip格式包,`egg`文件使用`.egg`扩展名,`wheel`使用`.whl`扩展名。`wheel`的出现是为了替代`egg`,其现在被认为是`python`的二进制包的标准格式。
+python库打包的格式包括wheel和egg。egg格式是由setuptools在2004年引入,而wheel格式是由PEP427在2012年定义。使用wheel和egg安装都不需要重新构建和编译,其在发布之前就应该完成测试和构建。
 
-以下是`wheel`和`egg`的主要区别:
+egg和wheel本质上都是一个zip格式包,egg文件使用.egg扩展名,wheel使用.whl扩展名。wheel的出现是为了替代egg,其现在被认为是python的二进制包的标准格式。
 
-> * `wheel`有一个官方的`PEP427`来定义,而`egg`没有PEP定义
-> * `wheel`是一种分发格式,即打包格式。而`egg`既是一种分发格式,也是一种运行时安装的格式,并且是可以被直接`import
- wheel`文件不会包含`.pyc`文件
-> * `wheel`使用和PEP376兼容的`.dist-info`目录,而`egg`使用`.egg-info`目录
-> * `wheel`有着更丰富的命名规则。
-> * `wheel`是有版本的。每个`wheel`文件都包含`wheel`规范的版本和打包的实现
-> * `wheel`在内部被sysconfig path type管理,因此转向其他格式也更容易
+以下是wheel和egg的主要区别:
 
-* **`setup.py`文件**
+> * wheel有一个官方的PEP427来定义,而egg没有PEP定义
+> * wheel是一种分发格式,即打包格式。而egg既是一种分发格式,也是一种运行时安装的格式,并且是可以被直接import
+> * wheel文件不会包含.pyc文件
+> * wheel使用和PEP376兼容的.dist-info目录,而egg使用.egg-info目录
+> * wheel有着更丰富的命名规则。
+> * wheel是有版本的。每个wheel文件都包含wheel规范的版本和打包的实现
+> * wheel在内部被sysconfig path type管理,因此转向其他格式也更容易
 
-`python`库打包分发的关键在于编写`setup.py`文件。`setup.py`文件编写的规则是从`setuptools`或者`distuils`模块导入`setup`函数,并传入各类参数进行调用。
+#### 1.1.2 setup.py文件
+
+python库打包分发的关键在于编写setup.py文件。setup.py文件编写的规则是从setuptools或者distuils模块导入setup函数,并传入各类参数进行调用。
 
 ```python
 from setuptools import setup
@@ -55,7 +55,7 @@ setup(
 )
 ```
 
-`setup`函数常用的参数如下：
+setup函数常用的参数如下：
 
 | 参数 | 说明 |
 | :--- | :---: |
@@ -73,11 +73,11 @@ setup(
 | `classifiers` | 程序的所属分类列表 |
 | `keywords` | 程序的关键字列表 |
 | `packages` | 需要处理的包目录(通常为包含`__init__.py`的文件夹) |
-| `py_modules` | 需要打包的`python`单文件列表 |
+| `py_modules` | 需要打包的python单文件列表 |
 | `download_url` | 程序的下载地址 |
 | `cmdclass` | 添加自定义命令 |
 | `package_data` | 指定包内需要包含的数据文件 |
-| `include_package_data` | 自动包含包内所有受版本控制(`cvs/svn/git`)的数据文件 |
+| `include_package_data` | 自动包含包内所有受版本控制(cvs/svn/git)的数据文件 |
 | `exclude_package_data` | 当`include_package_data`为`True`时该选项用于排除部分文件 |
 | `data_files` | 打包时需要打包的数据文件,如图片、配置文件等 |
 | `ext_modules` | 指定扩展模块 |
@@ -87,42 +87,34 @@ setup(
 | `provides` | 指定可以为哪些模块提供依赖 |
 | `install_requires` | 安装时需要安装的依赖包 |
 | `entry_points` | 动态发现服务和插件,下面详细讲 |
-| `setup_requires` | 指定运行`setup.py`文件本身所依赖的包 |
+| `setup_requires` | 指定运行setup.py文件本身所依赖的包 |
 | `dependency_links` | 指定依赖包的下载地址 |
 | `extras_require` | 当前包的高级/额外特性需要依赖的分发包 |
 | `zip_safe` | 不压缩包,而是以目录的形式安装 |
 
 更多参数可见: https://setuptools.readthedocs.io/en/latest/setuptools.html
 
-> * `find_packages`
+* **`find_packages`**
 
-对于简单工程来说,手动增加`packages`参数是容易。而对于复杂的工程来说,可能添加很多的包,这是手动添加就变得麻烦。`setuptools`模块提供了一个`find_packages`函数,它默认在与`setup.py`文件同一目录下搜索各个含有`__init__.py`的目录做为要添加的包。
+对于简单工程来说,手动增加`packages`参数是容易。而对于复杂的工程来说,可能添加很多的包,这是手动添加就变得麻烦。setuptools模块提供了一个`find_packages`函数,它默认在与setup.py文件同一目录下搜索各个含有`__init__.py`的目录做为要添加的包。
 
 ```python
 find_packages(where='.', exclude=(), include=('*',))
 ```
 
-`find_packages`函数的第一个参数用于指定在哪个目录下搜索包,参数`exclude`用于指定排除哪些包,参数`include`指出要包含的包。
+`find_packages`函数的第一个参数用于指定在哪个目录下搜索包,参数exclude用于指定排除哪些包,参数include指出要包含的包。
 
-默认默认情况下`setup.py`文件只在其所在的目录下搜索包。如果不用`find_packages`,想要找到其他目录下的包,也可以设置`package_dir`参数,其指定哪些目录下的文件被映射到哪个源码包,如:`package_dir={'': 'src'}`表示"`root package`"中的模块都在`src`目录中。
+默认默认情况下setup.py文件只在其所在的目录下搜索包。如果不用`find_packages`,想要找到其他目录下的包,也可以设置`package_dir`参数,其指定哪些目录下的文件被映射到哪个源码包,如:`package_dir={'': 'src'}`表示"root package"中的模块都在src目录中。
 
-> * **包含数据文件**
+* **包含数据文件**
 
-**`package_data`:**
+**`package_data`:** 该参数是一个从包名称到glob模式列表的字典。如果数据文件包含在包的子目录中,则glob可以包括子目录名称。其格式一般为`{'package_name': ['files']}`,比如:`package_data={'mypkg': ['data/*.dat'],}`。
 
-该参数是一个从包名称到`glob`模式列表的字典。如果数据文件包含在包的子目录中,则`glob`可以包括子目录名称。其格式一般为`{'package_name': ['files']}`,比如:`package_data={'mypkg': ['data/*.dat'],}`。
+**`include_package_data`:** 该参数被设置为True时自动添加包中受版本控制的数据文件,可替代`package_data`,同时`exclude_package_data`可以排除某些文件。注意当需要加入没有被版本控制的文件时,还是仍然需要使用`package_data`参数才行。
 
-**`include_package_data`:**
+**`data_files`:** 该参数通常用于包含不在包内的数据文件,即包的外部文件,如:配置文件,消息目录,数据文件。其指定了一系列二元组,即(目的安装目录、源文件),表示哪些文件被安装到哪些目录中。如果目录名是相对路径,则相对于安装前缀进行解释。
 
-该参数被设置为`True`时自动添加包中受版本控制的数据文件,可替代`package_data`,同时`exclude_package_data`可以排除某些文件。注意当需要加入没有被版本控制的文件时,还是仍然需要使用`package_data`参数才行。
-
-**`data_files`:**
-
-该参数通常用于包含不在包内的数据文件,即包的外部文件,如:配置文件,消息目录,数据文件。其指定了一系列二元组,即(目的安装目录、源文件),表示哪些文件被安装到哪些目录中。如果目录名是相对路径,则相对于安装前缀进行解释。
-
-**`manifest template`:**
-
-manifest template即编写`MANIFEST.in`文件,文件内容就是需要包含在分发包中的文件。一个`MANIFEST.in`文件如下:
+**`manifest template`:** manifest template即编写MANIFEST.in文件,文件内容就是需要包含在分发包中的文件。一个MANIFEST.in文件如下:
 
 ```
 include *.txt
@@ -132,9 +124,9 @@ prune examples/sample?/build
 
 `MANIFEST.in`文件的编写规则可参考:https://docs.python.org/3.6/distutils/sourcedist.html
 
-> * **生成脚本**
+* **生成脚本**
 
-有两个参数`scripts`参数或`console_scripts`可用于生成脚本。
+有两个参数scripts参数或console\_scripts可用于生成脚本。
 
 `entry_points`参数用来支持自动生成脚本,其值应该为是一个字典,从`entry_point`组名映射到一个表示`entry_point`的字符串或字符串列表,如:
 
@@ -150,13 +142,13 @@ setup(
 )
 ```
 
-`scripts`参数是一个`list`,安装包时在该参数中列出的文件会被安装到系统`PATH`路径下。如:
+scripts参数是一个list,安装包时在该参数中列出的文件会被安装到系统PATH路径下。如:
 
 ```python
 scripts=['bin/foo.sh', 'bar.py']
 ```
 
-用如下方法可以将脚本重命名,例如去掉脚本文件的扩展名(`.py`、`.sh`):
+用如下方法可以将脚本重命名,例如去掉脚本文件的扩展名(.py、.sh):
 
 ```python
 from setuptools.command.install_scripts import install_scripts
@@ -183,7 +175,7 @@ setup(
 )
 ```
 
-其中,`cmdclass`参数表示自定制命令,后文详述。
+其中,cmdclass参数表示自定制命令,后文详述。
 
 **`ext_modules`**
 

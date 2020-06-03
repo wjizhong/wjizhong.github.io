@@ -1,6 +1,7 @@
 # `C/C++`基础教程
 ## 一、基本知识
 ### 1.1 预定义宏
+http://www.cplusplus.com/reference/vector/vector/data/
 
 * **宏定义**
 
