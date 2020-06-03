@@ -34,7 +34,11 @@
         var pageToc = [
           {title: "python\u6a21\u5757", url: "#_top", level:1, children: [
               {title: "\u4e00\u3001\u6a21\u5757\u6253\u5305", url: "#_1", level:2, children: [
-                  {title: "1.1 setup.py\u7f16\u5199\u7b80\u6613\u6307\u5357", url: "#11-setuppy", level:3, children: [
+                  {title: "1.1 setup.py\u7f16\u5199\u6307\u5357", url: "#11-setuppy", level:3, children: [
+                      {title: "1.1.1 \u5305\u683c\u5f0f", url: "#111", level:4,children: [
+                      ]},
+                      {title: "1.1.2 setup.py\u6587\u4ef6", url: "#112-setuppy", level:4,children: [
+                      ]},
                   ]}, 
               ]},
               {title: "\u4e8c\u3001python\u4e0ec\u53c2\u8003\u624b\u518c", url: "#pythonc", level:2, children: [
@@ -98,40 +102,36 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 
     <h1 id="python">python模块</h1>
 <h2 id="_1">一、模块打包</h2>
-<h3 id="11-setuppy">1.1 setup.py编写简易指南</h3>
-<p><code>python</code>有非常丰富的第三方库可以使用,很多开发者会向pypi上提交自己的<code>python</code>包。要想向<code>pypi</code>包仓库提交自己开发的包,首先要将自己的代码打包,才能上传分发。</p>
+<h3 id="11-setuppy">1.1 setup.py编写指南</h3>
+<p>python有非常丰富的第三方库可以使用,很多开发者会向pypi上提交自己的python包。要想向pypi包仓库提交自己开发的包,首先要将自己的代码打包,才能上传分发。</p>
 <ul>
-<li><strong><code>distutils</code>简介</strong></li>
+<li><strong>distutils简介</strong></li>
 </ul>
-<p><code>distutils</code>是标准库中负责建立<code>python</code>第三方库的安装器,使用它能够进行<code>python</code>模块的安装和发布。<code>distutils</code>对于简单的分发很有用,但功能缺少。大部分<code>python</code>用户会使用更先进的<code>setuptools</code>模块。</p>
+<p>distutils是标准库中负责建立python第三方库的安装器,使用它能够进行python模块的安装和发布。distutils对于简单的分发很有用,但功能缺少。大部分python用户会使用更先进的setuptools模块。</p>
 <ul>
-<li><strong><code>setuptools</code>简介</strong></li>
+<li><strong>setuptools简介</strong></li>
 </ul>
-<p><code>setuptools</code>是<code>distutils</code>增强版,不包括在标准库中。其扩展了很多功能,能够帮助开发者更好的创建和分发<code>python</code>包。大部分<code>python</code>用户都会使用更先进的<code>setuptools</code>模块。</p>
-<p><code>Setuptools</code>有一个<code>fork</code>分支是<code>distribute</code>。它们共享相同的命名空间,因此如果安装了<code>distribute</code>,<code>import setuptools</code>时实际上将导入使用<code>distribute</code>创建的包。<code>Distribute</code>已经合并回<code>setuptools</code>。</p>
-<p>还有一个大包分发工具是<code>distutils2</code>,其试图尝试充分利用<code>distutils</code>,<code>detuptools</code>和<code>distribute</code>并成为<code>python</code>标准库中的标准工具。但该计划并没有达到预期的目的,且已经是一个废弃的项目。</p>
-<p>因此<code>setuptools</code>是一个优秀的，可靠的<code>python</code>包安装与分发工具。以下设计到包的安装与分发均针对<code>setuptools</code>,并不保证<code>distutils</code>可用。</p>
-<ul>
-<li><strong>包格式</strong></li>
-</ul>
-<p><code>python</code>库打包的格式包括<code>wheel</code>和<code>egg</code>。<code>egg</code>格式是由<code>setuptools</code>在<code>2004</code>年引入,而<code>wheel</code>格式是由<code>PEP427</code>在2012年定义。使用<code>wheel</code>和<code>egg</code>安装都不需要重新构建和编译,其在发布之前就应该完成测试和构建。</p>
-<p><code>egg</code>和<code>wheel</code>本质上都是一个zip格式包,<code>egg</code>文件使用<code>.egg</code>扩展名,<code>wheel</code>使用<code>.whl</code>扩展名。<code>wheel</code>的出现是为了替代<code>egg</code>,其现在被认为是<code>python</code>的二进制包的标准格式。</p>
-<p>以下是<code>wheel</code>和<code>egg</code>的主要区别:</p>
+<p>setuptools是distutils增强版,不包括在标准库中。其扩展了很多功能,能够帮助开发者更好的创建和分发python包。大部分python用户都会使用更先进的setuptools模块。</p>
+<p>Setuptools有一个fork分支是distribute。它们共享相同的命名空间,因此如果安装了distribute,import setuptools时实际上将导入使用distribute创建的包。Distribute已经合并回setuptools。</p>
+<p>还有一个大包分发工具是distutils2,其试图尝试充分利用distutils,detuptools和distribute并成为python标准库中的标准工具。但该计划并没有达到预期的目的,且已经是一个废弃的项目。</p>
+<p>因此setuptools是一个优秀的，可靠的python包安装与分发工具。以下设计到包的安装与分发均针对setuptools,并不保证distutils可用。</p>
+<h4 id="111">1.1.1 包格式</h4>
+<p>python库打包的格式包括wheel和egg。egg格式是由setuptools在2004年引入,而wheel格式是由PEP427在2012年定义。使用wheel和egg安装都不需要重新构建和编译,其在发布之前就应该完成测试和构建。</p>
+<p>egg和wheel本质上都是一个zip格式包,egg文件使用.egg扩展名,wheel使用.whl扩展名。wheel的出现是为了替代egg,其现在被认为是python的二进制包的标准格式。</p>
+<p>以下是wheel和egg的主要区别:</p>
 <blockquote>
 <ul>
-<li><code>wheel</code>有一个官方的<code>PEP427</code>来定义,而<code>egg</code>没有PEP定义</li>
-<li><code>wheel</code>是一种分发格式,即打包格式。而<code>egg</code>既是一种分发格式,也是一种运行时安装的格式,并且是可以被直接<code>import
- wheel</code>文件不会包含<code>.pyc</code>文件</li>
-<li><code>wheel</code>使用和PEP376兼容的<code>.dist-info</code>目录,而<code>egg</code>使用<code>.egg-info</code>目录</li>
-<li><code>wheel</code>有着更丰富的命名规则。</li>
-<li><code>wheel</code>是有版本的。每个<code>wheel</code>文件都包含<code>wheel</code>规范的版本和打包的实现</li>
-<li><code>wheel</code>在内部被sysconfig path type管理,因此转向其他格式也更容易</li>
+<li>wheel有一个官方的PEP427来定义,而egg没有PEP定义</li>
+<li>wheel是一种分发格式,即打包格式。而egg既是一种分发格式,也是一种运行时安装的格式,并且是可以被直接import</li>
+<li>wheel文件不会包含.pyc文件</li>
+<li>wheel使用和PEP376兼容的.dist-info目录,而egg使用.egg-info目录</li>
+<li>wheel有着更丰富的命名规则。</li>
+<li>wheel是有版本的。每个wheel文件都包含wheel规范的版本和打包的实现</li>
+<li>wheel在内部被sysconfig path type管理,因此转向其他格式也更容易</li>
 </ul>
 </blockquote>
-<ul>
-<li><strong><code>setup.py</code>文件</strong></li>
-</ul>
-<p><code>python</code>库打包分发的关键在于编写<code>setup.py</code>文件。<code>setup.py</code>文件编写的规则是从<code>setuptools</code>或者<code>distuils</code>模块导入<code>setup</code>函数,并传入各类参数进行调用。</p>
+<h4 id="112-setuppy">1.1.2 setup.py文件</h4>
+<p>python库打包分发的关键在于编写setup.py文件。setup.py文件编写的规则是从setuptools或者distuils模块导入setup函数,并传入各类参数进行调用。</p>
 <pre><code class="python">from setuptools import setup
 # or
 # from distutils.core import setup  
@@ -147,7 +147,7 @@ setup(
 )
 </code></pre>
 
-<p><code>setup</code>函数常用的参数如下：</p>
+<p>setup函数常用的参数如下：</p>
 <table>
 <thead>
 <tr>
@@ -214,7 +214,7 @@ setup(
 </tr>
 <tr>
 <td align="left"><code>py_modules</code></td>
-<td align="center">需要打包的<code>python</code>单文件列表</td>
+<td align="center">需要打包的python单文件列表</td>
 </tr>
 <tr>
 <td align="left"><code>download_url</code></td>
@@ -230,7 +230,7 @@ setup(
 </tr>
 <tr>
 <td align="left"><code>include_package_data</code></td>
-<td align="center">自动包含包内所有受版本控制(<code>cvs/svn/git</code>)的数据文件</td>
+<td align="center">自动包含包内所有受版本控制(cvs/svn/git)的数据文件</td>
 </tr>
 <tr>
 <td align="left"><code>exclude_package_data</code></td>
@@ -270,7 +270,7 @@ setup(
 </tr>
 <tr>
 <td align="left"><code>setup_requires</code></td>
-<td align="center">指定运行<code>setup.py</code>文件本身所依赖的包</td>
+<td align="center">指定运行setup.py文件本身所依赖的包</td>
 </tr>
 <tr>
 <td align="left"><code>dependency_links</code></td>
@@ -287,42 +287,32 @@ setup(
 </tbody>
 </table>
 <p>更多参数可见: https://setuptools.readthedocs.io/en/latest/setuptools.html</p>
-<blockquote>
 <ul>
-<li><code>find_packages</code></li>
+<li><strong><code>find_packages</code></strong></li>
 </ul>
-</blockquote>
-<p>对于简单工程来说,手动增加<code>packages</code>参数是容易。而对于复杂的工程来说,可能添加很多的包,这是手动添加就变得麻烦。<code>setuptools</code>模块提供了一个<code>find_packages</code>函数,它默认在与<code>setup.py</code>文件同一目录下搜索各个含有<code>__init__.py</code>的目录做为要添加的包。</p>
+<p>对于简单工程来说,手动增加<code>packages</code>参数是容易。而对于复杂的工程来说,可能添加很多的包,这是手动添加就变得麻烦。setuptools模块提供了一个<code>find_packages</code>函数,它默认在与setup.py文件同一目录下搜索各个含有<code>__init__.py</code>的目录做为要添加的包。</p>
 <pre><code class="python">find_packages(where='.', exclude=(), include=('*',))
 </code></pre>
 
-<p><code>find_packages</code>函数的第一个参数用于指定在哪个目录下搜索包,参数<code>exclude</code>用于指定排除哪些包,参数<code>include</code>指出要包含的包。</p>
-<p>默认默认情况下<code>setup.py</code>文件只在其所在的目录下搜索包。如果不用<code>find_packages</code>,想要找到其他目录下的包,也可以设置<code>package_dir</code>参数,其指定哪些目录下的文件被映射到哪个源码包,如:<code>package_dir={'': 'src'}</code>表示"<code>root package</code>"中的模块都在<code>src</code>目录中。</p>
-<blockquote>
+<p><code>find_packages</code>函数的第一个参数用于指定在哪个目录下搜索包,参数exclude用于指定排除哪些包,参数include指出要包含的包。</p>
+<p>默认默认情况下setup.py文件只在其所在的目录下搜索包。如果不用<code>find_packages</code>,想要找到其他目录下的包,也可以设置<code>package_dir</code>参数,其指定哪些目录下的文件被映射到哪个源码包,如:<code>package_dir={'': 'src'}</code>表示"root package"中的模块都在src目录中。</p>
 <ul>
 <li><strong>包含数据文件</strong></li>
 </ul>
-</blockquote>
-<p><strong><code>package_data</code>:</strong></p>
-<p>该参数是一个从包名称到<code>glob</code>模式列表的字典。如果数据文件包含在包的子目录中,则<code>glob</code>可以包括子目录名称。其格式一般为<code>{'package_name': ['files']}</code>,比如:<code>package_data={'mypkg': ['data/*.dat'],}</code>。</p>
-<p><strong><code>include_package_data</code>:</strong></p>
-<p>该参数被设置为<code>True</code>时自动添加包中受版本控制的数据文件,可替代<code>package_data</code>,同时<code>exclude_package_data</code>可以排除某些文件。注意当需要加入没有被版本控制的文件时,还是仍然需要使用<code>package_data</code>参数才行。</p>
-<p><strong><code>data_files</code>:</strong></p>
-<p>该参数通常用于包含不在包内的数据文件,即包的外部文件,如:配置文件,消息目录,数据文件。其指定了一系列二元组,即(目的安装目录、源文件),表示哪些文件被安装到哪些目录中。如果目录名是相对路径,则相对于安装前缀进行解释。</p>
-<p><strong><code>manifest template</code>:</strong></p>
-<p>manifest template即编写<code>MANIFEST.in</code>文件,文件内容就是需要包含在分发包中的文件。一个<code>MANIFEST.in</code>文件如下:</p>
+<p><strong><code>package_data</code>:</strong> 该参数是一个从包名称到glob模式列表的字典。如果数据文件包含在包的子目录中,则glob可以包括子目录名称。其格式一般为<code>{'package_name': ['files']}</code>,比如:<code>package_data={'mypkg': ['data/*.dat'],}</code>。</p>
+<p><strong><code>include_package_data</code>:</strong> 该参数被设置为True时自动添加包中受版本控制的数据文件,可替代<code>package_data</code>,同时<code>exclude_package_data</code>可以排除某些文件。注意当需要加入没有被版本控制的文件时,还是仍然需要使用<code>package_data</code>参数才行。</p>
+<p><strong><code>data_files</code>:</strong> 该参数通常用于包含不在包内的数据文件,即包的外部文件,如:配置文件,消息目录,数据文件。其指定了一系列二元组,即(目的安装目录、源文件),表示哪些文件被安装到哪些目录中。如果目录名是相对路径,则相对于安装前缀进行解释。</p>
+<p><strong><code>manifest template</code>:</strong> manifest template即编写MANIFEST.in文件,文件内容就是需要包含在分发包中的文件。一个MANIFEST.in文件如下:</p>
 <pre><code>include *.txt
 recursive-include examples *.txt *.py
 prune examples/sample?/build
 </code></pre>
 
 <p><code>MANIFEST.in</code>文件的编写规则可参考:https://docs.python.org/3.6/distutils/sourcedist.html</p>
-<blockquote>
 <ul>
 <li><strong>生成脚本</strong></li>
 </ul>
-</blockquote>
-<p>有两个参数<code>scripts</code>参数或<code>console_scripts</code>可用于生成脚本。</p>
+<p>有两个参数scripts参数或console_scripts可用于生成脚本。</p>
 <p><code>entry_points</code>参数用来支持自动生成脚本,其值应该为是一个字典,从<code>entry_point</code>组名映射到一个表示<code>entry_point</code>的字符串或字符串列表,如:</p>
 <pre><code class="python">setup(
     # other arguments here...
@@ -335,11 +325,11 @@ prune examples/sample?/build
 )
 </code></pre>
 
-<p><code>scripts</code>参数是一个<code>list</code>,安装包时在该参数中列出的文件会被安装到系统<code>PATH</code>路径下。如:</p>
+<p>scripts参数是一个list,安装包时在该参数中列出的文件会被安装到系统PATH路径下。如:</p>
 <pre><code class="python">scripts=['bin/foo.sh', 'bar.py']
 </code></pre>
 
-<p>用如下方法可以将脚本重命名,例如去掉脚本文件的扩展名(<code>.py</code>、<code>.sh</code>):</p>
+<p>用如下方法可以将脚本重命名,例如去掉脚本文件的扩展名(.py、.sh):</p>
 <pre><code class="python">from setuptools.command.install_scripts import install_scripts
 
 class InstallScripts(install_scripts):
@@ -364,7 +354,7 @@ setup(
 )
 </code></pre>
 
-<p>其中,<code>cmdclass</code>参数表示自定制命令,后文详述。</p>
+<p>其中,cmdclass参数表示自定制命令,后文详述。</p>
 <p><strong><code>ext_modules</code></strong></p>
 <p><code>ext_modules</code>参数用于构建C和C++扩展扩展包。其是<code>Extension</code>实例的列表,每一个<code>Extension</code>实例描述了一个独立的扩展模块,扩展模块可以设置扩展包名,头文件、源文件、链接库及其路径、宏定义和编辑参数等。如:</p>
 <pre><code class="python">setup(
