@@ -1,7 +1,8 @@
-# `C/C++`基础教程
+# C/C++基础教程
+
 ## 一、基本知识
+
 ### 1.1 预定义宏
-http://www.cplusplus.com/reference/vector/vector/data/
 
 * **宏定义**
 
@@ -14,7 +15,7 @@ C语言中用到宏定义的地方很多,如在头文件中为了防止头文件
 #endif
 ```
 
-在我们常用的`stdio.h`头文件中也可以见到很多宏定义,如:
+在我们常用的stdio.h头文件中也可以见到很多宏定义,如:
 
 ```c
 #define BUFSIZ 1024 // 缓冲区大小
@@ -32,7 +33,7 @@ C语言中用到宏定义的地方很多,如在头文件中为了防止头文件
 
 从开始写C语言到生成执行程序的流程大致如下(姑且忽略预处理之前的编译器的翻译处理流程等),在进行编译的第一次扫描(词法扫描和语法分析)之前,会有由预处理程序负责完成的预处理工作。
 
-![](http://img-blog.csdn.net/20151107180104217)
+<img src="http://img-blog.csdn.net/20151107180104217" style="width: 40%">
 
 预处理工作是系统引用预处理程序对源程序中的预处理部分做处理,而预处理部分是指以"`#`"开头的、放在函数之外的、一般放在源文件的前面的预处理命令,如:包括命令`#include`,宏命令`#define`等,合理地利用预处理功能可以使得程序更加方便地阅读、修改、移植、调试等,也有利于模块化程序设计。本文主要介绍宏定义的以下几个部分:
 
@@ -151,7 +152,7 @@ b2 = &n;         // OK
 
 `C`语言中宏是可以有参数的,这样的宏就成了外形与函数相似的类函数宏(`function-like macro`),如:
 
-![](http://img-blog.csdn.net/20151107181329002)
+<img src="http://img-blog.csdn.net/20151107181329002" style="width: 35%">
 
 宏调用:`宏名(实参表)`;
 
@@ -1374,6 +1375,188 @@ int main(int argc, char** argv) {
 ```
 
 ## 四、标准库
+
+### 4.1 cstdio库
+
+参考地址: http://www.cplusplus.com/reference/cstdio/
+
+**Operations on files**
+
+| 函数 | 说明 | 用法 |
+| :--- | :--- | :--- |
+| `remove` | Remove file | `int remove ( const char * filename );` |
+| `rename` | Rename file | `int rename ( const char * oldname, const char * newname );` |
+| `tmpfile` | Open a temporary file | `FILE * tmpfile ( void );` |
+| `tmpnam` | Generate temporary filename | `char * tmpnam ( char * str );` |
+
+**File access**
+
+| 函数 | 说明 | 用法 |
+| :--- | :--- | :--- |
+| `fclose` | Close file | `int fclose ( FILE * stream );` |
+| `fflush` | Flush stream | `int fflush ( FILE * stream );` |
+| `fopen` | Open file | `FILE * fopen ( const char * filename, const char * mode );` |
+| `freopen` | Reopen stream with different file or mode | `FILE * freopen ( const char * filename, const char * mode, FILE * stream );` |
+| `setbuf` | Set stream buffer | `void setbuf ( FILE * stream, char * buffer );` |
+| `setvbuf` | Change stream buffering | `int setvbuf ( FILE * stream, char * buffer, int mode, size_t size );` |
+
+**Formatted input/output**
+
+| 函数 | 说明 | 用法 |
+| :--- | :--- | :--- |
+| `fprintf` | Write formatted data to stream | `int fprintf ( FILE * stream, const char * format, ... );` | 
+| `fscanf` | Read formatted data from stream | |
+| `printf` | Print formatted data to stdout | `int printf ( const char * format, ... );` |
+| `scanf` | Read formatted data from stdin (function )
+| `snprintf` | Write formatted output to sized buffer (function )
+| `sprintf` | Write formatted data to string (function )
+| `sscanf` | Read formatted data from string (function )
+| `vfprintf` | Write formatted data from variable argument list to stream (function )
+| `vfscanf` | Read formatted data from stream into variable argument list (function )
+| `vprintf` | Print formatted data from variable argument list to stdout (function )
+| `vscanf` | Read formatted data into variable argument list (function )
+| `vsnprintf` | Write formatted data from variable argument list to sized buffer (function )
+| `vsprintf` | Write formatted data from variable argument list to string (function )
+| `vsscanf` | Read formatted data from string into variable argument list (function )
+
+Character input/output:
+fgetc
+Get character from stream (function )
+fgets
+Get string from stream (function )
+fputc
+Write character to stream (function )
+fputs
+Write string to stream (function )
+getc
+Get character from stream (function )
+getchar
+Get character from stdin (function )
+gets
+Get string from stdin (function )
+putc
+Write character to stream (function )
+putchar
+Write character to stdout (function )
+puts
+Write string to stdout (function )
+ungetc
+Unget character from stream (function )
+
+Direct input/output:
+fread
+Read block of data from stream (function )
+fwrite
+Write block of data to stream (function )
+
+File positioning:
+fgetpos
+Get current position in stream (function )
+fseek
+Reposition stream position indicator (function )
+fsetpos
+Set position indicator of stream (function )
+ftell
+Get current position in stream (function )
+rewind
+Set position of stream to the beginning (function )
+
+Error-handling:
+clearerr
+Clear error indicators (function )
+feof
+Check end-of-file indicator (function )
+ferror
+Check error indicator (function )
+perror
+Print error message (function )
+
+Macros
+BUFSIZ
+Buffer size (constant )
+EOF
+End-of-File (constant )
+FILENAME_MAX
+Maximum length of file names (constant )
+FOPEN_MAX
+Potential limit of simultaneous open streams (constant )
+L_tmpnam
+Minimum length for temporary file name (constant )
+NULL
+Null pointer (macro )
+TMP_MAX
+Number of temporary files (constant )
+Additionally: _IOFBF, _IOLBF, _IONBF (used with setvbuf)
+and SEEK_CUR, SEEK_END and SEEK_SET (used with fseek).
+
+Types
+FILE
+Object containing information to control a stream (type )
+fpos_t
+Object containing information to specify a position within a file (type )
+size_t
+Unsigned integral type (type )
+
+
+
+A format specifier follows this prototype: `%[flags][width][.precision][length]specifier`
+
+| specifier | Output | Example |
+| :--- | :--- | :--- |
+| `d` or `i` | Signed decimal integer | `392` |
+| `u` | Unsigned decimal integer | `7235` |
+| `o` | Unsigned octal | `610` |
+| `x` | Unsigned hexadecimal integer | `7fa` |
+| `X` | Unsigned hexadecimal integer (uppercase) | `7FA` |
+| `f` | Decimal floating point, lowercase | `392.65` |
+| `F` | Decimal floating point, uppercase | `392.65` |
+| `e` | Scientific notation (mantissa/exponent), lowercase | `3.9265e+2` |
+| `E` | Scientific notation (mantissa/exponent), uppercase | `3.9265E+2` |
+| `g` | Use the shortest representation: %e or %f | `392.65` |
+| `G` | Use the shortest representation: %E or %F | `392.65` |
+| `a` | Hexadecimal floating point, lowercase | `-0xc.90fep-2` |
+| `A` | Hexadecimal floating point, uppercase | `-0XC.90FEP-2` |
+| `c` | Character | `a` |
+| `s` | String of characters | `sample` |
+| `p` | Pointer address | `b8000000`
+| `n` | Nothing printed. | |
+
+
+
+| flags | description |
+| :--- | :--- |
+| `-` | Left-justify within the given field width; Right justification is the default (see width sub-specifier). |
+| `+` | Forces to preceed the result with a plus or minus sign (+ or -) even for positive numbers. By default, only negative numbers are preceded with a - sign. |
+| (space) | If no sign is going to be written, a blank space is inserted before the value. |
+
+#   Used with o, x or X specifiers the value is preceeded with 0, 0x or 0X respectively for values different than zero.
+Used with a, A, e, E, f, F, g or G it forces the written output to contain a decimal point even if no more digits follow. By default, if no digits follow, no decimal point is written.
+0   Left-pads the number with zeroes (0) instead of spaces when padding is specified (see width sub-specifier).
+
+width   description
+(number)    Minimum number of characters to be printed. If the value to be printed is shorter than this number, the result is padded with blank spaces. The value is not truncated even if the result is larger.
+*   The width is not specified in the format string, but as an additional integer value argument preceding the argument that has to be formatted.
+
+.precision  description
+.number For integer specifiers (d, i, o, u, x, X): precision specifies the minimum number of digits to be written. If the value to be written is shorter than this number, the result is padded with leading zeros. The value is not truncated even if the result is longer. A precision of 0 means that no character is written for the value 0.
+For a, A, e, E, f and F specifiers: this is the number of digits to be printed after the decimal point (by default, this is 6).
+For g and G specifiers: This is the maximum number of significant digits to be printed.
+For s: this is the maximum number of characters to be printed. By default all characters are printed until the ending null character is encountered.
+If the period is specified without an explicit value for precision, 0 is assumed.
+.*  The precision is not specified in the format string, but as an additional integer value argument preceding the argument that has to be formatted.
+
+The length sub-specifier modifies the length of the data type. This is a chart showing the types used to interpret the corresponding arguments with and without length specifier (if a different type is used, the proper type promotion or conversion is performed, if allowed):
+specifiers
+length  d i u o x X f F e E g G a A c   s   p   n
+(none)  int unsigned int    double  int char*   void*   int*
+hh  signed char unsigned char                   signed char*
+h   short int   unsigned short int                  short int*
+l   long int    unsigned long int       wint_t  wchar_t*        long int*
+ll  long long int   unsigned long long int                  long long int*
+j   intmax_t    uintmax_t                   intmax_t*
+z   size_t  size_t                  size_t*
+t   ptrdiff_t   ptrdiff_t                   ptrdiff_t*
+L           long double             
 
 
 ## 五、Cblas库
