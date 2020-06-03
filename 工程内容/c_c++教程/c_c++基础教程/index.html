@@ -53,8 +53,12 @@
                   {title: "3.3 \u793a\u4f8b", url: "#33", level:3, children: [
                   ]}, 
               ]},
-              {title: "\u56db\u3001\u6807\u51c6\u5e93", url: "#_3", level:2, children: [ 
+              {title: "\u56db\u3001\u6807\u51c6\u5e93", url: "#_3", level:2, children: [
+                  {title: "4.1 cstdio\u5e93", url: "#41-cstdio", level:3, children: [
+                  ]}, 
               ]},
+          ]},
+          {title: "Used with o, x or X specifiers the value is preceeded with 0, 0x or 0X respectively for values different than zero.", url: "#used-with-o-x-or-x-specifiers-the-value-is-preceeded-with-0-0x-or-0x-respectively-for-values-different-than-zero", level:1, children: [
               {title: "\u4e94\u3001Cblas\u5e93", url: "#cblas", level:2, children: [ 
               ]},
               {title: "\u516d\u3001\u6307\u4ee4\u96c6", url: "#_4", level:2, children: [
@@ -100,10 +104,9 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 
     
 
-    <h1 id="cc"><code>C/C++</code>基础教程</h1>
+    <h1 id="cc">C/C++基础教程</h1>
 <h2 id="_1">一、基本知识</h2>
 <h3 id="11">1.1 预定义宏</h3>
-<p>http://www.cplusplus.com/reference/vector/vector/data/</p>
 <ul>
 <li><strong>宏定义</strong></li>
 </ul>
@@ -114,7 +117,7 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 #endif
 </code></pre>
 
-<p>在我们常用的<code>stdio.h</code>头文件中也可以见到很多宏定义,如:</p>
+<p>在我们常用的stdio.h头文件中也可以见到很多宏定义,如:</p>
 <pre><code class="c">#define BUFSIZ 1024 // 缓冲区大小
 #define EOF (-1)    // 表文件末尾
 #ifndef SEEK_SET
@@ -129,7 +132,7 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </code></pre>
 
 <p>从开始写C语言到生成执行程序的流程大致如下(姑且忽略预处理之前的编译器的翻译处理流程等),在进行编译的第一次扫描(词法扫描和语法分析)之前,会有由预处理程序负责完成的预处理工作。</p>
-<p><img alt="" src="http://img-blog.csdn.net/20151107180104217" /></p>
+<p><img src="http://img-blog.csdn.net/20151107180104217" style="width: 40%"></p>
 <p>预处理工作是系统引用预处理程序对源程序中的预处理部分做处理,而预处理部分是指以"<code>#</code>"开头的、放在函数之外的、一般放在源文件的前面的预处理命令,如:包括命令<code>#include</code>,宏命令<code>#define</code>等,合理地利用预处理功能可以使得程序更加方便地阅读、修改、移植、调试等,也有利于模块化程序设计。本文主要介绍宏定义的以下几个部分:</p>
 <p><img alt="" src="http://img-blog.csdn.net/20151107180303244" /></p>
 <ul>
@@ -218,7 +221,7 @@ b2 = &amp;n;         // OK
 <li><strong>有参宏</strong></li>
 </ul>
 <p><code>C</code>语言中宏是可以有参数的,这样的宏就成了外形与函数相似的类函数宏(<code>function-like macro</code>),如:</p>
-<p><img alt="" src="http://img-blog.csdn.net/20151107181329002" /></p>
+<p><img src="http://img-blog.csdn.net/20151107181329002" style="width: 35%"></p>
 <p>宏调用:<code>宏名(实参表)</code>;</p>
 <pre><code class="c">printf(&quot;MEAN = %d\n&quot;, MEAN(7, 9)); // 输出结果: MEAN = 8
 </code></pre>
@@ -1462,6 +1465,380 @@ int main(int argc, char** argv) {
 </code></pre>
 
 <h2 id="_3">四、标准库</h2>
+<h3 id="41-cstdio">4.1 cstdio库</h3>
+<p>参考地址: http://www.cplusplus.com/reference/cstdio/</p>
+<p><strong>Operations on files</strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">函数</th>
+<th align="left">说明</th>
+<th align="left">用法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>remove</code></td>
+<td align="left">Remove file</td>
+<td align="left"><code>int remove ( const char * filename );</code></td>
+</tr>
+<tr>
+<td align="left"><code>rename</code></td>
+<td align="left">Rename file</td>
+<td align="left"><code>int rename ( const char * oldname, const char * newname );</code></td>
+</tr>
+<tr>
+<td align="left"><code>tmpfile</code></td>
+<td align="left">Open a temporary file</td>
+<td align="left"><code>FILE * tmpfile ( void );</code></td>
+</tr>
+<tr>
+<td align="left"><code>tmpnam</code></td>
+<td align="left">Generate temporary filename</td>
+<td align="left"><code>char * tmpnam ( char * str );</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>File access</strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">函数</th>
+<th align="left">说明</th>
+<th align="left">用法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>fclose</code></td>
+<td align="left">Close file</td>
+<td align="left"><code>int fclose ( FILE * stream );</code></td>
+</tr>
+<tr>
+<td align="left"><code>fflush</code></td>
+<td align="left">Flush stream</td>
+<td align="left"><code>int fflush ( FILE * stream );</code></td>
+</tr>
+<tr>
+<td align="left"><code>fopen</code></td>
+<td align="left">Open file</td>
+<td align="left"><code>FILE * fopen ( const char * filename, const char * mode );</code></td>
+</tr>
+<tr>
+<td align="left"><code>freopen</code></td>
+<td align="left">Reopen stream with different file or mode</td>
+<td align="left"><code>FILE * freopen ( const char * filename, const char * mode, FILE * stream );</code></td>
+</tr>
+<tr>
+<td align="left"><code>setbuf</code></td>
+<td align="left">Set stream buffer</td>
+<td align="left"><code>void setbuf ( FILE * stream, char * buffer );</code></td>
+</tr>
+<tr>
+<td align="left"><code>setvbuf</code></td>
+<td align="left">Change stream buffering</td>
+<td align="left"><code>int setvbuf ( FILE * stream, char * buffer, int mode, size_t size );</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Formatted input/output</strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">函数</th>
+<th align="left">说明</th>
+<th align="left">用法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>fprintf</code></td>
+<td align="left">Write formatted data to stream</td>
+<td align="left"><code>int fprintf ( FILE * stream, const char * format, ... );</code></td>
+</tr>
+<tr>
+<td align="left"><code>fscanf</code></td>
+<td align="left">Read formatted data from stream</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><code>printf</code></td>
+<td align="left">Print formatted data to stdout</td>
+<td align="left"><code>int printf ( const char * format, ... );</code></td>
+</tr>
+<tr>
+<td align="left"><code>scanf</code></td>
+<td align="left">Read formatted data from stdin (function )</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><code>snprintf</code></td>
+<td align="left">Write formatted output to sized buffer (function )</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><code>sprintf</code></td>
+<td align="left">Write formatted data to string (function )</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><code>sscanf</code></td>
+<td align="left">Read formatted data from string (function )</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><code>vfprintf</code></td>
+<td align="left">Write formatted data from variable argument list to stream (function )</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><code>vfscanf</code></td>
+<td align="left">Read formatted data from stream into variable argument list (function )</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><code>vprintf</code></td>
+<td align="left">Print formatted data from variable argument list to stdout (function )</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><code>vscanf</code></td>
+<td align="left">Read formatted data into variable argument list (function )</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><code>vsnprintf</code></td>
+<td align="left">Write formatted data from variable argument list to sized buffer (function )</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><code>vsprintf</code></td>
+<td align="left">Write formatted data from variable argument list to string (function )</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><code>vsscanf</code></td>
+<td align="left">Read formatted data from string into variable argument list (function )</td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<p>Character input/output:
+fgetc
+Get character from stream (function )
+fgets
+Get string from stream (function )
+fputc
+Write character to stream (function )
+fputs
+Write string to stream (function )
+getc
+Get character from stream (function )
+getchar
+Get character from stdin (function )
+gets
+Get string from stdin (function )
+putc
+Write character to stream (function )
+putchar
+Write character to stdout (function )
+puts
+Write string to stdout (function )
+ungetc
+Unget character from stream (function )</p>
+<p>Direct input/output:
+fread
+Read block of data from stream (function )
+fwrite
+Write block of data to stream (function )</p>
+<p>File positioning:
+fgetpos
+Get current position in stream (function )
+fseek
+Reposition stream position indicator (function )
+fsetpos
+Set position indicator of stream (function )
+ftell
+Get current position in stream (function )
+rewind
+Set position of stream to the beginning (function )</p>
+<p>Error-handling:
+clearerr
+Clear error indicators (function )
+feof
+Check end-of-file indicator (function )
+ferror
+Check error indicator (function )
+perror
+Print error message (function )</p>
+<p>Macros
+BUFSIZ
+Buffer size (constant )
+EOF
+End-of-File (constant )
+FILENAME_MAX
+Maximum length of file names (constant )
+FOPEN_MAX
+Potential limit of simultaneous open streams (constant )
+L_tmpnam
+Minimum length for temporary file name (constant )
+NULL
+Null pointer (macro )
+TMP_MAX
+Number of temporary files (constant )
+Additionally: _IOFBF, _IOLBF, _IONBF (used with setvbuf)
+and SEEK_CUR, SEEK_END and SEEK_SET (used with fseek).</p>
+<p>Types
+FILE
+Object containing information to control a stream (type )
+fpos_t
+Object containing information to specify a position within a file (type )
+size_t
+Unsigned integral type (type )</p>
+<p>A format specifier follows this prototype: <code>%[flags][width][.precision][length]specifier</code></p>
+<table>
+<thead>
+<tr>
+<th align="left">specifier</th>
+<th align="left">Output</th>
+<th align="left">Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>d</code> or <code>i</code></td>
+<td align="left">Signed decimal integer</td>
+<td align="left"><code>392</code></td>
+</tr>
+<tr>
+<td align="left"><code>u</code></td>
+<td align="left">Unsigned decimal integer</td>
+<td align="left"><code>7235</code></td>
+</tr>
+<tr>
+<td align="left"><code>o</code></td>
+<td align="left">Unsigned octal</td>
+<td align="left"><code>610</code></td>
+</tr>
+<tr>
+<td align="left"><code>x</code></td>
+<td align="left">Unsigned hexadecimal integer</td>
+<td align="left"><code>7fa</code></td>
+</tr>
+<tr>
+<td align="left"><code>X</code></td>
+<td align="left">Unsigned hexadecimal integer (uppercase)</td>
+<td align="left"><code>7FA</code></td>
+</tr>
+<tr>
+<td align="left"><code>f</code></td>
+<td align="left">Decimal floating point, lowercase</td>
+<td align="left"><code>392.65</code></td>
+</tr>
+<tr>
+<td align="left"><code>F</code></td>
+<td align="left">Decimal floating point, uppercase</td>
+<td align="left"><code>392.65</code></td>
+</tr>
+<tr>
+<td align="left"><code>e</code></td>
+<td align="left">Scientific notation (mantissa/exponent), lowercase</td>
+<td align="left"><code>3.9265e+2</code></td>
+</tr>
+<tr>
+<td align="left"><code>E</code></td>
+<td align="left">Scientific notation (mantissa/exponent), uppercase</td>
+<td align="left"><code>3.9265E+2</code></td>
+</tr>
+<tr>
+<td align="left"><code>g</code></td>
+<td align="left">Use the shortest representation: %e or %f</td>
+<td align="left"><code>392.65</code></td>
+</tr>
+<tr>
+<td align="left"><code>G</code></td>
+<td align="left">Use the shortest representation: %E or %F</td>
+<td align="left"><code>392.65</code></td>
+</tr>
+<tr>
+<td align="left"><code>a</code></td>
+<td align="left">Hexadecimal floating point, lowercase</td>
+<td align="left"><code>-0xc.90fep-2</code></td>
+</tr>
+<tr>
+<td align="left"><code>A</code></td>
+<td align="left">Hexadecimal floating point, uppercase</td>
+<td align="left"><code>-0XC.90FEP-2</code></td>
+</tr>
+<tr>
+<td align="left"><code>c</code></td>
+<td align="left">Character</td>
+<td align="left"><code>a</code></td>
+</tr>
+<tr>
+<td align="left"><code>s</code></td>
+<td align="left">String of characters</td>
+<td align="left"><code>sample</code></td>
+</tr>
+<tr>
+<td align="left"><code>p</code></td>
+<td align="left">Pointer address</td>
+<td align="left"><code>b8000000</code></td>
+</tr>
+<tr>
+<td align="left"><code>n</code></td>
+<td align="left">Nothing printed.</td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th align="left">flags</th>
+<th align="left">description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>-</code></td>
+<td align="left">Left-justify within the given field width; Right justification is the default (see width sub-specifier).</td>
+</tr>
+<tr>
+<td align="left"><code>+</code></td>
+<td align="left">Forces to preceed the result with a plus or minus sign (+ or -) even for positive numbers. By default, only negative numbers are preceded with a - sign.</td>
+</tr>
+<tr>
+<td align="left">(space)</td>
+<td align="left">If no sign is going to be written, a blank space is inserted before the value.</td>
+</tr>
+</tbody>
+</table>
+<h1 id="used-with-o-x-or-x-specifiers-the-value-is-preceeded-with-0-0x-or-0x-respectively-for-values-different-than-zero">Used with o, x or X specifiers the value is preceeded with 0, 0x or 0X respectively for values different than zero.</h1>
+<p>Used with a, A, e, E, f, F, g or G it forces the written output to contain a decimal point even if no more digits follow. By default, if no digits follow, no decimal point is written.
+0   Left-pads the number with zeroes (0) instead of spaces when padding is specified (see width sub-specifier).</p>
+<p>width   description
+(number)    Minimum number of characters to be printed. If the value to be printed is shorter than this number, the result is padded with blank spaces. The value is not truncated even if the result is larger.
+*   The width is not specified in the format string, but as an additional integer value argument preceding the argument that has to be formatted.</p>
+<p>.precision  description
+.number For integer specifiers (d, i, o, u, x, X): precision specifies the minimum number of digits to be written. If the value to be written is shorter than this number, the result is padded with leading zeros. The value is not truncated even if the result is longer. A precision of 0 means that no character is written for the value 0.
+For a, A, e, E, f and F specifiers: this is the number of digits to be printed after the decimal point (by default, this is 6).
+For g and G specifiers: This is the maximum number of significant digits to be printed.
+For s: this is the maximum number of characters to be printed. By default all characters are printed until the ending null character is encountered.
+If the period is specified without an explicit value for precision, 0 is assumed.
+.*  The precision is not specified in the format string, but as an additional integer value argument preceding the argument that has to be formatted.</p>
+<p>The length sub-specifier modifies the length of the data type. This is a chart showing the types used to interpret the corresponding arguments with and without length specifier (if a different type is used, the proper type promotion or conversion is performed, if allowed):
+specifiers
+length  d i u o x X f F e E g G a A c   s   p   n
+(none)  int unsigned int    double  int char<em>   void</em>   int<em>
+hh  signed char unsigned char                   signed char</em>
+h   short int   unsigned short int                  short int<em>
+l   long int    unsigned long int       wint_t  wchar_t</em>        long int<em>
+ll  long long int   unsigned long long int                  long long int</em>
+j   intmax_t    uintmax_t                   intmax_t<em>
+z   size_t  size_t                  size_t</em>
+t   ptrdiff_t   ptrdiff_t                   ptrdiff_t*
+L           long double             </p>
 <h2 id="cblas">五、Cblas库</h2>
 <p>CBLAS是BLAS的C语言接口。BLAS的全称是Basic Linear Algebra Subprograms,中文大概可以叫做基础线性代数子程序。主要是用于向量和矩阵计算的高性能数学库。本身BLAS是用Fortran写的,为了方便C/C++程序的使用，就有了BLAS的C接口库CBLAS。BLAS的主页是http://www.netlib.org/blas/,CBLAS的下载地址也可以在这个页面上找到。</p>
 <p>CBLAS/BLAS分为3个level:</p>
