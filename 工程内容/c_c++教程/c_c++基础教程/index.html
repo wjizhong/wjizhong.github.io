@@ -43,6 +43,8 @@
               ]},
               {title: "\u4e8c\u3001\u5173\u952e\u5b57", url: "#_2", level:2, children: [
                   {title: "2.1 static", url: "#21-static", level:3, children: [
+                  ]},
+                  {title: "2.2 const", url: "#22-const", level:3, children: [
                   ]}, 
               ]},
               {title: "\u4e09\u3001openMP", url: "#openmp", level:2, children: [
@@ -1113,6 +1115,136 @@ void main()
 }
 </code></pre>
 
+<h3 id="22-const">2.2 const</h3>
+<p>const是constant的简写,是不变的意思。但并不是说它修饰常量,而是说它限定一个变量为只读。</p>
+<ul>
+<li><strong>修饰普通变量</strong></li>
+</ul>
+<p>例如:</p>
+<pre><code class="c">const int NUM = 10; // 与int const NUM等价
+NUM = 9;            // 编译错误,不可再次修改
+</code></pre>
+
+<p>由于使用了const修饰NUM,使得NUM为只读,因此尝试对NUM再次赋值的操作是非法的,编译器将会报错。正因如此,如果需要使用const修饰一个变量,那么它只能在开始声明时就赋值,否则后面就没有机会了(后面会讲到一个特殊情况)。</p>
+<ul>
+<li><strong>修饰数组</strong></li>
+</ul>
+<p>例如使用const关键字修饰数组,使其元素不允许被改变:</p>
+<pre><code class="c">const int arr[] = {0,0,2,3,4}; // 与int const arr[]等价
+arr[2] = 1;                    // 编译错误
+</code></pre>
+
+<p>试图修改arr的内容的操作是非法的,编译器将会报错:<code>error: assignment of read-only location ‘arr[2]’</code>。</p>
+<ul>
+<li><strong>修饰指针</strong></li>
+</ul>
+<p>修饰指针的情况比较多，主要有以下几种情况:</p>
+<p><strong>const修饰*p,指向的对象只读,指针的指向可变:</strong></p>
+<pre><code class="c">int a = 9;
+int b = 10;
+const int *p = &amp;a;//p是一个指向int类型的const值,与int const *p等价
+*p = 11;    //编译错误，指向的对象是只读的，不可通过p进行改变
+p = &amp;b;     //合法，改变了p的指向
+</code></pre>
+
+<p>这里为了便于理解,可认为const修饰的是<em>p,通常使用</em>对指针进行解引用来访问对象,因而,该对象是只读的。</p>
+<p><strong>const修饰p,指向的对象可变,指针的指向不可变:</strong></p>
+<pre><code class="c">int a = 9;
+int b = 10;
+int * const p = &amp;a;//p是一个const指针
+*p = 11;    //合法，
+p = &amp;b;     //编译错误，p是一个const指针，只读，不可变
+</code></pre>
+
+<p><strong>指针不可改变指向,指向的内容也不可变</strong></p>
+<pre><code class="c++">int a = 9;
+int b = 10;
+const int * const p = &amp;a;// p既是一个const指针,同时也指向了int类型的const值
+*p = 11;    // 编译错误,指向的对象是只读的,不可通过p进行改变
+p = &amp;b;     // 编译错误,p是一个const指针,只读,不可变
+</code></pre>
+
+<p>一句话总结:const放在<em>的左侧任意位置,限定了该指针指向的对象是只读的;const放在</em>的右侧,限定了指针本身是只读的,即不可变的。</p>
+<ul>
+<li><strong>修饰函数形参</strong></li>
+</ul>
+<p>实际上,为我们可以经常发现const关键字的身影,例如很多库函数的声明:</p>
+<pre><code class="c++">char *strncpy(char *dest,const char *src,size_t n);//字符串拷贝函数
+int  *strncmp(const char *s1,const char *s2,size_t n);//字符串比较函数
+</code></pre>
+
+<p>通过看strncpy函数的原型可以知道,源字符串src是只读的,不可变的,而dest并没有该限制。我们通过一个小例子继续观察:</p>
+<pre><code class="c++">// test.c
+#include&lt;stdio.h&gt;
+void myPrint(const char *str);
+void myPrint(const char *str) {
+    str[0] = 'H';
+    printf(&quot;my print:%s\n&quot;,str);
+}
+int main(void) {
+    char str[] = &quot;hello world&quot;;
+    myPrint(str);
+    return 0;
+}
+</code></pre>
+
+<p>在这个例子中,我们不希望myPrint函数修改传入的字符串内容,因此入参使用了const限定符,表明传入的字符串是只读的,因此,如果myPrint函数内部如果尝试对str进行修改,将会报错:</p>
+<pre><code>$ gcc -o test test.c
+test.c:6:12: error: assignment of read-only location ‘*str’
+     str[0] = 'H';
+</code></pre>
+
+<p>因此,我们自己在编码过程中,如果确定传入的指针参数仅用于访问数据,那么应该将其声明为一个指向const限定类型的指针,避免函数内部对数据进行意外地修改。</p>
+<ul>
+<li><strong>修饰全局变量</strong></li>
+</ul>
+<p>我们知道,使用全局变量是一种不安全的做法,因为程序的任何部分都能够对全局数据进行修改。而如果对全局变量增加const限定符(假设该全局数据不希望被修改),就可以避免被程序其他部分修改。这里有两种使用方式。</p>
+<p><strong>第一种,在a文件中定义,其他文件中使用外部声明,例如:</strong></p>
+<pre><code class="c">// a.h
+const int ARR[] = {0,1,2,3,4,5,6,7,8,9};  //定义int数组
+
+// b.c
+extern const int ARR[];   // 注意,这里不能再对ARR进行赋值
+</code></pre>
+
+<p><strong>第二种,在a文件中定义,并使用static修饰,b文件包含a文件,例如:</strong></p>
+<pre><code class="c">// a.h
+static const int ARR[] = {0,1,2,3,4,5,6,7,8,9};  //定义int数组
+
+// b.c
+#include&lt;a.h&gt;
+//后面可以使用ARR
+</code></pre>
+
+<p>注意,这里必须使用static修饰,否则多个文件包含导致编译会出现重复定义的错误。有兴趣的可以尝试一下。</p>
+<p>const修饰的变量是真正的只读吗?使用const修饰之后的变量真的是完全的只读吗?看下面这个例子:</p>
+<pre><code class="c">#include &lt;stdio.h&gt;
+int main(void){
+    const int a = 2018;
+    int *p = &amp;a;
+    *p = 2019;
+    printf(&quot;%d\n&quot;,a);
+    return 0;
+}
+</code></pre>
+
+<p>运行结果:<code>2019</code>。可以看到，我们通过另外定义一个指针变量,将被const修饰的a的值改变了。那么我们不禁要问,const到底做了什么呢?它修饰的变量是真正意义上的只读吗?为什么它修饰的变量的值仍然可以改变?</p>
+<p>const关键字告诉了编译器,它修饰的变量不能被改变,如果代码中发现有类似改变该变量的操作,那么编译器就会捕捉这个错误。那么它在实际中的意义之一是什么呢?帮助程序员提前发现问题,避免不该修改的值被意外地修改,但是无法完全保证不被修改!例如我们可以通过对指针进行强转:</p>
+<pre><code class="c++">#include&lt;stdio.h&gt;
+void myPrint(const char *str);
+void myPrint(const char *str) {
+    char *b = (char *)str;
+    b[0] = 'H';
+    printf(&quot;my print:%s\n&quot;,b);
+}
+int main(void) {
+    char str[] = &quot;hello world&quot;;
+    myPrint(str);
+    return 0;
+}
+</code></pre>
+
+<p>运行结果:<code>my print:Hello world</code>。</p>
 <h2 id="openmp">三、openMP</h2>
 <p><code>Open Multi-Processing</code>的缩写,是一个应用程序接口(<code>API</code>),可用于显式指导多线程、共享内存的并行性。由三个主要的<code>API</code>组件组成:编译器指令、运行时库函数和环境变量。</p>
 <h3 id="31-openmp">3.1 <code>OpenMP</code>编程模型</h3>
