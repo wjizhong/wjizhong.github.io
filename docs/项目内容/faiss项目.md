@@ -369,7 +369,7 @@ print(I[-5:])                  # neighbors of the 5 last queries
 
 ### 2.1 faiss核心算法实现
 
-<img src="http://raw.githubusercontent.com/wiki/facebookresearch/faiss/PQ_variants_Faiss_annotated.png" style="width: 45%" > 
+<img src="http://raw.githubusercontent.com/wiki/facebookresearch/faiss/PQ_variants_Faiss_annotated.png" style="width: 75%" > 
 
 faiss对一些基础的算法提供了非常高效的失效
 
@@ -379,17 +379,17 @@ faiss对一些基础的算法提供了非常高效的失效
 
 ### 2.2 faiss功能流程说明
 
-通过Faiss文档介绍可以了解faiss的主要功能就是相似度搜索。如下图所示,以图片搜索为例,所谓相似度搜索,便是在给定的一堆图片中,寻找出我指定的目标最像的K张图片,也简称为KNN(K近邻)问题。
+通过faiss文档介绍可以了解faiss的主要功能就是相似度搜索。如下图所示,以图片搜索为例,所谓相似度搜索,便是在给定的一堆图片中,寻找出我指定的目标最像的K张图片,也简称为KNN(K近邻)问题。
 
-![](http://img2018.cnblogs.com/blog/1408825/201903/1408825-20190320225405798-259149897.png)
+<img src="http://img2018.cnblogs.com/blog/1408825/201903/1408825-20190320225405798-259149897.png" style="width: 45%">
 
-为了解决KNN问题,在工程上需要实现对已有图库的存储,当用户指定检索图片后,需要知道如何从存储的图片库中找到最相似的K张图片。基于此,我们推测Faiss在应用场景中具备添加功能和搜索功能,有了添加相应的修改和删除功能也会接踵而来,从上述分析看,Faiss本质上是一个向量(矢量)数据库。
+为了解决KNN问题,在工程上需要实现对已有图库的存储,当用户指定检索图片后,需要知道如何从存储的图片库中找到最相似的K张图片。基于此,我们推测faiss在应用场景中具备添加功能和搜索功能,有了添加相应的修改和删除功能也会接踵而来,从上述分析看,faiss本质上是一个向量(矢量)数据库。
 
 对于数据库来说,时空优化是两个永恒的主题,即在存储上如何以更少的空间来存储更多的信息,在搜索上如何以更快的速度来搜索出更准确的信息。如何减少搜索所需的时间?在数据库中很最常见的操作便是加各种索引,把各种加速搜索算法的功能或空间换时间的策略都封装成各种各样的索引,以满足各种不同的引用场景。
 
 ### 2.3 组件分析
 
-Faiss中最常用的是索引Index,而后是PCA降维、PQ乘积量化,这里针对Index和PQ进行说明,PCA降维从流程上都可以理解。
+faiss中最常用的是索引Index,而后是PCA降维、PQ乘积量化,这里针对Index和PQ进行说明,PCA降维从流程上都可以理解。
 
 #### 2.3.1 索引Index
 
@@ -401,9 +401,9 @@ faiss中有两个基础索引类Index、IndexBinary,下面我们先从类图进�
 
 Faiss提供了针对不同场景下应用对Index的封装类,这里我们针对Index基类进行说明。
 
-<img src="http://img2018.cnblogs.com/blog/1408825/201903/1408825-20190320225820995-299814548.png" style="width:80%" />
+<img src="http://img2018.cnblogs.com/blog/1408825/201903/1408825-20190320225820995-299814548.png" style="width:75%" />
 
-基础索引的说明参考:[Faiss indexes](http://github.com/facebookresearch/faiss/wiki/Faiss-indexes)涉及方法解释、参数说明以及推荐试用的工厂方法创建时的标识等。
+基础索引的说明参考:[faiss indexes](http://github.com/facebookresearch/faiss/wiki/Faiss-indexes)涉及方法解释、参数说明以及推荐试用的工厂方法创建时的标识等。
 
 索引的创建提供了工厂方法,可以通过字符串灵活的创建不同的索引。
 
@@ -415,9 +415,9 @@ index = faiss.index_factory(d,"PCA32,IVF100,PQ8 ")
 
 * **索引说明**
 
-此部分对索引id进行说明,此部分的理解是基于PQ量化及Faiss创建不同的索引时选择的量化器而来,可能会稍有偏差,不影响对Faiss的使用操作。
+此部分对索引id进行说明,此部分的理解是基于PQ量化及faiss创建不同的索引时选择的量化器而来,可能会稍有偏差,不影响对Faiss的使用操作。
 
-默认情况,Faiss会为每个输入的向量记录一个次序id,也可以为向量指定任意我们需要的id。部分索引类(IndexIVFFlat/IndexPQ/IndexIVFPQ等)有`add_with_ids`方法,可以为每个向量对应一个64-bit的id,搜索的时候返回此id。此段中说明的id从我的角度理解就是索引。(备注:id是long型数据,所有的索引id类型在Index基类中已经定义,参考类图中标注,`typedef long idx_t;    ///< all indices are this type`)
+默认情况,faiss会为每个输入的向量记录一个次序id,也可以为向量指定任意我们需要的id。部分索引类(IndexIVFFlat/IndexPQ/IndexIVFPQ等)有`add_with_ids`方法,可以为每个向量对应一个64-bit的id,搜索的时候返回此id。此段中说明的id从我的角度理解就是索引。(备注:id是long型数据,所有的索引id类型在Index基类中已经定义,参考类图中标注,`typedef long idx_t;    ///< all indices are this type`)
 
 示例:
 
@@ -486,9 +486,9 @@ print(I[-5:]) # neighbors of the 5 last queries
 
 * **检索数据恢复**
 
-Faiss检索返回的是数据的索引及数据的计算距离,在检索获得的索引后需要根据索引将原始数据取出。
+faiss检索返回的是数据的索引及数据的计算距离,在检索获得的索引后需要根据索引将原始数据取出。
 
-Faiss提供了两种方式,一种是一条一条的进行恢复,一种是批量恢复。
+faiss提供了两种方式,一种是一条一条的进行恢复,一种是批量恢复。
 
 给定id,可以使用reconstruct进行单条取出数据;可以使用`reconstruct_n`方法从index中回批量复出原始向量(备注:该方法从给的示例看是恢复连续的数据(0,10),如果索引是离散的话恢复数据暂时还没做实践)。
 
@@ -498,13 +498,13 @@ Faiss提供了两种方式,一种是一条一条的进行恢复,一种是批量�
 
 Faiss中使用的乘积量化是Faiss的作者在2011年发表的论文,参考:[Product Quantization for Nearest Neighbor Search](https://hal.inria.fr/file/index/docid/514462/filename/paper_hal.pdf)
 
-PQ算法可以理解为首先把原始的向量空间分解为m个低维向量空间的笛卡尔积,并对分解得到的低维向量空间分别做量化。即是把原始D维向量(比如D=128)分成m组(比如m=4),每组就是D∗=D/m维的子向量(比如D∗=D/m=128/4=32),各自用kmeans算法学习到一个码本,然后这些码本的笛卡尔积就是原始D维向量对应的码本。用qj表示第j组子向量,用Cj表示其对应学习到的码本,那么原始D维向量对应的码本就是C=C1×C2×…×Cm。用k∗表示子向量的聚类中心点数或者说码本大小,那么原始D维向量对应的聚类中心点数或者说码本大小就是`k=(k*)m`。
+PQ算法可以理解为首先把原始的向量空间分解为m个低维向量空间的笛卡尔积,并对分解得到的低维向量空间分别做量化。即是把原始D维向量(比如D=128)分成m组(比如m=4),每组就是$D^*=D/m$维的子向量(比如$D^*=D/m=128/4=32$),各自用k-means算法学习到一个码本,然后这些码本的笛卡尔积就是原始D维向量对应的码本。用qj表示第j组子向量,用Cj表示其对应学习到的码本,那么原始D维向量对应的码本就是C=C1×C2×…×Cm。用k∗表示子向量的聚类中心点数或者说码本大小,那么原始D维向量对应的聚类中心点数或者说码本大小就是`k=(k^*)^m`。
 
 示例参考[实例理解product quantization算法](http://www.fabwrite.com/productquantization)。
 
 * **检索和距离的关系—ADC**
 
-假如做法是以图搜图,那么输入图像为$x$,要从数据库中找出与$x$最匹配的图像集$\{y\}$,首先提取特征,特征向量就代表图像,如果特征向量之间的距离越小,图像之间相似度越大,检索就是要找出$NN(x)=arg\ min_{y\in \mathcal{Y} d(x,y)}$,公式中d的选取可以是欧式距离。PQ(乘积量化)中ADC的做法并不是求各个分量差的平方和,而是求x与y量化后的向量之间各个分量差的平方和。用公式表示如下：
+假如做法是以图搜图,那么输入图像为$x$,要从数据库中找出与$x$最匹配的图像集$\{y\}$,首先提取特征,特征向量就代表图像,如果特征向量之间的距离越小,图像之间相似度越大,检索就是要找出$NN(x)=arg\ min_{y\in \mathcal{Y}} d(x,y)$,公式中d的选取可以是欧式距离。PQ(乘积量化)中ADC的做法并不是求各个分量差的平方和,而是求x与y量化后的向量之间各个分量差的平方和。用公式表示如下：
 
 $$
 \tilde{d}(x,y)=d(x,q(y)) = \sqrt{\sum_jd(u_j(x),q_j(u_j(y)))^2}
@@ -520,15 +520,15 @@ $$
 
 索引的建立过程如下:
 
-![](http://img-blog.csdn.net/20151218100903780)
+<img src="http://img-blog.csdn.net/20151218100903780" style="width: 45%" >
 
 上图中主要涉及三个过程,coarse quantizer,product quantizer和append to inverted list。
 
-> * **coarse quantizer** :对数据库中的所有特征采用K-means聚类,得到粗糙量化的类中心,比如聚类成1024类,并记录每个类的样本数和各个样本所属的类别,这个类中心的个数就是inverted list的个数,把所有类中心保存到一张表中,叫`coarse_cluster`表,表中每项是d维。
-
-> * **product quantizer** :计算y的余量$r(y)=y-q_c(y)$,用y减去y的粗糙量化的结果得到$r(y)$。r(y)维数与y一样,然后对所有r(y)的特征分成m组,采用乘积量化,每组内仍然使用k-means聚类,这时结果是一个m维数的向量,这就是上篇文章中提到的内容。把所有的乘积量化结果保存到一个表中,叫`pq_centroids`表,表中每项是m维
-
-> * **append to inverted list** :前面的操作中记录下y在`coarse_cluster`表的索引i,在`pq_centroids`表中的索引j,那么插入inverted list时,把(id,j)插入到第i个倒排索引中,id是y的标识符,比如文件名。list的长度就是属于第i类的样本y的数目,处理不等长list有些技巧。
+> **coarse quantizer** :对数据库中的所有特征采用K-means聚类,得到粗糙量化的类中心,比如聚类成1024类,并记录每个类的样本数和各个样本所属的类别,这个类中心的个数就是inverted list的个数,把所有类中心保存到一张表中,叫`coarse_cluster`表,表中每项是d维。
+>
+> **product quantizer** :计算y的余量$r(y)=y-q_c(y)$,用y减去y的粗糙量化的结果得到$r(y)$。r(y)维数与y一样,然后对所有r(y)的特征分成m组,采用乘积量化,每组内仍然使用k-means聚类,这时结果是一个m维数的向量,这就是上篇文章中提到的内容。把所有的乘积量化结果保存到一个表中,叫`pq_centroids`表,表中每项是m维
+>
+> **append to inverted list** :前面的操作中记录下y在`coarse_cluster`表的索引i,在`pq_centroids`表中的索引j,那么插入inverted list时,把(id,j)插入到第i个倒排索引中,id是y的标识符,比如文件名。list的长度就是属于第i类的样本y的数目,处理不等长list有些技巧。
 
 * **基于IVFADC的搜索**
 
@@ -538,12 +538,12 @@ $$
 
 主要包括四个操作:
 
-> * **粗糙量化** :对查询图像x的特征进行粗糙量化,即采用KNN方法将x分到某个类或某几个类,分到几个类的话叫做multiple assignment,过程同对数据集中的y分类差不多。
-
-> * **计算余量** :计算x的余量r(x)。
-
-> * **计算d(x,y)** :对r(x)分组,计算每组中r(x)的特征子集到`pq_centroids`的距离。根据ADC的技巧,计算x与y的距离可以用计算x与q(y)的距离,而q(y)就是`pq_centroids`表中的某项,因此已经得到了x到y的近似距离。
-
+> **粗糙量化** :对查询图像x的特征进行粗糙量化,即采用KNN方法将x分到某个类或某几个类,分到几个类的话叫做multiple assignment,过程同对数据集中的y分类差不多。
+>
+> **计算余量** :计算x的余量r(x)。
+>
+> **计算d(x,y)** :对r(x)分组,计算每组中r(x)的特征子集到`pq_centroids`的距离。根据ADC的技巧,计算x与y的距离可以用计算x与q(y)的距离,而q(y)就是`pq_centroids`表中的某项,因此已经得到了x到y的近似距离。
+>
 > * **最大堆排序** :堆中每个元素代表数据库中y与x的距离,堆顶元素的距离最大,只要是比堆顶元素小的元素,代替堆顶元素,调整堆,直到判断完所有的y。
 
 数学语言:
@@ -787,9 +787,11 @@ class DistanceTable(object):
 
 ## 三、源码介绍
 
-### 4.1 基础工具
+### 4.1 utils目录
 
 #### 4.1.1 random.h和random.cpp文件
+
+此文件描述生成随机数相关代码:`float_rand`,`float_randn`(Marsaglia's method),`int64_rand`,`byte_rand`,`int64_rand_max`,`rand_perm`。
 
 * **random.h文件**
 
@@ -2492,12 +2494,11 @@ namespace faiss {
 
 ### 4.2 impl目录
 
+#### 4.2.1 FaissException.h和FaissException.cpp文件
 
-#### 4.2.1 **文件**
+此文件主要描述异常的处理方式:`FaissException`,`handleExceptions`以及`ScopeDeleter`,`ScopeDeleter1`。
 
-#### 4.2.1 `FaissException.h`和`FaissException.cpp`文件
-
-* **`FaissException.h`文件**
+* **FaissException.h文件**
 
 ```c++
 #ifndef FAISS_EXCEPTION_INCLUDED
@@ -2551,7 +2552,7 @@ namespace faiss {
 #endif
 ```
 
-* **`FaissException.cpp`文件**
+* **FaissException.cpp文件**
 
 ```c++
 #include <faiss/impl/FaissException.h>
@@ -2559,7 +2560,7 @@ namespace faiss {
 
 namespace faiss {
     FaissException::FaissException(const std::string& m) : msg(m) { }
-    FaissException::FaissException(const std::string& m,const char* funcName, const char* file, int line) {
+    FaissException::FaissException(const std::string& m, const char* funcName, const char* file, int line) {
         int size = snprintf(nullptr, 0, "Error in %s at %s:%d: %s",funcName, file, line, m.c_str());
         msg.resize(size + 1);
         snprintf(&msg[0], msg.size(), "Error in %s at %s:%d: %s", funcName, file, line, m.c_str());
@@ -2597,7 +2598,9 @@ namespace faiss {
 }
 ```
 
-#### 4.2.* `FaissAssert.h`文件
+#### 4.2.2 FaissAssert.h文件
+
+此文件主要定义某些宏: `FAISS_ASSERT`,`FAISS_ASSERT_MSG`,`FAISS_ASSERT_FMT`; `FAISS_THROW_MSG`,`FAISS_THROW_FMT`; `FAISS_THROW_IF_NOT_FMT`,`FAISS_THROW_IF_NOT_MSG`,`FAISS_THROW_IF_NOT_FMT`。
 
 ```c++
 #ifndef FAISS_ASSERT_INCLUDED
@@ -2639,9 +2642,8 @@ namespace faiss {
     }                                                                   \
   } while (false)
 
-///
+
 /// Exceptions for returning user errors
-///
 
 #define FAISS_THROW_MSG(MSG)                                            \
   do {                                                                  \
@@ -2657,7 +2659,7 @@ namespace faiss {
     throw faiss::FaissException(__s, __PRETTY_FUNCTION__, __FILE__, __LINE__); \
   } while (false)
 
-///
+
 /// Exceptions thrown upon a conditional failure
 
 #define FAISS_THROW_IF_NOT(X)                           \
@@ -2680,6 +2682,249 @@ namespace faiss {
       FAISS_THROW_FMT("Error: '%s' failed: " FMT, #X, __VA_ARGS__);     \
     }                                                                   \
   } while (false)
+
+#endif
+```
+
+#### 4.2.3 AuxIndexStructures.h和AuxIndexStructures.cpp文件
+
+* **AuxIndexStructures.h文件**
+
+```c++
+// Auxiliary index structures, that are used in indexes but that can be forward-declared
+
+#ifndef FAISS_AUX_INDEX_STRUCTURES_H
+#define FAISS_AUX_INDEX_STRUCTURES_H
+
+#include <stdint.h>
+
+#include <vector>
+#include <unordered_set>
+#include <memory>
+#include <mutex>
+
+#include <faiss/Index.h>
+
+namespace faiss {
+
+    /** The objective is to have a simple result structure while
+     *  minimizing the number of mem copies in the result. The method
+     *  do_allocation can be overloaded to allocate the result tables in
+     *  the matrix type of a scripting language like Lua or Python. */
+    struct RangeSearchResult {
+        size_t nq;      ///< nb of queries
+        size_t *lims;   ///< size (nq + 1)
+
+        typedef Index::idx_t idx_t;
+
+        idx_t *labels;     ///< result for query i is labels[lims[i]:lims[i+1]]
+        float *distances;  ///< corresponding distances (not sorted)
+
+        size_t buffer_size; ///< size of the result buffers used
+
+        /// lims must be allocated on input to range_search.
+        explicit RangeSearchResult (idx_t nq, bool alloc_lims=true);
+
+        /// called when lims contains the nb of elements result entries for each query
+        virtual void do_allocation ();
+
+        virtual ~RangeSearchResult ();
+    };
+
+    /** Encapsulates a set of ids to remove. */
+    struct IDSelector {
+        typedef Index::idx_t idx_t;
+        virtual bool is_member (idx_t id) const = 0;
+        virtual ~IDSelector() {}
+    };
+
+    /** remove ids between [imni, imax) */
+    struct IDSelectorRange: IDSelector {
+        idx_t imin, imax;
+
+        IDSelectorRange (idx_t imin, idx_t imax);
+        bool is_member(idx_t id) const override;
+        ~IDSelectorRange() override {}
+    };
+
+    /** simple list of elements to remove
+     *
+     * this is inefficient in most cases, except for IndexIVF with
+     * maintain_direct_map
+     */
+    struct IDSelectorArray: IDSelector {
+        size_t n;
+        const idx_t *ids;
+
+        IDSelectorArray (size_t n, const idx_t *ids);
+        bool is_member(idx_t id) const override;
+        ~IDSelectorArray() override {}
+    };
+
+    /** Remove ids from a set. Repetitions of ids in the indices set
+     * passed to the constructor does not hurt performance. The hash
+     * function used for the bloom filter and GCC's implementation of
+     * unordered_set are just the least significant bits of the id. This
+     * works fine for random ids or ids in sequences but will produce many
+     * hash collisions if lsb's are always the same */
+    struct IDSelectorBatch: IDSelector {
+
+        std::unordered_set<idx_t> set;
+
+        typedef unsigned char uint8_t;
+        std::vector<uint8_t> bloom; // assumes low bits of id are a good hash value
+        int nbits;
+        idx_t mask;
+
+        IDSelectorBatch (size_t n, const idx_t *indices);
+        bool is_member(idx_t id) const override;
+        ~IDSelectorBatch() override {}
+    };
+
+    /****************************************************************
+     * Result structures for range search.
+     *
+     * The main constraint here is that we want to support parallel
+     * queries from different threads in various ways: 1 thread per query,
+     * several threads per query. We store the actual results in blocks of
+     * fixed size rather than exponentially increasing memory. At the end,
+     * we copy the block content to a linear result array.
+     *****************************************************************/
+
+    /** List of temporary buffers used to store results before they are
+     *  copied to the RangeSearchResult object. */
+    struct BufferList {
+        typedef Index::idx_t idx_t;
+
+        // buffer sizes in # entries
+        size_t buffer_size;
+
+        struct Buffer {
+            idx_t *ids;
+            float *dis;
+        };
+
+        std::vector<Buffer> buffers;
+        size_t wp; ///< write pointer in the last buffer.
+
+        explicit BufferList (size_t buffer_size);
+
+        ~BufferList ();
+
+        /// create a new buffer
+        void append_buffer ();
+
+        /// add one result, possibly appending a new buffer if needed
+        void add (idx_t id, float dis);
+
+        /// copy elemnts ofs:ofs+n-1 seen as linear data in the buffers to
+        /// tables dest_ids, dest_dis
+        void copy_range (size_t ofs, size_t n,
+                         idx_t * dest_ids, float *dest_dis);
+
+    };
+
+    struct RangeSearchPartialResult;
+
+    /// result structure for a single query
+    struct RangeQueryResult {
+        using idx_t = Index::idx_t;
+        idx_t qno;    //< id of the query
+        size_t nres;  //< nb of results for this query
+        RangeSearchPartialResult * pres;
+
+        /// called by search function to report a new result
+        void add (float dis, idx_t id);
+    };
+
+    /// the entries in the buffers are split per query
+    struct RangeSearchPartialResult: BufferList {
+        RangeSearchResult * res;
+
+        /// eventually the result will be stored in res_in
+        explicit RangeSearchPartialResult (RangeSearchResult * res_in);
+
+        /// query ids + nb of results per query.
+        std::vector<RangeQueryResult> queries;
+
+        /// begin a new result
+        RangeQueryResult & new_result (idx_t qno);
+
+        /*****************************************
+         * functions used at the end of the search to merge the result
+         * lists */
+        void finalize ();
+
+        /// called by range_search before do_allocation
+        void set_lims ();
+
+        /// called by range_search after do_allocation
+        void copy_result (bool incremental = false);
+
+        /// merge a set of PartialResult's into one RangeSearchResult
+        /// on ouptut the partialresults are empty!
+        static void merge (std::vector <RangeSearchPartialResult *> &
+                           partial_results, bool do_delete=true);
+
+    };
+
+
+    /***********************************************************
+     * The distance computer maintains a current query and computes
+     * distances to elements in an index that supports random access.
+     *
+     * The DistanceComputer is not intended to be thread-safe (eg. because
+     * it maintains counters) so the distance functions are not const,
+     * instanciate one from each thread if needed.
+     ***********************************************************/
+    struct DistanceComputer {
+         using idx_t = Index::idx_t;
+
+         /// called before computing distances
+         virtual void set_query(const float *x) = 0;
+
+         /// compute distance of vector i to current query
+         virtual float operator () (idx_t i) = 0;
+
+         /// compute distance between two stored vectors
+         virtual float symmetric_dis (idx_t i, idx_t j) = 0;
+
+         virtual ~DistanceComputer() {}
+    };
+
+    /***********************************************************
+     * Interrupt callback
+     ***********************************************************/
+    struct InterruptCallback {
+        virtual bool want_interrupt () = 0;
+        virtual ~InterruptCallback() {}
+
+        // lock that protects concurrent calls to is_interrupted
+        static std::mutex lock;
+
+        static std::unique_ptr<InterruptCallback> instance;
+
+        static void clear_instance ();
+
+        /** check if:
+         * - an interrupt callback is set
+         * - the callback retuns true
+         * if this is the case, then throw an exception. Should not be called
+         * from multiple threds.
+         */
+        static void check ();
+
+        /// same as check() but return true if is interrupted instead of
+        /// throwing. Can be called from multiple threads.
+        static bool is_interrupted ();
+
+        /** assuming each iteration takes a certain number of flops, what
+         * is a reasonable interval to check for interrupts?
+         */
+        static size_t get_period_hint (size_t flops);
+    };
+
+}; // namespace faiss
 
 #endif
 ```
