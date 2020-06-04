@@ -1559,6 +1559,9 @@ t   ptrdiff_t   ptrdiff_t                   ptrdiff_t*
 L           long double             
 
 
+
+https://zh.cppreference.com/w/c/header
+
 ## 五、Cblas库
 
 CBLAS是BLAS的C语言接口。BLAS的全称是Basic Linear Algebra Subprograms,中文大概可以叫做基础线性代数子程序。主要是用于向量和矩阵计算的高性能数学库。本身BLAS是用Fortran写的,为了方便C/C++程序的使用，就有了BLAS的C接口库CBLAS。BLAS的主页是http://www.netlib.org/blas/,CBLAS的下载地址也可以在这个页面上找到。
