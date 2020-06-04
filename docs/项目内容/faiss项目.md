@@ -363,17 +363,17 @@ print(I[:5])                   # neighbors of the 5 first queries
 print(I[-5:])                  # neighbors of the 5 last queries
 ```
 
-![](http://upload-images.jianshu.io/upload_images/5617720-56b8280f2c78029b.png?imageMogr2/auto-orient/strip|imageView2/2/w/569/format/webp)
+<img src="http://upload-images.jianshu.io/upload_images/5617720-56b8280f2c78029b.png?imageMogr2/auto-orient/strip|imageView2/2/w/569/format/webp" style="width: 45%" > 
 
 ## 二、faiss原理
 
 ### 2.1 faiss核心算法实现
 
-![](http://raw.githubusercontent.com/wiki/facebookresearch/faiss/PQ_variants_Faiss_annotated.png)
+<img src="http://raw.githubusercontent.com/wiki/facebookresearch/faiss/PQ_variants_Faiss_annotated.png" style="width: 45%" > 
 
 faiss对一些基础的算法提供了非常高效的失效
 
-> - 聚类Faiss提供了一个高效的k-means实现
+> - 聚类faiss提供了一个高效的k-means实现
 > - PCA降维算法
 > - PQ(Product Quantizer)编码/解码
 
