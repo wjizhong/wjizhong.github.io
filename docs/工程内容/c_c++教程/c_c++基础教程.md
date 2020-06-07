@@ -1215,8 +1215,6 @@ int main(void) {
 
 运行结果:`my print:Hello world`。
 
-
-
 ## 三、openMP
 
 `Open Multi-Processing`的缩写,是一个应用程序接口(`API`),可用于显式指导多线程、共享内存的并行性。由三个主要的`API`组件组成:编译器指令、运行时库函数和环境变量。
@@ -1721,6 +1719,91 @@ t   ptrdiff_t   ptrdiff_t                   ptrdiff_t*
 L           long double             
 
 
+### 4.2 thread库
+
+* **thread类**
+
+**数据**
+
+| 数据 | 说明 |
+| :--- | :--- |
+| `id` | 表示线程的id |
+| `native_handle_type` | 返回底层实现定义的线程句柄 |
+
+**函数**
+
+| 函数 | 说明 | 用法 |
+| :--- | :--- | :--- |
+| `(constructor)` | 构造新的thread对象 | `explicit thread (Fn&& fn, Args&&... args);`,`thread() noexcept;` |
+| `(destructor)` | 析构thread对象,必须合并或分离底层线程 |  |
+| `operator=` | 移动thread对象 | `thread& operator= (thread&& rhs) noexcept;` |
+| `get_id` | 返回线程的id | `id get_id() const noexcept;` |
+| `joinable` | 检查线程是否可合并,即潜在地运行于平行环境中 | `bool joinable() const noexcept;` |
+| `join` | 等待线程完成其执行 | `void join();` |
+| `detach` | 容许线程从线程句柄独立开来执行 | `void detach();` |
+| `swap` | 交换二个thread对象 | `void swap (thread& x) noexcept;` |
+| `native_handle` | 返回底层实现定义的线程句柄 | `native_handle_type native_handle();` |
+| `hardware_concurrency` | 返回实现支持的并发线程数 | `static unsigned hardware_concurrency() noexcept;` | 
+
+**非成员函数**
+
+| 函数 | 说明 | 用法 |
+| :--- | :--- | :--- |
+| `swap` | 特化std::swap算法 | `void swap (thread& x, thread& y) noexcept;` |
+
+```c++
+// thread example
+#include <iostream>       // std::cout
+#include <thread>         // std::thread
+ 
+void foo()  {
+  // do stuff...
+}
+
+void bar(int x) {
+  // do stuff...
+}
+
+int main()  {
+    std::thread first (foo);     // spawn new thread that calls foo()
+    std::thread second (bar,0);  // spawn new thread that calls bar(0)
+
+    std::cout << "main, foo and bar now execute concurrently...\n";
+
+    // synchronize threads:
+    first.join();                // pauses until first finishes
+    second.join();               // pauses until second finishes
+    std::cout << "foo and bar completed.\n";
+    return 0;
+}
+```
+
+* **this_thread命名空间**
+
+| 函数 | 说明 | 用法 |
+| :--- | :--- | :--- |
+| `get_id` | 返回当前线程的线程id | `thread::id get_id() noexcept;` |
+| `yield` | 建议实现重新调度各执行线程 | `void yield() noexcept;` |
+| `sleep_until` | 使当前线程的执行停止直到指定的时间点 | `void sleep_until (const chrono::time_point<Clock,Duration>& abs_time);` |
+Sleep until time point (function )
+| `sleep_for` | 使当前线程的执行停止指定的时间段 | `void sleep_for (const chrono::duration<Rep,Period>& rel_time);` |
+
+```c++
+// this_thread::sleep_for example
+#include <iostream>       // std::cout, std::endl
+#include <thread>         // std::this_thread::sleep_for
+#include <chrono>         // std::chrono::seconds
+ 
+int main() {
+    std::cout << "countdown:\n";
+    for (int i=10; i>0; --i) {
+        std::cout << i << std::endl;
+        std::this_thread::sleep_for (std::chrono::seconds(1));
+    }
+    std::cout << "Lift off!\n";
+    return 0;
+}
+```
 
 https://zh.cppreference.com/w/c/header
 
