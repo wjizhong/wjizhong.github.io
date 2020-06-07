@@ -61,6 +61,8 @@
               ]},
           ]},
           {title: "Used with o, x or X specifiers the value is preceeded with 0, 0x or 0X respectively for values different than zero.", url: "#used-with-o-x-or-x-specifiers-the-value-is-preceeded-with-0-0x-or-0x-respectively-for-values-different-than-zero", level:1, children: [
+              {title: "4.2 thread\u5e93", url: "#42-thread", level:2, children: [ 
+              ]},
               {title: "\u4e94\u3001Cblas\u5e93", url: "#cblas", level:2, children: [ 
               ]},
               {title: "\u516d\u3001\u6307\u4ee4\u96c6", url: "#_4", level:2, children: [
@@ -1971,6 +1973,189 @@ j   intmax_t    uintmax_t                   intmax_t<em>
 z   size_t  size_t                  size_t</em>
 t   ptrdiff_t   ptrdiff_t                   ptrdiff_t*
 L           long double             </p>
+<h3 id="42-thread">4.2 thread库</h3>
+<ul>
+<li><strong>thread类</strong></li>
+</ul>
+<p><strong>数据</strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">数据</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>id</code></td>
+<td align="left">表示线程的id</td>
+</tr>
+<tr>
+<td align="left"><code>native_handle_type</code></td>
+<td align="left">返回底层实现定义的线程句柄</td>
+</tr>
+</tbody>
+</table>
+<p><strong>函数</strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">函数</th>
+<th align="left">说明</th>
+<th align="left">用法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>(constructor)</code></td>
+<td align="left">构造新的thread对象</td>
+<td align="left"><code>explicit thread (Fn&amp;&amp; fn, Args&amp;&amp;... args);</code>,<code>thread() noexcept;</code></td>
+</tr>
+<tr>
+<td align="left"><code>(destructor)</code></td>
+<td align="left">析构thread对象,必须合并或分离底层线程</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><code>operator=</code></td>
+<td align="left">移动thread对象</td>
+<td align="left"><code>thread&amp; operator= (thread&amp;&amp; rhs) noexcept;</code></td>
+</tr>
+<tr>
+<td align="left"><code>get_id</code></td>
+<td align="left">返回线程的id</td>
+<td align="left"><code>id get_id() const noexcept;</code></td>
+</tr>
+<tr>
+<td align="left"><code>joinable</code></td>
+<td align="left">检查线程是否可合并,即潜在地运行于平行环境中</td>
+<td align="left"><code>bool joinable() const noexcept;</code></td>
+</tr>
+<tr>
+<td align="left"><code>join</code></td>
+<td align="left">等待线程完成其执行</td>
+<td align="left"><code>void join();</code></td>
+</tr>
+<tr>
+<td align="left"><code>detach</code></td>
+<td align="left">容许线程从线程句柄独立开来执行</td>
+<td align="left"><code>void detach();</code></td>
+</tr>
+<tr>
+<td align="left"><code>swap</code></td>
+<td align="left">交换二个thread对象</td>
+<td align="left"><code>void swap (thread&amp; x) noexcept;</code></td>
+</tr>
+<tr>
+<td align="left"><code>native_handle</code></td>
+<td align="left">返回底层实现定义的线程句柄</td>
+<td align="left"><code>native_handle_type native_handle();</code></td>
+</tr>
+<tr>
+<td align="left"><code>hardware_concurrency</code></td>
+<td align="left">返回实现支持的并发线程数</td>
+<td align="left"><code>static unsigned hardware_concurrency() noexcept;</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>非成员函数</strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">函数</th>
+<th align="left">说明</th>
+<th align="left">用法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>swap</code></td>
+<td align="left">特化std::swap算法</td>
+<td align="left"><code>void swap (thread&amp; x, thread&amp; y) noexcept;</code></td>
+</tr>
+</tbody>
+</table>
+<pre><code class="c++">// thread example
+#include &lt;iostream&gt;       // std::cout
+#include &lt;thread&gt;         // std::thread
+
+void foo()  {
+  // do stuff...
+}
+
+void bar(int x) {
+  // do stuff...
+}
+
+int main()  {
+    std::thread first (foo);     // spawn new thread that calls foo()
+    std::thread second (bar,0);  // spawn new thread that calls bar(0)
+
+    std::cout &lt;&lt; &quot;main, foo and bar now execute concurrently...\n&quot;;
+
+    // synchronize threads:
+    first.join();                // pauses until first finishes
+    second.join();               // pauses until second finishes
+    std::cout &lt;&lt; &quot;foo and bar completed.\n&quot;;
+    return 0;
+}
+</code></pre>
+
+<ul>
+<li><strong>this_thread命名空间</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left">函数</th>
+<th align="left">说明</th>
+<th align="left">用法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>get_id</code></td>
+<td align="left">返回当前线程的线程id</td>
+<td align="left"><code>thread::id get_id() noexcept;</code></td>
+</tr>
+<tr>
+<td align="left"><code>yield</code></td>
+<td align="left">建议实现重新调度各执行线程</td>
+<td align="left"><code>void yield() noexcept;</code></td>
+</tr>
+<tr>
+<td align="left"><code>sleep_until</code></td>
+<td align="left">使当前线程的执行停止直到指定的时间点</td>
+<td align="left"><code>void sleep_until (const chrono::time_point&lt;Clock,Duration&gt;&amp; abs_time);</code></td>
+</tr>
+<tr>
+<td align="left">Sleep until time point (function )</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><code>sleep_for</code></td>
+<td align="left">使当前线程的执行停止指定的时间段</td>
+<td align="left"><code>void sleep_for (const chrono::duration&lt;Rep,Period&gt;&amp; rel_time);</code></td>
+</tr>
+</tbody>
+</table>
+<pre><code class="c++">// this_thread::sleep_for example
+#include &lt;iostream&gt;       // std::cout, std::endl
+#include &lt;thread&gt;         // std::this_thread::sleep_for
+#include &lt;chrono&gt;         // std::chrono::seconds
+
+int main() {
+    std::cout &lt;&lt; &quot;countdown:\n&quot;;
+    for (int i=10; i&gt;0; --i) {
+        std::cout &lt;&lt; i &lt;&lt; std::endl;
+        std::this_thread::sleep_for (std::chrono::seconds(1));
+    }
+    std::cout &lt;&lt; &quot;Lift off!\n&quot;;
+    return 0;
+}
+</code></pre>
+
 <p>https://zh.cppreference.com/w/c/header</p>
 <h2 id="cblas">五、Cblas库</h2>
 <p>CBLAS是BLAS的C语言接口。BLAS的全称是Basic Linear Algebra Subprograms,中文大概可以叫做基础线性代数子程序。主要是用于向量和矩阵计算的高性能数学库。本身BLAS是用Fortran写的,为了方便C/C++程序的使用，就有了BLAS的C接口库CBLAS。BLAS的主页是http://www.netlib.org/blas/,CBLAS的下载地址也可以在这个页面上找到。</p>
