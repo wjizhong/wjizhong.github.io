@@ -68,11 +68,11 @@
                   ]},
                   {title: "4.4 \u9519\u8bef\u5904\u7406", url: "#44", level:3, children: [
                   ]},
-                  {title: "1.6 \u96c6\u6210\u6570\u636e\u5e93", url: "#16", level:3, children: [
-                  ]}, 
-              ]},
-              {title: "\u4e8c\u3001Vue.js\u548cFlask\u6784\u5efa\u5355\u9875App", url: "#vuejsflaskapp", level:2, children: [
-                  {title: "2.1 \u5ba2\u6237\u7aef", url: "#21_1", level:3, children: [
+                  {title: "4.5 \u96c6\u6210\u6570\u636e\u5e93", url: "#45", level:3, children: [
+                  ]},
+                  {title: "4.6 Vue.js\u548cFlask\u6784\u5efa\u5355\u9875App", url: "#46-vuejsflaskapp", level:3, children: [
+                      {title: "4.6.1 \u5ba2\u6237\u7aef", url: "#461", level:4,children: [
+                      ]},
                   ]},
                   {title: "1.2 \u540e\u7aef", url: "#12", level:3, children: [
                   ]},
@@ -2225,7 +2225,7 @@ def login():
 </code></pre>
 
 <p>运行结果大家就自己试试吧。</p>
-<h3 id="16">1.6 集成数据库</h3>
+<h3 id="45">4.5 集成数据库</h3>
 <p>既然前几篇都用用户登录作为例子,我们这篇就继续讲登录,只是登录的信息会由数据库来验证。让我们先准备SQLite环境吧。</p>
 <ul>
 <li><strong>初始化数据库</strong></li>
@@ -2243,7 +2243,7 @@ INSERT INTO users (name, password) VALUES ('admin', '123');
 </code></pre>
 
 <p>运行sqlite3命令,初始化数据库。我们的数据库文件就放在”db”子目录下的”user.db”文件中。</p>
-<pre><code class="python">$ sqlite3 db/user.db &lt; init.sql
+<pre><code class="sh">$ sqlite3 db/user.db &lt; init.sql
 </code></pre>
 
 <ul>
@@ -2264,7 +2264,7 @@ app = Flask(__name__)
 app.config.from_object('config')
 </code></pre>
 
-<p>这里也可以用app.config.from_envvar('FLASK_SETTINGS', silent=True)方法来导入配置信息,此时程序会读取系统环境变量中FLASK_SETTINGS的值,来获取配置文件路径,并加载此文件。如果文件不存在,该语句返回False。参数silent=True表示忽略错误。</p>
+<p>这里也可以用<code>app.config.from_envvar('FLASK_SETTINGS', silent=True)</code>方法来导入配置信息,此时程序会读取系统环境变量中<code>FLASK_SETTINGS</code>的值,来获取配置文件路径,并加载此文件。如果文件不存在,该语句返回False。参数<code>silent=True</code>表示忽略错误。</p>
 <ul>
 <li><strong>建立和释放数据库连接</strong></li>
 </ul>
@@ -2280,7 +2280,7 @@ def teardown_request(exception):
         db.close()
 </code></pre>
 
-<p>我们在before_request()里建立数据库连接,它会在每次请求开始时被调用;并在teardown_request()关闭它,它会在每次请求关闭前被调用。</p>
+<p>我们在<code>before_request()</code>里建立数据库连接,它会在每次请求开始时被调用;并在<code>teardown_request()</code>关闭它,它会在每次请求关闭前被调用。</p>
 <ul>
 <li><strong>查询数据库</strong></li>
 </ul>
@@ -2303,7 +2303,7 @@ def login():
 </code></pre>
 
 <p>模板中加上”login.html”文件</p>
-<pre><code class="python">{% extends &quot;layout.html&quot; %}
+<pre><code class="html">{% extends &quot;layout.html&quot; %}
 {% block body %}
 &lt;form name=&quot;login&quot; action=&quot;/login&quot; method=&quot;post&quot;&gt;
     Username: &lt;input type=&quot;text&quot; name=&quot;user&quot; /&gt;&lt;br&gt;
@@ -2314,7 +2314,7 @@ def login():
 </code></pre>
 
 <p>终于一个真正的登录验证写完了(前几篇都是假的),打开浏览器登录下吧。</p>
-<h2 id="vuejsflaskapp">二、Vue.js和Flask构建单页App</h2>
+<h3 id="46-vuejsflaskapp">4.6 Vue.js和Flask构建单页App</h3>
 <p>参考连接:<a href="https://juejin.im/post/5ab0a21df265da23a228efd3"><code>https://juejin.im/post/5ab0a21df265da23a228efd3</code></a></p>
 <p>建立一个单页应用程序(应用程序使用单页组成,vue-router在HTML5的History-mode以及其他更多好用的功能)用vue.js,由Flask提供Web服务?简单地说应该这样,如下所示:</p>
 <blockquote>
@@ -2325,7 +2325,7 @@ def login():
 <li>可以访问API端,甚至当为了前端开发而运行Node.js的时候。</li>
 </ul>
 </blockquote>
-<h3 id="21_1">2.1 客户端</h3>
+<h4 id="461">4.6.1 客户端</h4>
 <p>将使用Vue CLI产生基本vue.js App。如果你还没有安装它,请运行:<code>npm install -g vue-cli</code>,客户端和后端代码将被拆分到不同的文件夹。初始化前端部分运行跟踪:</p>
 <pre><code class="shell">mkdir flaskvue
 cd flaskvue
@@ -2336,7 +2336,7 @@ npm install
 npm run dev
 </code></pre>
 
-<p>添加home.vue和about.vue到frontend/src/components文件夹。它们非常简单,像这样:</p>
+<p>添加<code>home.vue</code>和<code>about.vue</code>到<code>frontend/src/components</code>文件夹。它们非常简单,像这样:</p>
 <pre><code class="html">// Home.vue
 &lt;template&gt;
     &lt;div&gt;
@@ -2352,8 +2352,8 @@ npm run dev
 &lt;/template&gt;
 </code></pre>
 
-<p>我们将使用它们正确地识别我们当前的位置(根据地址栏)。现在我们需要改变frontend/src/router/index.js文件以便使用我们的新组件:</p>
-<pre><code class="shell">import Vue from 'vue'
+<p>我们将使用它们正确地识别我们当前的位置(根据地址栏)。现在我们需要改变<code>frontend/src/router/index.js</code>文件以便使用我们的新组件:</p>
+<pre><code class="html">import Vue from 'vue'
 import Router from 'vue-router'
 const routerOptions = [
     { path: '/', component: 'Home' },
@@ -2374,7 +2374,7 @@ export default new Router({
 })
 </code></pre>
 
-<p>如果你试着输入localhost:8080和localhost:8080/about,你应该看到相应的页面。我们几乎已经准备好构建一个项目,并且能够创建一个静态资源文件包。在此之前,让我们为它们重新定义一下输出目录。在frontend/config/index.js找到下一个设置:</p>
+<p>如果你试着输入<code>localhost:8080</code>和<code>localhost:8080/about</code>,你应该看到相应的页面。我们几乎已经准备好构建一个项目,并且能够创建一个静态资源文件包。在此之前,让我们为它们重新定义一下输出目录。在<code>frontend/config/index.js</code>找到下一个设置:</p>
 <pre><code class="shell">index: path.resolve(__dirname, '../dist/index.html'),
 assetsRoot: path.resolve(__dirname, '../dist'),
 </code></pre>
@@ -2384,7 +2384,7 @@ assetsRoot: path.resolve(__dirname, '../dist'),
 assetsRoot: path.resolve(__dirname, '../../dist'),
 </code></pre>
 
-<p>所以/dist文件夹的HTML、CSS、JS会在同一级目录/frontend。现在你可以运行npm run build创建一个包。</p>
+<p>所以<code>/dist</code>文件夹的HTML、CSS、JS会在同一级目录<code>/frontend</code>。现在你可以运行npm run build创建一个包。</p>
 <h3 id="12">1.2 后端</h3>
 <p>对于Flask服务器,我将使用Python版本3.6。在/flaskvue创建新的子文件夹存放后端代码并初始化虚拟环境:</p>
 <pre><code class="shell"># 需要安装flask: pip install Flask
