@@ -437,20 +437,20 @@ static PyObject* W_add(PyObject* self, PyObject* args){
     }
 }
 
-// 注册函数
-// PyMethodDef列表中结构体成员有四个函数:
-//  "add"导出后在pyhton中可见的方法名。
-//  W_add实际映射到C中的方法名。
-//  METH_VARARGS表示传入方法的是普通参数,当然还可以处理关键词参数。
-//  此方法的注释。
+//  注册函数
+//  PyMethodDef列表中结构体成员有四个函数:
+//      "add"导出后在pyhton中可见的方法名。
+//      W_add实际映射到C中的方法名。
+//      METH_VARARGS表示传入方法的是普通参数,当然还可以处理关键词参数。
+//      此方法的注释。
 static PyMethodDef ExtendMethods[] = {
     {"add", W_add, METH_VARARGS, "a function from C"},
     {NULL, NULL, 0, NULL},
 };
 
-// 注册模块
-//  方法名必须是init加上模块名,然后调用Py_InitModule来注册模块,
-//  这个函数的第一个参数就是模块名,第二个参数是此模块中我们导出的方法,就是上一步定义的结构体
+//  注册模块
+//      方法名必须是init加上模块名,然后调用Py_InitModule来注册模块,
+//      这个函数的第一个参数就是模块名,第二个参数是此模块中我们导出的方法,就是上一步定义的结构体
 PyMODINIT_FUNC initdemo(){
     Py_InitModule("demo", ExtendMethods);
 }
@@ -471,7 +471,7 @@ demo.add(3, 4)
 
 ### 2.2 编码标准
 
-如果您正在编写包含在Cpython中的C代码,那么你必须遵循PEP 7。这些指南适用于您所贡献的python版本。除非你最终希望将它们贡献给python,否则你的第三方扩展模块不需要遵循这些约定.
+如果您正在编写包含在Cpython中的C代码,那么你必须遵循[PEP 7](https://www.python.org/dev/peps/pep-0007/)。这些指南适用于您所贡献的python版本。除非你最终希望将它们贡献给python,否则你的第三方扩展模块不需要遵循这些约定.
 
 
 * **包含文件**
@@ -482,7 +482,7 @@ demo.add(3, 4)
 #include"python.h"
 ```
 
-这意味着包含以下标准标题:<stdio.h>,<string.h>,<errno.h>,<limits.h>,<assert.h>和<stdlib.h>(如果可用).
+这意味着包含以下标准标题:`<stdio.h>`,`<string.h>`,`<errno.h>`,`<limits.h>`,`<assert.h>`和`<stdlib.h>`(如果可用).
 
 注意:
 
@@ -492,9 +492,9 @@ demo.add(3, 4)
 >
 > 重要的用户代码永远不应该定义以Py或_Py开头的名称。这会使读者感到困惑,并危及用户代码对未来python版本的可移植性,这些版本可能会定义以这些前缀之一开头的其他名称.
 >
-头文件通常与python一起安装。在Unix上,它们位于prefix/include/pythonversion/和exec_prefix/include/pythonversion/目录中,其中prefix和exec_prefix由python的相应参数定义配置脚本和version是"%d.%d"%sys.version_info[:2]。在Windows上,标题安装在prefix/include中,其中prefix是指定给安装程序的安装目录.
+> 头文件通常与python一起安装。在Unix上,它们位于`prefix/include/pythonversion/`和`exec_prefix/include/pythonversion/`目录中,其中`prefix`和`exec_prefix`由`python`的相应参数定义配置脚本和`version`是`"%d.%d"%sys.version_info[:2]`。在Windows上,标题安装在`prefix/include`中,其中`prefix`是指定给安装程序的安装目录.
 >
-> 要包含标题,请将两个目录(如果不同)放在编译器上包含的搜索路径。做not将父目录放在搜索路径上,然后使用#include<pythonX.Y/python.h>;这将打破多平台构建,因为prefix下面的平台独立头包含来自exec_prefix.
+> 要包含标题,请将两个目录(如果不同)放在编译器上包含的搜索路径。做not将父目录放在搜索路径上,然后使用`#include<pythonX.Y/python.h>`;这将打破多平台构建,因为`prefix`下面的平台独立头包含来自`exec_prefix`.
 >
 > C++用户应该注意,尽管API完全使用C定义,但是头文件正确地将入口点声明为extern"C",因此不需要做任何特殊的事情来使用C++中的API.
 
@@ -522,13 +522,13 @@ python头文件中定义了几个有用的宏。许多被定义为更接近它�
 
 * **类型和引用计数**
 
-大多数python/C API函数都有一个或多个参数以及类型的返回值PyObject*。此类型是指向表示任意python对象的不透明数据类型的指针。由于在大多数情况下(例如赋值,范围规则和参数传递),python语言都以相同的方式处理所有python对象类型,因此它们应该由单个C类型表示。几乎所有python对象都存在于堆中:你永远不会声明类型为PyObject,只能声明PyObject*类型的指针变量。唯一的例外是类型对象;因为它们绝对不能被分配,所以它们通常是静态的PyTypeObject对象.
+大多数python/C API函数都有一个或多个参数以及类型的返回值`PyObject *`。此类型是指向表示任意python对象的不透明数据类型的指针。由于在大多数情况下(例如赋值,范围规则和参数传递),python语言都以相同的方式处理所有python对象类型,因此它们应该由单个C类型表示。几乎所有python对象都存在于堆中:你永远不会声明类型为PyObject,只能声明`PyObject *`类型的指针变量。唯一的例外是类型对象;因为它们绝对不能被分配,所以它们通常是静态的PyTypeObject对象.
 
-所有python对象(甚至python整数)都有type和referencecount。对象的类型确定它是什么类型的对象(例如,整数,列表或用户定义的函数;还有更多的问题在中标准类型层次结构)。对于每个众所周知的类型,都有一个macroto检查对象是否属于该类型;例如,PyList_Check(a)istrueif(且仅当)a指向的对象是一个python列表.
+所有python对象(甚至python整数)都有type和referencecount。对象的类型确定它是什么类型的对象(例如,整数,列表或用户定义的函数;还有更多的问题在中标准类型层次结构)。对于每个众所周知的类型,都有一个macroto检查对象是否属于该类型;例如,`PyList_Check(a) is true if(且仅当)a`指向的对象是一个python列表.
 
 **引用计数**
 
-引用计数很重要因为今天的计算机有一个有限的(并且是严重限制)内存大小;它计算有多少不同的地方有一个对象的引用。这样的位置可以是另一个对象,或全局(或静态)C变量,或某个C函数中的局部变量。当对象的引用计数变为零时,该对象将被释放。Ifit包含对其他对象的引用,它们的引用计数递减。如果此递减使其引用计数变为零,则可以依次释放其他对象,依此类推。(这里有一个明显的问题,对象在这里相互引用;现在,解决方案是“不要用dothat。”)
+引用计数很重要因为今天的计算机有一个有限的(并且是严重限制)内存大小;它计算有多少不同的地方有一个对象的引用。这样的位置可以是另一个对象,或全局(或静态)C变量,或某个C函数中的局部变量。当对象的引用计数变为零时,该对象将被释放。If it包含对其他对象的引用,它们的引用计数递减。如果此递减使其引用计数变为零,则可以依次释放其他对象,依此类推。(这里有一个明显的问题,对象在这里相互引用;现在,解决方案是“不要用do that。”)
 
 引用计数总是被明确地操作。通常的方法是使用宏Py_INCREF()将对象的引用计数增加1,并使用Py_DECREF()将其减1。Py_DECREF()macrois比incrementf要复杂得多,因为它必须检查引用计数是否为零然后导致对象的解除分配器被置换。deallocator是包含在对象的类型结构中的函数指针。特定于类型的解除分配器负责减少对象中包含的其他对象的干扰计数(如果这是复合对象类型,例如列表),以及执行所需的任何其他完成。引用计数不可能溢出;由于虚拟内存中存在明显的内存位置(假设sizeof(Py_ssize_t)>=sizeof(void*)),因此至少会使用多少位来保存引用计数。因此,引用计数增量是一个简单的操作.
 
@@ -1703,6 +1703,1619 @@ if not isdir('dir_path'):
             zipf.extract(name, path='dir_path')
         zipf.close()
 ...
+```
+
+## 四、falsk教程
+
+参考链接:https://juejin.im/post/5a32513ff265da430f321f3d
+
+### 4.1 falsk介绍
+
+* **Hello World**
+
+```python
+from flask import Flask
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return '<h1>Hello World</h1>'
+
+if __name__ == '__main__':
+    app.run()
+```
+
+一个Web应用的代码就写完了,对,就是这么简单!保存为”hello.py”,打开控制台,到该文件目录下,运行`python hello.py`。如果看到
+
+```sh
+* Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+```
+
+字样后,就说明服务器启动完成。打开你的浏览器,访问`http://127.0.0.1:5000/`,一个硕大的”Hello World”映入眼帘。
+
+**简单解释这段代码**
+
+首先引入了Flask包,并创建一个Web应用的实例”app”
+
+```python
+from flask import Flask
+app = Flask(__name__)
+```
+
+这里给的实例名称就是这个python模块名。
+
+**定义路由规则**
+
+`@app.route('/')`:这个函数级别的注解指明了当地址是根路径时,就调用下面的函数。可以定义多个路由规则,说的高大上些,这里就是MVC中的Contoller。
+
+**处理请求**
+
+```python
+def index():
+    return '<h1>Hello World</h1>'
+```
+
+当请求的地址符合路由规则时,就会进入该函数。可以说,这里是MVC的Model层。你可以在里面获取请求的request对象,返回的内容就是response。本例中的response就是大标题”Hello World”。
+
+**启动Web服务器**
+
+```python
+if __name__ == '__main__':
+    app.run()
+```
+
+当本文件为程序入口(也就是用python命令直接执行本文件)时,就会通过app.run()启动Web服务器。如果不是程序入口,那么该文件就是一个模块。Web服务器会默认监听本地的5000端口,但不支持远程访问。如果你想支持远程,需要在run()方法传入host=0.0.0.0,想改变监听端口的话,传入port=端口号,你还可以设置调试模式。具体例子如下:
+
+```python
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8888, debug=True)
+```
+
+注意,Flask自带的Web服务器主要还是给开发人员调试用的,在生产环境中,你最好是通过WSGI将Flask工程部署到类似Apache或Nginx的服务器上。
+
+* **路由**
+
+从Hello World中,我们了解到URL的路由可以直接写在其要执行的函数上。有人会质疑,这样不是把Model和Controller绑在一起了吗?的确,如果你想灵活的配置Model和Controller,这样是不方便,但是对于轻量级系统来说,灵活配置意义不大,反而写在一块更利于维护。Flask路由规则都是基于Werkzeug的路由模块的,它还提供了很多强大的功能。
+
+**带参数的路由**
+
+让我们在上一篇Hello World的基础上,加上下面的函数。并运行程序。
+
+```python
+@app.route('/hello/<name>')
+def hello(name):
+    return 'Hello %s' % name
+```
+
+当你在浏览器的地址栏中输入`http://localhost:5000/hello/man`,你将在页面上看到”Hello man”的字样。URL路径中`/hello/`后面的参数被作为hello()函数的name参数传了进来。你还可以在URL参数前添加转换器来转换参数类型,我们再来加个函数:
+
+```python
+@app.route('/user/<int:user_id>')
+def get_user(user_id):
+    return 'User ID: %d' % user_id
+```
+
+试下访问`http://localhost:5000/user/man`,你会看到404错误。但是试下`http://localhost:5000/user/123`,页面上就会有”User ID: 123”显示出来。参数类型转换器int:帮你控制好了传入参数的类型只能是整形。目前支持的参数类型转换器有:
+
+| 类型转换器 | 作用 |
+| :--- | --- |
+| 缺省 | 字符型,但不能有斜杠 |
+| `int:` | 整型 |
+| `float:` | 浮点型 |
+| `path:` | 字符型,可有斜杠 |
+
+另外,大家有没有注意到,Flask自带的Web服务器支持热部署。当你修改好文件并保存后,Web服务器自动部署完毕,你无需重新运行程序。
+
+**多URL的路由**
+
+一个函数上可以设施多个URL路由规则
+
+```python
+@app.route('/')
+@app.route('/hello')
+@app.route('/hello/<name>')
+
+def hello(name=None):
+    if name is None:
+        name = 'World'
+    return 'Hello %s' % name
+```
+
+这个例子接受三种URL规则,`/`和`/hello`都不带参数,函数参数name值将为空,页面显示”Hello World”;`/hello/<name>`带参数,页面会显示参数name的值,效果与上面第一个例子相同。
+
+* **HTTP请求方法设置**
+
+HTTP请求方法常用的有Get,Post,Put,Delete。不熟悉的朋友们可以去Google查下。Flask路由规则也可以设置请求方法。
+
+```python
+from flask import request
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        return 'This is a POST request'
+    else:
+        return 'This is a GET request'
+```
+当你请求地址`http://localhost:5000/login`,”GET”和”POST”请求会返回不同的内容,其他请求方法则会返回405错误。有没有觉得用Flask来实现Restful风格很方便啊?
+
+* **URL构建方法**
+
+Flask提供了`url_for()`方法来快速获取及构建URL,方法的第一个参数指向函数名(加过`@app.route`注解的函数),后续的参数对应于要构建的URL变量。下面是几个例子:
+
+```python
+url_for('login')    # 返回/login
+url_for('login', id='1')    # 将id作为URL参数,返回/login?id=1
+url_for('hello', name='man')    # 适配hello函数的name参数,返回/hello/man
+url_for('static', filename='style.css')    # 静态文件地址,返回/static/style.css
+```
+
+* **静态文件位置**
+
+一个Web应用的静态文件包括了JS, CSS, 图片等,Flask的风格是将所有静态文件放在”static”子目录下。并且在代码或模板(下篇会介绍)中,使用`url_for('static')`来获取静态文件目录。如果你想改变这个静态目录的位置,你可以在创建应用时,指定`static_folder`参数。
+
+```python
+app = Flask(__name__, static_folder='files')
+```
+
+### 4.2 模板
+
+Flask的模板功能是基于[Jinja2模板引擎](http://jinja.pocoo.org/)实现的。让我们来实现一个例子吧。创建一个新的Flask运行文件(你应该不会忘了怎么写吧),代码如下:
+
+```python
+from flask import Flask
+from flask import render_template
+
+app = Flask(__name__)
+@app.route('/hello')
+@app.route('/hello/<name>')
+def hello(name=None):
+    return render_template('hello.html', name=name)
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', debug=True)
+```
+
+这段代码同上一篇的多URL路由的例子非常相似,区别就是hello()函数并不是直接返回字符串,而是调用了`render_template()`方法来渲染模板。方法的第一个参数hello.html指向你想渲染的模板名称,第二个参数name是你要传到模板去的变量,变量可以传多个。
+
+那么这个模板hello.html在哪儿呢,变量参数又该怎么用呢?别急,接下来我们创建模板文件。在当前目录下,创建一个子目录”templates”(注意,一定要使用这个名字)。然后在”templates”目录下创建文件”hello.html”,内容如下:
+
+```html
+<!doctype html>
+<title>Hello Sample</title>
+{% if name %}
+    <h1>Hello {{ name }}!</h1>
+{% else %}
+    <h1>Hello World!</h1>
+{% endif %}
+```
+
+这段代码是不是很像HTML?接触过其他模板引擎的朋友们肯定立马秒懂了这段代码。它就是一个HTML模板,根据name变量的值,显示不同的内容。变量或表达式由`{{ }}`修饰,而控制语句由`{% %}`修饰,其他的代码,就是我们常见的HTML。
+
+让我们打开浏览器,输入`http://localhost:5000/hello/man`,页面上即显示大标题”Hello man!“。我们再看下页面源代码
+
+```html
+<!doctype html>
+<title>Hello from Flask</title>
+
+    <h1>Hello man!</h1>
+```
+
+果然,模板代码进入了`Hello {{ name }}`!分支,而且变量`{{ name }}`被替换为了”man”。Jinja2的模板引擎还有更多强大的功能,包括for循环,过滤器等。模板里也可以直接访问内置对象如request, session等。对于Jinja2的细节,感兴趣的朋友们可以自己去查查。
+
+* **模板继承**
+
+一般我们的网站虽然页面多,但是很多部分是重用的,比如页首,页脚,导航栏之类的。对于每个页面,都要写这些代码,很麻烦。Flask的Jinja2模板支持模板继承功能,省去了这些重复代码。让我们基于上面的例子,在”templates”目录下,创建一个名为”layout.html”的模板:
+
+```html
+<!doctype html>
+<title>Hello Sample</title>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+<div class="page">
+    {% block body %}
+    {% endblock %}
+</div>
+```
+
+再修改之前的”hello.html”,把原来的代码定义在`{% block body %}`中,并在代码一开始”继承”上面的”layout.html”:
+
+```html
+{% extends "layout.html" %}
+{% block body %}
+{% if name %}
+    <h1>Hello {{ name }}!</h1>
+{% else %}
+    <h1>Hello World!</h1>
+{% endif %}
+{% endblock %}
+```
+
+打开浏览器,再看下`http://localhost:5000/hello/man`页面的源码。
+
+```html
+<!doctype html>
+<title>Hello Sample</title>
+<link rel="stylesheet" type="text/css" href="/static/style.css">
+<div class="page">
+    <h1>Hello man!</h1>
+</div>
+```
+
+你会发现,虽然`render_template()`加载了”hello.html”模板,但是”layout.html”的内容也一起被加载了。而且”hello.html”中的内容被放置在”layout.html”中`{% block body %}`的位置上。形象的说,就是”hello.html”继承了”layout.html”。
+
+* **HTML自动转义**
+
+我们看下下面的代码:
+
+```python
+@app.route('/')
+def index():
+    return '<div>Hello %s</div>' % '<em>Flask</em>'
+```
+
+打开页面,你会看到”Hello Flask”字样,而且”Flask”是斜体的,因为我们加了`<em>`标签。但有时我们并不想让这些HTML标签自动转义,特别是传递表单参数时,很容易导致HTML注入的漏洞。我们把上面的代码改下,引入”Markup”类:
+
+```python
+from flask import Flask, Markup
+
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return Markup('<div>Hello %s</div>') % '<em>Flask</em>'
+```
+
+再次打开页面,`<em>`标签显示在页面上了。Markup还有很多方法,比如escape()呈现HTML标签, striptags()去除HTML标签。这里就不一一列举了。
+
+### 4.3 Flask内建对象
+
+Flask提供的内建对象常用的有request,session,g,通过request,你还可以获取cookie对象。这些对象不但可以在请求函数中使用,在模板中也可以使用。
+
+* **请求对象request**
+
+引入flask包中的request对象,就可以直接在请求函数中直接使用该对象了。
+
+```python
+from flask import request
+
+@app.route('/login', methods=['POST', 'GET'])
+def login():
+    if request.method == 'POST':
+        if request.form['user'] == 'admin':
+            return 'Admin login successfully!'
+        else:
+            return 'No such user!'
+    title = request.args.get('title', 'Default')
+    return render_template('login.html', title=title)
+```
+
+在templates目录下,添加”login.html”文件
+
+```html
+{% extends "layout.html" %}
+{% block body %}
+<form name="login" action="/login" method="post">
+    Hello {{ title }}, please login by:
+    <input type="text" name="user" />
+</form>
+{% endblock %}
+```
+
+执行上面的例子,结果我就不多描述了。简单解释下,request中method变量可以获取当前请求的方法,即”GET”,“POST”,“DELETE”,“PUT”等;form变量是一个字典,可以获取”Post”请求表单中的内容,在上例中,如果提交的表单中不存在user项,则会返回一个KeyError,你可以不捕获,页面会返回400错误(想避免抛出这KeyError,你可以用`request.form.get('user')`来替代)。而request.args.get()方法则可以获取”Get”请求URL中的参数,该函数的第二个参数是默认值,当URL参数不存在时,则返回默认值。
+
+* **会话对象session**
+
+会话可以用来保存当前请求的一些状态,以便于在请求之前共享信息。我们将上面的python代码改动下:
+
+```python
+from flask import request, session
+
+@app.route('/login', methods=['POST', 'GET'])
+def login():
+    if request.method == 'POST':
+        if request.form['user'] == 'admin':
+            session['user'] = request.form['user']
+            return 'Admin login successfully!'
+        else:
+            return 'No such user!'
+    if 'user' in session:
+        return 'Hello %s!' % session['user']
+    else:
+        title = request.args.get('title', 'Default')
+        return render_template('login.html', title=title)
+
+app.secret_key = '123456'
+```
+
+你可以看到,”admin”登陆成功后,再打开”login”页面就不会出现表单了。session对象的操作就跟一个字典一样。特别提醒,使用session时一定要设置一个密钥app.secret_key,如上例。不然你会得到一个运行时错误,内容大致是RuntimeError: the session is unavailable because no secret key was set。密钥要尽量复杂,最好使用一个随机数,这样不会有重复,上面的例子不是一个好密钥。
+
+我们顺便写个登出的方法,估计我不放例子,大家也都猜到怎么写,就是清除字典里的键值:
+
+```python
+from flask import request, session, redirect, url_for
+
+@app.route('/logout')
+def logout():
+    session.pop('user', None)
+    return redirect(url_for('login'))
+```
+
+* **构建响应**
+
+在之前的例子中,请求的响应我们都是直接返回字符串内容,或者通过模板来构建响应内容然后返回。其实我们也可以先构建响应对象,设置一些参数(比如响应头)后,再将其返回。修改下上例中的”Get”请求部分:
+
+```python
+from flask import request, session, make_response
+
+@app.route('/login', methods=['POST', 'GET'])
+def login():
+    if request.method == 'POST':
+        ...
+    if 'user' in session:
+        ...
+    else:
+        title = request.args.get('title', 'Default')
+        response = make_response(render_template('login.html', title=title), 200)
+        response.headers['key'] = 'value'
+        return response
+```
+
+打开浏览器调试,在”Get”请求用户未登录状态下,你会看到响应头中有一个key项。`make_response`方法就是用来构建response对象的,第二个参数代表响应状态码,缺省就是”200”。response对象的详细使用可参阅Flask的官方API文档。
+
+* **Cookie的使用**
+
+提到了Session,当然也要介绍Cookie喽,毕竟没有Cookie,Session就根本没法用。Flask中使用Cookie也很简单:
+
+```python
+from flask import request, session, make_response
+import time
+
+@app.route('/login', methods=['POST', 'GET'])
+def login():
+    response = None
+    if request.method == 'POST':
+        if request.form['user'] == 'admin':
+            session['user'] = request.form['user']
+            response = make_response('Admin login successfully!')
+            response.set_cookie('login_time', time.strftime('%Y-%m-%d %H:%M:%S'))
+        ...
+    else:
+        if 'user' in session:
+            login_time = request.cookies.get('login_time')
+            response = make_response('Hello %s, you logged in on %s' % (session['user'], login_time))
+        ...
+
+    return response
+```
+
+例子越来越长了,这次我们引入了time模块来获取当前系统时间。我们在返回响应时,通过`response.set_cookie()`函数,来设置Cookie项,之后这个项值会被保存在浏览器中。这个函数的第三个参数max_age可以设置该Cookie项的有效期,单位是秒,不设的话,在浏览器关闭后,该Cookie项即失效。在请求中,request.cookies对象就是一个保存了浏览器Cookie的字典,使用其get()函数就可以获取相应的键值。
+
+* **全局对象g**
+
+flask.g是Flask一个全局对象,这里有点容易让人误解,其实g的作用范围,就在一个请求(也就是一个线程)里,它不能在多个请求间共享。你可以在g对象里保存任何你想保存的内容。一个最常用的例子,就是在进入请求前,保存数据库连接。这个我们会在介绍数据库集成时讲到。
+
+### 4.4 错误处理
+
+使用abort()函数可以直接退出请求,返回错误代码:
+
+```python
+from flask import abort
+
+@app.route('/error')
+def error():
+    abort(404)
+```
+
+上例会显示浏览器的404错误页面。有时候,我们想要在遇到特定错误代码时做些事情,或者重写错误页面,可以用下面的方法:
+
+```python
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('404.html'), 404
+```
+
+此时,当再次遇到404错误时,即会调用`page_not_found()`函数,其返回”404.html”的模板页。第二个参数代表错误代码。不过,在实际开发过程中,我们并不会经常使用abort()来退出,常用的错误处理方法一般都是异常的抛出或捕获。装饰器`@app.errorhandler()`除了可以注册错误代码外,还可以注册指定的异常类型。让我们来自定义一个异常:
+
+```python
+class InvalidUsage(Exception):
+    status_code = 400
+
+    def __init__(self, message, status_code=400):
+        Exception.__init__(self)
+        self.message = message
+        self.status_code = status_code
+
+@app.errorhandler(InvalidUsage)
+def invalid_usage(error):
+    response = make_response(error.message)
+    response.status_code = error.status_code
+    return response
+```
+
+我们在上面的代码中定义了一个异常InvalidUsage,同时我们通过装饰器`@app.errorhandler()`修饰了函数invalid_usage(),装饰器中注册了我们刚定义的异常类。这也就意味着,一但遇到InvalidUsage异常被抛出,这个invalid_usage()函数就会被调用。写个路由试一试吧。
+
+```python
+@app.route('/exception')
+def exception():
+    raise InvalidUsage('No privilege to access the resource', status_code=403)
+```
+
+* **URL重定向**
+
+重定向redirect()函数的使用在上一篇logout的例子中已有出现。作用就是当客户端浏览某个网址时,将其导向到另一个网址。常见的例子,比如用户在未登录时浏览某个需授权的页面,我们将其重定向到登录页要求其登录先。
+
+```python
+from flask import session, redirect
+
+@app.route('/')
+def index():
+    if 'user' in session:
+        return 'Hello %s!' % session['user']
+    else:
+        return redirect(url_for('login'), 302)
+```
+
+redirect()的第二个参数时HTTP状态码,可取的值有301,302,303,305和307,默认即302。
+
+* **日志**
+
+提到错误处理,那一定要说到日志。Flask提供logger对象,其是一个标准的Python Logger类。修改上例中的exception()函数:
+
+```python
+@app.route('/exception')
+def exception():
+    app.logger.debug('Enter exception method')
+    app.logger.error('403 error happened')
+    raise InvalidUsage('No privilege to access the resource', status_code=403)
+```
+
+执行后,你会在控制台看到日志信息。在debug模式下,日志会默认输出到标准错误stderr中。你可以添加FileHandler来使其输出到日志文件中去,也可以修改日志的记录格式,下面演示一个简单的日志配置代码:
+
+```python
+server_log = TimedRotatingFileHandler('server.log','D')
+server_log.setLevel(logging.DEBUG)
+server_log.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s'))
+
+error_log = TimedRotatingFileHandler('error.log', 'D')
+error_log.setLevel(logging.ERROR)
+error_log.setFormatter(logging.Formatter('%(asctime)s: %(message)s [in %(pathname)s:%(lineno)d]'))
+
+app.logger.addHandler(server_log)
+app.logger.addHandler(error_log)
+```
+
+上例中,我们在本地目录下创建了两个日志文件,分别是”server.log”记录所有级别日志;”error.log”只记录错误日志。我们分别给两个文件不同的内容格式。另外,我们使用了TimedRotatingFileHandler并给了参数D,这样日志每天会创建一个新的文件,并将旧文件加日期后缀来归档。
+
+* **消息闪现**
+
+“Flask Message”是一个很有意思的功能,一般一个操作完成后,我们都希望在页面上闪出一个消息,告诉用户操作的结果。用户看完后,这个消息就不复存在了。Flask提供的flash功能就是为了这个。我们还是拿用户登录来举例子:
+
+```python
+from flask import render_template, request, session, url_for, redirect, flash
+
+@app.route('/')
+def index():
+    if 'user' in session:
+        return render_template('hello.html', name=session['user'])
+    else:
+        return redirect(url_for('login'), 302)
+
+@app.route('/login', methods=['POST', 'GET'])
+def login():
+    if request.method == 'POST':
+        session['user'] = request.form['user']
+        flash('Login successfully!')
+        return redirect(url_for('index'))
+    else:
+        return '''
+
+        '''
+```
+
+上例中,当用户登录成功后,就用flash()函数闪出一个消息。让我们找回第三篇中的模板代码,在”layout.html”加上消息显示的部分:
+
+```html
+<!doctype html>
+<title>Hello Sample</title>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class="flash">
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+<div class="page">
+    {% block body %}
+    {% endblock %}
+</div>
+```
+
+上例中`get_flashed_messages()`函数就会获取我们在login()中通过flash()闪出的消息。从代码中我们可以看出,闪出的消息可以有多个。模板”hello.html”不用改。运行下试试。登录成功后,是不是出现了一条”Login successfully”文字?再刷新下页面,你会发现文字消失了。你可以通过CSS来控制这个消息的显示方式。
+
+flash()方法的第二个参数是消息类型,可选择的有”message”, “info”, “warning”, “error”。你可以在获取消息时,同时获取消息类型,还可以过滤特定的消息类型。只需设置`get_flashed_messages()`方法的`with_categories`和`category_filter`参数即可。比如,python部分可改为:
+
+```python
+@app.route('/login', methods=['POST', 'GET'])
+def login():
+    if request.method == 'POST':
+        session['user'] = request.form['user']
+        flash('Login successfully!', 'message')
+        flash('Login as user: %s.' % request.form['user'], 'info')
+        return redirect(url_for('index'))
+    ...
+```
+
+layout模板部分可改为:
+
+```html
+...
+{% with messages = get_flashed_messages(with_categories=true, category_filter=["message","error"]) %}
+  {% if messages %}
+    <ul class="flash">
+    {% for category, message in messages %}
+        <li class="{{ category }}">{{ category }}: {{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+...
+```
+
+运行结果大家就自己试试吧。
+
+### 1.6 集成数据库
+
+既然前几篇都用用户登录作为例子,我们这篇就继续讲登录,只是登录的信息会由数据库来验证。让我们先准备SQLite环境吧。
+
+* **初始化数据库**
+
+怎么安装SQLite这里就不说了。我们先写个数据库表的初始化SQL,保存在”init.sql”文件中:
+
+```python
+DROP TABLE IF EXISTS users;
+CREATE TABLE users (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  password TEXT NOT NULL
+);
+
+INSERT INTO users (name, password) VALUES ('visit', '111');
+INSERT INTO users (name, password) VALUES ('admin', '123');
+```
+运行sqlite3命令,初始化数据库。我们的数据库文件就放在”db”子目录下的”user.db”文件中。
+
+```python
+$ sqlite3 db/user.db < init.sql
+```
+* **配置连接参数**
+
+创建配置文件”config.py”,保存配置信息:
+
+```python
+#coding:utf8
+DATABASE = 'db/user.db'       # 数据库文件位置
+DEBUG = True                  # 调试模式
+SECRET_KEY = 'secret_key_1'   # 会话密钥
+```
+
+在创建Flask应用时,导入配置信息:
+
+```python
+from flask import Flask
+import config
+
+app = Flask(__name__)
+app.config.from_object('config')
+```
+
+这里也可以用app.config.from_envvar('FLASK_SETTINGS', silent=True)方法来导入配置信息,此时程序会读取系统环境变量中FLASK_SETTINGS的值,来获取配置文件路径,并加载此文件。如果文件不存在,该语句返回False。参数silent=True表示忽略错误。
+
+* **建立和释放数据库连接**
+
+这里要用到请求的上下文装饰器。
+
+```python
+@app.before_request
+def before_request():
+    g.db = sqlite3.connect(app.config['DATABASE'])
+
+@app.teardown_request
+def teardown_request(exception):
+    db = getattr(g, 'db', None)
+    if db is not None:
+        db.close()
+```
+
+我们在before_request()里建立数据库连接,它会在每次请求开始时被调用;并在teardown_request()关闭它,它会在每次请求关闭前被调用。
+
+* **查询数据库**
+
+让我们取回上一篇登录部分的代码,index()和logout()请求不用修改,在login()请求中,我们会查询数据库,验证客户端输入的用户名和密码是否存在:
+
+```python
+@app.route('/login', methods=['POST', 'GET'])
+def login():
+    if request.method == 'POST':
+        name = request.form['user']
+        passwd = request.form['passwd']
+        cursor = g.db.execute('select * from users where name=? and password=?', [name, passwd])
+        if cursor.fetchone() is not None:
+            session['user'] = name
+            flash('Login successfully!')
+            return redirect(url_for('index'))
+        else:
+            flash('No such user!', 'error')
+            return redirect(url_for('login'))
+    else:
+        return render_template('login.html')
+```
+
+模板中加上”login.html”文件
+
+```python
+{% extends "layout.html" %}
+{% block body %}
+<form name="login" action="/login" method="post">
+    Username: <input type="text" name="user" /><br>
+    Password: <input type="password" name="passwd" /><br>
+    <input type="submit" value="Submit" />
+</form>
+{% endblock %}
+```
+
+终于一个真正的登录验证写完了(前几篇都是假的),打开浏览器登录下吧。
+
+## 二、Vue.js和Flask构建单页App
+
+参考连接:[`https://juejin.im/post/5ab0a21df265da23a228efd3`](https://juejin.im/post/5ab0a21df265da23a228efd3)
+
+建立一个单页应用程序(应用程序使用单页组成,vue-router在HTML5的History-mode以及其他更多好用的功能)用vue.js,由Flask提供Web服务?简单地说应该这样,如下所示:
+
+> * Flask为index.html服务,index.html包含我的vue.js App。
+> * 在前端开发中我使用Webpack,它提供了所有很酷的功能。
+> * Flask有API端,可以从我的SPA访问。
+> * 可以访问API端,甚至当为了前端开发而运行Node.js的时候。
+
+###  2.1 客户端
+
+将使用Vue CLI产生基本vue.js App。如果你还没有安装它,请运行:`npm install -g vue-cli`,客户端和后端代码将被拆分到不同的文件夹。初始化前端部分运行跟踪:
+
+```shell
+mkdir flaskvue
+cd flaskvue
+vue create frontend
+cd frontend
+npm install
+# after installation
+npm run dev
+```
+
+添加home.vue和about.vue到frontend/src/components文件夹。它们非常简单,像这样:
+
+```html
+// Home.vue
+<template>
+    <div>
+        <p>Home page</p>
+    </div>
+</template>
+
+// About.vue
+<template>
+    <div>
+        <p>About</p>
+    </div>
+</template>
+```
+
+我们将使用它们正确地识别我们当前的位置(根据地址栏)。现在我们需要改变frontend/src/router/index.js文件以便使用我们的新组件:
+
+```shell
+import Vue from 'vue'
+import Router from 'vue-router'
+const routerOptions = [
+    { path: '/', component: 'Home' },
+    { path: '/about', component: 'About' }
+]
+
+const routes = routerOptions.map(route => {
+    return {
+        route,
+        component: () => import(`@/components/${route.component}.vue`)
+    }
+})
+
+Vue.use(Router)
+export default new Router({
+    routes,
+    mode: 'history'
+})
+```
+
+如果你试着输入localhost:8080和localhost:8080/about,你应该看到相应的页面。我们几乎已经准备好构建一个项目,并且能够创建一个静态资源文件包。在此之前,让我们为它们重新定义一下输出目录。在frontend/config/index.js找到下一个设置:
+
+```shell
+index: path.resolve(__dirname, '../dist/index.html'),
+assetsRoot: path.resolve(__dirname, '../dist'),
+```
+
+把它们改为
+
+```shell
+index: path.resolve(__dirname, '../../dist/index.html'),
+assetsRoot: path.resolve(__dirname, '../../dist'),
+```
+
+所以/dist文件夹的HTML、CSS、JS会在同一级目录/frontend。现在你可以运行npm run build创建一个包。
+
+### 1.2 后端
+
+对于Flask服务器,我将使用Python版本3.6。在/flaskvue创建新的子文件夹存放后端代码并初始化虚拟环境:
+
+```shell
+# 需要安装flask: pip install Flask
+mkdir backend
+cd backend
+```
+
+现在让我们为Flask服务端编写代码。创建根目录文件run.py:
+
+```python
+from flask import Flask, render_template
+app = Flask(__name__, static_folder = "./dist/static", template_folder = "./dist")
+    
+@app.route('/')
+def index():
+    return render_template("index.html")
+```
+
+这段代码与Flask的**“Hello World”**代码略有不同。主要的区别是,我们指定存储静态文件和模板位置在文件夹/dist,以便和我们的前端文件夹区别开。在根文件夹中运行Flask服务端:`FLASK_APP=run.py FLASK_DEBUG=1 flask run`
+
+这将启动本地主机上的Web服务器:localhost:5000上的FLASK_APP服务器端的启动文件,flask_debug=1将运行在调试模式。如果一切正确,你会看到熟悉的主页,你已经完成了对Vue的设置。
+
+同时,如果您尝试输入/about页面,您将面临一个错误。Flask抛出一个错误,说找不到请求的URL。事实上,因为我们使用了HTML5的History-Mode在Vue-router需要配置Web服务器的重定向,将所有路径指向index.html。用Flask做起来很容易。将现有路由修改为以下:
+
+```python
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def catch_all(path):
+    return render_template("index.html")
+```
+
+现在输入网址localhost:5000/about将重新定向到index.html和vue-router将处理路由。
+
+### 1.3 404页
+
+因为我们有一个包罗万象的路径,我们的Web服务器在现在已经很难赶上404错误,Flask将所有请求指向index.html(甚至不存在的页面)。所以我们需要处理未知的路径在vue.js应用。当然,所有的工作都可以在我们的路由文件中完成。
+
+在frontend/src/router/index.js添加下一行:
+
+```shell
+const routerOptions = [
+    { path: '/', component: 'Home' },
+    { path: '/about', component: 'About' },
+    { path: '*', component: 'NotFound' }
+]
+```
+
+这里的路径'\*'是一个通配符, Vue-router就知道除了我们上面定义的所有其他任何路径。现在我们需要更多的创造NotFound.vue文件在**/components**目录。试一下很简单:
+
+```html
+// NotFound.vue
+<template>
+    <div>
+        <p>404 - Not Found</p>
+    </div>
+</template>
+```
+
+现在运行的前端服务器再次npm run dev,尝试进入一些毫无意义的地址例如:localhost:8080/gljhewrgoh。您应该看到我们的“未找到”消息。
+
+### 1.4 API端
+
+我们的vue.js/flask教程的最后一个例子将是服务器端API创建和调度客户端。我们将创建一个简单的Api,它将从1到100返回一个随机数。打开run.py并添加:
+
+```python
+from flask import Flask, render_template, jsonify
+from random import *
+
+app = Flask(__name__,static_folder = "./dist/static", template_folder = "./dist")
+
+@app.route('/api/random')
+def random_number():
+    response = {
+        'randomNumber': randint(1, 100)
+    }
+    return jsonify(response)
+
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def catch_all(path):
+    return render_template("index.html")
+```
+
+首先我导入random库和jsonify函数从Flask库中。然后我添加了新的路由/api/random来返回像这样的JSON:
+
+```python
+{
+    "randomNumber": 36
+}
+```
+
+你可以通过本地浏览测试这个路径:localhost:5000/api/random。此时服务器端工作已经完成。是时候在客户端显示了。我们来改变home.vue组件显示随机数:
+
+```
+<template>
+    <div>
+        <p>Home page</p>
+        <p>Random number from backend: {{ randomNumber }}</p>
+        <button @click="getRandom">New random number</button>
+    </div>
+</template>
+<script>
+    export default {
+        data () {
+            return { randomNumber: 0 }
+        },
+
+        methods: {
+            getRandomInt (min, max) {
+                min = Math.ceil(min)
+                max = Math.floor(max)
+                return Math.floor(Math.random() * (max - min + 1)) + min
+            },
+
+            getRandom () {
+                this.randomNumber = this.getRandomInt(1, 100)
+            }
+        },
+        created () {
+            this.getRandom()
+        }
+    }
+</script>
+```
+
+在这个阶段,我们只是模仿客户端的随机数生成过程。所以,这个组件就是这样工作的:
+
+> * 在初始化变量 randomNumber等于0。
+> * 在methods部分我们通过getRandomInt(min, max)功能来从指定的范围内返回一个随机数,getrandom函数将生成随机数并将赋值给randomNumber
+> * 组件方法getrandom创建后将会被调用来初始化随机数
+> * 在按钮的单击事件我们将用getrandom方法得到新的随机数
+
+现在在主页上,你应该看到前端显示我们产生的随机数。让我们把它连接到后端。为此目的,我将用axios库。它允许我们用响应HTTP请求并用Json返回JavaScript Promise。我们安装下它:
+
+```shell
+cd frontend
+npm install --save axios
+```
+
+打开home.vue再在\<script\>部分添加一些变化:
+
+```
+import axios from 'axios'
+methods: {
+    getRandom () {
+        // this.randomNumber = this.getRandomInt(1, 100)
+        this.randomNumber = this.getRandomFromBackend()
+    },
+
+    getRandomFromBackend () {
+        const path = `http://localhost:5000/api/random`
+        axios.get(path).then(response => {
+            this.randomNumber = response.data.randomNumber
+        }).catch(error => {
+            console.log(error)
+        })
+    }
+}
+```
+
+在顶部,我们需要引用Axios库。然后有一个新的方法getrandomfrombackend将使用Axios异步调用API和检索结果。最后,getrandom方法现在应该使用getrandomfrombackend函数得到一个随机值。
+
+保存文件,到浏览器,运行一个开发服务器再次刷新localhost:8080。你应该看到控制台错误没有随机值。但别担心,一切都正常。我们得到了CORS的错误意味着Flask服务器API默认会关闭其他Web服务器(在我们这里,vue.js App是在Node.js服务器上运行的应用程序)。如果你npm run build项目,那在localhost:5000(如Flask服务器)你会看到App在工作的。但是,每次对客户端应用程序进行一些更改时,都创建一个包并不十分方便。
+
+让我们用打包了CORS插件的Flask,将使我们能够创建一个API访问规则。插件叫做Flask CORS,让我们安装它:
+
+```python
+pip install -U flask-cors
+```
+
+你可以阅读文档,更好的解释你要使你的服务器怎么样使用CORS。我将使用特定的方法,并将**{“origins”: “\*”}**应用于所有/api/\*路由(这样每个人都可以使用我的API端)。在run.py加上:
+
+```python
+from flask_cors import CORS
+app = Flask(__name__, static_folder = "./dist/static", template_folder = "./dist")
+cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
+```
+
+有了这种改变,您就可以从前端调用服务端。事实上,如果你想通过Flask提供静态文件不需要CORS。这个主意是这样的。如果应用程序在调试模式下,它只会代理我们的前端服务器。否则(在生产中)只为静态文件服务。所以我们这样做:
+
+```python
+import requests
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def catch_all(path):
+    if app.debug:
+        return requests.get('http://localhost:8080/{}'.format(path)).text
+    return render_template("index.html")
+```
+
+
+## 三、Web服务器网关接口
+
+### 3.1 前言
+
+本文档是`PEP 333`的升级版,针对`python 3`进行了可用性方面的细微修改,采纳了几个针对`WSGI`协议的存在已久的事实修订(相关代码示例也已经移植到`python 3`)。
+
+由于流程上的原因,本次修改是独立的,不会影响到`python 2.x`下服务端或应用端的程序。如果你的程序遵守`PEP 333`,则它必然符合此次升级后的要求。
+
+但是如果你的程序运行在`python 3`环境下,则必须注意下文中"字符串类型"和"`Unicode`编码"两节中的要求。
+
+### 3.2 摘要
+
+本文档描述了`Web`服务器与`Web`应用或框架的标准交互接口,以提高`python` `Web`应用在不同`Web`服务器之间具有可移植性。
+
+### 3.3 基本原理和目标
+
+`python`目前有很多`Web`框架,比如`Zope`,`Quixote`,`Webware`,`SkunkWeb`,`PSO`和`Twisted`等等。新手面对如此多的选择十分纠结,因为一般来说,框架的选择会限制他们对`Web`服务器的选择,反之亦然。相比之下,`Java`也有非常多的`Web`框架,但是它的`servlet API`使得用户无论选择哪种框架,都可以保证程序正常运行在支持该`API`的任何`Web`服务器上。
+
+无论`Web`服务器是由`python`写成,还是内嵌`python`,抑或使用`CGI`和`FastCGI`之类的网关协议调用`python`,在`Python`世界推广类似的`API`将使`Web`框架的选择与`Web`服务器无关,使框架和服务端的开发者能够专注于他们各自的领域。因此本文档提出了一种简单且通用的接口以完成`Web`服务器与应用和框架的交互:`Python` `Web`服务器网关接口(WSGI)。
+
+不过仅仅一个`WSGI`的存在并不足以缓解当前`Python` `Web`开发中的困境,只有在服务端和框架中真的实现了`WSGI`才行。由于现有的服务端和框架并不支持`WSGI`,必须给哪些愿意支持`WSGI`的开发者们一点好处,故`WSGI`必须易于实现,以保证实现它的代价比较小。因此,在服务端和框架中都容易实现对于`WSGI`的实用性至关重要,也是所有设计决策的主要考量。
+
+在`Web`框架中易于实现并不代表对`Web`应用开发者也易用。`WSGI`向`Web`框架开发者提供了绝对简洁的接口,因为类似响应对象(response objects)和`cookie`管理这样锦上添花的功能只会妨碍现有框架本身对应的功能。重申一遍,`WSGI`的目标是使现有`Web`服务器与`Web`应用或框架的交互变得更容易,而不是发明一个新的`Web`框架。
+
+这个目标要求`WSGI`不能依赖于任何在当前已部署的`Python`环境中不支持的功能。所以本次升级并没有产生新的标准库,且只要求用户的`Python`环境版本不低于`2.2.2`(不过在未来的`Web`服务器标准库中集成新标准应该是一个不错的选择)。
+
+除了在现有和未来出现的框架和服务端易于集成之外,`WSGI`还应该能很容易地创建请求预处理器、响应处理程序和其他基于`WSGI`的中间件组件(对于`Web`服务器它们是应用,但对于它们包含的应用来说则是服务器)。
+
+如果中间件能够既简洁又健壮,`WSGI`又在服务端和框架中广泛应用,这将使一种全新的`Python` `Web`框架得以出现:一种由各种松耦合的`WSGI`中间件组成的框架。现有的框架开发者们甚至会重构他们的现有服务,使他们的框架更像一些和`WSGI`配合的库而不是一个独立的框架。这样`Web`应用开发者就可以针对特定的需求选择最好的组件,而不是只能接受某一个框架的所有优点和缺点。
+
+当然,前途是光明的,道路是曲折的,`WSGI`的短期目标是先让任意框架可以与任意`Web`服务器交互。
+
+最后需要注意的是,当前版本的`WSGI`并没有规定一个应用具体以何种方式部署在`Web`服务器或网关服务器上,目前这由二者的具体实现决定。如果足够多实现了`WSGI`的服务器或网关在实践中产生了这个需求,也许可以另写一份`PEP`来描述`WSGI`服务器和应用框架的部署标准。
+
+### 3.4 概述
+
+`WSGI`接口有两种形式:服务端和应用端。服务端请求一个由应用端提供的可调用的对象,至于该对象应当如何被提供取决于服务端。有些服务端需要应用程序的部署人员编写一个简短的脚本来启动一个`Web`服务器或网关服务器的实例,以为此实例提供所需对象;而另一些服务端则需要配置文件或其他机制来指定从哪里导入或者得到所需对象。
+
+除了`Web`服务器/网关服务器和`Web`应用/开发框架,还可以创建包含两种接口的中间件组件:对于`Web`服务器它们是应用,而对于应用来说他们是服务器。中间件可以用来提供扩展`API`,内容转换,导航和其他有用的功能。
+
+在本文档中,我们使用术语`可调用者`代表`一个函数,方法,类,或者拥有__call__ 方法的一个实例`。实现`可调用者`的`Web`服务器,网关服务器或应用程序可以根据需要选择合适的实现方式;相反,请求`可调用者`的`Web`服务器,网关服务器或应用程序不可以依赖具体的实现方式。`可调用者`只能被调用,不能自省。
+
+#### 3.4.1 字符串类型
+
+一般来说,`HTTP`协议处理字节流,也就是说本文档主要面向字节流的处理。不过字节流经常是文本意义上可读的,而在`Python`中,字符串类型是处理文本的趁手工具。
+
+但是在很多`Python`的版本和实现中,字符串是`Unicode`编码的,而不是字节流。这要求我们在`HTTP`字节流与文本的相互转换和好用的`API`之间保持很好的平衡,尤其要注意支持基于不同版本的`Python`程序之间的可移植性,这些版本中字符串类型不尽相同。
+
+因此`WSGI`定义了两种字符串类型:
+
+> 原生字符串(一般使用`str`类型实现),这种字符串用在请求和响应的包头和元数据中。
+> <br> 字节流字符串(在`Python 3`中使用`bytes`类型实现,其他版本中使用`str`类型实现),这种字符串用在请求和响应的包内容中(比如`POST`方法或`PUT`方法的输入数据以及`HTML`页面的输出)。
+
+大家一定要注意不要搞混了:即使`Python`的`str`类型实质上是`Unicode`编码的,但是原生字符串的内容仍然将通过`Latin-1`编码转换为字节流(参见下文`Unicode编码`一节可获得更多信息)。
+
+简而言之,本文档中的`字符串`这个词都是指`原生字符串`,亦即一个`str`类型的对象,无论其实质上是字节流还是`Unicode`编码。任何地方出现的`字节流字符串`,都是指`Python 3`下`bytes`类型的一个实例,或者`Python 2`下`str`类型的一个实例。
+
+因此,虽然`HTTP`某种意义上来说就是字节流,使用`Python`默认的字符串类型来解析会带来不少`API`使用上的好处。
+
+#### 3.4.2 应用端接口
+
+应用对象是一个简单的接受两个参数的可调用对象。这里的对象并不是真的需要一个对象实例,一个函数、方法、类、或者带有`__call__`方法的对象实例都可以当作应用对象。应用对象必须可以多次被调用,因为实际上所有的服务端(而非`CGI`)都会产生这样的重复请求。
+
+(注意:虽然我们称之为`应用`对象,但这并不是说程序员可以把`WSGI`当做`Web`编程`API`来调用!我们假定应用开发者仍然使用更高层面上的框架服务来开发应用,`WSGI`是提供给框架和`Web`服务器开发者使用的工具,并不打算直接对应用开发者提供支持。)
+
+这里有两个应用对象的示例,一个是函数,另一个是类:
+
+```python
+HELLO_WORLD = b”Hello world!n”
+
+def simple_app(environ, start_response):
+    """
+    Simplest possible application object
+    """ 
+    status = ‘200 OK’ 
+    response_headers = [(‘Content-type’, ‘text/plain’)] 
+    start_response(status, response_headers) 
+    return [HELLO_WORLD]
+
+class AppClass:
+    """
+    Produce the same output, but using a class
+
+    (Note: ‘AppClass’ is the “application” here, so calling it returns an instance of ‘AppClass’, which \
+    is then the iterable return value of the “application callable” as required by the spec.
+
+    If we wanted to use instances of ‘AppClass’ as application objects instead, we would have to implement \
+    a ‘__call__’ method, which would be invoked to execute the application, and we would need to create an \
+    instance for use by the server or gateway. 
+    """
+
+def __init__(self, environ, start_response):
+    self.environ = environ 
+    self.start = start_response
+
+def __iter__(self):
+    status = ‘200 OK’ 
+    response_headers = [(‘Content-type’, ‘text/plain’)] 
+    self.start(status, response_headers) 
+    yield HELLO_WORLD
+```
+
+#### 3.4.3 服务端接口
+
+服务端为`HTTP`客户端发来的每一个请求调用一次可调用者,这是由应用决定的。为了方便说明,这里以一个获取应用对象的函数实现了一个简单的`CGI`网关。请注意,这个例子的错误处理功能很有限,因为默认情况下没有被捕获的异常都会被输出到`sys.stderr`并被`Web`服务器记录下来。
+
+```python
+import os, sys
+
+enc, esc = sys.getfilesystemencoding(), 'surrogateescape'
+
+def unicode_to_wsgi(u):
+    # Convert an environment variable to a WSGI "bytes-as-unicode" string
+    return u.encode(enc, esc).decode('iso-8859-1')
+
+def wsgi_to_bytes(s):
+    return s.encode('iso-8859-1')
+
+def run_with_cgi(application):
+    environ = {k: unicode_to_wsgi(v) for k,v in os.environ.items()}
+    environ['wsgi.input']        = sys.stdin.buffer
+    environ['wsgi.errors']       = sys.stderr
+    environ['wsgi.version']      = (1, 0)
+    environ['wsgi.multithread']  = False
+    environ['wsgi.multiprocess'] = True
+    environ['wsgi.run_once']     = True
+
+    if environ.get('HTTPS', 'off') in ('on', '1'):
+        environ['wsgi.url_scheme'] = 'https'
+    else:
+        environ['wsgi.url_scheme'] = 'http'
+
+    headers_set = []
+    headers_sent = []
+
+    def write(data):
+        out = sys.stdout.buffer
+
+        if not headers_set:
+             raise AssertionError("write() before start_response()")
+
+        elif not headers_sent:
+             # Before the first output, send the stored headers
+             status, response_headers = headers_sent[:] = headers_set
+             out.write(wsgi_to_bytes('Status: %s\r\n' % status))
+             for header in response_headers:
+                 out.write(wsgi_to_bytes('%s: %s\r\n' % header))
+             out.write(wsgi_to_bytes('\r\n'))
+
+        out.write(data)
+        out.flush()
+
+    def start_response(status, response_headers, exc_info=None):
+        if exc_info:
+            try:
+                if headers_sent:
+                    # Re-raise original exception if headers sent
+                    raise exc_info[1].with_traceback(exc_info[2])
+            finally:
+                exc_info = None     # avoid dangling circular ref
+        elif headers_set:
+            raise AssertionError("Headers already set!")
+
+        headers_set[:] = [status, response_headers]
+
+        # Note: error checking on the headers should happen here,
+        # *after* the headers are set.  That way, if an error
+        # occurs, start_response can only be re-called with
+        # exc_info set.
+
+        return write
+
+    result = application(environ, start_response)
+    try:
+        for data in result:
+            if data:    # don't send headers until body appears
+                write(data)
+        if not headers_sent:
+            write('')   # send headers now if body was empty
+    finally:
+        if hasattr(result, 'close'):
+            result.close()
+```
+
+#### 3.4.4 中间件:分饰两角的组件
+
+同一个对象既可以作为服务端存在,也可以作为应用端存在。这样的中间件可以完成以下功能:
+
+> 重写上文代码中的`environ`之后,可以根据目标`URL`将请求转发到不同的应用程序对象
+> <br> 允许多个应用程序或框架在一个进程中同时运行
+> <br> 通过转发请求和响应,实现负载均衡和远程处理
+> <br> 对内容进行后期处理,比如引入`XSL`样式表
+> <br> 中间件的存在对于服务端和应用端来说都应该是透明的,并且不需要特殊的支持。
+
+希望在应用程序中加入中间件的用户只需简单的把中间件当作应用提供给`Web`服务器,并配置中间件使其以服务器的身份与应用程序交互即可。当然,中间件包装后提供给服务器的应用也可以是另一个中间件,如此连锁下去便构成了所谓的`中间件栈`。
+
+一般情况下,中间件要符合`WSGI`对应用端和服务端提出的一些限制和要求,有些时候这样的限制甚至比纯粹的服务端或应用端还要严格,这些地方我们会特别指出。
+
+下面是一个非正式的中间件组件的示例,使用`Joe Strout`的`piglatin.py`将`text/plain`的响应转换成儿童黑话(注意:真正的中间件应该使用更加安全的方式——应该检查内容的类型和编码,而且这个简单的例子还忽略了一个单词可能会被拆分到两个包中的可能性)。
+
+```python
+from piglatin import piglatin
+
+class LatinIter:
+    """
+    Transform iterated output to piglatin, if it's okay to do so
+
+    Note that the "okayness" can change until the application yields
+    its first non-empty bytestring, so 'transform_ok' has to be a mutable
+    truth value.
+    """
+
+    def __init__(self, result, transform_ok):
+        if hasattr(result, 'close'):
+            self.close = result.close
+        self._next = iter(result).__next__
+        self.transform_ok = transform_ok
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.transform_ok:
+            return piglatin(self._next())   # call must be byte-safe on Py3
+        else:
+            return self._next()
+
+class Latinator:
+    # by default, don't transform output
+    transform = False
+
+    def __init__(self, application):
+        self.application = application
+
+    def __call__(self, environ, start_response):
+
+        transform_ok = []
+
+        def start_latin(status, response_headers, exc_info=None):
+
+            # Reset ok flag, in case this is a repeat call
+            del transform_ok[:]
+
+            for name, value in response_headers:
+                if name.lower() == 'content-type' and value == 'text/plain':
+                    transform_ok.append(True)
+                    # Strip content-length if present, else it'll be wrong
+                    response_headers = [(name, value)
+                        for name, value in response_headers
+                            if name.lower() != 'content-length'
+                    ]
+                    break
+
+            write = start_response(status, response_headers, exc_info)
+
+            if transform_ok:
+                def write_latin(data):
+                    write(piglatin(data))   # call must be byte-safe on Py3
+                return write_latin
+            else:
+                return write
+
+        return LatinIter(self.application(environ, start_latin), transform_ok)
+
+# Run foo_app under a Latinator's control, using the example CGI gateway
+from foo_app import foo_app
+run_with_cgi(Latinator(foo_app))
+```
+
+#### 3.4.5 细则
+
+应用对象必须接受两个形式参数,为了方便说明我们不妨分别命名为`environ`和`start_response`,但这并不是强制的。服务端必须使用形式参数(而非关键字)调用应用对象(就像这样:`result = application(environ, start_response)`)。
+
+`environ`参数是个字典对象,包含`CGI`风格的环境变量。这个对象必须是一个`Python`内建的字典对象(不能是子类、`UserDict`或其他对字典对象的模仿),应用程序可以以任意方式修改这个字典。`environ`还应该包含一些特定的`WSGI`所需的变量(在后面的小节里会详述),也可以包含一些服务器特定的扩展变量,通过下文的约定命名。
+
+`start_response`参数是一个接受两个固定参数和一个可选参数的可调用者。为了方便说明,我们分别命名为`status`、`response_headers`和`exc_info`,同样的,这样命名也不是强制的。应用程序必须用形式参数来调用`start_response`(就像这样:`start_response(status,response_headers)`)。
+
+`status`参数是一个形式上像`999 Message here`这样的状态字符串。而`response_headers`参数是一个(`header_name`,`header_value`)元组的列表,用来描述`HTTP`响应头。可选的`exc_info` 参数会在下面的`start_response()函数`和`错误处理`两节中详述,它只有在应用程序产生了错误并希望在浏览器上显示相关信息的时候才有用。
+
+`start_response`可调用者必须返回一个`write(body_data)`可调用者,它接受一个形式参数:一个将要被作为`HTTP`响应体的一部分输出的字节流字符串(注意:提供可调用者`write()`只是为了支持现有框架的必要的输出`API`,新的应用程序或框架尽量避免使用,详细情况参见`缓冲区和流处理`一节)。
+
+当被服务器调用的时候,应用对象必须返回一个生成`0`或多个字节流字符串的迭代器,这可以通过多种方法实现,比如返回一个字节流字符串的列表,或者应用程序本身是一个字节流字符串的生成器,或者应用程序是一个类而其实例是可迭代的.不管怎么实现,应用对象必须总是返回一个生成`0`或多个字节流字符串的迭代器。
+
+服务器端必须将生成的字节流字符串以一种无缓冲的方式传送到客户端,每次传完一个再去获取下一个(换句话说,应用程序应该自己实现缓冲,更多关于应用程序如何处理输出的细节参见`缓冲区和流处理`小节)。
+
+服务端应该把产生的字节流字符串当作字节流对待:尤其必须保证没修改行尾。应用程序负责确保字符串以与客户端匹配的编码输出(服务端可能会附加`HTTP`传送编码,或者为了实现一些`HTTP`特性而进行一些转换,比如字节范围转换,更多细节参见`其他HTTP特性`小节)
+
+如果调用`len(iterable)`成功,服务器将认为结果是正确的。也就是说,应用程序返回的可迭代的字符串提供了一个靠谱的`__len__()`方法,那么肯定返回了正确的结果(关于这个方法正常情况下如何被使用参见`处理 Content-Length头`)。
+
+如果应用程序返回的迭代器有`close()`方法,则不管该请求是正常结束还是由于迭代错误或浏览器失去连接而终止,服务端都必须在结束该请求之前调用这个方法(这是用来支持应用程序对资源的释放,以完善`PEP 342`的生成器支持和其他含有`close()`方法的一般迭代器)。
+
+应用程序返回的生成器或其他定制的迭代器并不一定会被使用,可能直接就被服务端关闭了。
+
+(注意:应用程序必须在迭代器生成第一个字节流字符串之前调用`start_response()`可调用者,这样服务器才能在发送任何主体内容之前发送响应头。不过这一步也可以在迭代器第一次迭代的时候进行,所以服务器不能假定开始迭代之前`start_response()`已经被调用过了。）
+
+除以上提及的之外,服务端不能直接使用任何应用程序返回的迭代器属性,除非该属性是针对服务端特定类型的一个实例,比如`wsgi.file_wrapper`返回的`文件包装器`(参见`(可选)特定平台上的文件处理`)。通常情况下,只有这里指定的属性,或者通过如`PEP 234`迭代`API`之类的途径获取的其他属性才是可以访问的。
+
+#### 3.4.6 `environ`变量
+
+`environ`字典中要求包含下面这些在`CGI`规范中定义了的`CGI`环境变量。除非其值是空字符串(这种情况下如果下面没有特别指出的话它们可能会被忽略),下面这些变量必须存在:
+
+| 变量 | 说明 |
+| :--- | --- |
+| `REQUEST_METHOD` | `HTTP`请求的类型,比如`GET`或者`POST`,这个不可能是空字符串,所以是必须给出的 |
+| `SCRIPT_NAME` | `URL`请求中路径的开始部分,对应应用程序对象,这样应用程序就知道它的虚拟位置。如果该应用程序对应服务器的根目录的话,它可能是空字符串。 | 
+| `PATH_INFO` | `URL`请求中路径的剩余部分,指定请求的目标在应用程序内部的虚拟位置。如果请求的目标是应用程序根目录并且没有末尾的斜杠的话,可能为空字符串。 |
+| `QUERY_STRING` | `URL`请求中后面的那部分,可能为空或不存在。 | 
+| `CONTENT_TYPE` | `HTTP`请求中任何`Content-Type`域的内容,可能为空或不存在。 |
+| `CONTENT_LENGTH` | `HTTP`请求中任何`Content-Length`域的内容,可能为空或不存在。 |
+| `SERVER_NAME`,`SERVER_PORT` | 这些变量可以和`SCRIPT_NAME`、`PATH_INFO`一起组成完整的`URL`。然而要注意的是,重建请求`URL`的时候应该优先使用`HTTP_HOST`而非`SERVER_NAME`。详细内容参见`URL重建`。`SERVER_NAME`和`SERVER_PORT`永远不能为空字符串,也总是必须存在的。 |
+| `SERVER_PROTOCOL` | 客户端发送请求所使用协议的版本。通常是类似`HTTP/1.0`或`HTTP/1.1`的东西,可以被用来判断如何处理请求包头。(既然这个变量表示的是请求中使用的协议,而且和服务器响应时使用的协议无关,也许它应该被叫做`REQUEST_PROTOCOL`。不过为了保持和`CGI`的兼容性,我们还是使用这个名字。) |
+| `HTTP_Variables` | 对应客户端提供的`HTTP`请求包头(即名字以`HTTP_`开头的各种变量)。这些变量的存在与否应该与请求中对应的`HTTP`包头是否存在相一致。服务端应该尽可能提供所有可用的`CGI`变量。另外,如果使用了`SSL`,服务端也应该尽可能提供所有可用的`Apache SSL`环境变量,比如`HTTPS=on`和`SSL_PROTOCOL`。不过要注意,使用了任何上面没有列出的`CGI`变量的应用程序对不支持相关扩展的服务器来说就不具有可移植性了。(比如,不发布文件的`Web`服务器就不能提供有意义的`DOCUMENT_ROOT`变量或`PATH_TRANSLATED`变量。) |
+
+支持`WSGI`的服务端应该在自述文档中说明它们可以提供些什么变量;应用端则应该简称所有需要的变量的存在性,并且在某变量不存在的时候有备用方案。
+
+注意:不存在的变量(比如在不需要验证的情况下的`REMOTE_USER`变量)应该被移出`environ`字典。另外要注意`CGI`定义的变量如果存在的话必须是原生字符串。任何`str`类型以外的`CGI`变量都是不符合本规范。
+
+除了`CGI`定义的变量,`environ`字典也可以包含任意操作系统的环境变量,并且必须包含下面这些`WSGI`定义的变量:
+
+| 变量 | 值 |
+| :--- | --- |
+| `wsgi.version` | `(1,0)`元组,代表`WSGI` 1.0版 | 
+| `wsgi.url_scheme` | 字符串,表示应用请求的`URL`所属的协议,通常为`http`或`https` | 
+| `wsgi.input` | 类文件对象的输入流,用于读取`HTTP`请求包体的内容。(服务端在应用端请求时开始读取,或者预读客户端请求包体内容缓存在内存或磁盘中,或者视情况而定采用任何其他技术提供此输入流。) | 
+| `wsgi.errors` | 类文件对象的输出流,用于写入错误信息,以集中规范地记录程序产生的或其他相关错误信息。这是一个文本流,即应用应该使用`n`来表示行尾,并假定其会被服务端正确地转换。(在`str`类型是`Unicode` 编码的平台上,错误流应该正常接收并记录任意`Unicode`编码而不报错,并且允许自行替代在该平台编码中无法渲染的字符。)很多`Web`服务器中`wsgi.errors`是主要的错误日志,也有一些使用`sys.stderr`或其他形式的文件来记录。`Web`服务器的自述文档中应该包含如何配置错误日志以及如何找到记录的位置。服务端可以在被要求的情况下,向不同的应用提供不同的错误日志 |
+| `wsgi.multithread` | 如果应用对象可能会被同一进程的另一个线程同步调用,此变量值为真,否则为假 | 
+| `wsgi.multiprocess` | 如果同一个应用对象可能会被另一个进程同步调用,此变量值为真,否则为假 | 
+| `wsgi.run_once` | 如果服务端期望(但是不保证能得到满足)应用对象在生命周期中之辈调用一次,此变量值为真,否则为假。一般只有在基于类似`CGI`的网关服务器中此变量才会为真 | 
+
+最后,`environ`字典也可以包含服务端定义的变量。这些变量的名称应当由小写字母、数字、点和下划线组成,并且应当带有一个所在服务端独有的前缀。比如 mod_python 可以定义 mod_python.some_variable 这样的变量。
+
+#### 3.4.7 输入流和错误流
+
+服务器提供的输入和错误流必须提供以下方法:
+
+| 方法 | 流 | Notes |
+| :--- | --- | --- |
+| `read(size)` | 输入流 | `1` |
+| `readline()` | 输入流 | `1,2` |
+| `readlines(hint)` | 输入流 | 1,3
+| `__iter__()` | 输入流 | |
+| `flush()` | 错误流 | `4` |
+| `write(str)` | 错误流 | | 
+| `writelines(seq)` | 错误流 | |
+
+每个方法的语义如果上面没有特别指出均和`python`标准库介绍中记载的一样:
+
+1. 不要求`Web`服务器读取超过客户端指定的`Content-Length`的内容,并且应该在应用尝试读取越界内容时虚拟出一个文件结束符。应用不应该尝试读取超过`Content-Length`指定长度的内容。
+
+`Web`服务器应该允许不使用参数调用`read()`,并返回客户端输入流剩余的部分;同时服务器应该对任何尝试读取空的或到文件尾的输入流的行为返回空字符串。
+
+2. `Web`服务器应该支持`readline()`函数的可选`size`参数,但是在`WSGI 1.0`版本中可以忽略这一点。
+
+(在`WSGI 1.0`中,`size`参数并不要求提供,因为可能很难实现也不常用。但是由于`CGI`模块开始支持它了,所以生产环境中的`Web`服务器还是得实现`size`参数。)
+
+3. `readlines()`函数的`hint`参数对于调用者和实现者来说都是可选的。应用端完全可以忽略它,服务端亦然。
+
+4. 由于错误流不能重设读写位置,服务端可以使用无缓冲模式来进行写操作。在这种情况下,`flush()`函数不做任何操作。但是具有良好可移植性的程序不能假设输出流是无缓冲或`flush()`函数是误操作的,而应当在需要输出真的被写到存储设备中的时候调用`flush()`函数。(比如防止多进程写数据造成的混乱这种情况。) 
+
+上表中列出的方法必须被所有遵守本规范的服务端支持。遵守本规范的应用端则不应该调用任何其他的输入流和输出流相关的方法和属性。尤其要注意的是,应用端即使在这些流提供`close()`方法的情况下,也不应该尝试关闭它们。
+
+#### 3.4.8 `start_response()`可调用者
+
+传给应用程序对象的第二个参数是一个形为`start_response(status, response_headers, exc_info=None)`的可调用者。(像`WSGI`的所有其他可调用者一样,这个参数必须使用形式参数提供,而不能以关键字参数提供。)`start_response`可调用者用于开始`HTTP`响应,它必须返回一个`write(body_data)`可调用者(参见`缓冲区和流处理`)。
+
+`status`参数是一个形如`200 OK`或`404 Not Found`这样的`HTTP`状态字符串。换言之是一个由状态编号和具体信息组成的字符串,按顺序并用空格隔开,两头没有其他空格和其他字符。(更多信息参见`RFC 2616,6.1.1`小节。)该字符串禁止包含控制字符,也不允许以回车、换行或二者的组合形式结尾。
+
+`response_headers`参数是一个`(header_name, header_value)`元组的列表。它必须是一个`python`中的列表,即`type(response_headers)`的值为`ListType`,并且`Web`服务器可以以任何方式改变其内容。每一个`header_name`必须是一个不含冒号或其他标点符号的合法的`HTTP header`字段名(`RFC 2616 4.2`小节中有详细定义)。
+
+每一个`header_value`禁止包含任何控制字符(包括回车或换行)。(这些要求是为了将那些必须检查或修改响应头的服务端和中间件所必须执行的解析工作的复杂性降到最低。)
+
+一般来说,服务端要保证发送到客户端的包头的正确性:如果应用忽略了`HTTP`规定的包头(或其他类似的内容)服务端必须自己加上。比如`HTTP`的`Date:`和`Server:`包头一般都是由服务端提供的。
+
+(服务端开发者小贴士:`HTTP`包头名称是大小写敏感的,所以请确保你们检查应用提供的包头时考虑了这一点!)
+
+应用和中间件禁止使用`HTTP/1.1`中的`逐跳`机制和包头,`HTTP/1.0`中类似的机制也禁用,任何应用客户端到`Web`服务器的连接持久性的包头也都不允许使用。使用这些特性是服务端的特权,服务端发现客户端违反此规定时应视为致命错误,需在请求提交到`start_response()`时报错。(关于`逐跳`特性和包头,请参见`其他HTTP特性`小节。)
+
+在`start_response`被调用时`Web`服务器需要检查是否有错误,所以可以在应用正在运行的时候报错。
+
+但是,`start_response`可调用者禁止传送响应包头。只能在服务端缓存起来,当且仅当应用的第一次迭代完成并返回一个非空字节流字符串或应用第一次调用`write()`可调用者的时候才能由服务端传送。换言之,响应包头只有在包体数据已经准备好,或者应用返回的迭代器已经迭代完成的时候才能被传送出去。(唯一的例外是响应包头显式包含了一个值为零的`Content-Length`字段。)
+
+响应包头的延迟传送是为了保证带缓冲区和异步的应用能够将它们原生的输出替换为错误流,一直到所能允许的最后一刻。举例来说,当应用使用缓冲区生成包体的时候如果出错,应用可能需要将响应状态从`200 OK`改为`500 Internal Error`。
+
+如果提供了`exc_info`参数,则其必须为`python`中的`sys.exc_info()`元组。只有当`start_response`被错误处理程序调用时,这个参数才应当被提供。如果提供了`exc_info`参数且没有尚未有任何`HTTP`包头输出,`start_response`应该将当前缓存的`HTTP`响应包头替换成新生成的,从而允许应用在错误发生的时候修改输出。
+
+但是,如果`HTTP`包头在其时已有输出,`start_response`必须报错,且应当使用`exc_info`元组再报一次:
+
+```python
+raise exc_info[1].with_traceback(exc_info[2])
+```
+
+以上代码会把应用捕获的异常再抛出一次,原则上会终止应用。(当`HTTP`包头已经被送出后应用尝试将错误信息输出至浏览器的行为是不安全的。)如果应用使用`exc_info`参数调用`start_response`,则禁止捕获任何由`start_response`抛出的异常,而应该让该异常被返回到服务端。详见`错误处理`小节。
+
+当且仅当提供`exc_info`参数时,应用可能会调用`start_response`多次。说得更精确一点,如果`start_response`应该在当前的应用调用中被调用过了,再次调用时如果不提供`exc_info`参数就会引发一个致命错误。第一次调用`start_response`出错也包括在这种情况中。(参见上文的`CGI网关`示例以领会正确的逻辑流程。)
+
+注意,集成了`start_response`的`Web`服务器、网关服务器和中间件必须保证在`start_response`执行期之外的时间内不能访问到`exc_info`,以避免在追踪和涉及到框架时发生循环引用。最简单的处理方式如下:
+
+```python
+def start_response(status, response_headers, exc_info=None):
+    if exc_info:
+        try:
+            # do stuff w/exc_info here
+        finally:
+            exc_info = None    # Avoid circular ref.
+```
+
+`CGI网关样例`程序则提供了另一种处理方法。
+
+#### 3.4.9 处理`Content-Length`头
+
+如果应用提供`Content-Length`包头,`Web`服务器不应该传送大于该包头指定长度的数据给客户端,而应该在发送了足量数据之后停止对改请求进行迭代,或者在应用尝试在此后调用`write()`时报错。(当然,如果应用提供的数据量不够`Content-Length`指定的大小,`Web`服务器应当关闭此连接或直接报错。)
+
+如果应用没有提供 Content-Length 包头,服务端有好几种方法可以处理。最简单的一种是当响应结束后关闭客户端连接。
+
+但是在某些情况下,服务端要么必须自己生成一个`Content-Length`包头,或者至少避免关闭客户端连接。如果应用没有调用`write()`函数,且返回一个长度为`1`的迭代器,服务端应该根据迭代器生成的第一个字节流字符串自动确定`Content-Length`包头的值。
+
+如果服务端和客户端都支持`HTTP/1.1`标准中的`整块编码`,则服务端可以使用`整块编码`在每次调用`write()`或迭代器每生成一个字节流字符串就发送一个数据块,同时为每一个数据块生成一个`Content-Length`包头。这种方法使服务端能够在需要的情况下保证客户端的连接不断。在采用这种方法时服务端必须遵守`RFC 2616`,否则就只能使用其他方法来处理`Content-Length`包头缺失的情况。
+
+(注意：应用和中间件禁止在各自的输出中使用任何数据编码手段,比如分块或压缩;在进行`逐跳`操作时,这些编码方式是服务端的特权。参见`其他HTTP特性`小节以获取更多细节。)
+
+#### 3.4.10 缓冲区和流处理
+
+一般来说,应用通过缓存适量的数据最后一次输出来达到最佳的吞吐量。这是现有框架比如`Zope`中常用的技术:输出被缓存在一个`StringIO`或类似对象中,最后与响应包头一起一次输出。
+
+`WSGI`中类似的处理是让应用简单地返回一个包含字节流字符串形式的响应包体的迭代器(比如一个列表)。对于绝大多数渲染数据量很小(足以放在内存中)的`HTML`页面的应用函数都建议采用这种方法。
+
+但是对于大文件,或对于`HTTP`流的特殊用途(比如多部件`服务器推送`),应用可以根据需要将输出以小块形式提供(比如为了避免将一个大文件全部加载到内存中)。有时候响应的部分数据生成很耗时,也可以将已经生成的输出提前发送过去。
+
+在这些情况下,应用经常会返回一个生成迭代器来生成一块一块的输出。这些数据块可以被打散以适应多部件边界(比如`服务器推送`),或者只是在耗时很长的任务之前进行(比如读取另一个在磁盘上的文件数据块)。
+
+遵循`WSGI`的`Web`服务器,网关服务器和中间件不能延迟传送任何数据块。它们必须要么将整个数据块传送给客户端,要么保证即使应用在生成下一个数据块的时候它们仍然会继续传输,可以通过以下三种方法提供保证:
+
+> 将这个数据块转交给操作系统并请求刷新所有系统缓存。 
+> <br> 使用另一个单独的线程保证数据块在应用生成下一个数据块的时候继续传送。
+> <br> 中间件还可以将整个数据块传送给其上层的网关服务器或`Web`服务器。 
+
+通过提供这个保证,`WSGI`保证数据传送不会再应用输出数据的某个时刻被打断。这对于诸如多部件`服务器推送`输出流之类技术有重要作用,在这些技术中多部件边间之间的数据要求必须完整地传送到客户端。
+
+#### 3.4.11 `Block Boundaries`的中间件处理
+
+为了更好地支持异步的应用和服务器,中间件不能在等待应用迭代器生成多个值时阻塞迭代。如果中间件需要在应用尚未有输出的时候收集更多数据,则它必须生成一个空的字节流字符串。
+
+换言之,每次下层应用产生一个值时中间件都必须相应生成至少一个值。如果中间件不能生成任何有意义的值,则生成一个空的字节流字符串。
+
+这个规定保证了异步应用和服务器能够合作,以减少同时支持固定数量应用实例所需的线程数量。
+
+值得注意的是,这要求中间件必须在下层应用返回一个迭代器时也立即向上返回一个迭代器。中间件禁止使用`write()`可调用者来传送下层应用生成的数据。中间件只能调用上层服务器的 write() 可调用者来传送下层应用调用中间件自己的`write()`可调用者生成的数据。(译者注:即下层只能调用上层的`write()`可调用者。)
+
+#### 3.4.12 `write()`函数
+
+某些现有框架的`API`支持无缓冲输出的方法与`WSGI`不同。尤其是他们提供了某种形式的`write`函数以无缓冲地写入一个数据块,或者提供了一个有缓冲的`write`函数和一个`flush`机制来刷新缓存。
+
+不幸的是这些`API`不能使用`WSGI`应用的迭代器返回值来实现,除非使用多线程或类似的特殊技术。
+
+因此为了让这些框架继续使用必要的`API`,`WSGI`包含了一个特别的`write()`可调用者,由`start_response`可调用者返回。
+
+新的`WSGI`应用和框架在不必要的时候不应该使用`write()`可调用者。`write()`可调用者是为了支持必要的流式`API`的一种`hack`手段。一般而言,应用应该使用迭代器返回输出,这样`Web`服务器可以在同一个`python`线程中交替完成不同的任务,从而潜在地提高服务器的吞吐量。
+
+`write()`可调用者由`start_response()`可调用者返回,只接受一个参数:作为`HTTP`包体一部分的一个字节流字符串,并将此字符串当作由输出迭代器生成的。换言之,在`write()`返回前,必须保证传入的字节流字符串要么被完整地传送到了客户端,或者在应用继续运行的时候已被缓存起来等待传送。
+
+应用必须返回一个迭代器对象,即使它使用了`write()`来生成全部或者部分的响应包体。返回的迭代器必须为空(即不生成任何非空字节流字符串),但是如果它确实生成了非空字节流字符串,则该输出必须被`Web`服务器或网关服务器当作一般输出处理(即必须被立即传送或缓存)。应用禁止在其返回的迭代器内部调用`write()`,因此任何迭代器生成的字节流字符串必须在所有传递给`write()`的字符串被发送给客户端之后才能进行传送。
+
+#### 3.4.13 `Unicode`编码
+
+`HTTP`并不直接支持`Unicode`,`WSGI`亦然。所有的编码和解码工作由应用自己完成,所有发送给服务器或从服务器接收的字符串必须是`str`类型或`bytes`类型的,而不能是`unicode`类型。在要求使用字符串类型的地方使用`unicode`类型的结果是不可知的。
+
+作为状态或响应包头传递给`start_response()`的字符串必须遵守`RFC 2616`中关于编码的规定,即要么是`ISO-8859-1`字符,要么使用`RFC 2047 MIME`编码。
+
+在`str`或`StringType`类型实际上是`Unicode`编码的`python`平台(如`Jython`,`IronPython`,`python 3`等)上,所有对应于本规范的`字符串`只能包含对应于那些`ISO-8859-1`可表示编码点的`Unicode`编码(即`u0000`到`u00FF`)。应用使用的字符串中包含有其他字符或编码点会引发致命错误。`Web`服务器和网关服务器也禁止提供包含其他`Unicode`字符的字符串。
+
+再强调一遍,所有对应到本规范的`字符串`必须是`str`类型或者`StringType`类型,而不能是`unicode`类型或者`UnicodeType`类型。即使已有的平台允许在`str`或`StringType`类型中使用每个字符多于`8`比特的编码,也只有低`8`位允许使用。
+
+本规范中所谓的`字节流字符串`(即从`wsgi.input`中读入的值,最后会传递给`write()`或由应用生成),其值必须是`Python 3`下的`bytes`类型,或者更低版本`Python`中的`str`类型。
+
+#### 3.4.14 错误处理
+
+一般而言,应用应该自己捕获内部错误,并在浏览器中显示有帮助的错误信息。(由应用自己决定什么叫`有帮助`。)
+
+但是要显示这条信息,应用在之前必须没有发送任何数据到浏览器,或者可以冒险中断响应。`WSGI`提供了一个机制以使应用要么能够传送错误信息,要么会被自动终止:通过`start_response`的`exc_info`参数。下面有一个例子来阐述其用法:
+
+```python
+::
+try:
+    # regular application code here 
+    status = "200 Froody"
+    response_headers = [("content-type", "text/plain")] 
+    start_response(status, response_headers) 
+    return ["normal body goes here"]
+except:
+    # XXX should trap runtime issues like MemoryError, KeyboardInterrupt 
+    # in a separate handler before this bare ‘except:’... 
+    status = "500 Oops"
+    response_headers = [("content-type", "text/plain")] 
+    start_response(status, response_headers, sys.exc_info()) 
+    return ["error body goes here"]
+```
+
+如果在异常发生时还没有任何输出,`start_response`的调用会正常返回,应用会收到可用以传递给浏览器的错误信息。而如果之前有任何输出已经被传递给浏览器,`start_response`会重新抛出异常。这个异常不能被应用捕获,所以应用不会终止。`Web`服务器或网关服务器能够捕获这个异常并终止响应。
+
+服务器应该捕获并记录所有终止了应用或其返回值迭代过程的异常。如果错误发生时部分响应信息已经被传递给浏览器,`Web`服务器或网关服务器可以尝试在输出中添加一条错误信息,只要已发送的包头包含服务器可以显式修改的`text/*`类型内容。
+
+某些中间件可能希望能够提供其他的错误处理机制,或拦截和替换应用错误信息。在这种情况下,中间件可以选择不重新将`exc_info`抛出给`start_response`,但是必须相应地抛出一个中间件特定的异常,或者缓存下提供的参数后简单地正常返回。这迫使应用返回其错误信息迭代器(或调用`write()`),从而使中间件能够捕获和修改错误信息。这些技术要求开发者遵循如下规范:
+
+> 开始错误响应时总是提供`exc_info`参数。
+> <br> 提供了`exc_info`参数的情况下不要捕获任何由`start_response`抛出的异常。 
+
+
+#### 3.4.15 `HTTP 1.1`相关
+
+实现了`HTTP 1.1`标准的`Web`服务器和网关服务器必须提供`HTTP 1.1`标准中`expect/continue`机制的透明支持。这可以通过以下方法做到:
+
+> 对于任何`Expect: 100-continue`的请求返回一个即时的`100 Continue`响应,然后正常继续运行。 
+> <br> 继续正常运行,但是提供给应用一个`wsgi.input`流,这个流会在应用第一次尝试读取输入流的时候发送`100 Continue`响应。读请求之后必须阻塞,直到客户端响应为止。 
+> >br> 阻塞请求直到客户端意识到服务器不支持`expect/continue`机制,然后自己发送请求包体。(这种方法不是最优的,不推荐使用。)
+
+这些限制并不针对`HTTP 1.0`的请求,也不适用于不传递给应用对象的请求。参见`RFC 2616 8.2.3`小节和`10.1.1`小节以获取更多关于`HTTP 1.1 Expect/Continue`请求的信息。
+
+#### 3.4.16 其他`HTTP`特性 
+
+一般来说,服务端应该让应用全权负责控制自己的输出。服务端只能进行不影响应用响应语义的改动。应用开发者总是可以通过添加中间件来提供附件特性,因此服务端开发者在实现过程中必须尽可能保守。从某种意义上来说,`Web`服务器应当视自己为`HTTP网关服务器`,而将应用看成一个`HTTP`的`源服务器`。(参见`RFC 2616 1.3`小节获取更多信息。)
+
+但是因为`WSGI`服务端和应用端不通过`HTTP`交互,所以`RFC 2616`称之为`逐跳`包头的特性不适用与`WSGI`的内部通信。`WSGI`应用不能生成任何`逐跳`包头,不能使用任何需要生成该包头的`HTTP`特性,也不能依赖于`environ`字典中的任何传入的`逐跳`包头。`WSGI`服务端必须自己处理任何传入的能够支持的`逐跳`包头,比如对传入的`Transfer-Encoding`进行解码,如果可能的话其中也包括整块编码。
+
+以上的原则适用于很多`HTTP`特性,服务端可以通过`If-None-Match`和`If-Modified-Since`请求包头以及`Last-Modified`和`ETag`响应包头来处理缓存生效的问题。但是这并不是必要的,应用如果想支持该特性应该自己处理自己的缓存生效问题,因为服务端不一定会处理。
+
+类似情况比如服务端可以对应用的响应进行重新编码或传输编码,但是应用应该自己选择一个合适的内容编码方式,并且禁止使用传输编码。服务端可以在客户端要求的时候传输应用响应的字节范围,而应用并不原生支持字节范围,但是同样的,应用应该在有需求时自己干这个。
+
+请注意,这些限制条件并不是要求应用把每一个`HTTP`特性都自己重新实现一遍。很多特性可以部分或全部被中间件实现,从而避免服务端和应用端的开发者一次又一次地重复实现同样的特性。
+
+#### 3.4.17 线程支持
+
+线程机制的支持与否取决与各`Web`服务器自身。可以并行处理多个请求的服务器,必须提供单线程运行应用的选项,以使非线程安全的应用或框架仍然能够在其上运行。
+
+### 3.5 应用实现指南
+
+#### 3.5.1 服务器扩展`API`
+
+一些服务端开发者希望暴露更多的高级`API`,以使应用端开发者用来实现特殊的需求。比如说一个基于`mod_python`的网关服务器会希望以`WSGI`扩展的方式暴露部分`Apache`的`API`。
+
+在最简单的情况下,这只要求定义一个`environ`变量,比如`mod_python.some_api`。但是很多时候可能存在的中间件会使情况变得复杂起来。比如一个`environ`变量中提供访问某个`HTTP`包头功能的`API`,可能在`environ`被中间件修改之后返回不同的值。
+
+一般而言,任何复制、补足或绕过了部分`WSGI`功能的`API`都有与中间件不兼容的危险。服务端开发者不应该假设没有使用中间件,因为某些框架开发者尤其希望将他们的框架设计或重构成类似中间件的样子。
+
+所以为了提供最大程度的兼容性,提供扩展`API`以取代某些`WSGI`功能的服务端应该精心设计,以使它们在被调用时使用了这些扩展`API`。举例来说,一个访问`HTTP`请求包头的`API`必须要求应用传递其当前的`environ`,以使服务端能确定通过该`API`能访问到的`HTTP`包头没有被中间件修改。如果扩展`API`不能保证其对`HTTP`包头的要求与`environ`一致,那么它必须通过报错、返回`None`而不是包头集合或任何其他合适的方式拒绝为应用服务。
+
+类似的例子还有如果扩展`API`提供写入响应数据或包头的功能,它必须要求应用在使用扩展功能之前传入`start_response`可调用者。如果该可调用者与服务端最早从应用那儿收到的不一致,那么该`API`便不能保证正确的响应,只能拒绝为应用提供改扩展服务。
+
+这些指导原则也适用于在`environ`中额外添加了类似解析过的`cookie`、构造变量、会话等内容的中间件。尤其是那些将这些功能以作用于`environ`的函数形式提供的中间件,相比简单将数据插入`environ`中的中间件更要注意。这保证了在每次中间件对`environ`进行了`URL`重写或其他修改之后`environ`中的信息都会被检查一遍。
+
+这些`安全扩展`的原则非常重要,服务端和应用端开发者都应该遵守,以避免未来的某个时候中间件开发者不得不删除某些或全部涉及`environ`的扩展`API`,以免中间件的功能因为应用调用了扩展`API`而失效。
+
+#### 3.5.2 应用配置 
+
+本规范并没有定义服务端如何选择或获取一个应用来调用。这些以及其他的配置选项是由服务端根据自己的特定情况决定的。服务端开发者应该在自述文档中记述如何配置才能以特定的选项(如线程选项)执行一个特定的应用程序对象。
+
+另一方面,框架开发者应该在自述文档中记载如何创建一个包含框架功能的应用对象。在服务端和应用端都使用了框架的用户必须将二者结合起来考虑。但是由于双方现在都有通用接口了,这只是个体力活儿,而不是一个重要的工程难题。
+
+最后,有些应用、框架和中间件希望使用`environ`字典来收取简单的配置选项字符串。`Web`服务器和网关服务器应该通过允许应用开发者在`environ`中指定键值对来支持这个特性。最简单的情况下,只需要从`os.environ`中拷贝所有操作系统提供的环境变量到`environ`字典中即可,因为部署人员原则上能够在服务器上手工配置这些变量,或者在 CGI 环境下他们可以通过服务器的配置文件来完成。
+
+应用应该尽量少使用这些变量,因为不是所有的服务器都能够很方便地配置它们。当然,即使在最坏的情况下,部署应用的人也能够通过创建一个脚本提供必要配置选项:
+
+```python
+from the_app import application
+
+def new_app(environ, start_response):
+    environ['the_app.configval1'] = 'something'
+    return application(environ, start_response)
+```
+
+但是大部分的应用和框架可能只需要`environ`中的一个配置域来显示应用或框架用到的配置文件路径。(当然,应用可以缓存这些配置来避免在每次调用中都读一遍。)
+
+#### 3.5.3 URL reconstruction
+
+如果应用希望重建一个请求的完整`URL`,可以通过下面由Ian Bicking提供的算法来实现:
+
+```python
+from urllib import quote
+url = environ['wsgi.url_scheme']+'://'
+
+if environ.get('HTTP_HOST'):
+    url += environ['HTTP_HOST']
+else:
+    url += environ['SERVER_NAME']
+
+    if environ['wsgi.url_scheme'] == 'https':
+        if environ['SERVER_PORT'] != '443':
+           url += ':' + environ['SERVER_PORT']
+    else:
+        if environ['SERVER_PORT'] != '80':
+           url += ':' + environ['SERVER_PORT']
+
+url += quote(environ.get('SCRIPT_NAME', ''))
+url += quote(environ.get('PATH_INFO', ''))
+if environ.get('QUERY_STRING'):
+    url += '?' + environ['QUERY_STRING']
+```
+
+注意重建出来的`URL`可能不是客户端请求的那个`URI`,比如服务器重写规则可能会修改客户端请求的原始`URL`以使其符合规范。
+
+#### 3.5.4 支持低于`2.2`版本的`python`
+
+某些`Web`服务器、网关服务器或者应用可能会需要支持低于`2.2`版本的`python`。在使用`Jython`作为平台的时候这一点尤其重要,因为高于`2.2`版本的`Jython`还不能在生产环境中应用。
+
+对于`Web`服务器和网关服务器,这种支持相对直接:目标平台是低于`2.2`版本的`Python`的服务器和网关只能使用一个标准的`for`循环来迭代任何应用返回的迭代器。这是唯一保证各版本间的迭代器协议在源码级兼容的方法,后面我们会详细讨论。(最新的迭代器协议见`PEP 234`。)
+
+(注意这个技术只适用于`Python`下的`Web`服务器、网关服务器和中间件。其他语言中的迭代器协议如何正确使用超出了本规范的讨论范围。)
+
+对于应用程序,支持低于`2.2`版本的`Python`有一点麻烦:
+
+> 你不能返回一个文件对象并期望它像一个迭代器一样工作,因为从`Python 2.2`开始文件就不是迭代器了。(一般而言你也不应该使用这种方法,因为绝大多数情况下这是一种丑陋的实现!)应该使用`wsgi.file_wrapper`或者应用指定的文件包装器。(参见(可选)特定平台上的文件处理小节以获取更多文件包装器的信息,以及一个可以用来将文件包装为迭代器的样例类。)
+> <br> 如果你返回一个经过定制的迭代器,它必须实现`2.2`版本之前的迭代器协议。亦即提供一个`__getitem__`方法,这个方法接受一个整数键值,当该值耗尽时就会抛出`IndexError`异常。(内建的序列类型也是可接受的,因为它们已经集成了相关协议。)最后,希望支持低于`2.2`版本的`Python`且迭代应用返回值或本身返回一个迭代器的中间件必须遵守以上提到的相应的推荐方法。
+
+(注意:`Web`服务器、网关服务器、应用或者中间件在支持低于`2.2`版本的`Python`都必须只使用该版本支持的特性,比如使用`1`和`0`来代替`True`和`False`等。)
+
+#### 3.5.4 (可选)特定平台上的文件处理
+
+某些操作系统提供特殊的高性能文件传输功能,比如`Unix`的`sendfile()`系统调用。`Web`服务器和网关服务器可以通过`environ`中可选的`wsgi.file_wrapper`域值来提供此功能。应用可以使用这种`文件包装器`来将一个文件或类文件对象转换为一个迭代器并返回,如下所示:
+
+```python
+if 'wsgi.file_wrapper' in environ:
+    return environ['wsgi.file_wrapper'](filelike, block_size)
+else:
+    return iter(lambda: filelike.read(block_size), '')
+```
+
+如果`Web`服务器或网关服务器支持`wsgi.file_wrapper`,则它必须是一个可调用者,接收一个必须的形式参数和一个可选的形式参数。第一个形式参数是一个待发送的类文件对象,第二个可选的则是一个建议的块大小(服务端不一定要采纳)。这个可调用者必须返回一个迭代对象,并且禁止在服务端实际接收到该迭代器返回值之前传送任何数据。(不这样做的话会妨碍中间件对响应数据进行译码或修改。)
+
+为了被看做一个文件,应用提供的对象必须有一个能接受一个可选文件大小参数的`read()`方法。该对象也可以有一个`close()`方法,如果提供了这个方法,`wsgi.file_wrapper`返回的迭代器就必须提供一个`close()`方法,这个方法最终调用了对象提供的`close()`方法。如果该对象提供了任何与`Python`内建文件对象名字一样的方法或属性(比如`fileno()`),`wsgi.file_wrapper`可以假设这些方法和属性与它们作为内建的方法和属性时语义相同。
+
+任何平台相关的文件处理必须是现在应用返回之后,并且由`Web`服务器和网关服务器来检查包装器对象是否返回了。(再强调一遍,由于中间件、错误处理程序之类的存在,并不保证包装器被创建了就一定会被使用。)
+
+除了对于`close()`的处理,应用返回文件包装器的语义应该与应用返回`iter(filelike.read, ‘’)`一样。换言之,数据传输应该从当前的文件读写指针位置开始,直到到达文件尾或者达到`Content-Length`要求的字节数。(如果应用没有提供`Content-Length`包头,服务端可以根据自己的文件实现机制对具体的文件生成一个。)
+
+当然,平台相关的文件传送`API`一般不会随便接受一个类文件对象。因此`wsgi.file_wrapper`必须自己检查所提供的对象有没有诸如`fileno()`(在`Unix`类系统上)或`java.nio.FileChannel`(在`Jython`平台上)之类的东西,以保证类文件对象正确使用了平台特有的`API`。
+
+另外要注意的是即使该对象不适应平台特有的`API`,`wsgi.file_wrapper`也必须返回一个包装了`read()`和`close()`的迭代器,以使使用文件包装器的应用能够跨平台移植。下面有一个简单的不依赖特定平台的文件包装器类,适用于所有版本的`Python`:
+
+```python
+class FileWrapper:
+
+    def __init__(self, filelike, blksize=8192):
+        self.filelike = filelike
+        self.blksize = blksize
+        if hasattr(filelike, 'close'):
+            self.close = filelike.close
+
+    def __getitem__(self, key):
+        data = self.filelike.read(self.blksize)
+        if data:
+            return data
+        raise IndexError
+```
+
+下面一段代码是从服务端代码中抽出来的,支持访问平台相关的`API`:
+
+```python
+environ['wsgi.file_wrapper'] = FileWrapper
+result = application(environ, start_response)
+
+try:
+    if isinstance(result, FileWrapper):
+        # check if result.filelike is usable w/platform-specific
+        # API, and if so, use that API to transmit the result.
+        # If not, fall through to normal iterable handling
+        # loop below.
+
+    for data in result:
+        # etc.
+
+finally:
+    if hasattr(result, 'close'):
+        result.close()
 ```
 
 
