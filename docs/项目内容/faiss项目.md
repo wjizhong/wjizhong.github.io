@@ -1002,6 +1002,7 @@ namespace faiss {
 
 #### 4.1.2 Heap.h和Heap.cpp文件
 
+此文件定义了`heap_pop`, `heap_push`,`heap_heapify`(建堆),`heap_addn`,`heap_reorder`以及`HeapArray`。
 
 * **Heap.h文件**
 
@@ -1660,6 +1661,10 @@ namespace faiss {
 ```
 
 #### 4.1.4 distances.h、distances_simd.cpp和distances.cpp文件
+
+`h、distances_simd.cpp`文件定义了`fvec_L2sqr`(s-s向量L2距离),`fvec_inner_product`(s-s),`fvec_L1`,`fvec_Linf`,`fvec_norm_L2sqr`,`fvec_L2sqr_ny`(s-mL2距离)。
+
+
 
 * **distances.h文件**
 
@@ -2687,6 +2692,8 @@ namespace faiss {
 ```
 
 #### 4.2.3 AuxIndexStructures.h和AuxIndexStructures.cpp文件
+
+此文件定义了ID选择器:`IDSelector`,`IDSelectorRange`,`IDSelectorArray`,`IDSelectorBatch` 和检索结果`RangeSearchResult`,`RangeSearchPartialResult`以及相关的`BufferList`,`DistanceComputer`。
 
 * **AuxIndexStructures.h文件**
 
