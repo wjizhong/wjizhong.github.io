@@ -2265,7 +2265,7 @@ layout模板部分可改为:
 
 运行结果大家就自己试试吧。
 
-### 1.6 集成数据库
+### 4.5 集成数据库
 
 既然前几篇都用用户登录作为例子,我们这篇就继续讲登录,只是登录的信息会由数据库来验证。让我们先准备SQLite环境吧。
 
@@ -2284,9 +2284,10 @@ CREATE TABLE users (
 INSERT INTO users (name, password) VALUES ('visit', '111');
 INSERT INTO users (name, password) VALUES ('admin', '123');
 ```
+
 运行sqlite3命令,初始化数据库。我们的数据库文件就放在”db”子目录下的”user.db”文件中。
 
-```python
+```sh
 $ sqlite3 db/user.db < init.sql
 ```
 * **配置连接参数**
@@ -2310,7 +2311,7 @@ app = Flask(__name__)
 app.config.from_object('config')
 ```
 
-这里也可以用app.config.from_envvar('FLASK_SETTINGS', silent=True)方法来导入配置信息,此时程序会读取系统环境变量中FLASK_SETTINGS的值,来获取配置文件路径,并加载此文件。如果文件不存在,该语句返回False。参数silent=True表示忽略错误。
+这里也可以用`app.config.from_envvar('FLASK_SETTINGS', silent=True)`方法来导入配置信息,此时程序会读取系统环境变量中`FLASK_SETTINGS`的值,来获取配置文件路径,并加载此文件。如果文件不存在,该语句返回False。参数`silent=True`表示忽略错误。
 
 * **建立和释放数据库连接**
 
@@ -2328,7 +2329,7 @@ def teardown_request(exception):
         db.close()
 ```
 
-我们在before_request()里建立数据库连接,它会在每次请求开始时被调用;并在teardown_request()关闭它,它会在每次请求关闭前被调用。
+我们在`before_request()`里建立数据库连接,它会在每次请求开始时被调用;并在`teardown_request()`关闭它,它会在每次请求关闭前被调用。
 
 * **查询数据库**
 
@@ -2354,7 +2355,7 @@ def login():
 
 模板中加上”login.html”文件
 
-```python
+```html
 {% extends "layout.html" %}
 {% block body %}
 <form name="login" action="/login" method="post">
@@ -2367,7 +2368,7 @@ def login():
 
 终于一个真正的登录验证写完了(前几篇都是假的),打开浏览器登录下吧。
 
-## 二、Vue.js和Flask构建单页App
+### 4.6 Vue.js和Flask构建单页App
 
 参考连接:[`https://juejin.im/post/5ab0a21df265da23a228efd3`](https://juejin.im/post/5ab0a21df265da23a228efd3)
 
@@ -2378,7 +2379,7 @@ def login():
 > * Flask有API端,可以从我的SPA访问。
 > * 可以访问API端,甚至当为了前端开发而运行Node.js的时候。
 
-###  2.1 客户端
+#### 4.6.1 客户端
 
 将使用Vue CLI产生基本vue.js App。如果你还没有安装它,请运行:`npm install -g vue-cli`,客户端和后端代码将被拆分到不同的文件夹。初始化前端部分运行跟踪:
 
@@ -2392,7 +2393,7 @@ npm install
 npm run dev
 ```
 
-添加home.vue和about.vue到frontend/src/components文件夹。它们非常简单,像这样:
+添加`home.vue`和`about.vue`到`frontend/src/components`文件夹。它们非常简单,像这样:
 
 ```html
 // Home.vue
@@ -2410,9 +2411,9 @@ npm run dev
 </template>
 ```
 
-我们将使用它们正确地识别我们当前的位置(根据地址栏)。现在我们需要改变frontend/src/router/index.js文件以便使用我们的新组件:
+我们将使用它们正确地识别我们当前的位置(根据地址栏)。现在我们需要改变`frontend/src/router/index.js`文件以便使用我们的新组件:
 
-```shell
+```html
 import Vue from 'vue'
 import Router from 'vue-router'
 const routerOptions = [
@@ -2434,7 +2435,7 @@ export default new Router({
 })
 ```
 
-如果你试着输入localhost:8080和localhost:8080/about,你应该看到相应的页面。我们几乎已经准备好构建一个项目,并且能够创建一个静态资源文件包。在此之前,让我们为它们重新定义一下输出目录。在frontend/config/index.js找到下一个设置:
+如果你试着输入`localhost:8080`和`localhost:8080/about`,你应该看到相应的页面。我们几乎已经准备好构建一个项目,并且能够创建一个静态资源文件包。在此之前,让我们为它们重新定义一下输出目录。在`frontend/config/index.js`找到下一个设置:
 
 ```shell
 index: path.resolve(__dirname, '../dist/index.html'),
@@ -2448,7 +2449,7 @@ index: path.resolve(__dirname, '../../dist/index.html'),
 assetsRoot: path.resolve(__dirname, '../../dist'),
 ```
 
-所以/dist文件夹的HTML、CSS、JS会在同一级目录/frontend。现在你可以运行npm run build创建一个包。
+所以`/dist`文件夹的HTML、CSS、JS会在同一级目录`/frontend`。现在你可以运行npm run build创建一个包。
 
 ### 1.2 后端
 
