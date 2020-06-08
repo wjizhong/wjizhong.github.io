@@ -35,7 +35,7 @@
           {title: "\u805a\u7c7b", url: "#_top", level:1, children: [
               {title: "\u4e00\u3001K-means", url: "#k-means", level:2, children: [ 
               ]},
-              {title: "\u4e8c\u3001 AP\u805a\u7c7b", url: "#ap", level:2, children: [
+              {title: "\u4e8c\u3001AP\u805a\u7c7b", url: "#ap", level:2, children: [
                   {title: "2.2 Mean Shift", url: "#22-mean-shift", level:3, children: [
                   ]}, 
               ]},
@@ -385,7 +385,7 @@ for center_1, center_2 in zip(regular_values[:-1], regular_values[1:]):
 plt.show()
 </code></pre>
 
-<h2 id="ap">二、 AP聚类</h2>
+<h2 id="ap">二、AP聚类</h2>
 <p>Affinity Propagation Clustering(简称AP算法)是2007提出的,当时发表在Science上《single-exemplar-based》。特别适合高维、多类数据快速聚类,相比传统的聚类算法,该算法算是比较新的,从聚类性能和效率方面都有大幅度的提升。</p>
 <p>AP算法的基本思想:将全部样本看作网络的节点,然后通过网络中各条边的消息传递计算出各样本的聚类中心。聚类过程中,共有两种消息在各节点间传递,分别是吸引度(responsibility)和归属度(availability)。AP算法通过迭代过程不断更新每一个点的吸引度和归属度值,直到产生m个高质量的Exemplar(类似于质心),同时将其余的数据点分配到相应的聚类中。</p>
 <p>名词介绍:</p>
