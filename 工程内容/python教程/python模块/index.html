@@ -106,17 +106,12 @@
                           {title: "4.7.4.16 \u5176\u4ed6HTTP\u7279\u6027", url: "#47416-http",level:5},
                           {title: "4.7.4.17 \u7ebf\u7a0b\u652f\u6301", url: "#47417",level:5},
                       ]},
-                  ]},
-                  {title: "3.5 \u5e94\u7528\u5b9e\u73b0\u6307\u5357", url: "#35", level:3, children: [
-                      {title: "3.5.1 \u670d\u52a1\u5668\u6269\u5c55API", url: "#351-api", level:4,children: [
-                      ]},
-                      {title: "3.5.2 \u5e94\u7528\u914d\u7f6e", url: "#352", level:4,children: [
-                      ]},
-                      {title: "3.5.3 URL reconstruction", url: "#353-url-reconstruction", level:4,children: [
-                      ]},
-                      {title: "3.5.4 \u652f\u6301\u4f4e\u4e8e2.2\u7248\u672c\u7684python", url: "#354-22python", level:4,children: [
-                      ]},
-                      {title: "3.5.4 (\u53ef\u9009)\u7279\u5b9a\u5e73\u53f0\u4e0a\u7684\u6587\u4ef6\u5904\u7406", url: "#354", level:4,children: [
+                      {title: "4.7.5 \u5e94\u7528\u5b9e\u73b0\u6307\u5357", url: "#475", level:4,children: [
+                          {title: "4.7.5.1 \u670d\u52a1\u5668\u6269\u5c55API", url: "#4751-api",level:5},
+                          {title: "4.7.5.2 \u5e94\u7528\u914d\u7f6e", url: "#4752",level:5},
+                          {title: "4.7.5.3 URL reconstruction", url: "#4753-url-reconstruction",level:5},
+                          {title: "4.7.5.4 \u652f\u6301\u4f4e\u4e8e2.2\u7248\u672c\u7684python", url: "#4754-22python",level:5},
+                          {title: "4.7.5.5 (\u53ef\u9009)\u7279\u5b9a\u5e73\u53f0\u4e0a\u7684\u6587\u4ef6\u5904\u7406", url: "#4755",level:5},
                       ]},
                   ]}, 
               ]},
@@ -3034,8 +3029,8 @@ except:
 <p>请注意,这些限制条件并不是要求应用把每一个<code>HTTP</code>特性都自己重新实现一遍。很多特性可以部分或全部被中间件实现,从而避免服务端和应用端的开发者一次又一次地重复实现同样的特性。</p>
 <h5 id="47417">4.7.4.17 线程支持</h5>
 <p>线程机制的支持与否取决与各<code>Web</code>服务器自身。可以并行处理多个请求的服务器,必须提供单线程运行应用的选项,以使非线程安全的应用或框架仍然能够在其上运行。</p>
-<h3 id="35">3.5 应用实现指南</h3>
-<h4 id="351-api">3.5.1 服务器扩展<code>API</code></h4>
+<h4 id="475">4.7.5 应用实现指南</h4>
+<h5 id="4751-api">4.7.5.1 服务器扩展API</h5>
 <p>一些服务端开发者希望暴露更多的高级<code>API</code>,以使应用端开发者用来实现特殊的需求。比如说一个基于<code>mod_python</code>的网关服务器会希望以<code>WSGI</code>扩展的方式暴露部分<code>Apache</code>的<code>API</code>。</p>
 <p>在最简单的情况下,这只要求定义一个<code>environ</code>变量,比如<code>mod_python.some_api</code>。但是很多时候可能存在的中间件会使情况变得复杂起来。比如一个<code>environ</code>变量中提供访问某个<code>HTTP</code>包头功能的<code>API</code>,可能在<code>environ</code>被中间件修改之后返回不同的值。</p>
 <p>一般而言,任何复制、补足或绕过了部分<code>WSGI</code>功能的<code>API</code>都有与中间件不兼容的危险。服务端开发者不应该假设没有使用中间件,因为某些框架开发者尤其希望将他们的框架设计或重构成类似中间件的样子。</p>
@@ -3043,7 +3038,7 @@ except:
 <p>类似的例子还有如果扩展<code>API</code>提供写入响应数据或包头的功能,它必须要求应用在使用扩展功能之前传入<code>start_response</code>可调用者。如果该可调用者与服务端最早从应用那儿收到的不一致,那么该<code>API</code>便不能保证正确的响应,只能拒绝为应用提供改扩展服务。</p>
 <p>这些指导原则也适用于在<code>environ</code>中额外添加了类似解析过的<code>cookie</code>、构造变量、会话等内容的中间件。尤其是那些将这些功能以作用于<code>environ</code>的函数形式提供的中间件,相比简单将数据插入<code>environ</code>中的中间件更要注意。这保证了在每次中间件对<code>environ</code>进行了<code>URL</code>重写或其他修改之后<code>environ</code>中的信息都会被检查一遍。</p>
 <p>这些<code>安全扩展</code>的原则非常重要,服务端和应用端开发者都应该遵守,以避免未来的某个时候中间件开发者不得不删除某些或全部涉及<code>environ</code>的扩展<code>API</code>,以免中间件的功能因为应用调用了扩展<code>API</code>而失效。</p>
-<h4 id="352">3.5.2 应用配置</h4>
+<h5 id="4752">4.7.5.2 应用配置</h5>
 <p>本规范并没有定义服务端如何选择或获取一个应用来调用。这些以及其他的配置选项是由服务端根据自己的特定情况决定的。服务端开发者应该在自述文档中记述如何配置才能以特定的选项(如线程选项)执行一个特定的应用程序对象。</p>
 <p>另一方面,框架开发者应该在自述文档中记载如何创建一个包含框架功能的应用对象。在服务端和应用端都使用了框架的用户必须将二者结合起来考虑。但是由于双方现在都有通用接口了,这只是个体力活儿,而不是一个重要的工程难题。</p>
 <p>最后,有些应用、框架和中间件希望使用<code>environ</code>字典来收取简单的配置选项字符串。<code>Web</code>服务器和网关服务器应该通过允许应用开发者在<code>environ</code>中指定键值对来支持这个特性。最简单的情况下,只需要从<code>os.environ</code>中拷贝所有操作系统提供的环境变量到<code>environ</code>字典中即可,因为部署人员原则上能够在服务器上手工配置这些变量,或者在 CGI 环境下他们可以通过服务器的配置文件来完成。</p>
@@ -3056,7 +3051,7 @@ def new_app(environ, start_response):
 </code></pre>
 
 <p>但是大部分的应用和框架可能只需要<code>environ</code>中的一个配置域来显示应用或框架用到的配置文件路径。(当然,应用可以缓存这些配置来避免在每次调用中都读一遍。)</p>
-<h4 id="353-url-reconstruction">3.5.3 URL reconstruction</h4>
+<h5 id="4753-url-reconstruction">4.7.5.3 URL reconstruction</h5>
 <p>如果应用希望重建一个请求的完整<code>URL</code>,可以通过下面由Ian Bicking提供的算法来实现:</p>
 <pre><code class="python">from urllib import quote
 url = environ['wsgi.url_scheme']+'://'
@@ -3080,17 +3075,17 @@ if environ.get('QUERY_STRING'):
 </code></pre>
 
 <p>注意重建出来的<code>URL</code>可能不是客户端请求的那个<code>URI</code>,比如服务器重写规则可能会修改客户端请求的原始<code>URL</code>以使其符合规范。</p>
-<h4 id="354-22python">3.5.4 支持低于<code>2.2</code>版本的<code>python</code></h4>
+<h5 id="4754-22python">4.7.5.4 支持低于<code>2.2</code>版本的<code>python</code></h5>
 <p>某些<code>Web</code>服务器、网关服务器或者应用可能会需要支持低于<code>2.2</code>版本的<code>python</code>。在使用<code>Jython</code>作为平台的时候这一点尤其重要,因为高于<code>2.2</code>版本的<code>Jython</code>还不能在生产环境中应用。</p>
 <p>对于<code>Web</code>服务器和网关服务器,这种支持相对直接:目标平台是低于<code>2.2</code>版本的<code>Python</code>的服务器和网关只能使用一个标准的<code>for</code>循环来迭代任何应用返回的迭代器。这是唯一保证各版本间的迭代器协议在源码级兼容的方法,后面我们会详细讨论。(最新的迭代器协议见<code>PEP 234</code>。)</p>
 <p>(注意这个技术只适用于<code>Python</code>下的<code>Web</code>服务器、网关服务器和中间件。其他语言中的迭代器协议如何正确使用超出了本规范的讨论范围。)</p>
 <p>对于应用程序,支持低于<code>2.2</code>版本的<code>Python</code>有一点麻烦:</p>
 <blockquote>
-<p>你不能返回一个文件对象并期望它像一个迭代器一样工作,因为从<code>Python 2.2</code>开始文件就不是迭代器了。(一般而言你也不应该使用这种方法,因为绝大多数情况下这是一种丑陋的实现!)应该使用<code>wsgi.file_wrapper</code>或者应用指定的文件包装器。(参见(可选)特定平台上的文件处理小节以获取更多文件包装器的信息,以及一个可以用来将文件包装为迭代器的样例类。)
-<br> 如果你返回一个经过定制的迭代器,它必须实现<code>2.2</code>版本之前的迭代器协议。亦即提供一个<code>__getitem__</code>方法,这个方法接受一个整数键值,当该值耗尽时就会抛出<code>IndexError</code>异常。(内建的序列类型也是可接受的,因为它们已经集成了相关协议。)最后,希望支持低于<code>2.2</code>版本的<code>Python</code>且迭代应用返回值或本身返回一个迭代器的中间件必须遵守以上提到的相应的推荐方法。</p>
+<p>你不能返回一个文件对象并期望它像一个迭代器一样工作,因为从<code>Python 2.2</code>开始文件就不是迭代器了。(一般而言你也不应该使用这种方法,因为绝大多数情况下这是一种丑陋的实现!)应该使用<code>wsgi.file_wrapper</code>或者应用指定的文件包装器。(参见(可选)特定平台上的文件处理小节以获取更多文件包装器的信息,以及一个可以用来将文件包装为迭代器的样例类。)</p>
+<p>如果你返回一个经过定制的迭代器,它必须实现<code>2.2</code>版本之前的迭代器协议。亦即提供一个<code>__getitem__</code>方法,这个方法接受一个整数键值,当该值耗尽时就会抛出<code>IndexError</code>异常。(内建的序列类型也是可接受的,因为它们已经集成了相关协议。)最后,希望支持低于<code>2.2</code>版本的<code>Python</code>且迭代应用返回值或本身返回一个迭代器的中间件必须遵守以上提到的相应的推荐方法。</p>
 </blockquote>
 <p>(注意:<code>Web</code>服务器、网关服务器、应用或者中间件在支持低于<code>2.2</code>版本的<code>Python</code>都必须只使用该版本支持的特性,比如使用<code>1</code>和<code>0</code>来代替<code>True</code>和<code>False</code>等。)</p>
-<h4 id="354">3.5.4 (可选)特定平台上的文件处理</h4>
+<h5 id="4755">4.7.5.5 (可选)特定平台上的文件处理</h5>
 <p>某些操作系统提供特殊的高性能文件传输功能,比如<code>Unix</code>的<code>sendfile()</code>系统调用。<code>Web</code>服务器和网关服务器可以通过<code>environ</code>中可选的<code>wsgi.file_wrapper</code>域值来提供此功能。应用可以使用这种<code>文件包装器</code>来将一个文件或类文件对象转换为一个迭代器并返回,如下所示:</p>
 <pre><code class="python">if 'wsgi.file_wrapper' in environ:
     return environ['wsgi.file_wrapper'](filelike, block_size)
