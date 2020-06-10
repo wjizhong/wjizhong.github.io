@@ -3326,3 +3326,6 @@ finally:
 
 
 ## 四、numpy教程
+
+
+https://www.numpy.org.cn/reference/routines/math.html#%E5%8A%A0%E6%B3%95%E5%87%BD%E6%95%B0-%E4%B9%98%E6%B3%95%E5%87%BD%E6%95%B0-%E5%87%8F%E6%B3%95%E5%87%BD%E6%95%B0
