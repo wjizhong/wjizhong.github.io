@@ -79,6 +79,12 @@
                       ]},
                   ]}, 
               ]},
+              {title: "\u4e94\u3001linux\u76ee\u5f55\u7ed3\u6784", url: "#linux", level:2, children: [
+                  {title: "1.1 /proc\u76ee\u5f55\u4ecb\u7ecd", url: "#11-proc", level:3, children: [
+                  ]},
+                  {title: "1.2 \u6587\u4ef6\u7684\u7c7b\u578b", url: "#12", level:3, children: [
+                  ]}, 
+              ]},
           ]},
         ];
     </script>
@@ -2124,6 +2130,432 @@ for filename in os.listdir(attach_dir):
 
 composed = outer.as_string()
 </code></pre>
+
+<h2 id="linux">五、linux目录结构</h2>
+<p>树状目录结构:</p>
+<p><img alt="" src="http://atts.w3cschool.cn/attachments/uploads/2014/06/003vPl7Rty6E8kZRlAEdc690.jpg" /></p>
+<p>以下是对这些目录的解释:</p>
+<table>
+<thead>
+<tr>
+<th align="left">目录</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>/bin</code></td>
+<td><code>bin</code>是Binary的缩写,这个目录包含了引导启动所需的命令或普通用户可能用的命令(可能在引导启动后),这些命令都是二进制文件的可执行程序,多是系统中重要的系统文件</td>
+</tr>
+<tr>
+<td align="left"><code>/boot</code></td>
+<td><code>/boot</code>目录存放引导加载器(bootstrap loader)使用的文件,如<code>lilo</code>,核心映像也经常放在这里,而不是放在根目录中。但是如果有许多核心映像,这个目录就可能变得很大,这时使用单独的 文件系统会更好一些。还有一点要注意的是,要确保核心映像必须在ide硬盘的前1024柱面内</td>
+</tr>
+<tr>
+<td align="left"><code>/dev</code></td>
+<td><code>dev</code>是<code>Device</code>(设备)的缩写,<code>/dev</code>目录存放了设备文件,即设备驱动程序,用户通过这些文件访问外部设备。比如用户可以通过访问<code>/dev/mouse</code>来访问鼠标的输入,就像访问其他文件一样<br>1. <code>/dev/console</code>:系统控制台,也就是直接和系统连接的监视器<br>2. <code>/dev/hd:ide</code>硬盘驱动程序接口,如:<code>/dev/hda</code>指的是第一个硬盘,<code>had1</code>则是指<code>/dev/hda</code>的第一个分区,如系统中有其他的硬盘,则依次为<code>/dev/hdb</code>、<code>/dev/hdc</code>、...,如有多个分区则依次为<code>hda1</code>、<code>hda2</code>...<br>3. <code>/dev/sd:scsi</code>磁盘驱动程序接口,如系统有<code>scsi</code>硬盘,就不会访问<code>/dev/had</code>,而会访问<code>/dev/sda</code><br>4. <code>/dev/fd</code>:软驱设备驱动程序,如<code>/dev/fd0</code>指系统的第一个软盘,也就是通常所说的<code>a</code>盘,<code>/dev/fd1</code>指第二个软盘...,而<code>/dev/fd1</code> <code>h1440</code>则表示访问驱动器1中的4.5高密盘<br>5. <code>/dev/st:scsi</code>磁带驱动器驱动程序<br>6. <code>/dev/tty</code>:提供虚拟控制台支持,如:<code>/dev/tty1</code>指的是系统的第一个虚拟控制台,<code>/dev/tty2</code>则是系统的第二个虚拟控制台<br>7. <code>/dev/pty</code>:提供远程登陆伪终端支持,在进行telnet登录时就要用到<code>/dev/pty</code>设备<br>8. <code>/dev/ttys</code>:计算机串行接口,对于dos来说就是“<code>com1</code>”口<br>9. <code>/dev/cua</code>:计算机串行接口,与调制解调器一起使用的设备<br>10. <code>/dev/null</code>:“黑洞”,所有写入该设备的信息都将消失。例如:当想要将屏幕上的输出信息隐藏起来时,只要将输出信息输入到<code>/dev/null</code>中即可</td>
+</tr>
+<tr>
+<td align="left"><code>/etc</code></td>
+<td>这个目录用来存放所有的系统管理所需要的配置文件和子目录。</td>
+</tr>
+<tr>
+<td align="left"><code>/home</code></td>
+<td>用户的主目录,在Linux中,每个用户都有一个自己的目录,一般该目录名是以用户的账号命名的。</td>
+</tr>
+<tr>
+<td align="left"><code>/lib</code></td>
+<td><code>/lib</code>目录是根文件系统上的程序所需的共享库,存放了根文件系统程序运行所需的共享文件。这些文件包含了可被许多程序共享的代码,以避免每个程序都包含有相同的子程序的副本,故可以使得可执行文件变得更小,节省空间.<br><code>/lib/modules</code>目录包含系统核心可加载各种模块,尤其是那些在恢复损坏的系统时重新引导系统所需的模块(例如网络和文件系统驱动)</td>
+</tr>
+<tr>
+<td align="left"><code>/lost+found</code></td>
+<td>这个目录一般情况下是空的,当系统非法关机后,这里就存放了一些文件。</td>
+</tr>
+<tr>
+<td align="left"><code>/media</code></td>
+<td><code>linux</code>系统会自动识别一些设备,例如U盘、光驱等等,当识别后,<code>linux</code>会把识别的设备挂载到这个目录下。</td>
+</tr>
+<tr>
+<td align="left">`/mnt</td>
+<td>系统提供该目录是为了让用户临时挂载别的文件系统的,我们可以将光驱挂载在/mnt/上,然后进入该目录就可以查看光驱里的内容了。</td>
+</tr>
+<tr>
+<td align="left"><code>/opt</code></td>
+<td>这是给主机额外安装软件所摆放的目录。比如你安装一个ORACLE数据库则就可以放到这个目录下。默认是空的。</td>
+</tr>
+<tr>
+<td align="left"><code>/proc</code></td>
+<td>这个目录是一个虚拟的目录,它是系统内存的映射,我们可以通过直接访问这个目录来获取系统信息。<br>这个目录的内容不在硬盘上而是在内存里,我们也可以直接修改里面的某些文件,比如可以通过下面的命令来屏蔽主机的<code>ping</code>命令,使别人无法<code>ping</code>你的机器:<br><code>echo 1 &gt; /proc/sys/net/ipv4/icmp_echo_ignore_all</code></td>
+</tr>
+<tr>
+<td align="left"><code>/root</code></td>
+<td>该目录为系统管理员,也称作超级权限者的用户主目录。</td>
+</tr>
+<tr>
+<td align="left"><code>/sbin</code></td>
+<td>s就是<code>Super User</code>的意思,目录用于存储二进制文件,放的是系统管理员使用的系统管理程序。因为其中的大部分文件多是系统管理员使用的基本的系统程序,所以虽然普通用户必要且允许时可以使用,但一般不给普通用户使用</td>
+</tr>
+<tr>
+<td align="left"><code>/selinux</code></td>
+<td>这个目录是<code>Redhat/CentOS</code>所特有的目录,<code>Selinux</code>是一个安全机制,类似于<code>windows</code>的防火墙,但是这套机制比较复杂,这个目录就是存放<code>selinux</code>相关的文件的。</td>
+</tr>
+<tr>
+<td align="left"><code>/srv</code></td>
+<td>该目录存放一些服务启动之后需要提取的数据。</td>
+</tr>
+<tr>
+<td align="left"><code>/sys</code></td>
+<td>这是linux2.6内核的一个很大的变化。该目录下安装了2.6内核中新出现的一个文件系统<code>sysfs</code>。 <br><code>sysfs</code>文件系统集成了下面3种文件系统的信息:针对进程信息的proc文件系统、针对设备的<code>devfs</code>文件系统以及针对伪终端的<code>devpts</code>文件系统。该文件系统是内核设备树的一个直观反映。当一个内核对象被创建的时候,对应的文件和目录也在内核对象子系统中被创建。</td>
+</tr>
+<tr>
+<td align="left"><code>/tmp</code></td>
+<td><code>/tmp</code>目录存放程序在运行时产生的信息和数据,但在引导启动后,运行的程序最好使用<code>/var/tmp</code>来代替/tmp,因为前者可能拥有一个更大的磁盘空间</td>
+</tr>
+<tr>
+<td align="left"><code>/usr</code></td>
+<td>这是一个非常重要的目录,用户的很多应用程序和文件都放在这个目录下,类似与windows下的program files目录。</td>
+</tr>
+<tr>
+<td align="left"><code>/usr/bin</code></td>
+<td>系统用户使用的应用程序。</td>
+</tr>
+<tr>
+<td align="left"><code>/usr/sbin</code></td>
+<td>超级用户使用的比较高级的管理程序和系统守护程序。</td>
+</tr>
+<tr>
+<td align="left"><code>/usr/src</code></td>
+<td>内核源代码默认的放置目录。</td>
+</tr>
+<tr>
+<td align="left"><code>/var</code></td>
+<td>这个目录中存放着在不断扩充着的东西,我们习惯将那些经常被修改的目录放在这个目录下。包括各种日志文件。<br>在linux系统中,有几个目录是比较重要的,平时需要注意不要误删除或者随意更改内部文件。</td>
+</tr>
+<tr>
+<td align="left"><code>/etc</code></td>
+<td>/etc目录存放着各种系统配置文件,其中包括了用户信息文件<code>/etc/passwd</code>,系统初始化文件<code>/etc/rc</code>等。linux正是靠这些文件才得以正常地运行<br>1. <code>/etc/rc</code>或<code>/etc/rc.d</code>或<code>/etc/rc?.d</code>:启动或改变运行级时运行的脚本或脚本的目录<br>2. <code>/etc/passwd</code>:用户数据库,其中的域给出了用户名、真实姓名、用户起始目录、加密口令和用户的其他信息<br>3.<code>/etc/fdprm</code>:软盘参数表,用以说明不同的软盘格式,可用<code>setfdprm</code>进行设置<br>4. <code>/etc/fstab</code>:指定启动时需要自动安装的文件系统列表,也包括用swapon -a启用的swap区的信息<br>5. <code>/etc/group</code>:类似<code>/etc/passwd</code>,但说明的不是用户信息而是组的信息,包括组的各种数据<br>6. <code>/etc/inittab</code>:<code>init</code>的配置文件<br>7. <code>/etc/issue</code>:包括用户在登录提示符前的输出信息,通常包括系统的一段短说明或欢迎信息,具体内容由系统管理员确定<br>8. <code>/etc/magic</code>:“<code>file</code>”的配置文件,包含不同文件格式的说明,“<code>file</code>”基于它猜测文件类型<br>9. <code>/etc/motd</code>:<code>motd</code>是<code>message of the day</code>的缩写,用户成功登录后自动输出。内容由系统管理员确定,常用于通告信息,如计划关机时间的警告等<br>10. <code>/etc/mtab</code>:当前安装的文件系统列表。由脚本(scritp)初始化,并由<code>mount</code>命令自动更新。当需要一个当前安装的文件系统的列表时使用(例如df命令)<br>11. <code>/etc/shadow</code>:在安装了影子(shadow)口令软件的系统上的影子口令文件。影子口令文件将<code>/etc/passwd</code>文件中的加密口令移动到<code>/etc/shadow</code>中,而后者只对超级用户(root)可读。这使破译口令更困难,以此增加系统的安全性<br>12. <code>/etc/login.defs</code>:<code>login</code>命令的配置文件<br>13. <code>/etc/printcap</code>:类似<code>/etc/termcap</code>,但针对打印机。语法不同<br>14. <code>/etc/profile</code>、<code>/etc/csh.login</code>、<code>/etc/csh.cshrc</code>:登录或启动时<code>bourne</code>或<code>cshells</code>执行的文件。这允许系统管理员为所有用户建立全局缺省环境<br>15. <code>/etc/securetty</code>:确认安全终端,即哪个终端允许超级用户(root)登录。一般只列出虚拟控制台,这样就不可能(至少很困难)通过调制解调器(modem)或网络闯入系统并得到超级用户特权<br>16. <code>/etc/shells</code>:列出可以使用的shell。chsh命令允许用户在本文件指定范围内改变登录的shell。提供一台机器ftp服务的服务进程ftpd检查用户shell是否列在<code>/etc/shells</code>文件中,如果不是,将不允许该用户登录<br>17. <code>/etc/termcap</code>:终端性能数据库。说明不同的终端用什么“转义序列”控制。写程序时不直接输出转义序列(这样只能工作于特定品牌的终端),而是从<code>/etc/termcap</code>中查找要做的工作的正确序列。这样,多数的程序可以在多数终端上运行</td>
+</tr>
+</tbody>
+</table>
+<p><code>/bin</code>,<code>/sbin</code>,<code>/usr/bin</code>,<code>/usr/sbin</code>:这是系统预设的执行文件的放置目录,比如<code>ls</code>就是在<code>/bin/ls</code>目录下的。值得提出的是,<code>/bin</code>,<code>/usr/bin</code>是给系统用户使用的指令(除<code>root</code>外的通用户),而<code>/sbin</code>,<code>/usr/sbin</code>则是给<code>root</code>使用的指令。</p>
+<p><code>/var</code>是一个非常重要的目录,系统上跑了很多程序,那么每个程序都会有相应的日志产生,而这些日志就被记录到这个目录下,具体在<code>/var/log</code>目录下,另外<code>mail</code>的预设放置也是在这里。</p>
+<h3 id="11-proc">1.1 <code>/proc</code>目录介绍</h3>
+<p><code>proc</code>是<code>Linux</code>系统下一个很重要的目录。它跟<code>/etc</code>,<code>/home</code>等这些系统目录不同,它不是一个真正的文件系统,而是一个虚拟的文件系统。它不存在于磁盘,而是存在于系统内存中。所以当你使用<code>ls -al /proc</code>这条命令来查看<code>proc</code>目录时,会看到其下面的所有文件的大小都为0字节。<code>proc</code>以文件系统的方式为访问系统内核的操作提供接口。很多系统的信息,如内存使用情况,<code>cpu</code>使用情况,进程信息等等这些信息,都可以通过查看<code>/proc</code>下的对应文件来获得。<code>proc</code>文件系统是动态从系统内核读出所需信息的。</p>
+<ul>
+<li><strong>目录下含有的文件/目录</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left">目录</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>/proc/cpuinifo</code></td>
+<td><code>CPU</code>的信息(型号、家族、缓存大小等)</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/meminfo</code></td>
+<td>物理内存、交换空间相关信息</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/cmdline</code></td>
+<td>系统启动时输入的内核命令行参数</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/buddyinfo</code></td>
+<td>每个内存区中的每个order有多少块可用,和内存碎片问题有关</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/crypto</code></td>
+<td>内核使用的所有已安装的加密密码及细节</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/devices</code></td>
+<td>已经加载的设备并分类</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/dma</code></td>
+<td>已注册使用的ISA DMA频道列表</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/execdomains</code></td>
+<td>Linux内核当前支持的execution domains</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/fb</code></td>
+<td>帧缓冲设备列表,包括数量和控制它的驱动</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/filesystems</code></td>
+<td>内核当前支持的文件系统类型</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/interrupts</code></td>
+<td>x86架构中的每个IRQ中断数</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/iomem</code></td>
+<td>每个物理设备当前在系统内存中的映射</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/ioports</code></td>
+<td>一个设备的输入输出所使用的注册端口范围</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/kcore</code></td>
+<td>代表系统的物理内存,存储为核心文件格式,里边显示的是字节数,等于RAM大小加上4kb</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/kmsg</code></td>
+<td>记录内核生成的信息,可以通过<code>/sbin/klogd</code>或<code>/bin/dmesg</code>来处理</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/loadavg</code></td>
+<td>根据过去一段时间内CPU和IO的状态得出的负载状态,与uptime命令有关</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/locks</code></td>
+<td>内核锁住的文件列表</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/mdstat</code></td>
+<td>多硬盘,RAID配置信息(md=multiple disks)</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/misc</code></td>
+<td>其他的主要设备(设备号为10)上注册的驱动</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/modules</code></td>
+<td>所有加载到内核的模块列表</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/mounts</code></td>
+<td>系统中使用的所有挂载</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/mtrr</code></td>
+<td>系统使用的Memory Type Range Registers(MTRRs)</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/partitions</code></td>
+<td>分区中的块分配信息</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/pci</code></td>
+<td>系统中的PCI设备列表</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/slabinfo</code></td>
+<td>系统中所有活动的<code>slab</code>缓存信息</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/stat</code></td>
+<td>所有的CPU活动信息</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/sysrq-trigger</code></td>
+<td>使用echo命令来写这个文件的时候,远程root用户可以执行大多数的系统请求关键命令,就好像在本地终端执行一样。要写入这个文件,需要把<code>/proc/sys/kernel/sysrq</code>不能设置为<code>0</code>。这个文件对root也是不可读的</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/uptime</code></td>
+<td>系统已经运行了多久</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/swaps</code></td>
+<td>交换空间的使用情况</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/version</code></td>
+<td>Linux内核版本和gcc版本</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/bus</code></td>
+<td>系统总线(Bus)信息,例如<code>pci/usb</code>等</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/driver</code></td>
+<td>驱动信息</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/fs</code></td>
+<td>文件系统信息</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/ide</code></td>
+<td>ide设备信息</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/irq</code></td>
+<td>中断请求设备信息</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/net</code></td>
+<td>网卡设备信息</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/scsi</code></td>
+<td>scsi设备信息</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/tty</code></td>
+<td>tty设备信息</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/vmstat</code></td>
+<td>虚拟内存统计信息</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/vmcore</code></td>
+<td>内核panic时的内存映像</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/diskstats</code></td>
+<td>取得磁盘信息</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/schedstat</code></td>
+<td><code>kernel</code>调度器的统计信息</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/zoneinfo</code></td>
+<td>显示内存s空间的统计信息,对分析虚拟内存行为很有用</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>进程N的信息</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left">目录</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>/proc/N</code></td>
+<td><code>pid</code>为<code>N</code>的进程信息</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/N/cmdline</code></td>
+<td>进程启动命令</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/N/cwd</code></td>
+<td>链接到进程当前工作目录</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/N/environ</code></td>
+<td>进程环境变量列表</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/N/exe</code></td>
+<td>链接到进程的执行命令文件</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/N/fd</code></td>
+<td>包含进程相关的所有的文件描述符</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/N/maps</code></td>
+<td>与进程相关的内存映射信息</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/N/mem</code></td>
+<td>指代进程持有的内存,不可读</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/N/root</code></td>
+<td>链接到进程的根目录</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/N/stat</code></td>
+<td>进程的状态</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/N/statm</code></td>
+<td>进程使用的内存的状态</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/N/status</code></td>
+<td>进程状态信息,比stat/statm更具可读性</td>
+</tr>
+<tr>
+<td align="left"><code>/proc/self</code></td>
+<td>链接到当前正在运行的进程</td>
+</tr>
+</tbody>
+</table>
+<h3 id="12">1.2 文件的类型</h3>
+<p>文件类型缩写及别称</p>
+<table>
+<thead>
+<tr>
+<th align="left">文件类型</th>
+<th>缩写</th>
+<th>英文</th>
+<th>其他名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">普通文件</td>
+<td>-</td>
+<td>Regular file</td>
+<td></td>
+<td>普通意义上的文件,如数据文件、可执行文件等</td>
+</tr>
+<tr>
+<td align="left">目录文件</td>
+<td><code>d</code></td>
+<td>Directory file</td>
+<td></td>
+<td>Linux中目录也是一种文件,目录文件包括了文件夹中所有文件的名字和在分区中的位置,目录文件的权限意义也较特殊</td>
+</tr>
+<tr>
+<td align="left">块特殊文件</td>
+<td><code>b</code></td>
+<td>Block special file</td>
+<td>块设备文件</td>
+<td>一种提供带缓冲的固定大小单元读写的设备文件。如硬盘设备(/dev/sda)及硬盘分区(/dev/hda1)等</td>
+</tr>
+<tr>
+<td align="left">字符设备文件</td>
+<td><code>c</code></td>
+<td>Character special file</td>
+<td>字符设备文件</td>
+<td>此种类型文件提供无缓存的变长单元读写。一个设备如果不是块设备,就是字符设备</td>
+</tr>
+<tr>
+<td align="left">先进先出</td>
+<td><code>p</code></td>
+<td>FIFO</td>
+<td>named pipe,命名管道</td>
+<td>用于系统进程间通信的文件</td>
+</tr>
+<tr>
+<td align="left">套接字文件</td>
+<td><code>s</code></td>
+<td>Socket</td>
+<td></td>
+<td>进程之前通过网络进行通信的文件。多数网络连接都是用Socket建立的</td>
+</tr>
+<tr>
+<td align="left">符号链接</td>
+<td><code>l</code></td>
+<td>Symbolic link</td>
+<td>软链接</td>
+<td>此种文件仅是一个链接</td>
+</tr>
+</tbody>
+</table>
+<p><code>stat</code>命令用于查看一个文件有关文件系统的信息,<code>ls</code>命令就可以给出文件的类型</p>
 
   <br>
     <style>

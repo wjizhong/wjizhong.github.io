@@ -1,0 +1,1590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E5%B7%A5%E7%A8%8B%E5%86%85%E5%AE%B9/shell%E6%95%99%E7%A8%8B/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>Shell教程 - 图像/视频算法</title>
+    <link href="../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "\u4e8c\u3001\u5b57\u7b26\u4e32\u64cd\u4f5c", url: "#_top", level:1, children: [
+              {title: "2.1 \u5224\u65ad\u8bfb\u53d6\u5b57\u7b26\u4e32\u503c", url: "#21", level:2, children: [ 
+              ]},
+              {title: "2.2 \u5b57\u7b26\u4e32\u64cd\u4f5c(\u957f\u5ea6.\u8bfb\u53d6,\u66ff\u6362)", url: "#22", level:2, children: [ 
+              ]},
+              {title: "2.3 ANSI\u5b57\u7b26\u548c\u63a7\u5236\u7801", url: "#23-ansi", level:2, children: [
+                  {title: "2.3.1 ANSI\u7801\u8868", url: "#231-ansi", level:3, children: [
+                  ]},
+                  {title: "2.3.2 C0\u4e0eC1\u63a7\u5236\u5b57\u7b26", url: "#232-c0c1", level:3, children: [
+                  ]},
+                  {title: "2.3.3 \u63a7\u5236\u5e8f\u5217", url: "#233", level:3, children: [
+                  ]}, 
+              ]},
+          ]},
+          {title: "\u4e09\u3001\u903b\u8f91\u8fd0\u7b97", url: "#_2", level:1, children: [
+              {title: "3.1 \u5173\u4e8e\u6587\u4ef6\u903b\u8f91\u8fd0\u7b97", url: "#31", level:2, children: [ 
+              ]},
+          ]},
+          {title: "\u56db\u3001find\u547d\u4ee4", url: "#find", level:1, children: [
+          ]},
+          {title: "\u4e94\u3001curl\u6559\u7a0b", url: "#curl", level:1, children: [
+          ]},
+        ];
+    </script>
+    <script src="../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+    <h2 id="_1">二、字符串操作</h2>
+<p>在shell批处理程序时候,经常会涉及到字符串相关操作。有很多命令语句如:awk,sed都可以做字符串各种操作。其实shell内置一系列操作符号,可以达到类似效果,使用内部操作符会省略启动外部程序等时间,因此速度会非常的快。</p>
+<h3 id="21">2.1 判断读取字符串值</h3>
+<table>
+<thead>
+<tr>
+<th align="left">变量</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>${var}</code></td>
+<td>变量<code>var</code>的值,与<code>$var</code>相同</td>
+</tr>
+<tr>
+<td align="left"><code>${var-DEFAULT}</code></td>
+<td>如果<code>var</code>没有被声明,那么就以<code>$DEFAULT</code>作为其值:</td>
+</tr>
+<tr>
+<td align="left"><code>${var:-DEFAULT}</code></td>
+<td>如果<code>var</code>没有被声明,或者其值为空,那么就以<code>$DEFAULT</code>作为其值</td>
+</tr>
+<tr>
+<td align="left"><code>${var=DEFAULT}</code></td>
+<td>如果<code>var</code>没有被声明,那么就以<code>$DEFAULT</code>作为其值</td>
+</tr>
+<tr>
+<td align="left"><code>${var:=DEFAULT}</code></td>
+<td>如果<code>var</code>没有被声明,或者其值为空,那么就以<code>$DEFAULT</code>作为其值</td>
+</tr>
+<tr>
+<td align="left"><code>${var+OTHER}</code></td>
+<td>如果var声明了,那么其值就是<code>$OTHER</code>,否则就为<code>null</code>字符串</td>
+</tr>
+<tr>
+<td align="left"><code>${var:+OTHER}</code></td>
+<td>如果var被设置了,那么其值就是<code>$OTHER</code>,否则就为<code>null</code>字符串</td>
+</tr>
+<tr>
+<td align="left"><code>${var?ERR_MSG}</code></td>
+<td>如果var没被声明,那么就打印<code>$ERR_MSG</code></td>
+</tr>
+<tr>
+<td align="left"><code>${var:?ERR_MSG}</code></td>
+<td>如果var没被设置,那么就打印<code>$ERR_MSG</code></td>
+</tr>
+<tr>
+<td align="left"><code>${!varprefix*}</code></td>
+<td>匹配之前所有以<code>varprefix</code>开头进行声明的变量</td>
+</tr>
+<tr>
+<td align="left"><code>${!varprefix@}</code></td>
+<td>匹配之前所有以<code>varprefix</code>开头进行声明的变量</td>
+</tr>
+</tbody>
+</table>
+<h3 id="22">2.2 字符串操作(长度.读取,替换)</h3>
+<table>
+<thead>
+<tr>
+<th align="left">变量</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>${#string}</code></td>
+<td><code>$string</code>的长度</td>
+</tr>
+<tr>
+<td align="left"><code>${string:position}</code></td>
+<td>在<code>$string</code>中,从位置<code>$position</code>开始提取子串</td>
+</tr>
+<tr>
+<td align="left"><code>${string:position:length}</code></td>
+<td>在<code>$string</code>中,从位置<code>$position</code>开始提取长度为<code>$length</code>的子串</td>
+</tr>
+<tr>
+<td align="left"><code>${string#substring}</code></td>
+<td>从变量<code>$string</code>的开头,删除最短匹配<code>$substring</code>的子串</td>
+</tr>
+<tr>
+<td align="left"><code>${string##substring}</code></td>
+<td>从变量<code>$string</code>的开头,删除最长匹配<code>$substring</code>的子串</td>
+</tr>
+<tr>
+<td align="left"><code>${string%substring}</code></td>
+<td>从变量<code>$string</code>的结尾,删除最短匹配<code>$substring</code>的子串</td>
+</tr>
+<tr>
+<td align="left"><code>${string%%substring}</code></td>
+<td>从变量<code>$string</code>的结尾,删除最长匹配<code>$substring</code>的子串</td>
+</tr>
+<tr>
+<td align="left"><code>${string/substring/replacement}</code></td>
+<td>使用<code>$replacement</code>,来代替第一个匹配的<code>$substring</code></td>
+</tr>
+<tr>
+<td align="left"><code>${string//substring/replacement}</code></td>
+<td>使用<code>$replacement</code>,代替所有匹配的<code>$substring</code></td>
+</tr>
+<tr>
+<td align="left"><code>${string/#substring/replacement}</code></td>
+<td>如果<code>$string</code>的前缀匹配<code>$substring</code>,那么就用<code>$replacement</code>来代替匹配到的<code>$substring</code></td>
+</tr>
+<tr>
+<td align="left"><code>${string/%substring/replacement}</code></td>
+<td>如果<code>$string</code>的后缀匹配<code>$substring</code>,那么就用<code>$replacement</code>来代替匹配到的<code>$substring</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>$substring</code>可以是一个正则表达式.如下例子:</p>
+<table>
+<thead>
+<tr>
+<th align="left">变量</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>${var##*/}</code></td>
+<td>从目录中提取出所需要的文件名</td>
+</tr>
+<tr>
+<td align="left"><code>${var##*.}</code></td>
+<td>从目录文件中提取文件的后缀名</td>
+</tr>
+<tr>
+<td align="left"><code>${var%/*}</code></td>
+<td>文件路径中提取所在的目录</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>实例1:分割字符串</strong></li>
+</ul>
+<pre><code class="sh">string=&quot;hello,shell,split,test&quot;
+array=(${string//,/ })
+for var in ${array[@]}
+do
+   echo $var
+done
+
+
+# method 2
+# Shell脚本中有个变量叫IFS(Internal Field Seprator),内部域分隔符
+string=&quot;hello,shell,split,test&quot;
+OLD_IFS=&quot;$IFS&quot;
+IFS=&quot;,&quot;
+array=($string)
+IFS=&quot;$OLD_IFS&quot;
+for var in ${array[@]}
+do
+   echo $var
+done
+
+# echo &quot;$IFS&quot; | od -b   // 直接输出IFS是看不到的,把它转化为二进制就可以看到了,&quot;040&quot;是空格,&quot;011&quot;是Tab,&quot;012&quot;是换行符&quot;\n&quot;
+</code></pre>
+
+<h3 id="23-ansi">2.3 ANSI字符和控制码</h3>
+<h4 id="231-ansi">2.3.1 ANSI码表</h4>
+<p><img alt="" src="http://images2018.cnblogs.com/blog/1222619/201803/1222619-20180311113759492-1251988758.jpg" /></p>
+<table>
+<thead>
+<tr>
+<th align="left"><code>NUL</code></th>
+<th><code>VT</code>垂直制表</th>
+<th><code>SYN</code>空转同步</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>SOH</code>标题开始</td>
+<td><code>FF</code>走纸控制</td>
+<td><code>ETB</code>信息组传送结束</td>
+</tr>
+<tr>
+<td align="left"><code>STX</code>正文开始</td>
+<td><code>CR</code>回车</td>
+<td><code>CAN</code>作废</td>
+</tr>
+<tr>
+<td align="left"><code>ETX</code>正文结束</td>
+<td><code>SO</code>移位输出</td>
+<td><code>EM</code>纸尽</td>
+</tr>
+<tr>
+<td align="left"><code>EOY</code>传输结束</td>
+<td><code>SI</code>移位输入</td>
+<td><code>SUB</code>换置</td>
+</tr>
+<tr>
+<td align="left"><code>ENQ</code>询问字符</td>
+<td><code>DLE</code>空格</td>
+<td><code>ESC</code>换码</td>
+</tr>
+<tr>
+<td align="left"><code>ACK</code>承认</td>
+<td><code>DC1</code>设备控制1</td>
+<td><code>FS</code>文字分隔符</td>
+</tr>
+<tr>
+<td align="left"><code>BEL</code>报警</td>
+<td><code>DC2</code>设备控制2</td>
+<td><code>GS</code>组分隔符</td>
+</tr>
+<tr>
+<td align="left"><code>BS</code>退一格</td>
+<td><code>DC3</code>设备控制3</td>
+<td><code>RS</code>记录分隔符</td>
+</tr>
+<tr>
+<td align="left"><code>HT</code>横向列表</td>
+<td><code>DC4</code>设备控制4</td>
+<td><code>US</code>单元分隔符</td>
+</tr>
+<tr>
+<td align="left"><code>LF</code>换行</td>
+<td><code>NAK</code>否定</td>
+<td><code>DEL</code>删除</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="shell">echo -e '\007'
+</code></pre>
+
+<h4 id="232-c0c1">2.3.2 C0与C1控制字符</h4>
+<p>C0与C1控制字符是<a href="https://zh.wikipedia.org/wiki/ISO/IEC_2022">ISO/IEC 2022</a>定义的控制字符集。C0控制字符集的码位范围<span><span class="MathJax_Preview">00_{HEX}-1F_{HEX}</span><script type="math/tex">00_{HEX}-1F_{HEX}</script></span>;C1控制字符集的码位范围<span><span class="MathJax_Preview">80_{HEX}-9F_{HEX}</span><script type="math/tex">80_{HEX}-9F_{HEX}</script></span>。默认的C0控制字符集起源于<a href="https://zh.wikipedia.org/wiki/ISO_646">ISO 646 (ASCII)</a>的定义。默认的C1控制字符集起源于<a href="https://zh.wikipedia.org/wiki/ECMA-48">ECMA-48 (后为ISO 6429)</a>的定义。</p>
+<ul>
+<li><strong>C0(ASCII及其派生)</strong></li>
+</ul>
+<p>ASCII定义了32个控制字符,再加上一个<code>Delete</code>字符。在当时(20世纪六七十年代)这么多控制字符都是需要的,因为多字节表示的控制序列要求终端机实现一个状态机,这在当时的电传或机械终端非常困难。但现在仅有少数控制字符还被使用(如空白符范畴的<code>BS</code>,<code>TAB</code>,<code>LF</code>,<code>VT</code>,<code>FF</code>,<code>CR</code>),其它一些字符无用,还有一些改变了用途(如NUL表示C语言字符串的终止)。</p>
+<p>一些传输协议如ANPA-1312对控制字符<code>SOH</code>,<code>STX</code>,<code>ETX</code>与<code>EOT</code>做了扩展使用。其它著名的如<code>BEL</code>,<code>ACK</code>,<code>NAK</code>与<code>SYN</code>现在过时了。现代终端有很多控制符可通过多字节的ANSI转义序列(开头为<code>ESC</code>与'<code>[</code>')表示。</p>
+<p>ASCII控制字符的标准最初定义为<a href="https://zh.wikipedia.org/wiki/ASCII#Control_characters">ANSI X3.4</a>。对于ISO/IEC 2022扩展机制,称为主动的C0控制字符集,采用八进制表示<code>0x1B 0x21 0x40 (ESC ! @)</code>.</p>
+<p><img alt="" src="http://wx4.sinaimg.cn/large/006HJ6Ndly1g7xt05sa8mj31co0qak2i.jpg" /></p>
+<ul>
+<li><strong>C1控制字符集</strong></li>
+</ul>
+<p>当8比特ISO/IEC 8859 ASCII扩展提出后,人们认识到把最高比特去掉后可打印字符不应该变成控制字符(显然Delete字符被认为是无害的)。因此,新的标准保留了对应于C0控制字符集的32个码位但最高比特置1,作为C1控制字符集。所有C1控制字符在标准中指定了用ESC开头的7比特字符序列表示,以向后兼容比特传输。除了几乎不用的NEL,C1控制符在UTF-8中需要2字节编码。</p>
+<p>当这些码位用于现代文档、网页、电子邮件消息等表示时,虽然表面上是用包含C1控制字符集的ISO-8859-n编码,但通常这些码位被私有、系统相关的编码方案如Windows-1252或苹果公司的Macintosh (Mac OS Roman)字符集,把C1控制符的码位用作提供额外的可打印字符。</p>
+<p><img alt="" src="http://wx3.sinaimg.cn/large/006HJ6Ndly1g7xt01j2kwj31cp0quk11.jpg" /></p>
+<h4 id="233">2.3.3 控制序列</h4>
+<p>控制序列,即ANSI控制码。大多数终端模拟器(Unix,Linux,Windows)都支持ANSI控制码。ANSI控制码以ESC字符(ASCII27/0x1b/033)开头,对于两个字符的ANSI控制码,第二个字符范围是ASCII64-95(<code>‘@’-‘_’</code>),然而大多数ANSI控制码都多于两个字符,并且以ESC和[开头,这时将<code>ESC+[</code>(即“<code>\033</code>[“)称为<code>CSI(ControlSequenceIntroducer)</code>,这些控制码最后一个字符范围是ASCII64-126(<code>‘@’-‘~’</code>)。还有一种单字符CSI(155/0x9B/0233),但是不如<code>ESC+[</code>用的多,而且可能不被某些设备支持。</p>
+<ul>
+<li><strong>非CSI序列</strong></li>
+</ul>
+<p>部分非CSI序列:</p>
+<table>
+<thead>
+<tr>
+<th align="left">序列</th>
+<th>名称</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">ESC c</td>
+<td>RIS</td>
+<td>重绘屏幕</td>
+</tr>
+<tr>
+<td align="left">ESC D</td>
+<td>IND</td>
+<td>换行</td>
+</tr>
+<tr>
+<td align="left">ESC E</td>
+<td>NEL</td>
+<td>新的一行</td>
+</tr>
+<tr>
+<td align="left">ESC H</td>
+<td>HTS</td>
+<td>设置当前列为制表位</td>
+</tr>
+<tr>
+<td align="left">ESC 7</td>
+<td>DECSC</td>
+<td>存储当前状态(光标坐标,属性,字符集)</td>
+</tr>
+<tr>
+<td align="left">ESC 8</td>
+<td>DECRC</td>
+<td>恢复上一次储存的设置</td>
+</tr>
+<tr>
+<td align="left">ESC %</td>
+<td></td>
+<td>开始一个字符集选择序列</td>
+</tr>
+<tr>
+<td align="left">ESC (</td>
+<td></td>
+<td>开始一个G0字符集定义序列</td>
+</tr>
+<tr>
+<td align="left">ESC )</td>
+<td></td>
+<td>开始一个G1字符集定义序列</td>
+</tr>
+<tr>
+<td align="left">ESC &gt;</td>
+<td>DECPNM</td>
+<td>设置数字小键盘模式</td>
+</tr>
+<tr>
+<td align="left">ESC =</td>
+<td>DECPAM</td>
+<td>设置程序键盘模式</td>
+</tr>
+<tr>
+<td align="left">ESC ]</td>
+<td>OSC</td>
+<td>操作系统命令</td>
+</tr>
+</tbody>
+</table>
+<p>有些控制序列效果可能与单个控制字符相同。</p>
+<ul>
+<li><strong>CSI序列</strong></li>
+</ul>
+<p>CSI序列由ESC [、若干个(包括0个)“参数字节”、若干个“中间字节”,以及一个“最终字节”组成。基本结构是:<code>CSI n1 ; n2... letter</code>。各部分的字符范围如下:</p>
+<table>
+<thead>
+<tr>
+<th>组成部分</th>
+<th>字符范围</th>
+<th>ASCII</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>参数字节</td>
+<td>0x30–0x3F</td>
+<td>0–9:;&lt;=&gt;?</td>
+</tr>
+<tr>
+<td>中间字节</td>
+<td>0x20–0x2F</td>
+<td>空格、!"#$%&amp;'()*+,-./</td>
+</tr>
+<tr>
+<td>最终字节</td>
+<td>0x40–0x7E</td>
+<td>@A–Z[]^_`a–z{</td>
+</tr>
+</tbody>
+</table>
+<p>所有常见的序列都只是把参数用作一系列分号分隔的数字,如1;2;3。缺少的数字视为0(如1;;3相当于中间的数字是0,ESC[m这样没有参数的情况相当于参数为0)。某些序列(如CUU)把0视为1,以使缺少参数的情况下有意义。一部分字符定义是“私有”的,以便终端制造商可以插入他们自己的序列而不与标准相冲突。包括参数字节<code>&lt;=&gt;?</code>的使用,或者最终字节<code>0x70–0x7F(p–z{|}~)</code>,例如<code>VT320</code>序列<code>CSI?25h</code>和<code>CSI?25l</code>的作用是打开和关闭光标的显示。</p>
+<p>当CSI序列含有超出0x20–0x7E范围的字符时,其行为是未定义的。这些非法字符包括C0控制字符(范围0–0x1F)、DEL(0x7F),以及高位字节。</p>
+<blockquote>
+<ul>
+<li>常见的序列</li>
+</ul>
+</blockquote>
+<p><img alt="" src="http://wx1.sinaimg.cn/large/006HJ6Ndly1g7xt033vqqj31co0gngrv.jpg" /></p>
+<blockquote>
+<ul>
+<li>选择图形再现(SGR)参数</li>
+</ul>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>代码</th>
+<th>作用</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>重置/正常</td>
+<td>关闭所有属性。</td>
+</tr>
+<tr>
+<td>1</td>
+<td>粗体或增加强度</td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>弱化(降低强度)</td>
+<td>未广泛支持。</td>
+</tr>
+<tr>
+<td>3</td>
+<td>斜体</td>
+<td>未广泛支持。有时视为反相显示。</td>
+</tr>
+<tr>
+<td>4</td>
+<td>下划线</td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td>缓慢闪烁</td>
+<td>低于每分钟150次。</td>
+</tr>
+<tr>
+<td>6</td>
+<td>快速闪烁</td>
+<td>MS-DOSANSI.SYS；每分钟150以上；未广泛支持。</td>
+</tr>
+<tr>
+<td>7</td>
+<td>反显</td>
+<td>前景色与背景色交换。</td>
+</tr>
+<tr>
+<td>8</td>
+<td>隐藏</td>
+<td>未广泛支持。</td>
+</tr>
+<tr>
+<td>9</td>
+<td>划除</td>
+<td>字符清晰,但标记为删除。未广泛支持。</td>
+</tr>
+<tr>
+<td>10</td>
+<td>主要(默认)字体</td>
+<td></td>
+</tr>
+<tr>
+<td>11–19</td>
+<td>替代字体</td>
+<td>选择替代字体<code>${\displaystyle n-10}$</code>。</td>
+</tr>
+<tr>
+<td>20</td>
+<td>尖角体</td>
+<td>几乎无支持。</td>
+</tr>
+<tr>
+<td>21</td>
+<td>关闭粗体或双下划线</td>
+<td>关闭粗体未广泛支持；双下划线几乎无支持。</td>
+</tr>
+<tr>
+<td>22</td>
+<td>正常颜色或强度</td>
+<td>不强不弱。</td>
+</tr>
+<tr>
+<td>23</td>
+<td>非斜体、非尖角体</td>
+<td></td>
+</tr>
+<tr>
+<td>24</td>
+<td>关闭下划线</td>
+<td>去掉单双下划线。</td>
+</tr>
+<tr>
+<td>25</td>
+<td>关闭闪烁</td>
+<td></td>
+</tr>
+<tr>
+<td>27</td>
+<td>关闭反显</td>
+<td></td>
+</tr>
+<tr>
+<td>28</td>
+<td>关闭隐藏</td>
+<td></td>
+</tr>
+<tr>
+<td>29</td>
+<td>关闭划除</td>
+<td></td>
+</tr>
+<tr>
+<td>30–37</td>
+<td>设置前景色</td>
+<td>参见下面的颜色表。</td>
+</tr>
+<tr>
+<td>38</td>
+<td>设置前景色</td>
+<td>下一个参数是5;n或2;r;g;b,见下。</td>
+</tr>
+<tr>
+<td>39</td>
+<td>默认前景色</td>
+<td>由具体实现定义(按照标准)。</td>
+</tr>
+<tr>
+<td>40–47</td>
+<td>设置背景色</td>
+<td>参见下面的颜色表。</td>
+</tr>
+<tr>
+<td>48</td>
+<td>设置背景色</td>
+<td>下一个参数是5;n或2;r;g;b,见下。</td>
+</tr>
+<tr>
+<td>49</td>
+<td>默认背景色</td>
+<td>由具体实现定义(按照标准)。</td>
+</tr>
+<tr>
+<td>51</td>
+<td>Framed</td>
+<td></td>
+</tr>
+<tr>
+<td>52</td>
+<td>Encircled</td>
+<td></td>
+</tr>
+<tr>
+<td>53</td>
+<td>上划线</td>
+<td></td>
+</tr>
+<tr>
+<td>54</td>
+<td>Notframedorencircled</td>
+<td></td>
+</tr>
+<tr>
+<td>55</td>
+<td>关闭上划线</td>
+<td></td>
+</tr>
+<tr>
+<td>60</td>
+<td>表意文字下划线或右边线</td>
+<td>几乎无支持。</td>
+</tr>
+<tr>
+<td>61</td>
+<td>表意文字双下划线或双右边线</td>
+<td></td>
+</tr>
+<tr>
+<td>62</td>
+<td>表意文字上划线或左边线</td>
+<td></td>
+</tr>
+<tr>
+<td>63</td>
+<td>表意文字双上划线或双左边线</td>
+<td></td>
+</tr>
+<tr>
+<td>64</td>
+<td>表意文字着重标志</td>
+<td></td>
+</tr>
+<tr>
+<td>65</td>
+<td>表意文字属性关闭</td>
+<td>重置60–64的所有效果。</td>
+</tr>
+<tr>
+<td>90–97</td>
+<td>设置明亮的前景色</td>
+<td>aixterm(非标准)。</td>
+</tr>
+<tr>
+<td>100–107</td>
+<td>设置明亮的背景色</td>
+<td>aixterm(非标准)。</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<ul>
+<li>颜色</li>
+</ul>
+<p><strong>3/4位</strong></p>
+</blockquote>
+<p>初始的规格只有8种颜色,只给了它们的名字。SGR参数30-37选择前景色,40-47选择背景色。相当多的终端将“粗体”(SGR代码1)实现为更明亮的颜色而不是不同的字体,从而提供了8种额外的前景色,但通常情况下并不能用于背景色,虽然有时候反显(SGR代码7)可以允许这样。例如:在白色背景上显示黑色文字使用ESC[30;47m,显示红色文字用ESC[31m,显示明亮的红色文字用ESC[1;31m。重置为默认颜色用ESC[39;49m(某些终端不支持),重置所有属性用ESC[0m。后来的终端新增了功能,可以直接用90-97和100-107指定“明亮”的颜色。</p>
+<p>当硬件开始使用8位DAC时,多个软件为这些颜色名称分配了24位的代码。下面的图表显示了发送到DAC的一些常用硬件和软件的值。</p>
+<p><img alt="" src="http://wx3.sinaimg.cn/large/006HJ6Ndly1fzpstm0oudj30ow0bk0wg.jpg" /></p>
+<blockquote>
+<p><strong>8位</strong></p>
+</blockquote>
+<p>随着256色查找表在显卡上越来越常见,相应的转义序列也增加了,以从预定义的256种颜色中选择:</p>
+<pre><code>ESC[ … 38;5;&lt;n&gt; … m选择前景色
+ESC[ … 48;5;&lt;n&gt; … m选择背景色
+  0-  7:标准颜色(同ESC [ 30–37 m)
+  8- 15:高强度颜色(同ESC [ 90–97 m)
+ 16-231:6 × 6 × 6 立方(216色): 16 + 36 × r + 6 × g + b (0 ≤ r, g, b ≤ 5)
+232-255:从黑到白的24阶灰度色
+</code></pre>
+
+<p>ITU的T.416信息技术-开放文档体系结构(ODA)和交换格式:字符内容体系结构使用“:”作为分隔符:</p>
+<pre><code>ESC[ … 38:5:&lt;n&gt; … m选择前景色
+ESC[ … 48:5:&lt;n&gt; … m选择背景色
+</code></pre>
+
+<p><img alt="" src="http://wx1.sinaimg.cn/large/006HJ6Ndly1fzpstlzpykj31cm06jdiz.jpg" /></p>
+<blockquote>
+<p><strong>24位</strong></p>
+</blockquote>
+<p>随着16位到24位颜色的“真彩色”显卡的普及,Xterm、KDE的Konsole,以及所有基于libvte的终端(包括GNOME终端)支持了ISO-8613-3的24位前景色和背景色设置。</p>
+<pre><code>ESC[ … 38;2;&lt;r&gt;;&lt;g&gt;;&lt;b&gt; … m选择RGB前景色
+ESC[ … 48;2;&lt;r&gt;;&lt;g&gt;;&lt;b&gt; … m选择RGB背景色
+</code></pre>
+
+<p>作为ISO/IEC国际标准8613-6采用的ITU的T.416信息技术-开放文档体系结构(ODA)和交换格式:字符内容体系结构给出了一个似乎不太受支持的替代版本:</p>
+<pre><code>ESC[ … 38:2:&lt;Color-Space-ID&gt;:&lt;r&gt;:&lt;g&gt;:&lt;b&gt;:&lt;unused&gt;:&lt;CS tolerance&gt;:&lt;Color-Space: 0=&quot;CIELUV&quot;; 1=&quot;CIELAB&quot;&gt;m选择RGB前景色
+ESC[ … 48:2:&lt;Color-Space-ID&gt;:&lt;r&gt;:&lt;g&gt;:&lt;b&gt;:&lt;unused&gt;:&lt;CS tolerance&gt;:&lt;Color-Space: 0=&quot;CIELUV&quot;; 1=&quot;CIELAB&quot;&gt;m选择RGB背景色
+</code></pre>
+
+<p>请注意,这里使用了保留的“:”字符来分隔子选项,这可能是在实际实现中造成混淆的始作俑者。它还使用“3”作为第二个参数来指定使用青-品红-黄方案的方案,“4”用于青-品红-黄-黑的方案,后者使用上面标记为“unused”(“未使用”)的位置作为黑色组件。还要注意,许多识别“:”作为分隔符的实现错误地忽视了色彩空间标识符参数,并因此改变了其余部分的位置。</p>
+<ul>
+<li><strong>代码实例</strong></li>
+</ul>
+<pre><code>echo -ne &quot;\033[32mtest\033[0m&quot;                 # 显示绿色文字
+echo -ne &quot;\033[3;1H123&quot;                        # 可以将光标移到第3行第1列处
+export PS1=&quot;\[\e[34m\][\u@\h \W]\$ \[\e[0m\]&quot;  # 修改PS1,用法稍有不同
+
+
+# 显示旋转的光标,表示等待：
+charset=('|' '/' '-' '\')
+i=0
+echo -ne &quot;\033[?25l&quot;
+while true; do
+    echo -n &quot;${charset[((i%4))]}&quot;
+    echo -ne &quot;\033[1D&quot;
+    ((i++))
+    sleep 0.2
+done
+
+# python脚本
+STYLE = {
+        'fore': {'black': 30, 'red': 31, 'green': 32, 'yellow': 33,'blue': 34, 'purple': 35, 'cyan': 36, 'white': 37},
+        'back': {'black': 40, 'red': 41, 'green': 42, 'yellow': 43,'blue': 44, 'purple': 45, 'cyan': 46, 'white': 47},
+        'mode': {'bold': 1, 'underline': 4, 'blink': 5, 'invert': 7},
+        'default': {'end': 0,}
+}
+def use_style(string, mode='', fore='', back=''):
+    mode = '%s' % STYLE['mode'][mode] if mode in STYLE['mode'] else ''
+    fore = '%s' % STYLE['fore'][fore] if fore in STYLE['fore'] else ''
+    back = '%s' % STYLE['back'][back] if back in STYLE['back'] else ''
+    style = ';'.join([s for s in [mode, fore, back] if s])
+    style = '\033[%sm' % style if style else ''
+    end = '\033[%sm' % STYLE['default']['end'] if style else ''
+    return '%s%s%s' % (style, string, end)
+print(use_style('Normal'))
+print(use_style('Bold', mode='bold'))
+print(use_style('Underline &amp; red text', mode='underline', fore='red'))
+print(use_style('Invert &amp; green back', mode='reverse', back='green'))
+print(use_style('Black text &amp; White back', fore='black', back='white'))
+</code></pre>
+
+<h2 id="_2">三、逻辑运算</h2>
+<h3 id="31">3.1 关于文件逻辑运算</h3>
+<ul>
+<li><strong>关于文件和目录</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>-f</code></td>
+<td>判断某普通文件是否存在</td>
+</tr>
+<tr>
+<td align="left"><code>-d</code></td>
+<td>判断某目录是否存在</td>
+</tr>
+<tr>
+<td align="left"><code>-b</code></td>
+<td>判断某文件是否块设备</td>
+</tr>
+<tr>
+<td align="left"><code>-c</code></td>
+<td>判断某文件是否字符设备</td>
+</tr>
+<tr>
+<td align="left"><code>-S</code></td>
+<td>判断某文件是否socket</td>
+</tr>
+<tr>
+<td align="left"><code>-L</code></td>
+<td>判断某文件是否为符号链接</td>
+</tr>
+<tr>
+<td align="left"><code>-e</code></td>
+<td>判断某东西是否存在</td>
+</tr>
+<tr>
+<td align="left"><code>-p</code></td>
+<td>判断某文件是否为<code>pipe</code>或是<code>FIFO</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>关于文件的属性</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>-r</code></td>
+<td>判断文件是否为可读的属性</td>
+</tr>
+<tr>
+<td align="left"><code>-w</code></td>
+<td>判断文件是否为可以写入的属性</td>
+</tr>
+<tr>
+<td align="left"><code>-x</code></td>
+<td>判断文件是否为可执行的属性</td>
+</tr>
+<tr>
+<td align="left"><code>-s</code></td>
+<td>判断文件是否为非空白文件</td>
+</tr>
+<tr>
+<td align="left"><code>-u</code></td>
+<td>判断文件是否具有SUID的属性</td>
+</tr>
+<tr>
+<td align="left"><code>-g</code></td>
+<td>判断文件是否具有SGID的属性</td>
+</tr>
+<tr>
+<td align="left"><code>-k</code></td>
+<td>判断文件是否具有stickybit的属性</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>文件之间的判断与比较</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>-nt</code></td>
+<td>第一个文件比第二个文件新</td>
+</tr>
+<tr>
+<td align="left"><code>-ot</code></td>
+<td>第一个文件比第二个文件旧</td>
+</tr>
+<tr>
+<td align="left"><code>-ef</code></td>
+<td>第一个文件与第二个文件为同一个</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>逻辑与和或</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>&amp;&amp;/-a</code></td>
+<td>逻辑AND</td>
+</tr>
+<tr>
+<td align="left"><code>||/-o</code></td>
+<td>逻辑OR</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>运算符号</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>=`` | 等于应用于:整型或字符串比较如果在</code>[]`中,只能是字符串</td>
+<td></td>
+</tr>
+<tr>
+<td align="left">!= : 不等于应用于:整型或字符串比较如果在<code>[]</code>中,只能是字符串</td>
+<td></td>
+</tr>
+<tr>
+<td align="left"><code>&lt;</code></td>
+<td>小于应用于:整型比较在<code>[]</code>中,不能使用表示字符串</td>
+</tr>
+<tr>
+<td align="left"><code>&gt;</code></td>
+<td>大于应用于:整型比较在[]中,不能使用表示字符串</td>
+</tr>
+<tr>
+<td align="left"><code>-eq</code></td>
+<td>等于应用于:整型比较</td>
+</tr>
+<tr>
+<td align="left"><code>-ne</code></td>
+<td>不等于应用于:整型比较</td>
+</tr>
+<tr>
+<td align="left"><code>-lt</code></td>
+<td>小于应用于:整型比较</td>
+</tr>
+<tr>
+<td align="left"><code>-gt</code></td>
+<td>大于应用于:整型比较</td>
+</tr>
+<tr>
+<td align="left"><code>-le</code></td>
+<td>小于或等于应用于:整型比较</td>
+</tr>
+<tr>
+<td align="left"><code>-ge</code></td>
+<td>大于或等于应用于:整型比较</td>
+</tr>
+<tr>
+<td align="left"><code>-a</code></td>
+<td>双方都成立(and)逻辑表达式<code>–a</code>逻辑表达式</td>
+</tr>
+<tr>
+<td align="left"><code>-o</code></td>
+<td>单方成立(or)逻辑表达式<code>–o</code>逻辑表达式</td>
+</tr>
+<tr>
+<td align="left"><code>-z</code></td>
+<td>空字符串</td>
+</tr>
+<tr>
+<td align="left"><code>-n</code></td>
+<td>非空字符串</td>
+</tr>
+</tbody>
+</table>
+<p><strong>所有字符与逻辑运算符直接用“空格”分开,不能连到一起</strong></p>
+<ul>
+<li><strong><code>[  ]</code>单双括号</strong></li>
+</ul>
+<blockquote>
+<ol>
+<li><code>[  ]</code>两个符号左右都要有空格分隔</li>
+<li>内部操作符与操作变量之间要有空格:如<code>[  “a”  =  “b”  ]</code></li>
+<li>字符串比较中,<code>&gt; &lt;</code>需要写成<code>\&gt; \&lt;</code>进行转义</li>
+<li><code>[  ]</code>中字符串或者<code>${}</code>变量尽量使用<code>""</code>双引号扩住,避免值未定义引用而出错的好办法</li>
+<li><code>[  ]</code>中可以使用<code>–a –o</code>进行逻辑运算</li>
+<li><code>[  ]</code>是<code>bash</code>内置命令</li>
+<li><code>[[ ]]</code>两个符号左右都要有空格分隔</li>
+<li>内部操作符与操作变量之间要有空格:如<code>[[  “a” =  “b”  ]]</code></li>
+<li>字符串比较中,可以直接使用<code>&gt; &lt;</code>无需转义</li>
+<li><code>[[ ]]</code>中字符串或者${}变量尽量如未使用<code>""</code>双引号扩住的话,会进行模式和元字符匹配</li>
+<li><code>[[]]</code>内部可以使用<code>&amp;&amp; ||</code>进行逻辑运算</li>
+</ol>
+</blockquote>
+<pre><code class="sh"># 某些例子
+[  exp1  -a exp2  ] = [[  exp1 &amp;&amp; exp2 ]] = [  exp1  ]&amp;&amp; [  exp2  ] = [[ exp1  ]] &amp;&amp; [[  exp2 ]]
+[  exp1  -o exp2  ] = [[  exp1 || exp2 ]] = [  exp1  ]|| [  exp2  ] = [[ exp1  ]] || [[  exp2 ]]
+</code></pre>
+
+<h2 id="find">四、find命令</h2>
+<p><code>find</code>命令用来在指定目录下查找文件,任何位于参数之前的字符串都将被视为欲查找的目录名。如果使用该命令时,不设置任何参数,则<code>find</code>命令将在当前目录下查找子目录与文件,并且将查找到的子目录和文件全部进行显示。</p>
+<p>语法:</p>
+<pre><code class="sh">find path -option [ -print ] [ -exec -ok command ] {} ;
+</code></pre>
+
+<p>参数选项,参考<a href="https://www.freebsd.org/cgi/man.cgi?query=find&amp;apropos=0&amp;sektion=0&amp;manpath=FreeBSD+12.0-RELEASE+and+Ports&amp;arch=default&amp;format=html"><code>FreeBSD Manual Pages:find</code></a>:</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-amin [-\|+]n</code></td>
+<td>如果文件上次访问时间与开始查找的时间(四舍五入到下一整分钟)大于<code>n(+n)</code>,小于<code>n(-n)</code>或恰好在<code>n</code>分钟则为<code>True</code></td>
+</tr>
+<tr>
+<td><code>-atime n[smhdw]</code></td>
+<td>如果未指定单位,则文件访问时间在<code>find</code>查找的时间内(以24小时制四舍五入)则为<code>True</code>,如果指定的单位,则时间差异以时间单位为准,可能的时间单位如下:<br>1. <code>s:second</code><br>2. <code>m:minute(60 seconds)</code><br>3. <code>h:hour(60 minutes)</code><br>4. <code>d:day(24 hours)</code><br>5. <code>w:week(7 days)</code><br>时间单位可以组合,比如1h30m,也可以加[-|+]符号,+代表指定时间,-表示小于指定时间</td>
+</tr>
+<tr>
+<td><code>-cmin [-\|+]n</code></td>
+<td>如果文件上次修改时间与开始查找的时间(四舍五入到下一整分钟)大于<code>n(+n)</code>,小于<code>n(-n)</code>或恰好在n分钟则为<code>True</code></td>
+</tr>
+<tr>
+<td><code>-ctime n[smhdw]</code></td>
+<td>如果未指定单位,则文件修改时间在<code>find</code>查找的时间内(以24小时制四舍五入)则为<code>True</code>,如果指定的单位,则时间差异以时间单位为准,时间标准参考<code>-atime</code></td>
+</tr>
+<tr>
+<td><code>-empty</code></td>
+<td>如果文件或者目录为空则为<code>True</code></td>
+</tr>
+<tr>
+<td><code>-exec utility [argument ...];</code></td>
+<td>如果名为<code>Utility</code>的程序返回零作为退出状态则为<code>True</code>,可选参数可以传递给实用程序。表达式必须以分号<code>;</code>结尾。如果你从shell调用<code>find</code>,如果您需要引号,否则将其视为控制运算符。如果字符串“<code>{}</code>”出现在<code>Utility</code>名称或参数中的任何位置,它被当前文件的路径名代替,实用程序将从执行查找的目录中执行</td>
+</tr>
+<tr>
+<td><code>-size [-\|+] n[ckMGTP]</code></td>
+<td>如果文件大小(以512字节块为单位向上舍入)在find查找的文件大小范围内则为true,其中+代表大于查找的文件大小,-代表小于查找文件的大小。如果n后跟c表示文件大小以字节级别进行比较。其中文件大小缩放比例进行比较的级别有以下几种:<br>1. <code>k:kilobytes (1024 bytes)</code><br>2. <code>M:megabytes(1024 kilobytes)</code><br>3. <code>G:gigabytes(1024 megabytes)</code><br>4. <code>T:terabytes(1024 gigabytes)</code><br>5. <code>P:petabytes(1024 terabytes)</code></td>
+</tr>
+<tr>
+<td><code>-type t</code></td>
+<td>如果文件的类型是指定的类型则为<code>True</code>,文件类型如下:<br>1. <code>b</code>:块设备文件<br>2. <code>c</code>:字符设备文件<br>3. <code>d</code>:目录文件<br>4. <code>f</code>:普通文件<br>5. <code>l</code>:符号链接文件<br>6. <code>p</code>:管道文件<br>7. <code>s</code>:套接字文件</td>
+</tr>
+</tbody>
+</table>
+<p><strong>实例代码:</strong></p>
+<pre><code class="sh"># 当前目录及子目录中查找所有的‘ *.log‘文件
+find . -name &quot;*.log&quot; -print
+# 删除2小时之前的文件
+find . -mmin +120 -type f -name &quot;*.log&quot; -exec rm -rf {} \;
+</code></pre>
+
+<h2 id="curl">五、curl教程</h2>
+<p>在Linux中<code>curl</code>是一个利用URL规则在命令行下工作的文件传输工具,可以说是一款很强大的<code>http</code>命令行工具。它支持文件的上传和下载,是综合传输工具,但按传统,习惯称<code>curl</code>为下载工具。</p>
+<p>语法：<code>curl [options...] url</code></p>
+<p>常见参数:</p>
+<table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>-A/--user-agent &lt;string&gt;</code></td>
+<td align="center">设置用户代理发送给服务器`</td>
+</tr>
+<tr>
+<td align="left"><code>-b/--cookie &lt;name=string/file&gt;</code></td>
+<td align="center"><code>cookie</code>字符串或文件读取位置`</td>
+</tr>
+<tr>
+<td align="left"><code>-c/--cookie-jar &lt;file&gt;</code></td>
+<td align="center">操作结束后把<code>cookie</code>写入到这个文件中`</td>
+</tr>
+<tr>
+<td align="left"><code>-C/--continue-at &lt;offset&gt;</code></td>
+<td align="center">断点续转`</td>
+</tr>
+<tr>
+<td align="left"><code>-D/--dump-header &lt;file&gt;</code></td>
+<td align="center">把<code>header</code>信息写入到该文件中`</td>
+</tr>
+<tr>
+<td align="left"><code>-e/--referer</code></td>
+<td align="center">来源网址`</td>
+</tr>
+<tr>
+<td align="left"><code>-f/--fail</code></td>
+<td align="center">连接失败时不显示<code>http</code>错误`</td>
+</tr>
+<tr>
+<td align="left"><code>-o/--output</code></td>
+<td align="center">把输出写到该文件中`</td>
+</tr>
+<tr>
+<td align="left"><code>-O/--remote-name</code></td>
+<td align="center">把输出写到该文件中,保留远程文件的文件名`</td>
+</tr>
+<tr>
+<td align="left"><code>-r/--range &lt;range&gt;</code></td>
+<td align="center">检索来自<code>HTTP/1.1</code>或<code>FTP</code>服务器字节范围`</td>
+</tr>
+<tr>
+<td align="left"><code>-s/--silent</code></td>
+<td align="center">静音模式,不输出任何东西`</td>
+</tr>
+<tr>
+<td align="left"><code>-T/--upload-file &lt;file&gt;</code></td>
+<td align="center">上传文件`</td>
+</tr>
+<tr>
+<td align="left"><code>-u/--user &lt;user[:password]&gt;</code></td>
+<td align="center">设置服务器的用户和密码`</td>
+</tr>
+<tr>
+<td align="left"><code>-w/--write-out [format]</code></td>
+<td align="center">什么输出完成后`</td>
+</tr>
+<tr>
+<td align="left"><code>-x/--proxy &lt;host[:port]&gt;</code></td>
+<td align="center">在给定的端口上使用HTTP代理`</td>
+</tr>
+<tr>
+<td align="left"><code>-#/--progress-bar</code></td>
+<td align="center">进度条显示当前的传送状态`</td>
+</tr>
+<tr>
+<td align="left"><code>-a/--append</code></td>
+<td align="center">上传文件时,附加到目标文件</td>
+</tr>
+<tr>
+<td align="left"><code>--anyauth</code></td>
+<td align="center">可以使用“任何”身份验证方法</td>
+</tr>
+<tr>
+<td align="left"><code>--basic</code></td>
+<td align="center">使用HTTP基本验证</td>
+</tr>
+<tr>
+<td align="left"><code>-B/--use-ascii</code></td>
+<td align="center">使用ASCII文本传输</td>
+</tr>
+<tr>
+<td align="left"><code>-d/--data &lt;data&gt;</code></td>
+<td align="center">HTTP POST方式传送数据</td>
+</tr>
+<tr>
+<td align="left"><code>--data-ascii &lt;data&gt;</code></td>
+<td align="center">以ascii的方式post数据</td>
+</tr>
+<tr>
+<td align="left"><code>--data-binary &lt;data&gt;</code></td>
+<td align="center">以二进制的方式post数据</td>
+</tr>
+<tr>
+<td align="left"><code>--negotiate</code></td>
+<td align="center">使用HTTP身份验证</td>
+</tr>
+<tr>
+<td align="left"><code>--digest</code></td>
+<td align="center">使用数字身份验证</td>
+</tr>
+<tr>
+<td align="left"><code>--disable-eprt</code></td>
+<td align="center">禁止使用EPRT或LPRT</td>
+</tr>
+<tr>
+<td align="left"><code>--disable-epsv</code></td>
+<td align="center">禁止使用EPSV</td>
+</tr>
+<tr>
+<td align="left"><code>--egd-file &lt;file&gt;</code></td>
+<td align="center">为随机数据(SSL)设置EGD socket路径</td>
+</tr>
+<tr>
+<td align="left"><code>--tcp-nodelay</code></td>
+<td align="center">使用TCP_NODELAY选项</td>
+</tr>
+<tr>
+<td align="left"><code>-E/--cert &lt;cert[:passwd]&gt;</code></td>
+<td align="center">客户端证书文件和密码 (SSL)</td>
+</tr>
+<tr>
+<td align="left"><code>--cert-type &lt;type&gt;</code></td>
+<td align="center">证书文件类型(DER/PEM/ENG) (SSL)</td>
+</tr>
+<tr>
+<td align="left"><code>--key &lt;key&gt;</code></td>
+<td align="center">私钥文件名 (SSL)</td>
+</tr>
+<tr>
+<td align="left"><code>--key-type &lt;type&gt;</code></td>
+<td align="center">私钥文件类型(DER/PEM/ENG) (SSL)</td>
+</tr>
+<tr>
+<td align="left"><code>--pass &lt;pass&gt;</code></td>
+<td align="center">私钥密码(SSL)</td>
+</tr>
+<tr>
+<td align="left"><code>--engine &lt;eng&gt;</code></td>
+<td align="center">加密引擎使用(SSL). "--engine list" for list</td>
+</tr>
+<tr>
+<td align="left"><code>--cacert &lt;file&gt;</code></td>
+<td align="center">CA证书 (SSL)</td>
+</tr>
+<tr>
+<td align="left"><code>--capath &lt;directory&gt;</code></td>
+<td align="center">(made using c_rehash) to verify peer against (SSL)</td>
+</tr>
+<tr>
+<td align="left"><code>--ciphers &lt;list&gt;</code></td>
+<td align="center">SSL密码</td>
+</tr>
+<tr>
+<td align="left"><code>--compressed</code></td>
+<td align="center">要求返回是压缩的形势 (using deflate or gzip)</td>
+</tr>
+<tr>
+<td align="left"><code>--connect-timeout &lt;seconds&gt;</code></td>
+<td align="center">设置最大请求时间</td>
+</tr>
+<tr>
+<td align="left"><code>--create-dirs</code></td>
+<td align="center">建立本地目录的目录层次结构</td>
+</tr>
+<tr>
+<td align="left"><code>--crlf</code></td>
+<td align="center">上传是把LF转变成CRLF</td>
+</tr>
+<tr>
+<td align="left"><code>--ftp-create-dirs</code></td>
+<td align="center">如果远程目录不存在,创建远程目录</td>
+</tr>
+<tr>
+<td align="left"><code>--ftp-method [multicwd/nocwd/singlecwd]</code></td>
+<td align="center">控制CWD的使用</td>
+</tr>
+<tr>
+<td align="left"><code>--ftp-pasv</code></td>
+<td align="center">使用 PASV/EPSV 代替端口</td>
+</tr>
+<tr>
+<td align="left"><code>--ftp-skip-pasv-ip</code></td>
+<td align="center">使用PASV的时候,忽略该IP地址</td>
+</tr>
+<tr>
+<td align="left"><code>--ftp-ssl</code></td>
+<td align="center">尝试用 SSL/TLS 来进行ftp数据传输</td>
+</tr>
+<tr>
+<td align="left"><code>--ftp-ssl-reqd</code></td>
+<td align="center">要求用 SSL/TLS 来进行ftp数据传输</td>
+</tr>
+<tr>
+<td align="left"><code>-F/--form &lt;name=content&gt;</code></td>
+<td align="center">模拟http表单提交数据</td>
+</tr>
+<tr>
+<td align="left"><code>-form-string &lt;name=string&gt;</code></td>
+<td align="center">模拟http表单提交数据</td>
+</tr>
+<tr>
+<td align="left"><code>-g/--globoff</code></td>
+<td align="center">禁用网址序列和范围使用{}和[]</td>
+</tr>
+<tr>
+<td align="left"><code>-G/--get</code></td>
+<td align="center">以get的方式来发送数据</td>
+</tr>
+<tr>
+<td align="left"><code>-h/--help</code></td>
+<td align="center">帮助</td>
+</tr>
+<tr>
+<td align="left"><code>-H/--header &lt;line&gt;</code></td>
+<td align="center">自定义头信息传递给服务器</td>
+</tr>
+<tr>
+<td align="left"><code>--ignore-content-length</code></td>
+<td align="center">忽略的HTTP头信息的长度</td>
+</tr>
+<tr>
+<td align="left"><code>-i/--include</code></td>
+<td align="center">输出时包括protocol头信息</td>
+</tr>
+<tr>
+<td align="left"><code>-I/--head</code></td>
+<td align="center">只显示文档信息</td>
+</tr>
+<tr>
+<td align="left"><code>-j/--junk-session-cookies</code></td>
+<td align="center">读取文件时忽略session cookie</td>
+</tr>
+<tr>
+<td align="left"><code>--interface &lt;interface&gt;</code></td>
+<td align="center">使用指定网络接口/地址</td>
+</tr>
+<tr>
+<td align="left"><code>--krb4 &lt;level&gt;</code></td>
+<td align="center">使用指定安全级别的krb4</td>
+</tr>
+<tr>
+<td align="left"><code>-k/--insecure</code></td>
+<td align="center">允许不使用证书到SSL站点</td>
+</tr>
+<tr>
+<td align="left"><code>-K/--config</code></td>
+<td align="center">指定的配置文件读取</td>
+</tr>
+<tr>
+<td align="left"><code>-l/--list-only</code></td>
+<td align="center">列出ftp目录下的文件名称</td>
+</tr>
+<tr>
+<td align="left"><code>--limit-rate &lt;rate&gt;</code></td>
+<td align="center">设置传输速度</td>
+</tr>
+<tr>
+<td align="left"><code>--local-port&lt;NUM&gt;</code></td>
+<td align="center">强制使用本地端口号</td>
+</tr>
+<tr>
+<td align="left"><code>-m/--max-time &lt;seconds&gt;</code></td>
+<td align="center">设置最大传输时间</td>
+</tr>
+<tr>
+<td align="left"><code>--max-redirs &lt;num&gt;</code></td>
+<td align="center">设置最大读取的目录数</td>
+</tr>
+<tr>
+<td align="left"><code>--max-filesize &lt;bytes&gt;</code></td>
+<td align="center">设置最大下载的文件总量</td>
+</tr>
+<tr>
+<td align="left"><code>-M/--manual</code></td>
+<td align="center">显示全手动</td>
+</tr>
+<tr>
+<td align="left"><code>-n/--netrc</code></td>
+<td align="center">从netrc文件中读取用户名和密码</td>
+</tr>
+<tr>
+<td align="left"><code>--netrc-optional</code></td>
+<td align="center">使用<code>.netrc</code>或者<code>URL</code>来覆盖-n</td>
+</tr>
+<tr>
+<td align="left"><code>--ntlm</code></td>
+<td align="center">使用HTTP NTLM身份验证</td>
+</tr>
+<tr>
+<td align="left"><code>-N/--no-buffer</code></td>
+<td align="center">禁用缓冲输出</td>
+</tr>
+<tr>
+<td align="left"><code>-p/--proxytunnel</code></td>
+<td align="center">使用HTTP代理</td>
+</tr>
+<tr>
+<td align="left"><code>--proxy-anyauth</code></td>
+<td align="center">选择任一代理身份验证方法</td>
+</tr>
+<tr>
+<td align="left"><code>--proxy-basic</code></td>
+<td align="center">在代理上使用基本身份验证</td>
+</tr>
+<tr>
+<td align="left"><code>--proxy-digest</code></td>
+<td align="center">在代理上使用数字身份验证</td>
+</tr>
+<tr>
+<td align="left"><code>--proxy-ntlm</code></td>
+<td align="center">在代理上使用ntlm身份验证</td>
+</tr>
+<tr>
+<td align="left"><code>-P/--ftp-port &lt;address&gt;</code></td>
+<td align="center">使用端口地址,而不是使用PASV</td>
+</tr>
+<tr>
+<td align="left"><code>-Q/--quote &lt;cmd&gt;</code></td>
+<td align="center">文件传输前,发送命令到服务器</td>
+</tr>
+<tr>
+<td align="left"><code>--range-file</code></td>
+<td align="center">读取(SSL)的随机文件</td>
+</tr>
+<tr>
+<td align="left"><code>-R/--remote-time</code></td>
+<td align="center">在本地生成文件时,保留远程文件时间</td>
+</tr>
+<tr>
+<td align="left"><code>--retry &lt;num&gt;</code></td>
+<td align="center">传输出现问题时,重试的次数</td>
+</tr>
+<tr>
+<td align="left"><code>--retry-delay &lt;seconds&gt;</code></td>
+<td align="center">传输出现问题时,设置重试间隔时间</td>
+</tr>
+<tr>
+<td align="left"><code>--retry-max-time &lt;seconds&gt;</code></td>
+<td align="center">传输出现问题时,设置最大重试时间</td>
+</tr>
+<tr>
+<td align="left"><code>-S/--show-error</code></td>
+<td align="center">显示错误`</td>
+</tr>
+<tr>
+<td align="left"><code>--socks4 &lt;host[:port]&gt;</code></td>
+<td align="center">用<code>socks4</code>代理给定主机和端口</td>
+</tr>
+<tr>
+<td align="left"><code>--socks5 &lt;host[:port]&gt;</code></td>
+<td align="center">用<code>socks5</code>代理给定主机和端口</td>
+</tr>
+<tr>
+<td align="left"><code>-t/--telnet-option &lt;OPT=val&gt;</code></td>
+<td align="center"><code>Telnet</code>选项设置</td>
+</tr>
+<tr>
+<td align="left"><code>--trace &lt;file&gt;</code></td>
+<td align="center">对指定文件进行<code>debug</code></td>
+</tr>
+<tr>
+<td align="left"><code>--trace-ascii &lt;file&gt;</code></td>
+<td align="center">Like--跟踪但没有hex输出</td>
+</tr>
+<tr>
+<td align="left"><code>--trace-time</code></td>
+<td align="center">跟踪/详细输出时,添加时间戳`</td>
+</tr>
+<tr>
+<td align="left"><code>--url &lt;URL&gt;</code></td>
+<td align="center">Spet URL to work with`</td>
+</tr>
+<tr>
+<td align="left"><code>-U/--proxy-user &lt;user[:password]&gt;</code></td>
+<td align="center">设置代理用户名和密码</td>
+</tr>
+<tr>
+<td align="left"><code>-V/--version</code></td>
+<td align="center">显示版本信息</td>
+</tr>
+<tr>
+<td align="left"><code>-X/--request &lt;command&gt;</code></td>
+<td align="center">指定什么命令</td>
+</tr>
+<tr>
+<td align="left"><code>-y/--speed-time</code></td>
+<td align="center">放弃限速所要的时间,默认为30</td>
+</tr>
+<tr>
+<td align="left"><code>-Y/--speed-limit</code></td>
+<td align="center">停止传输速度的限制,速度时间为秒</td>
+</tr>
+<tr>
+<td align="left"><code>-z/--time-cond</code></td>
+<td align="center">传送时间设置</td>
+</tr>
+<tr>
+<td align="left"><code>-0/--http1.0</code></td>
+<td align="center">使用HTTP 1.0</td>
+</tr>
+<tr>
+<td align="left"><code>-1/--tlsv1</code></td>
+<td align="center">使用<code>TLSv1(SSL)</code></td>
+</tr>
+<tr>
+<td align="left"><code>-2/--sslv2</code></td>
+<td align="center">使用<code>SSLv2</code>的<code>(SSL)</code></td>
+</tr>
+<tr>
+<td align="left"><code>-3/--sslv3</code></td>
+<td align="center">使用的<code>SSLv3(SSL)</code></td>
+</tr>
+<tr>
+<td align="left"><code>--3p-quote</code></td>
+<td align="center">like -Q for the source URL for 3rd party transfer</td>
+</tr>
+<tr>
+<td align="left"><code>--3p-url</code></td>
+<td align="center">使用<code>url</code>,进行第三方传送</td>
+</tr>
+<tr>
+<td align="left"><code>--3p-user</code></td>
+<td align="center">使用用户名和密码,进行第三方传送</td>
+</tr>
+<tr>
+<td align="left"><code>-4/--ipv4</code></td>
+<td align="center">使用IP4</td>
+</tr>
+<tr>
+<td align="left"><code>-6/--ipv6</code></td>
+<td align="center">使用IP6</td>
+</tr>
+</tbody>
+</table>
+<p><strong>某些例子</strong></p>
+<pre><code class="sh"># 基本用法
+curl http://www.linux.com
+# 执行后,www.linux.com的html就会显示在屏幕上了
+
+# 保存访问的网页
+## 使用linux的重定向功能保存
+curl http://www.linux.com &gt;&gt; linux.html
+## 可以使用curl的内置option:-o(小写)保存网页
+curl -o linux.html http://www.linux.com
+# 执行完成后会显示如下界面,显示100%则表示保存成功
+% Total    % Received % Xferd  Average Speed  Time    Time    Time  Current
+                                Dload  Upload  Total  Spent    Left  Speed
+100 79684    0 79684    0    0  3437k      0 --:--:-- --:--:-- --:--:-- 7781k
+## 可以使用curl的内置option:-O(大写)保存网页中的文件,要注意这里后面的url要具体到某个文件,不然抓不下来
+curl -O http://www.linux.com/hello.sh
+
+# 测试网页返回值
+curl -o /dev/null -s -w %{http_code} www.linux.com # 在脚本中,这是很常见的测试网站是否正常的用法
+
+# 指定proxy服务器以及其端口
+curl -x 192.168.100.100:1080 http://www.linux.com
+
+# cookie,有些网站是使用cookie来记录session信息,对于chrome这样的浏览器,可以轻易处理cookie信息,但在curl中只要增加相关参数也是可以很容易的处理cookie
+## 保存http的response里面的cookie信息,内置option:-c(小写)
+curl -c cookiec.txt  http://www.linux.com # 执行后cookie信息就被存到了cookiec.txt里面了
+## 保存http的response里面的header信息。内置option: -D
+curl -D cookied.txt http://www.linux.com # 执行后cookie信息就被存到了cookied.txt里面了
+## 注意:-c(小写)产生的cookie和-D里面的cookie是不一样的。
+
+# 使用cookie,很多网站都是通过监视你的cookie信息来判断你是否按规矩访问他们的网站的,因此我们需要使用保存的cookie信息。内置option: -b
+curl -b cookiec.txt http://www.linux.com
+
+# 模仿浏览器,有些网站需要使用特定的浏览器去访问他们,有些还需要使用某些特定的版本。curl内置option:-A可以让我们指定浏览器去访问网站
+curl -A &quot;Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.0)&quot; http://www.linux.com  # 这样服务器端就会认为是使用IE8.0去访问的
+
+# 伪造referer(盗链),很多服务器会检查http访问的referer从而来控制访问。比如:你是先访问首页，然后再访问首页中的邮箱页面,这里访问邮箱的referer地址就是访问首页成功后的页面地址,如果服务器发现对邮箱页面访问的referer地址不是首页的地址,就断定那是个盗连了
+## curl中内置option：-e可以让我们设定referer
+curl -e &quot;www.linux.com&quot; http://mail.linux.com   # 这样就会让服务器其以为你是从www.linux.com点击某个链接过来的
+
+# 下载文件
+## 利用curl下载文件,使用内置option：-o(小写)
+curl -o dodo1.jpg http:www.linux.com/dodo1.JPG
+## 使用内置option:-O(大写)
+curl -O http://www.linux.com/dodo1.JPG
+
+
+# 循环下载,有时候下载图片可以能是前面的部分名称是一样的,就最后的尾椎名不一样
+curl -O http://www.linux.com/dodo[1-5].JPG  # 这样就会把dodo1,dodo2,dodo3,dodo4,dodo5全部保存下来
+
+# 下载重命名
+curl -O http://www.linux.com/{hello,bb}/dodo[1-5].JPG
+### 由于下载的hello与bb中的文件名都是dodo1,dodo2,dodo3,dodo4,dodo5。因此第二次下载的会把第一次下载的覆盖,这样就需要对文件进行重命名。
+curl -o #1_#2.JPG http://www.linux.com/{hello,bb}/dodo[1-5].JPG
+### 这样在hello/dodo1.JPG的文件下载下来就会变成hello_dodo1.JPG,其他文件依此类推,从而有效的避免了文件被覆盖
+
+# 分块下载,有时候下载的东西会比较大,这个时候我们可以分段下载。使用内置option:-r
+
+curl -r 0-100 -o dodo1_part1.JPG http://www.linux.com/dodo1.JPG
+curl -r 100-200 -o dodo1_part2.JPG http://www.linux.com/dodo1.JPG
+curl -r 200- -o dodo1_part3.JPG http://www.linux.com/dodo1.JPG
+cat dodo1_part* &gt; dodo1.JPG
+### 这样就可以查看dodo1.JPG的内容了
+
+# 通过ftp下载文件,curl可以通过ftp下载文件,curl提供两种从ftp中下载的语法
+curl -O -u 用户名:密码 ftp://www.linux.com/dodo1.JPG
+curl -O ftp://用户名:密码@www.linux.com/dodo1.JPG
+
+# 显示下载进度条
+curl -# -O http://www.linux.com/dodo1.JPG
+
+# 不会显示下载进度信息
+curl -s -O http://www.linux.com/dodo1.JPG
+
+# 断点续传
+# 在windows中,我们可以使用迅雷这样的软件进行断点续传。curl可以通过内置option:-C同样可以达到相同的效果,如果在下载dodo1.JPG的过程中突然掉线了,可以使用以下的方式续传
+curl -C -O http://www.linux.com/dodo1.JPG
+
+# 上传文件,curl不仅仅可以下载文件,还可以上传文件。通过内置option:-T来实现
+curl -T dodo1.JPG -u 用户名:密码 ftp://www.linux.com/img/  # 这样就向ftp服务器上传了文件dodo1.JPG
+
+# 显示抓取错误
+curl -f http://www.linux.com/error
+
+# 指定HTTP请求的方法。
+curl -X POST https://www.example.com
+
+# 输出通信的整个过程,用于调试
+curl -v https://www.example.com
+curl --trace - https://www.example.com
+</code></pre>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    <br>
+</div>
+
+</body>
+</html>

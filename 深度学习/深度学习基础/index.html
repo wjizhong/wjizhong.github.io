@@ -38,7 +38,7 @@
                   ]},
                   {title: "1.2 \u5e38\u89c1\u7684\u8ddd\u79bb", url: "#12", level:3, children: [
                   ]},
-                  {title: "5.2 \u5206\u7c7b(Classification)\u6307\u6807", url: "#52-classification", level:3, children: [
+                  {title: "1.3 \u5206\u7c7b(Classification)\u6307\u6807", url: "#13-classification", level:3, children: [
                   ]},
                   {title: "5.3 \u805a\u7c7b\u6307\u6807", url: "#53", level:3, children: [
                   ]},
@@ -274,6 +274,7 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>剔除异常值:设定一个相对误差<span><span class="MathJax_Preview">\frac{|y_i-\hat{y_i}|}{y_i}</span><script type="math/tex">\frac{|y_i-\hat{y_i}|}{y_i}</script></span>,当该值超过一定的阈值时,则认为其是一个异常点,剔除这个异常点,将异常点剔除之后。再计算平均误差来对模型进行评价。</p>
 <p>使用误差的分位数来代替:如利用中位数来代替平均数。例如MAPE:<span><span class="MathJax_Preview">MAPE=median(|y_i-\hat{y_i}|/y_i)</span><script type="math/tex">MAPE=median(|y_i-\hat{y_i}|/y_i)</script></span>,MAPE是一个相对误差的中位数,当然也可以使用别的分位数。</p>
 </blockquote>
+<p>https://zhuanlan.zhihu.com/p/38529433</p>
 <h3 id="12">1.2 常见的距离</h3>
 <p>在机器学习里,我们的运算一般都是基于向量的,一条用户具有100个特征,那么他对应的就是一个100维的向量,通过计算两个用户对应向量之间的距离值大小,有时候能反映出这两个用户的相似程度。这在后面的KNN算法和K-means算法中很明显。</p>
 <p>一般而言,定义一个距离函数<span><span class="MathJax_Preview">d(x,y)</span><script type="math/tex">d(x,y)</script></span>,需要满足下面几个准则:</p>
@@ -502,8 +503,8 @@ matV = mat([1,1,1,1],[1,0,0,1])
 print(dist.pdist(matV,'jaccard'))
 </code></pre>
 
-<h3 id="52-classification">5.2 分类(Classification)指标</h3>
-<p><img alt="" src="http://pic1.zhimg.com/v2-49a657a2ec9fa94edb976ca1a7d33afc_r.jpg" /></p>
+<h3 id="13-classification">1.3 分类(Classification)指标</h3>
+<p><img src="http://pic1.zhimg.com/v2-49a657a2ec9fa94edb976ca1a7d33afc_r.jpg" style="width: 80%"></p>
 <ul>
 <li><strong>混淆矩阵</strong></li>
 </ul>
@@ -521,12 +522,10 @@ print(dist.pdist(matV,'jaccard'))
 <p>混淆矩阵又被称为错误矩阵,在每个类别下,模型预测错误的结果数量,以及错误预测的类别和正确预测的数量都在一个矩阵下面显示出来,方便直观的评估模型分类的结果。</p>
 <p>通常取预测值和真实值之间的关系、预测值对矩阵进行划分:</p>
 <blockquote>
-<ul>
-<li>True positive(TP):真实值为Positive,预测正确(预测值为Positive)</li>
-<li>True negative(TN):真实值为Negative,预测正确(预测值为Negative)</li>
-<li>False positive(FP):真实值为Negative,预测错误(预测值为Positive),第一类错误,Type I error。</li>
-<li>False negative(FN): 真实值为Positive,预测错误(预测值为 Negative),第二类错误,Type II error。</li>
-</ul>
+<p>True positive(TP):真实值为Positive,预测正确(预测值为Positive)</p>
+<p>True negative(TN):真实值为Negative,预测正确(预测值为Negative)</p>
+<p>False positive(FP):真实值为Negative,预测错误(预测值为Positive),第一类错误,Type I error。</p>
+<p>False negative(FN): 真实值为Positive,预测错误(预测值为 Negative),第二类错误,Type II error。</p>
 </blockquote>
 <ul>
 <li><strong>精确率(Precision)</strong></li>
@@ -592,7 +591,7 @@ Acc=\frac{TP+TN}{TP+FN+FP+TN}
 <td>FPR</td>
 <td>False Positive Rate</td>
 <td>假正类率,fall-out Type 1 error</td>
-<td><span><span class="MathJax_Preview">frac{FP}{FP+FN}=1-TNR</span><script type="math/tex">frac{FP}{FP+FN}=1-TNR</script></span></td>
+<td><span><span class="MathJax_Preview">\frac{FP}{FP+FN}=1-TNR</span><script type="math/tex">\frac{FP}{FP+FN}=1-TNR</script></span></td>
 </tr>
 <tr>
 <td>TNR</td>
@@ -783,7 +782,7 @@ TPR = \frac {TP}{TP+FN}
 <p><strong>AUC</strong>:AUC值为ROC曲线所覆盖的区域面积,显然,AUC越大,分类器分类效果越好。</p>
 <blockquote>
 <p>AUC=1,是完美分类器。</p>
-<p>0.5\&lt;AUC\&lt;1,优于随机猜测,有预测价值。</p>
+<p>0.5&lt;AUC&lt;1,优于随机猜测,有预测价值。</p>
 <p>AUC=0.5,跟随机猜测一样(例:丢铜板),没有预测价值。</p>
 <p>AUC &lt; 0.5,比随机猜测还差;但只要总是反预测而行,就优于随机猜测。</p>
 </blockquote>
@@ -796,13 +795,8 @@ TPR = \frac {TP}{TP+FN}
 <ol>
 <li>AUC为ROC曲线下的面积,那我们直接计算面积可得。面积为一个个小的梯形面积(曲线)之和。计算的精度与阈值的精度有关。</li>
 <li>根据AUC的物理意义,我们计算正样本预测结果大于负样本预测结果的概率。取<span><span class="MathJax_Preview">n_1*n_0</span><script type="math/tex">n_1*n_0</script></span>(<span><span class="MathJax_Preview">n_1</span><script type="math/tex">n_1</script></span>为正样本数,<span><span class="MathJax_Preview">n_0</span><script type="math/tex">n_0</script></span>为负样本数)个二元组,比较score(预测结果),最后得到AUC。时间复杂度为<span><span class="MathJax_Preview">O(N*M)</span><script type="math/tex">O(N*M)</script></span>。</li>
-<li>首先把所有样本按照score排序,依次用rank表示他们,如最大score的样本,<span><span class="MathJax_Preview">rank=n(n=n_0+n_1</span><script type="math/tex">rank=n(n=n_0+n_1</script></span>,其中<span><span class="MathJax_Preview">n_0</span><script type="math/tex">n_0</script></span>为负样本个数,<span><span class="MathJax_Preview">n_1</span><script type="math/tex">n_1</script></span>为正样本个数),其次为n-1。对于正样本中rank最大的样本<span><span class="MathJax_Preview">rank\_max</span><script type="math/tex">rank\_max</script></span>,有<span><span class="MathJax_Preview">n_1-1</span><script type="math/tex">n_1-1</script></span>个其他正样本比它小。有<span><span class="MathJax_Preview">rank\_max-n_1</span><script type="math/tex">rank\_max-n_1</script></span>个负样本比它小。其次为<span><span class="MathJax_Preview">rank\_second-(n_1-1)</span><script type="math/tex">rank\_second-(n_1-1)</script></span>。最后我们得到正样本大于负样本的概率为:</li>
-</ol>
-<div>
-<div class="MathJax_Preview">AUC=\frac{\sum_{\text{正样本}}rank(core)-n_1*(n_1+2)/2}{n_0*n_1}</div>
-<script type="math/tex; mode=display">AUC=\frac{\sum_{\text{正样本}}rank(core)-n_1*(n_1+2)/2}{n_0*n_1}</script>
-</div>
-<ol>
+<li>首先把所有样本按照score排序,依次用rank表示他们,如最大score的样本,<span><span class="MathJax_Preview">rank=n(n=n_0+n_1</span><script type="math/tex">rank=n(n=n_0+n_1</script></span>,其中<span><span class="MathJax_Preview">n_0</span><script type="math/tex">n_0</script></span>为负样本个数,<span><span class="MathJax_Preview">n_1</span><script type="math/tex">n_1</script></span>为正样本个数),其次为n-1。对于正样本中rank最大的样本<span><span class="MathJax_Preview">rank\_max</span><script type="math/tex">rank\_max</script></span>,有<span><span class="MathJax_Preview">n_1-1</span><script type="math/tex">n_1-1</script></span>个其他正样本比它小。有<span><span class="MathJax_Preview">rank\_max-n_1</span><script type="math/tex">rank\_max-n_1</script></span>个负样本比它小。其次为<span><span class="MathJax_Preview">rank\_second-(n_1-1)</span><script type="math/tex">rank\_second-(n_1-1)</script></span>。最后我们得到正样本大于负样本的概率为:
+<span><span class="MathJax_Preview"><span><span class="MathJax_Preview">AUC=\frac{\sum_{\text{正样本}}rank(core)-n_1*(n_1+2)/2}{n_0*n_1}</span><script type="math/tex">AUC=\frac{\sum_{\text{正样本}}rank(core)-n_1*(n_1+2)/2}{n_0*n_1}</script></span></span><script type="math/tex"><span><span class="MathJax_Preview">AUC=\frac{\sum_{\text{正样本}}rank(core)-n_1*(n_1+2)/2}{n_0*n_1}</span><script type="math/tex">AUC=\frac{\sum_{\text{正样本}}rank(core)-n_1*(n_1+2)/2}{n_0*n_1}</script></span></script></span></li>
 <li>计算复杂度为<span><span class="MathJax_Preview">O(N+M)</span><script type="math/tex">O(N+M)</script></span>。</li>
 </ol>
 </blockquote>
@@ -884,37 +878,25 @@ TPR = \frac {TP}{TP+FN}
 <div>
 <div class="MathJax_Preview">
 \begin{aligned}
-&amp; {P_{micro}} = \frac{\overline {TP}}{\overline{TP} + \overline{FP}} \\
-&amp; {R_{micro}} = \frac{\overline {TP}}{\overline{TP} + \overline{FN}} \\
-&amp; F1_{micro} = \frac{2\times P_{micro} \times R_{micro}}{ P_{micro} + R_{micro}} \\
+    &amp; {P_{micro}} = \frac{\overline {TP}}{\overline{TP} + \overline{FP}} \\
+    &amp; {R_{micro}} = \frac{\overline {TP}}{\overline{TP} + \overline{FN}} \\
+    &amp; F1_{micro} = \frac{2\times P_{micro} \times R_{micro}}{ P_{micro} + R_{micro}} \\
 \end{aligned}
 </div>
 <script type="math/tex; mode=display">
 \begin{aligned}
-& {P_{micro}} = \frac{\overline {TP}}{\overline{TP} + \overline{FP}} \\
-& {R_{micro}} = \frac{\overline {TP}}{\overline{TP} + \overline{FN}} \\
-& F1_{micro} = \frac{2\times P_{micro} \times R_{micro}}{ P_{micro} + R_{micro}} \\
+    & {P_{micro}} = \frac{\overline {TP}}{\overline{TP} + \overline{FP}} \\
+    & {R_{micro}} = \frac{\overline {TP}}{\overline{TP} + \overline{FN}} \\
+    & F1_{micro} = \frac{2\times P_{micro} \times R_{micro}}{ P_{micro} + R_{micro}} \\
 \end{aligned}
 </script>
 </div>
-<h3 id="53">5.3 聚类指标</h3>
-<ul>
-<li><strong>兰德指数</strong></li>
-<li><strong>轮廓系数</strong></li>
-<li><strong>互信息</strong></li>
-</ul>
-<h3 id="54-scikit-learn">5.4 scikit-learn指标代码</h3>
-<h4 id="541-_classification">5.4.1 _classification核心源码</h4>
-<pre><code class="python">
-def _check_zero_division(zero_division):
+<pre><code class="python">def _check_zero_division(zero_division):
     if isinstance(zero_division, str) and zero_division == &quot;warn&quot;:
         return
     elif isinstance(zero_division, (int, float)) and zero_division in [0, 1]:
         return
     raise ValueError('Got zero_division={0}. Must be one of [&quot;warn&quot;, 0, 1]'.format(zero_division))
-
-
-
 
 def _weighted_sum(sample_score, sample_weight, normalize=False):
     if normalize:
@@ -923,7 +905,6 @@ def _weighted_sum(sample_score, sample_weight, normalize=False):
         return np.dot(sample_score, sample_weight)
     else:
         return sample_score.sum()
-
 
 ########################### 计算准确率 #################################
 def accuracy_score(y_true, y_pred, *, normalize=True, sample_weight=None):
@@ -943,18 +924,17 @@ def accuracy_score(y_true, y_pred, *, normalize=True, sample_weight=None):
         If normalize == True, return the fraction of correctly classified samples (float), else returns the number of correctly classified samples (int).
 
     Examples
-    --------
-    &gt;&gt;&gt; from sklearn.metrics import accuracy_score
-    &gt;&gt;&gt; y_pred = [0, 2, 1, 3]
-    &gt;&gt;&gt; y_true = [0, 1, 2, 3]
-    &gt;&gt;&gt; accuracy_score(y_true, y_pred)
-    0.5
-    &gt;&gt;&gt; accuracy_score(y_true, y_pred, normalize=False)
-    2
-    In the multilabel case with binary label indicators:
-    &gt;&gt;&gt; import numpy as np
-    &gt;&gt;&gt; accuracy_score(np.array([[0, 1], [1, 1]]), np.ones((2, 2)))
-    0.5
+        &gt;&gt;&gt; from sklearn.metrics import accuracy_score
+        &gt;&gt;&gt; y_pred = [0, 2, 1, 3]
+        &gt;&gt;&gt; y_true = [0, 1, 2, 3]
+        &gt;&gt;&gt; accuracy_score(y_true, y_pred)
+        0.5
+        &gt;&gt;&gt; accuracy_score(y_true, y_pred, normalize=False)
+        2
+        In the multilabel case with binary label indicators:
+        &gt;&gt;&gt; import numpy as np
+        &gt;&gt;&gt; accuracy_score(np.array([[0, 1], [1, 1]]), np.ones((2, 2)))
+        0.5
     &quot;&quot;&quot;
 
     # Compute accuracy for each possible representation
@@ -970,7 +950,7 @@ def accuracy_score(y_true, y_pred, *, normalize=True, sample_weight=None):
 
     return _weighted_sum(score, sample_weight, normalize)
 
-
+########################### 计算多分类的混淆矩阵 #######################################
 def confusion_matrix(y_true, y_pred, *, labels=None, sample_weight=None, normalize=None):
   &quot;&quot;&quot;Compute confusion matrix to evaluate the accuracy of a classification.
     Parameters
@@ -989,24 +969,23 @@ def confusion_matrix(y_true, y_pred, *, labels=None, sample_weight=None, normali
       C : ndarray of shape (n_classes, n_classes)
         Confusion matrix whose i-th row and j-th column entry indicates the number of samples with true label being i-th class and prediced label being j-th class.
     Examples
-    --------
-    &gt;&gt;&gt; from sklearn.metrics import confusion_matrix
-    &gt;&gt;&gt; y_true = [2, 0, 2, 2, 0, 1]
-    &gt;&gt;&gt; y_pred = [0, 0, 2, 2, 0, 2]
-    &gt;&gt;&gt; confusion_matrix(y_true, y_pred)
-    array([[2, 0, 0],
-           [0, 0, 1],
-           [1, 0, 2]])
-    &gt;&gt;&gt; y_true = [&quot;cat&quot;, &quot;ant&quot;, &quot;cat&quot;, &quot;cat&quot;, &quot;ant&quot;, &quot;bird&quot;]
-    &gt;&gt;&gt; y_pred = [&quot;ant&quot;, &quot;ant&quot;, &quot;cat&quot;, &quot;cat&quot;, &quot;ant&quot;, &quot;cat&quot;]
-    &gt;&gt;&gt; confusion_matrix(y_true, y_pred, labels=[&quot;ant&quot;, &quot;bird&quot;, &quot;cat&quot;])
-    array([[2, 0, 0],
-           [0, 0, 1],
-           [1, 0, 2]])
-    In the binary case, we can extract true positives, etc as follows:
-    &gt;&gt;&gt; tn, fp, fn, tp = confusion_matrix([0, 1, 0, 1], [1, 1, 1, 0]).ravel()
-    &gt;&gt;&gt; (tn, fp, fn, tp)
-    (0, 2, 1, 1)
+        &gt;&gt;&gt; from sklearn.metrics import confusion_matrix
+        &gt;&gt;&gt; y_true = [2, 0, 2, 2, 0, 1]
+        &gt;&gt;&gt; y_pred = [0, 0, 2, 2, 0, 2]
+        &gt;&gt;&gt; confusion_matrix(y_true, y_pred)
+        array([[2, 0, 0],
+               [0, 0, 1],
+               [1, 0, 2]])
+        &gt;&gt;&gt; y_true = [&quot;cat&quot;, &quot;ant&quot;, &quot;cat&quot;, &quot;cat&quot;, &quot;ant&quot;, &quot;bird&quot;]
+        &gt;&gt;&gt; y_pred = [&quot;ant&quot;, &quot;ant&quot;, &quot;cat&quot;, &quot;cat&quot;, &quot;ant&quot;, &quot;cat&quot;]
+        &gt;&gt;&gt; confusion_matrix(y_true, y_pred, labels=[&quot;ant&quot;, &quot;bird&quot;, &quot;cat&quot;])
+        array([[2, 0, 0],
+               [0, 0, 1],
+               [1, 0, 2]])
+        In the binary case, we can extract true positives, etc as follows:
+        &gt;&gt;&gt; tn, fp, fn, tp = confusion_matrix([0, 1, 0, 1], [1, 1, 1, 0]).ravel()
+        &gt;&gt;&gt; (tn, fp, fn, tp)
+        (0, 2, 1, 1)
     &quot;&quot;&quot;
     y_type, y_true, y_pred = _check_targets(y_true, y_pred)
     if y_type not in (&quot;binary&quot;, &quot;multiclass&quot;):
@@ -1066,6 +1045,7 @@ def confusion_matrix(y_true, y_pred, *, labels=None, sample_weight=None, normali
     return cm
 
 
+########################### 计算多标签的混淆矩阵 #######################################
 def multilabel_confusion_matrix(y_true, y_pred, *, sample_weight=None,labels=None, samplewise=False):
   &quot;&quot;&quot;Compute a confusion matrix for each class or sample
     Parameters
@@ -1218,7 +1198,174 @@ def multilabel_confusion_matrix(y_true, y_pred, *, sample_weight=None,labels=Non
     return np.array([tn, fp, fn, tp]).T.reshape(-1, 2, 2)
 
 
-def cohen_kappa_score(y1, y2, *, labels=None, weights=None, sample_weight=None):
+
+def precision_recall_fscore_support(y_true, y_pred, *, beta=1.0, labels=None, pos_label=1, 
+        average=None, warn_for=('precision', 'recall', 'f-score'), sample_weight=None,
+        zero_division=&quot;warn&quot;):
+    &quot;&quot;&quot;Compute precision, recall, F-measure and support for each class
+    Parameters
+        y_true : 1d array-like, or label indicator array / sparse matrix
+            Ground truth (correct) target values.
+        y_pred : 1d array-like, or label indicator array / sparse matrix
+            Estimated targets as returned by a classifier.
+        beta : float, 1.0 by default
+            The strength of recall versus precision in the F-score.
+        labels : list, optional
+            The set of labels to include when average != 'binary', and their
+            order if average is None. Labels present in the data can be
+            excluded, for example to calculate a multiclass average ignoring a
+            majority negative class, while labels not present in the data will
+            result in 0 components in a macro average. For multilabel targets,
+            labels are column indices. By default, all labels in ``y_true`` and
+            y_pred are used in sorted order.
+        pos_label : str or int, 1 by default
+            The class to report if ``average='binary'`` and the data is binary.
+            If the data are multiclass or multilabel, this will be ignored;
+            setting ``labels=[pos_label]`` and ``average != 'binary'`` will report
+            scores for that label only.
+        average : string, [None (default), 'binary', 'micro', 'macro', 'samples', 'weighted']
+            If ``None``, the scores for each class are returned. Otherwise, this
+            determines the type of averaging performed on the data:
+            ``'binary'``:
+                Only report results for the class specified by ``pos_label``.
+                This is applicable only if targets (``y_{true,pred}``) are binary.
+            ``'micro'``:
+                Calculate metrics globally by counting the total true positives,
+                false negatives and false positives.
+            ``'macro'``:
+                Calculate metrics for each label, and find their unweighted
+                mean.  This does not take label imbalance into account.
+            ``'weighted'``:
+                Calculate metrics for each label, and find their average weighted
+                by support (the number of true instances for each label). This
+                alters 'macro' to account for label imbalance; it can result in an
+                F-score that is not between precision and recall.
+            ``'samples'``:
+                Calculate metrics for each instance, and find their average (only
+                meaningful for multilabel classification where this differs from
+                :func:`accuracy_score`).
+        warn_for : tuple or set, for internal use
+            This determines which warnings will be made in the case that this
+            function is being used to return only one of its metrics.
+        sample_weight : array-like of shape (n_samples,), default=None
+            Sample weights.
+        zero_division : &quot;warn&quot;, 0 or 1, default=&quot;warn&quot;
+            Sets the value to return when there is a zero division:
+               - recall: when there are no positive labels
+               - precision: when there are no positive predictions
+               - f-score: both
+            If set to &quot;warn&quot;, this acts as 0, but warnings are also raised.
+    Returns
+        precision : float (if average is not None) or array of float, shape =\
+            [n_unique_labels]
+        recall : float (if average is not None) or array of float, , shape =\
+            [n_unique_labels]
+        fbeta_score : float (if average is not None) or array of float, shape =\
+            [n_unique_labels]
+        support : None (if average is not None) or array of int, shape =\
+            [n_unique_labels]
+            The number of occurrences of each label in ``y_true``.
+    Examples
+        &gt;&gt;&gt; import numpy as np
+        &gt;&gt;&gt; from sklearn.metrics import precision_recall_fscore_support
+        &gt;&gt;&gt; y_true = np.array(['cat', 'dog', 'pig', 'cat', 'dog', 'pig'])
+        &gt;&gt;&gt; y_pred = np.array(['cat', 'pig', 'dog', 'cat', 'cat', 'dog'])
+        &gt;&gt;&gt; precision_recall_fscore_support(y_true, y_pred, average='macro')
+        (0.22..., 0.33..., 0.26..., None)
+        &gt;&gt;&gt; precision_recall_fscore_support(y_true, y_pred, average='micro')
+        (0.33..., 0.33..., 0.33..., None)
+        &gt;&gt;&gt; precision_recall_fscore_support(y_true, y_pred, average='weighted')
+        (0.22..., 0.33..., 0.26..., None)
+        It is possible to compute per-label precisions, recalls, F1-scores and
+        supports instead of averaging:
+        &gt;&gt;&gt; precision_recall_fscore_support(y_true, y_pred, average=None,
+        ... labels=['pig', 'dog', 'cat'])
+        (array([0.        , 0.        , 0.66...]),
+         array([0., 0., 1.]), array([0. , 0. , 0.8]),
+         array([2, 2, 2]))
+    &quot;&quot;&quot;
+    _check_zero_division(zero_division)
+    if beta &lt; 0:
+        raise ValueError(&quot;beta should be &gt;=0 in the F-beta score&quot;)
+    labels = _check_set_wise_labels(y_true, y_pred, average, labels, pos_label)
+
+    # Calculate tp_sum, pred_sum, true_sum ###
+    samplewise = average == 'samples'
+    MCM = multilabel_confusion_matrix(y_true, y_pred, sample_weight=sample_weight,
+        labels=labels, samplewise=samplewise)
+    tp_sum = MCM[:, 1, 1]
+    pred_sum = tp_sum + MCM[:, 0, 1]
+    true_sum = tp_sum + MCM[:, 1, 0]
+
+    if average == 'micro':
+        tp_sum = np.array([tp_sum.sum()])
+        pred_sum = np.array([pred_sum.sum()])
+        true_sum = np.array([true_sum.sum()])
+
+    # Finally, we have all our sufficient statistics. Divide! #
+    beta2 = beta ** 2
+
+    # Divide, and on zero-division, set scores and/or warn according to
+    # zero_division:
+    precision = _prf_divide(tp_sum, pred_sum, 'precision','predicted', 
+        average, warn_for, zero_division)
+    recall = _prf_divide(tp_sum, true_sum, 'recall', 'true', 
+        average, warn_for, zero_division)
+
+    # warn for f-score only if zero_division is warn, it is in warn_for
+    # and BOTH prec and rec are ill-defined
+    if zero_division == &quot;warn&quot; and (&quot;f-score&quot;,) == warn_for:
+        if (pred_sum[true_sum == 0] == 0).any():
+            _warn_prf(average, &quot;true nor predicted&quot;, 'F-score is', len(true_sum))
+
+    # if tp == 0 F will be 1 only if all predictions are zero, all labels are
+    # zero, and zero_division=1. In all other case, 0
+    if np.isposinf(beta):
+        f_score = recall
+    else:
+        denom = beta2 * precision + recall
+
+        denom[denom == 0.] = 1  # avoid division by 0
+        f_score = (1 + beta2) * precision * recall / denom
+
+    # Average the results
+    if average == 'weighted':
+        weights = true_sum
+        if weights.sum() == 0:
+            zero_division_value = 0.0 if zero_division in [&quot;warn&quot;, 0] else 1.0
+            # precision is zero_division if there are no positive predictions
+            # recall is zero_division if there are no positive labels
+            # fscore is zero_division if all labels AND predictions are
+            # negative
+            return (zero_division_value if pred_sum.sum() == 0 else 0,
+                    zero_division_value,
+                    zero_division_value if pred_sum.sum() == 0 else 0,
+                    None)
+
+    elif average == 'samples':
+        weights = sample_weight
+    else:
+        weights = None
+
+    if average is not None:
+        assert average != 'binary' or len(precision) == 1
+        precision = np.average(precision, weights=weights)
+        recall = np.average(recall, weights=weights)
+        f_score = np.average(f_score, weights=weights)
+        true_sum = None  # return no support
+
+    return precision, recall, f_score, true_sum
+</code></pre>
+
+<h3 id="53">5.3 聚类指标</h3>
+<ul>
+<li><strong>兰德指数</strong></li>
+<li><strong>轮廓系数</strong></li>
+<li><strong>互信息</strong></li>
+</ul>
+<h3 id="54-scikit-learn">5.4 scikit-learn指标代码</h3>
+<h4 id="541-_classification">5.4.1 _classification核心源码</h4>
+<pre><code class="python">def cohen_kappa_score(y1, y2, *, labels=None, weights=None, sample_weight=None):
     r&quot;&quot;&quot;Cohen's kappa: a statistic that measures inter-annotator agreement.
       \kappa = (p_o - p_e) / (1 - p_e)
     where p_o is the empirical probability of agreement on the label
