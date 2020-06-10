@@ -378,39 +378,7 @@ print(use_style('Black text & White back', fore='black', back='white'))
 [  exp1  -o exp2  ] = [[  exp1 || exp2 ]] = [  exp1  ]|| [  exp2  ] = [[ exp1  ]] || [[  exp2 ]]
 ```
 
-## 四、find命令
-
-`find`命令用来在指定目录下查找文件,任何位于参数之前的字符串都将被视为欲查找的目录名。如果使用该命令时,不设置任何参数,则`find`命令将在当前目录下查找子目录与文件,并且将查找到的子目录和文件全部进行显示。
-
-语法:
-
-```sh
-find path -option [ -print ] [ -exec -ok command ] {} ;
-```
-
-参数选项,参考[`FreeBSD Manual Pages:find`](https://www.freebsd.org/cgi/man.cgi?query=find&apropos=0&sektion=0&manpath=FreeBSD+12.0-RELEASE+and+Ports&arch=default&format=html):
-
-| 参数 | 说明 |
-| ---  | ---  |
-| `-amin [-\|+]n` | 如果文件上次访问时间与开始查找的时间(四舍五入到下一整分钟)大于`n(+n)`,小于`n(-n)`或恰好在`n`分钟则为`True` |
-| `-atime n[smhdw]` | 如果未指定单位,则文件访问时间在`find`查找的时间内(以24小时制四舍五入)则为`True`,如果指定的单位,则时间差异以时间单位为准,可能的时间单位如下:<br>1. `s:second`<br>2. `m:minute(60 seconds)`<br>3. `h:hour(60 minutes)`<br>4. `d:day(24 hours)`<br>5. `w:week(7 days)`<br>时间单位可以组合,比如1h30m,也可以加[-\|+]符号,+代表指定时间,-表示小于指定时间 |
-| `-cmin [-\|+]n` | 如果文件上次修改时间与开始查找的时间(四舍五入到下一整分钟)大于`n(+n)`,小于`n(-n)`或恰好在n分钟则为`True` |
-| `-ctime n[smhdw]` | 如果未指定单位,则文件修改时间在`find`查找的时间内(以24小时制四舍五入)则为`True`,如果指定的单位,则时间差异以时间单位为准,时间标准参考`-atime` |
-| `-empty` | 如果文件或者目录为空则为`True` |
-| `-exec utility [argument ...];` | 如果名为`Utility`的程序返回零作为退出状态则为`True`,可选参数可以传递给实用程序。表达式必须以分号`;`结尾。如果你从shell调用`find`,如果您需要引号,否则将其视为控制运算符。如果字符串“`{}`”出现在`Utility`名称或参数中的任何位置,它被当前文件的路径名代替,实用程序将从执行查找的目录中执行 |
-| `-size [-\|+] n[ckMGTP]` | 如果文件大小(以512字节块为单位向上舍入)在find查找的文件大小范围内则为true,其中+代表大于查找的文件大小,-代表小于查找文件的大小。如果n后跟c表示文件大小以字节级别进行比较。其中文件大小缩放比例进行比较的级别有以下几种:<br>1. `k:kilobytes (1024 bytes)`<br>2. `M:megabytes(1024 kilobytes)`<br>3. `G:gigabytes(1024 megabytes)`<br>4. `T:terabytes(1024 gigabytes)`<br>5. `P:petabytes(1024 terabytes)` |
-| `-type t` | 如果文件的类型是指定的类型则为`True`,文件类型如下:<br>1. `b`:块设备文件<br>2. `c`:字符设备文件<br>3. `d`:目录文件<br>4. `f`:普通文件<br>5. `l`:符号链接文件<br>6. `p`:管道文件<br>7. `s`:套接字文件 |
-
-**实例代码:**
-
-```sh
-# 当前目录及子目录中查找所有的‘ *.log‘文件
-find . -name "*.log" -print
-# 删除2小时之前的文件
-find . -mmin +120 -type f -name "*.log" -exec rm -rf {} \;
-```
-
-## 五、curl教程
+## 三、curl教程
 
 在Linux中`curl`是一个利用URL规则在命令行下工作的文件传输工具,可以说是一款很强大的`http`命令行工具。它支持文件的上传和下载,是综合传输工具,但按传统,习惯称`curl`为下载工具。
 
@@ -623,3 +591,37 @@ curl -X POST https://www.example.com
 curl -v https://www.example.com
 curl --trace - https://www.example.com
 ```
+
+
+## 四、find命令
+
+`find`命令用来在指定目录下查找文件,任何位于参数之前的字符串都将被视为欲查找的目录名。如果使用该命令时,不设置任何参数,则`find`命令将在当前目录下查找子目录与文件,并且将查找到的子目录和文件全部进行显示。
+
+语法:
+
+```sh
+find path -option [ -print ] [ -exec -ok command ] {} ;
+```
+
+参数选项,参考[`FreeBSD Manual Pages:find`](https://www.freebsd.org/cgi/man.cgi?query=find&apropos=0&sektion=0&manpath=FreeBSD+12.0-RELEASE+and+Ports&arch=default&format=html):
+
+| 参数 | 说明 |
+| ---  | ---  |
+| `-amin [-\|+]n` | 如果文件上次访问时间与开始查找的时间(四舍五入到下一整分钟)大于`n(+n)`,小于`n(-n)`或恰好在`n`分钟则为`True` |
+| `-atime n[smhdw]` | 如果未指定单位,则文件访问时间在`find`查找的时间内(以24小时制四舍五入)则为`True`,如果指定的单位,则时间差异以时间单位为准,可能的时间单位如下:<br>1. `s:second`<br>2. `m:minute(60 seconds)`<br>3. `h:hour(60 minutes)`<br>4. `d:day(24 hours)`<br>5. `w:week(7 days)`<br>时间单位可以组合,比如1h30m,也可以加[-\|+]符号,+代表指定时间,-表示小于指定时间 |
+| `-cmin [-\|+]n` | 如果文件上次修改时间与开始查找的时间(四舍五入到下一整分钟)大于`n(+n)`,小于`n(-n)`或恰好在n分钟则为`True` |
+| `-ctime n[smhdw]` | 如果未指定单位,则文件修改时间在`find`查找的时间内(以24小时制四舍五入)则为`True`,如果指定的单位,则时间差异以时间单位为准,时间标准参考`-atime` |
+| `-empty` | 如果文件或者目录为空则为`True` |
+| `-exec utility [argument ...];` | 如果名为`Utility`的程序返回零作为退出状态则为`True`,可选参数可以传递给实用程序。表达式必须以分号`;`结尾。如果你从shell调用`find`,如果您需要引号,否则将其视为控制运算符。如果字符串“`{}`”出现在`Utility`名称或参数中的任何位置,它被当前文件的路径名代替,实用程序将从执行查找的目录中执行 |
+| `-size [-\|+] n[ckMGTP]` | 如果文件大小(以512字节块为单位向上舍入)在find查找的文件大小范围内则为true,其中+代表大于查找的文件大小,-代表小于查找文件的大小。如果n后跟c表示文件大小以字节级别进行比较。其中文件大小缩放比例进行比较的级别有以下几种:<br>1. `k:kilobytes (1024 bytes)`<br>2. `M:megabytes(1024 kilobytes)`<br>3. `G:gigabytes(1024 megabytes)`<br>4. `T:terabytes(1024 gigabytes)`<br>5. `P:petabytes(1024 terabytes)` |
+| `-type t` | 如果文件的类型是指定的类型则为`True`,文件类型如下:<br>1. `b`:块设备文件<br>2. `c`:字符设备文件<br>3. `d`:目录文件<br>4. `f`:普通文件<br>5. `l`:符号链接文件<br>6. `p`:管道文件<br>7. `s`:套接字文件 |
+
+**实例代码:**
+
+```sh
+# 当前目录及子目录中查找所有的‘ *.log‘文件
+find . -name "*.log" -print
+# 删除2小时之前的文件
+find . -mmin +120 -type f -name "*.log" -exec rm -rf {} \;
+```
+
