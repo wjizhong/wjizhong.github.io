@@ -80,9 +80,11 @@
                   ]}, 
               ]},
               {title: "\u4e94\u3001linux\u76ee\u5f55\u7ed3\u6784", url: "#linux", level:2, children: [
-                  {title: "1.1 /proc\u76ee\u5f55\u4ecb\u7ecd", url: "#11-proc", level:3, children: [
+                  {title: "5.1 /proc\u76ee\u5f55\u4ecb\u7ecd", url: "#51-proc", level:3, children: [
                   ]},
-                  {title: "1.2 \u6587\u4ef6\u7684\u7c7b\u578b", url: "#12", level:3, children: [
+                  {title: "5.2 \u8fdb\u7a0bN\u7684\u4fe1\u606f", url: "#52-n", level:3, children: [
+                  ]},
+                  {title: "5.3 \u6587\u4ef6\u7684\u7c7b\u578b", url: "#53", level:3, children: [
                   ]}, 
               ]},
           ]},
@@ -2239,7 +2241,7 @@ composed = outer.as_string()
 </table>
 <p><code>/bin</code>,<code>/sbin</code>,<code>/usr/bin</code>,<code>/usr/sbin</code>:这是系统预设的执行文件的放置目录,比如<code>ls</code>就是在<code>/bin/ls</code>目录下的。值得提出的是,<code>/bin</code>,<code>/usr/bin</code>是给系统用户使用的指令(除<code>root</code>外的通用户),而<code>/sbin</code>,<code>/usr/sbin</code>则是给<code>root</code>使用的指令。</p>
 <p><code>/var</code>是一个非常重要的目录,系统上跑了很多程序,那么每个程序都会有相应的日志产生,而这些日志就被记录到这个目录下,具体在<code>/var/log</code>目录下,另外<code>mail</code>的预设放置也是在这里。</p>
-<h3 id="11-proc">1.1 <code>/proc</code>目录介绍</h3>
+<h3 id="51-proc">5.1 <code>/proc</code>目录介绍</h3>
 <p><code>proc</code>是<code>Linux</code>系统下一个很重要的目录。它跟<code>/etc</code>,<code>/home</code>等这些系统目录不同,它不是一个真正的文件系统,而是一个虚拟的文件系统。它不存在于磁盘,而是存在于系统内存中。所以当你使用<code>ls -al /proc</code>这条命令来查看<code>proc</code>目录时,会看到其下面的所有文件的大小都为0字节。<code>proc</code>以文件系统的方式为访问系统内核的操作提供接口。很多系统的信息,如内存使用情况,<code>cpu</code>使用情况,进程信息等等这些信息,都可以通过查看<code>/proc</code>下的对应文件来获得。<code>proc</code>文件系统是动态从系统内核读出所需信息的。</p>
 <ul>
 <li><strong>目录下含有的文件/目录</strong></li>
@@ -2426,9 +2428,7 @@ composed = outer.as_string()
 </tr>
 </tbody>
 </table>
-<ul>
-<li><strong>进程N的信息</strong></li>
-</ul>
+<h3 id="52-n">5.2 进程N的信息</h3>
 <table>
 <thead>
 <tr>
@@ -2491,7 +2491,7 @@ composed = outer.as_string()
 </tr>
 </tbody>
 </table>
-<h3 id="12">1.2 文件的类型</h3>
+<h3 id="53">5.3 文件的类型</h3>
 <p>文件类型缩写及别称</p>
 <table>
 <thead>
