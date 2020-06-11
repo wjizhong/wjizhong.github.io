@@ -592,7 +592,9 @@ curl -v https://www.example.com
 curl --trace - https://www.example.com
 ```
 
-## 四、新建
+## 四、git
+
+* **新建**
 
 创建一个新的git版本库。这个版本库的配置、存储等信息会被保存到.git文件夹中
 
