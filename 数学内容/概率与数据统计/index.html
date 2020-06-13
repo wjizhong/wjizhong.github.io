@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%95%B0%E5%AD%A6%E5%86%85%E5%AE%B9/%E6%A6%82%E7%8E%87%E4%B8%8E%E6%95%B0%E6%8D%AE%E7%BB%9F%E8%AE%A1/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>概率与数据统计 - 图像/视频算法</title>
+    <link href="../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "\u6982\u7387\u8bba", url: "#_top", level:1, children: [
+              {title: "\u4e00\u3001\u57fa\u672c\u6982\u5ff5", url: "#_2", level:2, children: [
+                  {title: "1.1 \u57fa\u672c\u6982\u5ff5", url: "#11", level:3, children: [
+                  ]},
+                  {title: "1.2 \u53e4\u5178\u6982\u578b", url: "#12", level:3, children: [
+                  ]},
+                  {title: "1.3 \u51e0\u4f55\u6982\u578b", url: "#13", level:3, children: [
+                  ]},
+                  {title: "1.4 \u6982\u7387\u7a7a\u95f4", url: "#14", level:3, children: [
+                  ]}, 
+              ]},
+          ]},
+        ];
+    </script>
+    <script src="../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    
+
+    <h1 id="_1">概率论</h1>
+<p>参考: https://zhuanlan.zhihu.com/p/42859784</p>
+<h2 id="_2">一、基本概念</h2>
+<h3 id="11">1.1 基本概念</h3>
+<p>定义:</p>
+<blockquote>
+<p>随机试验中出现的可能结果称为样本点,记作<span><span class="MathJax_Preview">\omega</span><script type="math/tex">\omega</script></span></p>
+<p>所有样本点组成的集合称为样本空间,记作<span><span class="MathJax_Preview">\Omega=\left \{ \omega|\omega为样本点 \right \}</span><script type="math/tex">\Omega=\left \{ \omega|\omega为样本点 \right \}</script></span></p>
+<p>当样本空间<span><span class="MathJax_Preview">\Omega</span><script type="math/tex">\Omega</script></span>仅有有限个元素时,称其子集为一个事件,用大写字母表示,如<span><span class="MathJax_Preview">A</span><script type="math/tex">A</script></span>。</p>
+</blockquote>
+<p>若样本点<span><span class="MathJax_Preview">\omega\in A</span><script type="math/tex">\omega\in A</script></span>,称事件<span><span class="MathJax_Preview">A</span><script type="math/tex">A</script></span>发生,否则称事件不发生。<span><span class="MathJax_Preview">\overline{A}=\Omega-A</span><script type="math/tex">\overline{A}=\Omega-A</script></span>称为事件<span><span class="MathJax_Preview">A</span><script type="math/tex">A</script></span>的对立事件。容易知道<span><span class="MathJax_Preview">\omega\in A\Leftrightarrow \omega\not\in \overline{A}</span><script type="math/tex">\omega\in A\Leftrightarrow \omega\not\in \overline{A}</script></span>,反之亦然。</p>
+<p>特别地,<span><span class="MathJax_Preview">A=\varnothing</span><script type="math/tex">A=\varnothing</script></span>时,事件称为不可能事件。<span><span class="MathJax_Preview">A=\Omega</span><script type="math/tex">A=\Omega</script></span>时,事件称为必然事件。</p>
+<p>设<span><span class="MathJax_Preview">A,B</span><script type="math/tex">A,B</script></span>为事件,之后用<span><span class="MathJax_Preview">AB</span><script type="math/tex">AB</script></span>来表示<span><span class="MathJax_Preview">A\cap B</span><script type="math/tex">A\cap B</script></span>。特别地,当<span><span class="MathJax_Preview">AB=\varnothing</span><script type="math/tex">AB=\varnothing</script></span>时,称这两个事件互斥(不相容)。对多于两个事件,称这些事件互斥当且仅当这些事件中的任意两个都互斥。记<span><span class="MathJax_Preview">A\cup B</span><script type="math/tex">A\cup B</script></span>为<span><span class="MathJax_Preview">A+B</span><script type="math/tex">A+B</script></span>。</p>
+<p>给出几个很常用的事件之间的运算公式,读者容易自证:</p>
+<blockquote>
+<p><span><span class="MathJax_Preview">A\cup B=A+\overline{A}B, \ A=AB+A\overline{B}</span><script type="math/tex">A\cup B=A+\overline{A}B, \ A=AB+A\overline{B}</script></span></p>
+<p><span><span class="MathJax_Preview">\overline{ \bigcup_{j=1}^n A_j }=\bigcap _{j=1}^n \overline{A_j}</span><script type="math/tex">\overline{ \bigcup_{j=1}^n A_j }=\bigcap _{j=1}^n \overline{A_j}</script></span>,<span><span class="MathJax_Preview">\overline{ \bigcap_{j=1}^n A_j }=\bigcup _{j=1}^n \overline{A_j}</span><script type="math/tex">\overline{ \bigcap_{j=1}^n A_j }=\bigcup _{j=1}^n \overline{A_j}</script></span>.(De-Morgan)</p>
+</blockquote>
+<h3 id="12">1.2 古典概型</h3>
+<p>对一个有限集合<span><span class="MathJax_Preview">A</span><script type="math/tex">A</script></span>,<span><span class="MathJax_Preview">|A|</span><script type="math/tex">|A|</script></span>表示其中的元素个数。</p>
+<p>定义:试验的样本空间<span><span class="MathJax_Preview">\Omega</span><script type="math/tex">\Omega</script></span>有限,<span><span class="MathJax_Preview">A\subseteq \Omega</span><script type="math/tex">A\subseteq \Omega</script></span>,若<span><span class="MathJax_Preview">\Omega</span><script type="math/tex">\Omega</script></span>中的每个样本点的发生的可能性相同,则称<span><span class="MathJax_Preview">P(A)=\frac{|A|}{|\Omega|}</span><script type="math/tex">P(A)=\frac{|A|}{|\Omega|}</script></span>为事件<span><span class="MathJax_Preview">A</span><script type="math/tex">A</script></span>发生的概率。由以上定义的概率模型便称为古典概型。</p>
+<p>需要再一次强调的是:每个样本点的发生的可能性相同,这是前提条件,如果忽视条件直接套用古典概型就会犯错。</p>
+<p>关于如此定义出的概率<span><span class="MathJax_Preview">P</span><script type="math/tex">P</script></span>的性质,列出以下几条,读者自证。</p>
+<blockquote>
+<p><span><span class="MathJax_Preview">P(A)\geq 0</span><script type="math/tex">P(A)\geq 0</script></span></p>
+<p><span><span class="MathJax_Preview">P(\Omega)=1,P(\varnothing)=0</span><script type="math/tex">P(\Omega)=1,P(\varnothing)=0</script></span></p>
+<p>若<span><span class="MathJax_Preview">A_1,A_2,...,A_n</span><script type="math/tex">A_1,A_2,...,A_n</script></span>互斥,则<span><span class="MathJax_Preview">P(\sum_{j=1}^nA_j)=\sum_{j=1}^nP(A_j)</span><script type="math/tex">P(\sum_{j=1}^nA_j)=\sum_{j=1}^nP(A_j)</script></span>。(有限可加性)</p>
+</blockquote>
+<p>例:计算以下方法数:(假设不同排列均等可能)有<span><span class="MathJax_Preview">n</span><script type="math/tex">n</script></span>个不同的球,每次抽取抽取1个球</p>
+<blockquote>
+<p>有放回地抽取,抽取<span><span class="MathJax_Preview">m</span><script type="math/tex">m</script></span>个排成一列,求不同排列总数。 乘法原理<span><span class="MathJax_Preview">n^m</span><script type="math/tex">n^m</script></span></p>
+<p>无放回地抽取,抽取<span><span class="MathJax_Preview">m</span><script type="math/tex">m</script></span>个排成一列,求不同排列总数。排列数<span><span class="MathJax_Preview">P_n^m=\frac{n!}{(n-m)!}</span><script type="math/tex">P_n^m=\frac{n!}{(n-m)!}</script></span></p>
+<p>无放回地抽取，抽取<span><span class="MathJax_Preview">m</span><script type="math/tex">m</script></span>个忽视次序地组成一组,求不同组合总数。组合数<span><span class="MathJax_Preview">C_n^m=\frac{n!}{m!(n-m)!}</span><script type="math/tex">C_n^m=\frac{n!}{m!(n-m)!}</script></span></p>
+<p>将所有球分成<span><span class="MathJax_Preview">k</span><script type="math/tex">k</script></span>个不同的组,忽视每一组中元素的次序,且每组恰好有<span><span class="MathJax_Preview">n_1,n_2,...,n_k</span><script type="math/tex">n_1,n_2,...,n_k</script></span>个球(<span><span class="MathJax_Preview">n_1+n_2+...+n_k=n</span><script type="math/tex">n_1+n_2+...+n_k=n</script></span>),求不同分组结果数。<span><span class="MathJax_Preview">C_n^{n_1}C_{n-n_1}^{n_2}...C_{n-n_1-...-n_{k-1}}^{n_k}=\frac{n!}{n_1!n_2!...n_k!}</span><script type="math/tex">C_n^{n_1}C_{n-n_1}^{n_2}...C_{n-n_1-...-n_{k-1}}^{n_k}=\frac{n!}{n_1!n_2!...n_k!}</script></span>,将这个数记作<span><span class="MathJax_Preview">\binom{n}{n_1,n_2,...,n_k}</span><script type="math/tex">\binom{n}{n_1,n_2,...,n_k}</script></span>,其为多项式<span><span class="MathJax_Preview">(x_1+x_2+...+x_k)^n</span><script type="math/tex">(x_1+x_2+...+x_k)^n</script></span>中<span><span class="MathJax_Preview">x_1^{n_1}x_2^{n_2}...x_k^{n_k}</span><script type="math/tex">x_1^{n_1}x_2^{n_2}...x_k^{n_k}</script></span>的展开系数,称为多项式系数。</p>
+<p>方程<span><span class="MathJax_Preview">x_1+x_2+...+x_n=m</span><script type="math/tex">x_1+x_2+...+x_n=m</script></span>的非负整数解的个数。隔板法(C_{m+n-1}^{n-1})</p>
+<p>方程<span><span class="MathJax_Preview">x_1+x_2+...+x_n=m</span><script type="math/tex">x_1+x_2+...+x_n=m</script></span>的正整数解的个数。插空法(<span><span class="MathJax_Preview">C_{m-1}^{n-1}</span><script type="math/tex">C_{m-1}^{n-1}</script></span>)</p>
+</blockquote>
+<h3 id="13">1.3 几何概型</h3>
+<p>对于<span><span class="MathJax_Preview">A\subseteq \mathbb{R}^r</span><script type="math/tex">A\subseteq \mathbb{R}^r</script></span>,设<span><span class="MathJax_Preview">A</span><script type="math/tex">A</script></span>的体积存在,记为<span><span class="MathJax_Preview">m(A)</span><script type="math/tex">m(A)</script></span>,后文可能也会称其为测度(不严格意义上)。</p>
+<p>定义:试验的样本空间<span><span class="MathJax_Preview">\Omega</span><script type="math/tex">\Omega</script></span>,<span><span class="MathJax_Preview">m(\Omega)&gt;0</span><script type="math/tex">m(\Omega)>0</script></span>,<span><span class="MathJax_Preview">A\subseteq \Omega</span><script type="math/tex">A\subseteq \Omega</script></span>,若每个样本点等可能地落在<span><span class="MathJax_Preview">\Omega</span><script type="math/tex">\Omega</script></span>中,则称<span><span class="MathJax_Preview">P(A)=\frac{m(A)}{m(\Omega)}</span><script type="math/tex">P(A)=\frac{m(A)}{m(\Omega)}</script></span>为事件<span><span class="MathJax_Preview">A</span><script type="math/tex">A</script></span>发生的概率。由以上定义的概率模型便称为几何概型。</p>
+<p>类似于古典概型，需要再一次强调的是：每个样本点等可能地落在<span><span class="MathJax_Preview">\Omega</span><script type="math/tex">\Omega</script></span>中</p>
+<p><strong>等待-相遇问题</strong>:两人某天1点到2点之间等可能地在随机时间到达某地点会面且两人的到达时间相互不影响,先到者等20min后离去,求两人能相遇的概率。</p>
+<p>解:设<span><span class="MathJax_Preview">x,y</span><script type="math/tex">x,y</script></span>为两人分别到达的时间,样本空间<span><span class="MathJax_Preview">\Omega=\left \{ (x,y)|0\leq x,y\leq 60 \right \}</span><script type="math/tex">\Omega=\left \{ (x,y)|0\leq x,y\leq 60 \right \}</script></span>,符合几何概型要求。</p>
+<p>事件<span><span class="MathJax_Preview">A</span><script type="math/tex">A</script></span>:两人能够相遇<span><span class="MathJax_Preview">A\subseteq \Omega</span><script type="math/tex">A\subseteq \Omega</script></span>,则<span><span class="MathJax_Preview">A=\left \{ (x,y)||x-y|\leq 20\right \}</span><script type="math/tex">A=\left \{ (x,y)||x-y|\leq 20\right \}</script></span></p>
+<p>画图得:</p>
+<p><img alt="" src="http://pic2.zhimg.com/v2-abae587e4b867d45db91a54c7dc15745_b.jpg" /></p>
+<p><span><span class="MathJax_Preview">m(A)</span><script type="math/tex">m(A)</script></span>即为围成的六边形面积<span><span class="MathJax_Preview">=60^2-40^2</span><script type="math/tex">=60^2-40^2</script></span>,<span><span class="MathJax_Preview">m(\Omega)=60^2</span><script type="math/tex">m(\Omega)=60^2</script></span>,故<span><span class="MathJax_Preview">P(A)=\frac{5}{9}</span><script type="math/tex">P(A)=\frac{5}{9}</script></span>。</p>
+<p>注意:概型的差别的根源是等可能假设之间的差别,为了进一步体会这一点,举有趣的Bertrand问题作为例子来说明这一点。</p>
+<p>例(Bertrand):在半径为1的圆内任意取一条弦,求弦长度大于等于<span><span class="MathJax_Preview">\sqrt{3}</span><script type="math/tex">\sqrt{3}</script></span>的概率。</p>
+<p>解:这个问题乍看之下让人手足无措，其原因就在于题中完全没有说明弦要按照怎么样的方式来选取。我们可以通过确定弦的两个端点来确定弦,也可以通过确定弦的中点来确定弦。更深入地,在讨论关于弦的中点的问题时,我们既可以假设中点在圆中等可能分布,也可以假设弦在圆的直径上等可能分布。</p>
+<p>下面我们举出三种常见的等可能假设并分别求概率。</p>
+<p>设事件<span><span class="MathJax_Preview">A</span><script type="math/tex">A</script></span>:弦长度大于等于<span><span class="MathJax_Preview">\sqrt{3}</span><script type="math/tex">\sqrt{3}</script></span></p>
+<p><strong>情况1</strong>:弦的端点等可能地落在圆周上。</p>
+<p>则我们可以假设一个端点固定,则另一个端点也等可能地落在圆周上。如图:</p>
+<p><img alt="" src="http://pic4.zhimg.com/v2-fb6bd097599a43ef7e21327994e15c97_b.jpg" /></p>
+<p>固定点<span><span class="MathJax_Preview">C</span><script type="math/tex">C</script></span>,假设<span><span class="MathJax_Preview">|CB|=|CD|=\sqrt{3}</span><script type="math/tex">|CB|=|CD|=\sqrt{3}</script></span>,则另一个端点只需要在<span><span class="MathJax_Preview">B,D</span><script type="math/tex">B,D</script></span>所夹劣弧之上都满足要求。则样本空间<span><span class="MathJax_Preview">\Omega=\left \{ \theta|\theta\in [0,2\pi ) \right \}</span><script type="math/tex">\Omega=\left \{ \theta|\theta\in [0,2\pi ) \right \}</script></span>,<span><span class="MathJax_Preview">A=\left \{ \theta|\theta\in [\frac{2}{3}\pi ,\frac{4}{3}\pi ] \right \}</span><script type="math/tex">A=\left \{ \theta|\theta\in [\frac{2}{3}\pi ,\frac{4}{3}\pi ] \right \}</script></span>。容易求出<span><span class="MathJax_Preview">P(A)=\frac{1}{3}</span><script type="math/tex">P(A)=\frac{1}{3}</script></span>。</p>
+<p><strong>情况2</strong>:弦的中点等可能地落在一个小圆内。</p>
+<p>如图:</p>
+<p><img alt="" src="https://pic1.zhimg.com/80/v2-8867261d39ec200e76f040bb033d2cb0_1440w.jpg" /></p>
+<p><span><span class="MathJax_Preview">|BC|=|EF|=\sqrt{3}</span><script type="math/tex">|BC|=|EF|=\sqrt{3}</script></span>,则这两条弦的中点在同一个小圆上,容易知道当弦的中点在小圆上或内时,弦长必定符合条件要求。利用几何概型,<span><span class="MathJax_Preview">m(\Omega)=\pi ,m(A)=\frac{\pi}{4}</span><script type="math/tex">m(\Omega)=\pi ,m(A)=\frac{\pi}{4}</script></span>,<span><span class="MathJax_Preview">P(A)=\frac{1}{4}</span><script type="math/tex">P(A)=\frac{1}{4}</script></span>。</p>
+<p><strong>情况3</strong>:弦中点等可能地落在与之垂直的直径上。</p>
+<p>如图:</p>
+<p><img alt="" src="https://pic2.zhimg.com/v2-85f57e04fdf7cd429b7b92bf5ad5deb1_b.jpg" /></p>
+<p><span><span class="MathJax_Preview">|BC|=\sqrt{3}</span><script type="math/tex">|BC|=\sqrt{3}</script></span>,容易知道当弦中点在小圆之内时,满足条件要求。由于沿着直径等可能分布。故<span><span class="MathJax_Preview">P(A)=\frac{1}{2}</span><script type="math/tex">P(A)=\frac{1}{2}</script></span>。</p>
+<p>可以看到不同的等可能假设导致了最后截然不同的结果。然而,这些结果之间并无对错之分,只是从不同角度看同一个问题得到了不同的结果。</p>
+<h3 id="14">1.4 概率空间</h3>
+<p><span><span class="MathJax_Preview">A,B</span><script type="math/tex">A,B</script></span>为测度存在的事件,则<span><span class="MathJax_Preview">\overline{A},A\cup B,A\cap B,A-B</span><script type="math/tex">\overline{A},A\cup B,A\cap B,A-B</script></span>也都可测。故可测事件事件经过有限次集合运算后得到的事件也必定可测。</p>
+<p>现在若有事件列<span><span class="MathJax_Preview">A_1,A_2,...</span><script type="math/tex">A_1,A_2,...</script></span>互斥且均可测,则由体积的性质,<span><span class="MathJax_Preview">m(\bigcup _{j=1}^{\infty}A_j)=\sum_{j=1}^{\infty}m(A_j)</span><script type="math/tex">m(\bigcup _{j=1}^{\infty}A_j)=\sum_{j=1}^{\infty}m(A_j)</script></span>,故互斥的可测事件经过可列并后仍旧可测。</p>
+<p>现在考虑,更广泛地,事件列<span><span class="MathJax_Preview">B_1,B_2,...</span><script type="math/tex">B_1,B_2,...</script></span>,均可测(不一定互斥)。进行变换<span><span class="MathJax_Preview">A_1=B_1,A_2=B_2-B_1,...,A_j=B_j-B_{j-1}-...-B_1</span><script type="math/tex">A_1=B_1,A_2=B_2-B_1,...,A_j=B_j-B_{j-1}-...-B_1</script></span>,则事件列<span><span class="MathJax_Preview">A_1,A_2,...</span><script type="math/tex">A_1,A_2,...</script></span>互斥且均可测,且有<span><span class="MathJax_Preview">\bigcup_{j=1}^{\infty}A_j=\bigcup_{j=1}^{\infty}B_j</span><script type="math/tex">\bigcup_{j=1}^{\infty}A_j=\bigcup_{j=1}^{\infty}B_j</script></span>,利用上述结论,可以得到<span><span class="MathJax_Preview">\bigcup_{j=1}^{\infty}B_j</span><script type="math/tex">\bigcup_{j=1}^{\infty}B_j</script></span>可测。故可测事件经过可列并后仍旧可测。</p>
+<p>自然地,我们引出如下定义:<span><span class="MathJax_Preview">\Omega</span><script type="math/tex">\Omega</script></span>为样本空间,<span><span class="MathJax_Preview">F</span><script type="math/tex">F</script></span>为<span><span class="MathJax_Preview">\Omega</span><script type="math/tex">\Omega</script></span>的子集构成的集合,若<span><span class="MathJax_Preview">F</span><script type="math/tex">F</script></span>满足:</p>
+<blockquote>
+<p><span><span class="MathJax_Preview">\Omega\in F</span><script type="math/tex">\Omega\in F</script></span></p>
+<p>若<span><span class="MathJax_Preview">A\in F,\overline{A}\in F</span><script type="math/tex">A\in F,\overline{A}\in F</script></span>(对补集运算封闭)</p>
+<p>若<span><span class="MathJax_Preview">A_j\in F,\bigcup_{j=1}^{\infty}A_j\in F</span><script type="math/tex">A_j\in F,\bigcup_{j=1}^{\infty}A_j\in F</script></span>(对可列并运算封闭)</p>
+</blockquote>
+<p>则<span><span class="MathJax_Preview">F</span><script type="math/tex">F</script></span>为<span><span class="MathJax_Preview">\Omega</span><script type="math/tex">\Omega</script></span>的事件域/<span><span class="MathJax_Preview">\sigma</span><script type="math/tex">\sigma</script></span>域,称<span><span class="MathJax_Preview">(\Omega,F)</span><script type="math/tex">(\Omega,F)</script></span>为可测空间。</p>
+<p>在可测空间上,我们得以严格定义概率,作为一种测度而存在。</p>
+<p>定义:<span><span class="MathJax_Preview">(\Omega,F)</span><script type="math/tex">(\Omega,F)</script></span>为可测空间,<span><span class="MathJax_Preview">P</span><script type="math/tex">P</script></span>为定义在<span><span class="MathJax_Preview">F</span><script type="math/tex">F</script></span>上的函数,若满足:</p>
+<blockquote>
+<p><span><span class="MathJax_Preview">\forall A\in F,P(A)\geq 0</span><script type="math/tex">\forall A\in F,P(A)\geq 0</script></span>(非负性)</p>
+<p><span><span class="MathJax_Preview">P(\Omega)=1</span><script type="math/tex">P(\Omega)=1</script></span>(完全性)</p>
+<p>对<span><span class="MathJax_Preview">A_1,A_2,...</span><script type="math/tex">A_1,A_2,...</script></span>为<span><span class="MathJax_Preview">F</span><script type="math/tex">F</script></span>中的互斥事件列,有<span><span class="MathJax_Preview">P(\bigcup _{j=1}^{\infty}A_j)=\sum_{j=1}^{\infty}P(A_j)</span><script type="math/tex">P(\bigcup _{j=1}^{\infty}A_j)=\sum_{j=1}^{\infty}P(A_j)</script></span>(可列可加性)</p>
+</blockquote>
+<p>则<span><span class="MathJax_Preview">P</span><script type="math/tex">P</script></span>为<span><span class="MathJax_Preview">F</span><script type="math/tex">F</script></span>上的概率测度,简称概率,<span><span class="MathJax_Preview">(\Omega,F,P)</span><script type="math/tex">(\Omega,F,P)</script></span>称为概率空间。</p>
+<p>定义:<span><span class="MathJax_Preview">A</span><script type="math/tex">A</script></span>为事件,若<span><span class="MathJax_Preview">P(A)=1</span><script type="math/tex">P(A)=1</script></span>,称<span><span class="MathJax_Preview">A</span><script type="math/tex">A</script></span>几乎必然发生,记作<span><span class="MathJax_Preview">A \ a.s.</span><script type="math/tex">A \ a.s.</script></span>。(almost surely)</p>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    <br>
+</div>
+
+</body>
+</html>
