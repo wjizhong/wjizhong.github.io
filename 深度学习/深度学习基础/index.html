@@ -47,6 +47,8 @@
                       ]},
                   ]}, 
               ]},
+              {title: "\u4e09\u3001\u7ecf\u5178\u7f51\u7edc", url: "#_3", level:2, children: [ 
+              ]},
           ]},
         ];
     </script>
@@ -1046,7 +1048,8 @@ def confusion_matrix(y_true, y_pred, *, labels=None, sample_weight=None, normali
 
 
 ########################### 计算多标签的混淆矩阵 #######################################
-def multilabel_confusion_matrix(y_true, y_pred, *, sample_weight=None,labels=None, samplewise=False):
+def multilabel_confusion_matrix(y_true, y_pred, *, sample_weight=None,
+    labels=None, samplewise=False):
   &quot;&quot;&quot;Compute a confusion matrix for each class or sample
     Parameters
       y_true : 1d array-like, or label indicator array / sparse matrix of shape (n_samples, n_outputs) or (n_samples,)
@@ -1198,7 +1201,7 @@ def multilabel_confusion_matrix(y_true, y_pred, *, sample_weight=None,labels=Non
     return np.array([tn, fp, fn, tp]).T.reshape(-1, 2, 2)
 
 
-
+########################### 计算多标签的精确率/召回率/F分数 #######################################
 def precision_recall_fscore_support(y_true, y_pred, *, beta=1.0, labels=None, pos_label=1, 
         average=None, warn_for=('precision', 'recall', 'f-score'), sample_weight=None,
         zero_division=&quot;warn&quot;):
@@ -2896,6 +2899,7 @@ def brier_score_loss(y_true, y_prob, *, sample_weight=None, pos_label=None):
 <p>https://www.zhihu.com/question/291032522/answer/605843215</p>
 <p>https://cloud.tencent.com/developer/article/1352583</p>
 <p>https://zhuanlan.zhihu.com/p/44106492</p>
+<h2 id="_3">三、经典网络</h2>
 
   <br>
     <style>

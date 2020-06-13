@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/leetcode/%E9%A2%98%E7%9B%AE0796_%E6%97%8B%E8%BD%AC%E5%AD%97%E7%AC%A6%E4%B8%B2/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>题目0796:旋转字符串 - 图像/视频算法</title>
+    <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "\u9898\u76ee0796:\u65cb\u8f6c\u5b57\u7b26\u4e32", url: "#_top", level:1, children: [
+              {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1", level:2, children: [ 
+              ]},
+              {title: "\u89e3\u7b54\u6280\u5de7", url: "#_2", level:2, children: [ 
+              ]},
+          ]},
+        ];
+    </script>
+    <script src="../../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    
+
+    <h1 id="0796">题目0796:旋转字符串</h1>
+<h2 id="_1">题目描述</h2>
+<p>给定两个字符串,A和B。</p>
+<p>A的旋转操作就是将A最左边的字符移动到最右边。例如,若A='abcde',在移动一次之后结果就是'bcdea'。如果在若干次旋转操作之后,A能变成B,那么返回True。</p>
+<p>示例1:</p>
+<pre><code>输入: A = 'abcde', B = 'cdeab'
+输出: true
+</code></pre>
+
+<p>示例2:</p>
+<pre><code>输入: A = 'abcde', B = 'abced'
+输出: false
+</code></pre>
+
+<p>注意:</p>
+<blockquote>
+<p>A和B长度不超过100。</p>
+</blockquote>
+<h2 id="_2">解答技巧</h2>
+<ul>
+<li><strong>方法一:穷举法</strong></li>
+</ul>
+<p>将字符串A旋转s次后,得到的字符串为A[s],A[s + 1],A[s + 2],...,因此我们只要枚举s,并检查是否有A[s]==B[0],A[s+1]==B[1],A[s+2]==B[2], ... 即可。</p>
+<pre><code class="python">class Solution(object):
+    def rotateString(self, A, B):
+        if len(A) != len(B):
+            return False
+        if len(A) == 0:
+            return True
+
+        for s in xrange(len(A)):
+            if all(A[(s+i) % len(A)] == B[i] for i in xrange(len(A))):
+                return True
+        return False
+</code></pre>
+
+<p>复杂度分析:</p>
+<blockquote>
+<p>时间复杂度:<span><span class="MathJax_Preview">O(N^2)</span><script type="math/tex">O(N^2)</script></span>,其中<span><span class="MathJax_Preview">N</span><script type="math/tex">N</script></span>是字符串A的长度。</p>
+<p>空间复杂度:<span><span class="MathJax_Preview">O(1)</span><script type="math/tex">O(1)</script></span>。</p>
+</blockquote>
+<ul>
+<li><strong>方法二：判断子串</strong></li>
+</ul>
+<p>由于A+A包含了所有可以通过旋转操作从A得到的字符串,因此我们只需要判断B是否为A+A的子串即可。</p>
+<pre><code class="python">class Solution(object):
+    def rotateString(self, A, B):
+        return len(A) == len(B) and B in A+A
+</code></pre>
+
+<p>复杂度分析:</p>
+<blockquote>
+<p>时间复杂度:<span><span class="MathJax_Preview">O(N^2)</span><script type="math/tex">O(N^2)</script></span>,其中<span><span class="MathJax_Preview">N</span><script type="math/tex">N</script></span>是字符串A的长度。</p>
+<p>空间复杂度:<span><span class="MathJax_Preview">O(N)</span><script type="math/tex">O(N)</script></span>,即A+A需要的空间。</p>
+</blockquote>
+<ul>
+<li><strong>方法三:Rabin-Karp字符串哈希</strong></li>
+</ul>
+<p>我们可以优化方法二中判断B是否为A+A的子串时使用的算法,例如使用Rabin-Karp字符串哈希算法。设A2=A+A,我们求出子串A2[0:N],A2[1:N+1],A2[2:N+2],...的哈希值,如果与B的哈希值相同,那么这两个字符串很有可能相同。</p>
+<p>我们通过<code>hash(S)=(S[0] * P**0 + S[1] * P**1 + S[2] * P**2 + ...) % MOD</code>计算字符串S的哈希值,其中S[i]是 S 中第i个字母的ASCII编码值,<code>X**Y</code>表示指数运算。对于两个字符串S和T,如果它们的哈希值相同,即hash(S)==hash(T),那么S和T很有可能相同。</p>
+<p>当我们计算出A的哈希值hash(A)(即为序列A[0],A[1],...,A[N - 1]的哈希值),下一步是计算A经过一次旋转操作,序列A[1], A[2],...,A[N - 1],A[0]的哈希值,这可以通过将hash(A)减去A[0],除以P,再加上<code>A[0] * P**(N - 1)</code>得到。其中除以P的操作是在对MOD取模的意义下的,等价于乘以P的乘法逆元。如果MOD为质数,P的乘法逆元Pinv为<code>P**(MOD - 2)</code>对MOD取模的结果。这可以根据费马小定理推导出。</p>
+<pre><code class="python">class Solution(object):
+    def rotateString(self, A, B):
+        MOD = 10**9 + 7
+        P = 113
+        Pinv = pow(P, MOD-2, MOD)
+
+        hb = 0
+        power = 1
+        for x in B:
+            code = ord(x) - 96
+            hb = (hb + power * code) % MOD
+            power = power * P % MOD
+
+        ha = 0
+        power = 1
+        for x in A:
+            code = ord(x) - 96
+            ha = (ha + power * code) % MOD
+            power = power * P % MOD
+
+        if ha == hb and A == B: return True
+        for i, x in enumerate(A):
+            code = ord(x) - 96
+            ha += power * code
+            ha -= code
+            ha *= Pinv
+            ha %= MOD
+            if ha == hb and A[i+1:] + A[:i+1] == B:
+                return True
+        return False
+</code></pre>
+
+<p>复杂度分析:</p>
+<blockquote>
+<p>时间复杂度:<span><span class="MathJax_Preview">O(N)</span><script type="math/tex">O(N)</script></span>,其中<span><span class="MathJax_Preview">N</span><script type="math/tex">N</script></span>是字符串A的长度。</p>
+<p>空间复杂度:<span><span class="MathJax_Preview">O(N)</span><script type="math/tex">O(N)</script></span>。</p>
+</blockquote>
+<ul>
+<li><strong>方法四:KMP算法</strong></li>
+</ul>
+<p>判断一个串是否为另一个串的子串的最优时间复杂度的算法是KMP算法。和方法二相同,我们只需要用KMP算法判断B是否为A+A的子串即可。KMP算法较难理解,这里给出了力扣第28题实现strstr()讨论区中一个高赞KMP算法详解,以及著名博主Matrix67的KMP 算法详解。</p>
+<pre><code class="python">class Solution:
+    def rotateString(self, A, B):
+        N = len(A)
+        if N != len(B): return False
+        if N == 0: return True
+
+        #Compute shift table
+        shifts = [1] * (N+1)
+        left = -1
+        for right in xrange(N):
+            while left &gt;= 0 and B[left] != B[right]:
+                left -= shifts[left]
+            shifts[right + 1] = right - left
+            left += 1
+
+        #Find match of B in A+A
+        match_len = 0
+        for char in A+A:
+            while match_len &gt;= 0 and B[match_len] != char:
+                match_len -= shifts[match_len]
+
+            match_len += 1
+            if match_len == N:
+                return True
+
+        return False
+</code></pre>
+
+<p>复杂度分析:</p>
+<blockquote>
+<p>时间复杂度:<span><span class="MathJax_Preview">O(N)</span><script type="math/tex">O(N)</script></span>,其中<span><span class="MathJax_Preview">N</span><script type="math/tex">N</script></span>是字符串A的长度。</p>
+<p>空间复杂度:<span><span class="MathJax_Preview">O(N)</span><script type="math/tex">O(N)</script></span>。</p>
+</blockquote>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    <br>
+</div>
+
+</body>
+</html>
