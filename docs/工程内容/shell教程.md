@@ -1217,4 +1217,3 @@ find . -name "*.log" -print
 # 删除2小时之前的文件
 find . -mmin +120 -type f -name "*.log" -exec rm -rf {} \;
 ```
-
