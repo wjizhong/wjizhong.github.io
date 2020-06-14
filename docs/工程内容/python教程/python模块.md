@@ -3334,5 +3334,1116 @@ https://www.numpy.org.cn/reference/routines/math.html#%E5%8A%A0%E6%B3%95%E5%87%B
 
 ![](https://pic3.zhimg.com/80/v2-cfe3dd3becbae38d3af4659b4ff1676a_1440w.jpg)
 
+
+## 一、基本使用
+
+![](http://pic3.zhimg.com/v2-9345e8a161f2b0363ad0f9cb47ee1862_r.jpg)
+
+`matplotlib`的API都位于`matplotlib.pyplot`模块中,通常的引入约定为:
+
+```python
+import matplotlib.pyplot as plt
+```
+
+* **`Figure`画图**
+
+| 使用 | 代码 | 
+| :--- | :--- |
+| 设置标题 | `plt.title('AAPL stock price change')` |
+| 设置图例 | `plt.plot(x, y, label='AAPL')`<br>`plt.legend()` |  
+| 设置坐标轴标签 | `plt.xlabel('time')`<br>`plt.ylabel('stock price')` |
+| 设置坐标轴范围 | `plt.xlim(datetime(2008,1,1), datetime(2010,12,31))`<br>`plt.ylim(0,300)`<br>或者`plt.axis([datetime(2008,1,1), datetime(2010,12,31), 0, 300])`|
+| 设置图像大小 | `plt.figure(figsize=[6,6])` |
+| 设置(箭头)标注 | `plt.annotate()` |
+| 添加文字 | `plt.text()`/`AxesSubplot.text()` |    
+
+
+注意设置图像大小的语句要放在`plot()`方法之前
+
+* **设置箭头标注**
+
+`annotate(s, xy, *args, **kwargs)`
+
+| 字段 | 说明 |
+| :--- | :--- |
+| `s`  | 注释字符串 |
+| `xy` | 注释目标点的坐标 |
+| `xytext` | 注释字符串的坐标 |
+| `textcoords` | 注释字符串(xytext)所在的坐标系统<br>默认与xy所在的相同,也可以设置为'offset points'或'offset pixels'这种偏移量的形式 |
+| `arrowprops` | 箭头属性(见下表) |
+
+箭头样式属性:
+
+| 名字 | 属性 |
+| :--- | :--- |
+| `'-'` | None |
+| `'->'` | head_length=0.4,head_width=0.2 |
+| `'-['` | widthB=1.0,lengthB=0.2,angleB=None |
+| `'|-|'` | widthA=1.0,widthB=1.0 |
+| `'-|>'` | head_length=0.4,head_width=0.2 |
+| `'<-'` | head_length=0.4,head_width=0.2 |
+| `'<->'` | head_length=0.4,head_width=0.2 |
+| `'<|-'` | head_length=0.4,head_width=0.2 |
+| `'<|-|>'` | head_length=0.4,head_width=0.2 |
+| `'fancy'` | head_length=0.4,head_width=0.4,tail_width=0.4 |
+| `'simple'` | head_length=0.5,head_width=0.5,tail_width=0.2 |
+| `'wedge'` | tail_width=0.3,shrink_factor=0.5 |
+
+
+连接样式(具体见下图):
+
+![](https://pic3.zhimg.com/v2-ec1a78076514ac39c63487bbcf785f02_r.jpg)
+
+* **添加文本**
+
+`text(x, y, s, fontdict=None, **kwargs)`:在(x,y)坐标处添加文本
+
+| 参数 | 说明 |
+| :--- | :--- |
+| `x` | 文本的x坐标 |
+| `y` | 文本的y坐标 |
+| `s` | 文本 |
+| `fontsize` | 文本字体大小 |
+| `ha` | ha是HorizontalAlignment的简写,ha='center'即水平对齐,除此之外还可以选择'left'(左对齐)或'right'(右对齐) |
+| `va` | va则是VerticalAlignment的简写,va可以选择['center'|'top'|'bottom'|'baseline']中的任何一个,意思分别为'垂直居中'、'顶端居中'、'底端居中'和'底线居中' |
+
+
+
+* **颜色、标记、线型和图表风格**
+
+`plot(x,y,color='',marker='',linestyle='')`:`matplotlib`的plot函数接受一组X和Y坐标,还可以通过color、marker和linestyle关键字传入指定的颜色、标记和线型,或者用一个表示颜色、标记和线型的格式字符串替代,两种方法是等效的。格式字符串中color、marker和linestyle可以任意排列,如'`ko--`'，'`k--o`'，'`o--k`'
+
+常用的颜色都有一个缩写词,如:
+
+| character | color |
+| :--- | :---|
+| `'b'` | blue |
+| `'g'` | green |
+| `'r'` | red |
+| `'c'` | cyan |
+| `'m'` | magenta |
+| `'y'` | yellow |
+| `'k'` | black |
+| `'w'` | white |
+
+详细的corlor如下
+
+![](http://pic4.zhimg.com/v2-bc7fde8469ddf6b65269c5a9f8f2eab7_r.jpg)
+
+
+要使用其他颜色任意颜色可以指定特定颜色的16进制颜色码,如'`#998301`'。
+
+完整的marker样式:
+
+![](http://pic4.zhimg.com/v2-d225a0d234b43e7cae94cfaf37fdff93_r.jpg)
+
+
+
+再讲style,matplotlib的style有如下几种
+
+![](http://pic2.zhimg.com/80/v2-01545d1309a81a7a54af6d9f615abe2d_720w.jpg)
+
+以`plt.style.use('ggplot')`的形式使用。
+
+
+* **·Subplot`画图**
+
+`plt.subplots()`方法创建一个figure对象和指定布局的多个子图,返回一个figure对象和一个Axes对象的数组
+
+```
+subplots(nrows=1, ncols=1, sharex=False, sharey=False, squeeze=True,
+         subplot_kw=None, gridspec_kw=None, **fig_kw)
+```
+
+| 参数 | 说明 |
+| :--- | :--- |
+| nrows | subplot的行数 |
+| ncols | subplot的列数 |
+| sharex | 所有subplot使用相同的X轴刻度(调节xlim将会影响所有subplot) |
+| sharey | 所有subplot使用相同的Y轴刻度(调节ylim将会影响所有subplot) |
+
+返回的AxesSubplot对象的数组非常好用,,数组中的每个元素都代表一个子图,数组的形状就是子图的布局(layout),通过对这个数组的索引(如axes[0,1])调用AxesSubplot对象的实例方法就可以实现在对应的子图里画图了
+
+
+`plt.suptitle()`/`fig.suptitle()`方法可以为figure对象添加一个居中的标题,对于多个子图的情况经常用到这一方法:`suptitle(t, **kwargs)`在图中添加一个居中的标题
+
+| 参数 | 说明 |
+| :--- | :--- |
+| `t` | 标题 |
+| `fontsize` | 标题文本的字体大小 |
+
+
+在`DataFrame`/`Series`上调用`plot()`方法返回的是一个`AxesSubplot`对象,而用`plt.plot(x,y)`这种形式的绘图返回的是一个表示绘制数据的Line2D对象的列表
+
+`plt.subplot`创建子图:用于在当前figure对象中添加子图
+
+```python
+subplot(nrows, ncols, index, **kwargs)
+```
+
+默认情况下,`matplotlib`会在subplot外围留下一定的边距,并在subplot之间留下一定的间距。间距跟图像的高度和宽度有关，因此,如果调整了图像大小,间距也会自动调整。利用Figure对象subplots_adjust方法可以轻而易举地修改间距,此外,它也是一个顶级函数(可以通过`plt.subplots_adjust()`的方式调用)。
+
+设置子图的标题、轴标签、刻度、刻度标签以及添加图例:
+
+| 方法 | 说明 | 
+| :--- | :--- |
+| `AxesSubplot.set_title()` | 设置标题 |
+| `AxesSubplot.set_xlabel()`<br>`AxesSubplot.set_ylabel()` | 设置轴标签 |
+| `AxesSubplot.set_xticks()`<br>`AxesSubplot.set_yticks()` | 设置刻度(横坐标等于哪些值的时候显示刻度) |
+| `AxesSubplot.set_xticklabels()`<br>`AxesSubplot.set_yticklabels()` |设置刻度标签(刻度之下显示什么,默认是其代表的值) |
+
+
+* **常见的代码**
+
+> * 导入`matplotlib`库简写为`plt`
+
+```python
+import matplotlib.pyplot as plt
+```
+
+> * **用plot方法画出x=(0,10)间sin的图像**
+
+```python
+x = np.linspace(0, 10, 30)
+plt.plot(x, np.sin(x));
+```
+
+> * **用点加线的方式画出x=(0,10)间sin的图像**
+
+```python
+plt.plot(x, np.sin(x), '-o');
+```
+
+> * **用scatter方法画出x=(0,10)间sin的点图像**
+
+```python
+plt.scatter(x, np.sin(x));
+```
+
+> * **用饼图的面积及颜色展示一组4维数据**
+
+```python
+rng = np.random.RandomState(0)
+x = rng.randn(100)
+y = rng.randn(100)
+colors = rng.rand(100)
+sizes = 1000 * rng.rand(100)
+
+plt.scatter(x, y, c=colors, s=sizes, alpha=0.3,
+            cmap='viridis')
+plt.colorbar(); # 展示色阶
+```
+
+> * **绘制一组误差为±0.8的数据的误差条图**
+
+```python
+x = np.linspace(0, 10, 50)
+dy = 0.8
+y = np.sin(x) + dy * np.random.randn(50)
+
+plt.errorbar(x, y, yerr=dy, fmt='.k')
+```
+
+> * **绘制一个柱状图**
+
+```python
+x = [1,2,3,4,5,6,7,8]
+y = [3,1,4,5,8,9,7,2]
+label=['A','B','C','D','E','F','G','H']
+
+plt.bar(x,y,tick_label = label);
+```
+
+> * **绘制一个水平方向柱状图**
+
+```python
+plt.barh(x,y,tick_label = label);
+```
+
+> * **绘制1000个随机值的直方图**
+
+```python
+data = np.random.randn(1000)
+plt.hist(data);
+```
+
+> * **设置直方图分30个bins,并设置为频率分布**
+
+```pythonn
+plt.hist(data, bins=30,histtype='stepfilled', density=True)
+plt.show();
+```
+
+> * **在一张图中绘制3组不同的直方图,并设置透明度**
+
+```python
+x1 = np.random.normal(0, 0.8, 1000)
+x2 = np.random.normal(-2, 1, 1000)
+x3 = np.random.normal(3, 2, 1000)
+
+kwargs = dict(alpha=0.3, bins=40, density = True)
+
+plt.hist(x1, **kwargs);
+plt.hist(x2, **kwargs);
+plt.hist(x3, **kwargs);
+```
+
+> * **绘制一张二维直方图**
+
+```python
+mean = [0, 0]
+cov = [[1, 1], [1, 2]]
+x, y = np.random.multivariate_normal(mean, cov, 10000).T
+plt.hist2d(x, y, bins=30);
+```
+
+> * **绘制一张设置网格大小为30的六角形直方图**
+
+```python
+plt.hexbin(x, y, gridsize=30);
+```
+
+> * **绘制x=(0,10)间sin的图像,设置线性为虚线**
+
+```python
+x = np.linspace(0,10,100)
+plt.plot(x,np.sin(x),'--');
+```
+
+> * **设置y轴显示范围为(-1.5,1.5)**
+
+```python
+x = np.linspace(0,10,100)
+plt.plot(x, np.sin(x))
+plt.ylim(-1.5, 1.5);
+```
+
+> * **设置x,y轴标签variable x，value y**
+
+```python
+x = np.linspace(0.05, 10, 100)
+y = np.sin(x)
+plt.plot(x, y, label='sin(x)')
+plt.xlabel('variable x');
+plt.ylabel('value y');
+```
+
+> * **设置图表标题“三角函数”**
+
+```python
+x = np.linspace(0.05, 10, 100)
+y = np.sin(x)
+plt.plot(x, y, label='sin(x)')
+plt.title('三角函数');
+```
+
+> * **显示网格**
+
+```python
+x = np.linspace(0.05, 10, 100)
+y = np.sin(x)
+plt.plot(x, y)
+plt.grid()
+```
+
+> * **绘制平行于x轴y=0.8的水平参考线**
+
+```python
+x = np.linspace(0.05, 10, 100)
+y = np.sin(x)
+plt.plot(x, y)
+plt.axhline(y=0.8, ls='--', c='r')
+```
+
+> * **绘制垂直于x轴x<4 and x>6的参考区域,以及y轴y<0.2 and y>-0.2的参考区域**
+
+```python
+x = np.linspace(0.05, 10, 100)
+y = np.sin(x)
+plt.plot(x, y)
+plt.axvspan(xmin=4, xmax=6, facecolor='r', alpha=0.3) # 垂直x轴
+plt.axhspan(ymin=-0.2, ymax=0.2, facecolor='y', alpha=0.3);  # 垂直y轴
+```
+
+> * **添加注释文字sin(x)**
+
+```python
+x = np.linspace(0.05, 10, 100)
+y = np.sin(x)
+plt.plot(x, y)
+plt.text(3.2, 0, 'sin(x)', weight='bold', color='r');
+```
+
+> * **用箭头标出第一个峰值**
+
+```python
+x = np.linspace(0.05, 10, 100)
+y = np.sin(x)
+plt.plot(x, y)
+plt.annotate('maximum',xy=(np.pi/2, 1),xytext=(np.pi/2+1, 1),
+             weight='bold',
+             color='r',
+             arrowprops=dict(arrowstyle='->', connectionstyle='arc3', color='r'));
+```
+
+> * **在一张图里绘制sin、cos的图形,并展示图例**
+
+```python
+x = np.linspace(0, 10, 1000)
+fig, ax = plt.subplots()
+
+ax.plot(x, np.sin(x), label='sin')
+ax.plot(x, np.cos(x), '--', label='cos')
+ax.legend();
+```
+
+> * **调整图例在左上角展示,且不显示边框**
+
+```python
+ax.legend(loc='upper left', frameon=False);
+```
+
+> * **调整图例在画面下方居中展示,且分成2列**
+
+```python
+ax.legend(frameon=False, loc='lower center', ncol=2)
+```
+
+> * **绘制$\sin(x),\sin(x+\pi/2),\sin(\pi+x)$的图像,并只显示前2者的图例
+
+```python
+y = np.sin(x[:, np.newaxis] + np.pi * np.arange(0, 2, 0.5))
+lines = plt.plot(x, y)
+
+# lines 是 plt.Line2D 类型的实例的列表
+plt.legend(lines[:2], ['first', 'second']);
+
+# 第二个方法
+#plt.plot(x, y[:, 0], label='first')
+#plt.plot(x, y[:, 1], label='second')
+#plt.plot(x, y[:, 2:])
+#plt.legend(framealpha=1, frameon=True);
+```
+
+> * **将图例分不同的区域展示**
+
+```python
+fig, ax = plt.subplots()
+
+lines = []
+styles = ['-', '--', '-.', ':']
+x = np.linspace(0, 10, 1000)
+
+for i in range(4):
+    lines += ax.plot(x, np.sin(x - i * np.pi / 2),styles[i], color='black')
+ax.axis('equal')
+
+# 设置第一组标签
+ax.legend(lines[:2], ['line A', 'line B'],
+          loc='upper right', frameon=False)
+
+# 创建第二组标签
+from matplotlib.legend import Legend
+leg = Legend(ax, lines[2:], ['line C', 'line D'],
+             loc='lower right', frameon=False)
+ax.add_artist(leg);
+```
+
+> * **展示色阶**
+
+```python
+x = np.linspace(0, 10, 1000)
+I = np.sin(x) * np.cos(x[:, np.newaxis])
+
+plt.imshow(I)
+plt.colorbar();
+29.改变配色为'gray'
+
+plt.imshow(I, cmap='gray');
+```
+
+> * **将色阶分成6个离散值显示**
+
+```python
+plt.imshow(I, cmap=plt.cm.get_cmap('Blues', 6))
+plt.colorbar()
+plt.clim(-1, 1);
+```
+
+> * **在一个1010的画布中,(0.65,0.65)的位置创建一个0.20.2的子图**
+
+```python
+ax1 = plt.axes()
+ax2 = plt.axes([0.65, 0.65, 0.2, 0.2])
+```
+
+> * **在2个子图中,显示sin(x)和cos(x)的图像**
+
+```python
+fig = plt.figure()
+ax1 = fig.add_axes([0.1, 0.5, 0.8, 0.4], ylim=(-1.2, 1.2))
+ax2 = fig.add_axes([0.1, 0.1, 0.8, 0.4], ylim=(-1.2, 1.2))
+
+x = np.linspace(0, 10)
+ax1.plot(np.sin(x));
+ax2.plot(np.cos(x));
+```
+
+> * **用for创建6个子图,并且在图中标识出对应的子图坐标**
+
+```python
+for i in range(1, 7):
+    plt.subplot(2, 3, i)
+    plt.text(0.5, 0.5, str((2, 3, i)),fontsize=18, ha='center')
+    
+# 方法二
+# fig = plt.figure()
+# fig.subplots_adjust(hspace=0.4, wspace=0.4)
+# for i in range(1, 7):
+#     ax = fig.add_subplot(2, 3, i)
+#     ax.text(0.5, 0.5, str((2, 3, i)),fontsize=18, ha='center')
+```
+
+> * **设置相同行和列共享x,y轴**
+
+```python
+fig, ax = plt.subplots(2, 3, sharex='col', sharey='row')
+```
+
+> * **用[]的方式取出每个子图,并添加子图座标文字**
+
+```python
+for i in range(2):
+    for j in range(3):
+        ax[i, j].text(0.5, 0.5, str((i, j)),fontsize=18, ha='center')
+```
+
+> * **组合绘制大小不同的子图,样式如下**
+
+![](http://pic1.zhimg.com/v2-301cd83e25d34153892b8334ad85dd7c_r.jpg)
+```python
+grid = plt.GridSpec(2, 3, wspace=0.4, hspace=0.3)
+plt.subplot(grid[0, 0])
+plt.subplot(grid[0, 1:])
+plt.subplot(grid[1, :2])
+plt.subplot(grid[1, 2]);
+```
+
+> * **显示一组二维数据的频度分布,并分别在x,y轴上,显示该维度的数据的频度分布**
+
+```python
+mean = [0, 0]
+cov = [[1, 1], [1, 2]]
+x, y = np.random.multivariate_normal(mean, cov, 3000).T
+
+# Set up the axes with gridspec
+fig = plt.figure(figsize=(6, 6))
+grid = plt.GridSpec(4, 4, hspace=0.2, wspace=0.2)
+main_ax = fig.add_subplot(grid[:-1, 1:])
+y_hist = fig.add_subplot(grid[:-1, 0], xticklabels=[], sharey=main_ax)
+x_hist = fig.add_subplot(grid[-1, 1:], yticklabels=[], sharex=main_ax)
+
+# scatter points on the main axes
+main_ax.scatter(x, y,s=3,alpha=0.2)
+
+# histogram on the attached axes
+x_hist.hist(x, 40, histtype='stepfilled',
+            orientation='vertical')
+x_hist.invert_yaxis()
+
+y_hist.hist(y, 40, histtype='stepfilled',
+            orientation='horizontal')
+y_hist.invert_xaxis()
+```
+
+> * **创建一个三维画布**
+
+```python
+from mpl_toolkits import mplot3d
+fig = plt.figure()
+ax = plt.axes(projection='3d')
+```
+
+> * **绘制一个三维螺旋线**
+
+```python
+ax = plt.axes(projection='3d')
+
+# Data for a three-dimensional line
+zline = np.linspace(0, 15, 1000)
+xline = np.sin(zline)
+yline = np.cos(zline)
+ax.plot3D(xline, yline, zline);
+```
+
+> * **绘制一组三维点**
+
+```python
+ax = plt.axes(projection='3d')
+zdata = 15 * np.random.random(100)
+xdata = np.sin(zdata) + 0.1 * np.random.randn(100)
+ydata = np.cos(zdata) + 0.1 * np.random.randn(100)
+ax.scatter3D(xdata, ydata, zdata, c=zdata, cmap='Greens');
+```
+
+> * **展示前5个宝可梦的Defense,Attack,HP的堆积条形图**
+
+```python
+pokemon = df['Name'][:5]
+hp = df['HP'][:5]
+attack = df['Attack'][:5]
+defense = df['Defense'][:5]
+ind = [x for x, _ in enumerate(pokemon)]
+
+plt.figure(figsize=(10,10))
+plt.bar(ind, defense, width=0.8, label='Defense', color='blue', bottom=attack+hp)
+plt.bar(ind, attack, width=0.8, label='Attack', color='gold', bottom=hp)
+plt.bar(ind, hp, width=0.8, label='Hp', color='red')
+
+plt.xticks(ind, pokemon)
+plt.ylabel("Value")
+plt.xlabel("Pokemon")
+plt.legend(loc="upper right")
+plt.title("5 Pokemon Defense & Attack & Hp")
+
+plt.show()
+```
+
+> * **展示前5个宝可梦的Attack,HP的簇状条形图**
+
+```python
+N = 5
+pokemon_hp = df['HP'][:5]
+pokemon_attack = df['Attack'][:5]
+
+ind = np.arange(N) 
+width = 0.35       
+plt.bar(ind, pokemon_hp, width, label='HP')
+plt.bar(ind + width, pokemon_attack, width,label='Attack')
+
+plt.ylabel('Values')
+plt.title('Pokemon Hp & Attack')
+
+plt.xticks(ind + width / 2, (df['Name'][:5]),rotation=45)
+plt.legend(loc='best')
+plt.show()
+```
+
+> * **展示前5个宝可梦的Defense,Attack,HP的堆积图**
+
+```python
+x = df['Name'][:4]
+y1 = df['HP'][:4]
+y2 = df['Attack'][:4]
+y3 = df['Defense'][:4]
+
+labels = ["HP ", "Attack", "Defense"]
+
+fig, ax = plt.subplots()
+ax.stackplot(x, y1, y2, y3)
+ax.legend(loc='upper left', labels=labels)
+plt.xticks(rotation=90)
+plt.show()
+```
+
+> * **公用x轴,展示前5个宝可梦的Defense,Attack,HP的折线图**
+
+```python
+x = df['Name'][:5]
+y1 = df['HP'][:5]
+y2 = df['Attack'][:5]
+y3 = df['Defense'][:5]
+
+# Create two subplots sharing y axis
+fig, (ax1, ax2,ax3) = plt.subplots(3, sharey=True)
+
+ax1.plot(x, y1, 'ko-')
+ax1.set(title='3 subplots', ylabel='HP')
+
+ax2.plot(x, y2, 'r.-')
+ax2.set(xlabel='Pokemon', ylabel='Attack')
+
+ax3.plot(x, y3, ':')
+ax3.set(xlabel='Pokemon', ylabel='Defense')
+
+plt.show()
+```
+
+> * **展示前15个宝可梦的Attack,HP的折线图**
+
+```python
+plt.plot(df['HP'][:15], '-r',label='HP')
+plt.plot(df['Attack'][:15], ':g',label='Attack')
+plt.legend();
+```
+
+> * **用scatter的x,y,c属性,展示所有宝可梦的Defense,Attack,HP数据**
+
+```python
+x = df['Attack']
+y = df['Defense']
+colors = df['HP']
+
+plt.scatter(x, y, c=colors, alpha=0.5)
+plt.title('Scatter plot')
+plt.xlabel('HP')
+plt.ylabel('Attack')
+plt.colorbar();
+```
+
+> * **展示所有宝可梦的攻击力的分布直方图,bins=10**
+
+```python
+x = df['Attack']
+num_bins = 10
+n, bins, patches = plt.hist(x, num_bins, facecolor='blue', alpha=0.5)
+plt.title('Histogram')
+plt.xlabel('Attack')
+plt.ylabel('Value')
+plt.show()
+```
+
+> * **展示所有宝可梦Type 1的饼图**
+
+```python
+plt.figure(1, figsize=(8,8))
+df['Type 1'].value_counts().plot.pie(autopct="%1.1f%%")
+plt.legend()
+```
+
+> * **展示所有宝可梦Type 1的柱状图**
+
+```python
+ax = df['Type 1'].value_counts().plot.bar(figsize = (12,6),fontsize = 14)
+ax.set_title("Pokemon Type 1 Count", fontsize = 20)
+ax.set_xlabel("Pokemon Type 1", fontsize = 20)
+ax.set_ylabel("Value", fontsize = 20)
+
+plt.show()
+```
+
+> * **展示综合评分最高的10只宝可梦的系数间的相关系数矩阵**
+
+```python
+import seaborn as sns
+
+top_10_pokemon=df.sort_values(by='Total',ascending=False).head(10)
+corr=top_10_pokemon.corr()
+
+fig, ax=plt.subplots(figsize=(10, 6))
+sns.heatmap(corr,annot=True)
+ax.set_ylim(9, 0)
+plt.show()
+```
+
+> * **标题/图例/坐标轴标签无法设置成中文**
+
+```python
+# 开头导入以下几行代码即可
+import matplotlib as mpl
+mpl.rcParams['font.sans-serif']=['Microsoft YaHei']  # 步骤一(替换sans-serif字体)
+mpl.rcParams['axes.unicode_minus']=False   # 步骤二(解决坐标轴负数的负号显示问题)
+```
+
+或
+
+```python
+plt.rcParams['font.sans-serif'] = ['SimHei']  
+plt.rcParams['axes.unicode_minus'] = False  
+```
+
+## 二、样例
+
+### 2.1 Lines,bars and markers
+
+* **Filled polygon**
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+def koch_snowflake(order, scale=10):
+    """
+    Return two lists x, y of point coordinates of the Koch snowflake.
+    Arguments
+    ---------
+    order : int
+        The recursion depth.
+    scale : float
+        The extent of the snowflake (edge length of the base triangle).
+    """
+    def _koch_snowflake_complex(order):
+        if order == 0:
+            # initial triangle
+            angles = np.array([0, 120, 240]) + 90
+            return scale / np.sqrt(3) * np.exp(np.deg2rad(angles) * 1j)
+        else:
+            ZR = 0.5 - 0.5j * np.sqrt(3) / 3
+
+            p1 = _koch_snowflake_complex(order - 1)  # start points
+            p2 = np.roll(p1, shift=-1)  # end points
+            dp = p2 - p1  # connection vectors
+
+            new_points = np.empty(len(p1) * 4, dtype=np.complex128)
+            new_points[::4] = p1
+            new_points[1::4] = p1 + dp / 3
+            new_points[2::4] = p1 + dp * ZR
+            new_points[3::4] = p1 + dp / 3 * 2
+            return new_points
+
+    points = _koch_snowflake_complex(order)
+    x, y = points.real, points.imag
+    return x, y
+```
+基本使用:
+
+```python
+x, y = koch_snowflake(order=5)
+
+plt.figure(figsize=(8, 8))
+plt.axis('equal')
+plt.fill(x, y)
+plt.show()
+```
+
+![](http://matplotlib.org/3.1.1/_images/sphx_glr_fill_001.png)
+
+使用facecolor和edgecolor来修改颜色:
+
+```python
+x, y = koch_snowflake(order=2)
+
+fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(9, 3),
+                                    subplot_kw={'aspect': 'equal'})
+ax1.fill(x, y)
+ax2.fill(x, y, facecolor='lightsalmon', edgecolor='orangered', linewidth=3)
+ax3.fill(x, y, facecolor='none', edgecolor='purple', linewidth=3)
+
+plt.show() # 自己试验
+```
+
+### 2.2 Images, contours and fields
+
+* **Barcode Demo**
+
+```python
+"""
+============
+Barcode Demo
+============
+
+This demo shows how to produce a one-dimensional image, or "bar code".
+"""
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Fixing random state for reproducibility
+np.random.seed(19680801)
+
+# the bar
+x = np.random.rand(500) > 0.7
+
+barprops = dict(aspect='auto', cmap='binary', interpolation='nearest')
+
+fig = plt.figure()
+
+# a vertical barcode
+ax1 = fig.add_axes([0.1, 0.1, 0.1, 0.8])
+ax1.set_axis_off()
+ax1.imshow(x.reshape((-1, 1)), **barprops)
+
+# a horizontal barcode
+ax2 = fig.add_axes([0.3, 0.4, 0.6, 0.2])
+ax2.set_axis_off()
+ax2.imshow(x.reshape((1, -1)), **barprops)
+
+plt.show()
+```
+
+
+* **Creating annotated heatmaps**
+
+**A simple categorical heatmap:**
+
+```python
+import numpy as np
+import matplotlib
+import matplotlib.pyplot as plt
+# sphinx_gallery_thumbnail_number = 2
+
+vegetables = ["cucumber", "tomato", "lettuce", "asparagus",
+              "potato", "wheat", "barley"]
+farmers = ["Farmer Joe", "Upland Bros.", "Smith Gardening",
+           "Agrifun", "Organiculture", "BioGoods Ltd.", "Cornylee Corp."]
+
+harvest = np.array([[0.8, 2.4, 2.5, 3.9, 0.0, 4.0, 0.0],
+                    [2.4, 0.0, 4.0, 1.0, 2.7, 0.0, 0.0],
+                    [1.1, 2.4, 0.8, 4.3, 1.9, 4.4, 0.0],
+                    [0.6, 0.0, 0.3, 0.0, 3.1, 0.0, 0.0],
+                    [0.7, 1.7, 0.6, 2.6, 2.2, 6.2, 0.0],
+                    [1.3, 1.2, 0.0, 0.0, 0.0, 3.2, 5.1],
+                    [0.1, 2.0, 0.0, 1.4, 0.0, 1.9, 6.3]])
+
+
+fig, ax = plt.subplots()
+im = ax.imshow(harvest)
+
+# We want to show all ticks...
+ax.set_xticks(np.arange(len(farmers)))
+ax.set_yticks(np.arange(len(vegetables)))
+# ... and label them with the respective list entries
+ax.set_xticklabels(farmers)
+ax.set_yticklabels(vegetables)
+
+# Rotate the tick labels and set their alignment.
+plt.setp(ax.get_xticklabels(), rotation=45, ha="right", rotation_mode="anchor")
+
+# Loop over data dimensions and create text annotations.
+for i in range(len(vegetables)):
+    for j in range(len(farmers)):
+        text = ax.text(j, i, harvest[i, j], ha="center", va="center", color="w")
+
+ax.set_title("Harvest of local farmers (in tons/year)")
+fig.tight_layout()
+plt.show()
+```
+
+**Using the helper function code style:**
+
+```python
+def heatmap(data, row_labels, col_labels, ax=None, cbar_kw={}, cbarlabel="", **kwargs):
+    """
+    Create a heatmap from a numpy array and two lists of labels.
+    Parameters
+    -------------
+    data
+        A 2D numpy array of shape (N, M).
+    row_labels
+        A list or array of length N with the labels for the rows.
+    col_labels
+        A list or array of length M with the labels for the columns.
+    ax
+        A `matplotlib.axes.Axes` instance to which the heatmap is plotted.  If
+        not provided, use current axes or create a new one.  Optional.
+    cbar_kw
+        A dictionary with arguments to `matplotlib.Figure.colorbar`.  Optional.
+    cbarlabel
+        The label for the colorbar.  Optional.
+    **kwargs
+        All other arguments are forwarded to `imshow`.
+    """
+
+    if not ax:
+        ax = plt.gca()
+
+    # Plot the heatmap
+    im = ax.imshow(data, **kwargs)
+
+    # Create colorbar
+    cbar = ax.figure.colorbar(im, ax=ax, **cbar_kw)
+    cbar.ax.set_ylabel(cbarlabel, rotation=-90, va="bottom")
+
+    # We want to show all ticks...
+    ax.set_xticks(np.arange(data.shape[1]))
+    ax.set_yticks(np.arange(data.shape[0]))
+    # ... and label them with the respective list entries.
+    ax.set_xticklabels(col_labels)
+    ax.set_yticklabels(row_labels)
+
+    # Let the horizontal axes labeling appear on top.
+    ax.tick_params(top=True, bottom=False,labeltop=True, labelbottom=False)
+
+    # Rotate the tick labels and set their alignment.
+    plt.setp(ax.get_xticklabels(), rotation=-30, ha="right", rotation_mode="anchor")
+
+    # Turn spines off and create white grid.
+    for edge, spine in ax.spines.items():
+        spine.set_visible(False)
+
+    ax.set_xticks(np.arange(data.shape[1]+1)-.5, minor=True)
+    ax.set_yticks(np.arange(data.shape[0]+1)-.5, minor=True)
+    ax.grid(which="minor", color="w", linestyle='-', linewidth=3)
+    ax.tick_params(which="minor", bottom=False, left=False)
+
+    return im, cbar
+
+
+def annotate_heatmap(im, data=None, valfmt="{x:.2f}", textcolors=["black", "white"], 
+                     threshold=None, **textkw):
+    """
+    A function to annotate a heatmap.
+    Parameters
+    ---------------
+    im
+        The AxesImage to be labeled.
+    data
+        Data used to annotate.  If None, the image's data is used.  Optional.
+    valfmt
+        The format of the annotations inside the heatmap.  This should either
+        use the string format method, e.g. "$ {x:.2f}", or be a
+        `matplotlib.ticker.Formatter`.  Optional.
+    textcolors
+        A list or array of two color specifications.  The first is used for
+        values below a threshold, the second for those above.  Optional.
+    threshold
+        Value in data units according to which the colors from textcolors are
+        applied.  If None (the default) uses the middle of the colormap as
+        separation.  Optional.
+    **kwargs
+        All other arguments are forwarded to each call to `text` used to create
+        the text labels.
+    """
+
+    if not isinstance(data, (list, np.ndarray)):
+        data = im.get_array()
+
+    # Normalize the threshold to the images color range.
+    if threshold is not None:
+        threshold = im.norm(threshold)
+    else:
+        threshold = im.norm(data.max())/2.
+
+    # Set default alignment to center, but allow it to be overwritten by textkw.
+    kw = dict(horizontalalignment="center", verticalalignment="center")
+    kw.update(textkw)
+
+    # Get the formatter in case a string is supplied
+    if isinstance(valfmt, str):
+        valfmt = matplotlib.ticker.StrMethodFormatter(valfmt)
+
+    # Loop over the data and create a `Text` for each "pixel".
+    # Change the text's color depending on the data.
+    texts = []
+    for i in range(data.shape[0]):
+        for j in range(data.shape[1]):
+            kw.update(color=textcolors[int(im.norm(data[i, j]) > threshold)])
+            text = im.axes.text(j, i, valfmt(data[i, j], None), **kw)
+            texts.append(text)
+
+    return texts
+
+fig, ax = plt.subplots()
+im, cbar = heatmap(harvest, vegetables, farmers, ax=ax,cmap="YlGn", cbarlabel="harvest [t/year]")
+texts = annotate_heatmap(im, valfmt="{x:.1f} t")
+
+fig.tight_layout()
+plt.show()
+```
+
+**Some more complex heatmap examples:**
+
+```python
+np.random.seed(19680801)
+fig, ((ax, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(8, 6))
+
+# Replicate the above example with a different font size and colormap.
+im, _ = heatmap(harvest, vegetables, farmers, ax=ax, cmap="Wistia", cbarlabel="harvest [t/year]")
+annotate_heatmap(im, valfmt="{x:.1f}", size=7)
+
+# Create some new data, give further arguments to imshow (vmin),
+# use an integer format on the annotations and provide some colors.
+data = np.random.randint(2, 100, size=(7, 7))
+y = ["Book {}".format(i) for i in range(1, 8)]
+x = ["Store {}".format(i) for i in list("ABCDEFG")]
+im, _ = heatmap(data, y, x, ax=ax2, vmin=0, cmap="magma_r", cbarlabel="weekly sold copies")
+annotate_heatmap(im, valfmt="{x:d}", size=7, threshold=20, textcolors=["red", "white"])
+
+# Sometimes even the data itself is categorical. Here we use a
+# :class:`matplotlib.colors.BoundaryNorm` to get the data into classes
+# and use this to colorize the plot, but also to obtain the class
+# labels from an array of classes.
+
+data = np.random.randn(6, 6)
+y = ["Prod. {}".format(i) for i in range(10, 70, 10)]
+x = ["Cycle {}".format(i) for i in range(1, 7)]
+
+qrates = np.array(list("ABCDEFG"))
+norm = matplotlib.colors.BoundaryNorm(np.linspace(-3.5, 3.5, 8), 7)
+fmt = matplotlib.ticker.FuncFormatter(lambda x, pos: qrates[::-1][norm(x)])
+
+im, _ = heatmap(data, y, x, ax=ax3,cmap=plt.get_cmap("PiYG", 7), norm=norm,
+                cbar_kw=dict(ticks=np.arange(-3, 4), format=fmt),cbarlabel="Quality Rating")
+annotate_heatmap(im, valfmt=fmt, size=9, fontweight="bold", threshold=-1,
+                 textcolors=["red", "black"])
+
+# We can nicely plot a correlation matrix. Since this is bound by -1 and 1,
+# we use those as vmin and vmax. We may also remove leading zeros and hide
+# the diagonal elements (which are all 1) by using a
+# :class:`matplotlib.ticker.FuncFormatter`.
+corr_matrix = np.corrcoef(np.random.rand(6, 5))
+im, _ = heatmap(corr_matrix, vegetables, vegetables, ax=ax4, cmap="PuOr", vmin=-1, vmax=1,
+                cbarlabel="correlation coeff.")
+
+
+def func(x, pos):
+    return "{:.2f}".format(x).replace("0.", ".").replace("1.00", "")
+
+annotate_heatmap(im, valfmt=matplotlib.ticker.FuncFormatter(func), size=7)
+
+plt.tight_layout()
+plt.show()
+```
+
+### 2.3 Subplots, axes and figures
+
+### 2.4 Statistics
+
+* **Demo of the histogram (hist) function with a few features**
+
+```python
+"""
+=========================================================
+Demo of the histogram (hist) function with a few features
+=========================================================
+
+In addition to the basic histogram, this demo shows a few optional features:
+
+* Setting the number of data bins.
+* The ``normed`` flag, which normalizes bin heights so that the integral of
+  the histogram is 1. The resulting histogram is an approximation of the
+  probability density function.
+* Setting the face color of the bars.
+* Setting the opacity (alpha value).
+
+Selecting different bin counts and sizes can significantly affect the shape
+of a histogram. The Astropy docs have a great section_ on how to select these
+parameters.
+
+.. _section: http://docs.astropy.org/en/stable/visualization/histogram.html
+"""
+
+import matplotlib
+import numpy as np
+import matplotlib.pyplot as plt
+
+np.random.seed(19680801)
+
+# example data
+mu = 100  # mean of distribution
+sigma = 15  # standard deviation of distribution
+x = mu + sigma * np.random.randn(437)
+
+num_bins = 50
+
+fig, ax = plt.subplots()
+
+# the histogram of the data
+n, bins, patches = ax.hist(x, num_bins, density=1)
+
+# add a 'best fit' line
+y = ((1 / (np.sqrt(2 * np.pi) * sigma)) * np.exp(-0.5 * (1 / sigma * (bins - mu))**2))
+ax.plot(bins, y, '--')
+ax.set_xlabel('Smarts')
+ax.set_ylabel('Probability density')
+ax.set_title(r'Histogram of IQ: $\mu=100$, $\sigma=15$')
+
+# Tweak spacing to prevent clipping of ylabel
+fig.tight_layout()
+plt.show()
+```
+
+
+
 ## 六、scipy教程
 
