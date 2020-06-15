@@ -382,7 +382,8 @@ f(x)=
 <p><img alt="image" src="../media/chapter05/3D%E5%8D%B7%E7%A7%AF%E6%93%8D%E4%BD%9C.png" /></p>
 <h2 id="57">5.7 有哪些池化方法?</h2>
 <p>​   池化操作通常也叫做子采样(Subsampling)或降采样(Downsampling),在构建卷积神经网络时,往往会用在卷积层之后,通过池化来降低卷积层输出的特征维度,有效减少网络参数的同时还可以防止过拟合现象。池化操作可以降低图像维度的原因,本质上是因为图像具有一种“静态性”的属性,这个意思是说在一个图像区域有用的特征极有可能在另一个区域同样有用。因此,为了描述一个大的图像,很直观的想法就是对不同位置的特征进行聚合统计。例如,可以计算图像在固定区域上特征的平均值 (或最大值)来代表这个区域的特征。
-​                                                                              表5.6 池化分类</p>
+​
+表5.6 池化分类</p>
 <table>
 <thead>
 <tr>
@@ -394,17 +395,17 @@ f(x)=
 <tbody>
 <tr>
 <td align="center">一般池化(General Pooling)</td>
-<td align="center"><img alt="max_pooling" src="./img/ch5/general_pooling.png" /></td>
+<td align="center"><img alt="max_pooling" src="../media/chapter05/max_pooling.png" /></td>
 <td align="left">通常包括最大池化(Max Pooling)和平均池化(Mean Pooling)。以最大池化为例,池化范围<span><span class="MathJax_Preview">(2\times2)</span><script type="math/tex">(2\times2)</script></span>和滑窗步长<span><span class="MathJax_Preview">(stride=2)</span><script type="math/tex">(stride=2)</script></span> 相同,仅提取一次相同区域的范化特征。</td>
 </tr>
 <tr>
 <td align="center">重叠池化(Overlapping Pooling)</td>
-<td align="center"><img alt="overlap_pooling" src="./img/ch5/overlap_pooling.png" /></td>
+<td align="center"><img alt="overlap_pooling" src="../media/chapter05/overlap_pooling.png" /></td>
 <td align="left">与一般池化操作相同,但是池化范围<span><span class="MathJax_Preview">P_{size}</span><script type="math/tex">P_{size}</script></span>与滑窗步长<span><span class="MathJax_Preview">stride</span><script type="math/tex">stride</script></span>关系为<span><span class="MathJax_Preview">P_{size}&gt;stride</span><script type="math/tex">P_{size}>stride</script></span>,同一区域内的像素特征可以参与多次滑窗提取,得到的特征表达能力更强,但计算量更大。</td>
 </tr>
 <tr>
 <td align="center">空间金字塔池化<span><span class="MathJax_Preview">^*</span><script type="math/tex">^*</script></span>(Spatial Pyramid Pooling)</td>
-<td align="center"><img alt="spatial_pooling" src="./img/ch5/spatial_pooling.png" /></td>
+<td align="center"><img alt="spatial_pooling" src="../media/chapter05/spatial_pooling.png" /></td>
 <td align="left">在进行多尺度目标的训练时,卷积层允许输入的图像特征尺度是可变的,紧接的池化层若采用一般的池化方法会使得不同的输入特征输出相应变化尺度的特征,而卷积神经网络中最后的全连接层则无法对可变尺度进行运算,因此需要对不同尺度的输出特征采样到相同输出尺度。</td>
 </tr>
 </tbody>
@@ -413,66 +414,70 @@ f(x)=
 <p>SPPNet<span><span class="MathJax_Preview">^{[3]}</span><script type="math/tex">^{[3]}</script></span>就引入了空间池化的组合,对不同输出尺度采用不同的滑窗大小和步长以确保输出尺度相同<span><span class="MathJax_Preview">(win_{size}=\lceil \frac{in}{out}\rceil; stride=\lfloor \frac{in}{out}\rfloor; )</span><script type="math/tex">(win_{size}=\lceil \frac{in}{out}\rceil; stride=\lfloor \frac{in}{out}\rfloor; )</script></span>,同时用如金字塔式叠加的多种池化尺度组合,以提取更加丰富的图像特征。常用于多尺度训练和目标检测中的区域提议网络(Region Proposal Network)的兴趣区域(Region of Interest)提取</p>
 </blockquote>
 <h2 id="58-1times11times1">5.8 <span><span class="MathJax_Preview">1\times1</span><script type="math/tex">1\times1</script></span>卷积作用?</h2>
-<p>​   NIN(Network in Network)<span><span class="MathJax_Preview">^{[4]}​</span><script type="math/tex">^{[4]}​</script></span>是第一篇探索<span><span class="MathJax_Preview">1\times1​</span><script type="math/tex">1\times1​</script></span>卷积核的论文,这篇论文通过在卷积层中使用MLP替代传统线性的卷积核,使单层卷积层内具有非线性映射的能力,也因其网络结构中嵌套MLP子网络而得名NIN。NIN对不同通道的特征整合到MLP自网络中,让不同通道的特征能够交互整合,使通道之间的信息得以流通,其中的MLP子网络恰恰可以用<span><span class="MathJax_Preview">1\times1​</span><script type="math/tex">1\times1​</script></span>的卷积进行代替。</p>
-<p>​   GoogLeNet<span><span class="MathJax_Preview">^{[5]}​</span><script type="math/tex">^{[5]}​</script></span>则采用<span><span class="MathJax_Preview">1\times1​</span><script type="math/tex">1\times1​</script></span>卷积核来减少模型的参数量。在原始版本的Inception模块中,由于每一层网络采用了更多的卷积核,大大增加了模型的参数量。此时在每一个较大卷积核的卷积层前引入<span><span class="MathJax_Preview">1\times1​</span><script type="math/tex">1\times1​</script></span>卷积,可以通过分离通道与宽高卷积来减少模型参数量。以图5.2为例,在不考虑参数偏置项的情况下,若输入和输出的通道数为<span><span class="MathJax_Preview">C_1=16​</span><script type="math/tex">C_1=16​</script></span>,则左半边网络模块所需的参数为<span><span class="MathJax_Preview">(1\times1+3\times3+5\times5+0)\times C_1\times C_1=8960​</span><script type="math/tex">(1\times1+3\times3+5\times5+0)\times C_1\times C_1=8960​</script></span>;假定右半边网络模块采用的<span><span class="MathJax_Preview">1\times1​</span><script type="math/tex">1\times1​</script></span>卷积通道数为<span><span class="MathJax_Preview">C_2=8​</span><script type="math/tex">C_2=8​</script></span><span><span class="MathJax_Preview">(满足C_1&gt;C_2)​</span><script type="math/tex">(满足C_1>C_2)​</script></span>,则右半部分的网络结构所需参数量为<span><span class="MathJax_Preview">(1\times1\times (3C_1+C_2)+3\times3\times C_2 +5\times5\times C_2)\times C_1=5248​</span><script type="math/tex">(1\times1\times (3C_1+C_2)+3\times3\times C_2 +5\times5\times C_2)\times C_1=5248​</script></span> ,可以在不改变模型表达能力的前提下大大减少所使用的参数量。</p>
-<p><img alt="image" src="./img/ch5/5.8-1.png" /></p>
-<p>​                               图5.2 Inception模块</p>
+<p>NIN(Network in Network)<span><span class="MathJax_Preview">^{[4]}​</span><script type="math/tex">^{[4]}​</script></span>是第一篇探索<span><span class="MathJax_Preview">1\times1​</span><script type="math/tex">1\times1​</script></span>卷积核的论文,这篇论文通过在卷积层中使用MLP替代传统线性的卷积核,使单层卷积层内具有非线性映射的能力,也因其网络结构中嵌套MLP子网络而得名NIN。NIN对不同通道的特征整合到MLP自网络中,让不同通道的特征能够交互整合,使通道之间的信息得以流通,其中的MLP子网络恰恰可以用<span><span class="MathJax_Preview">1\times1​</span><script type="math/tex">1\times1​</script></span>的卷积进行代替。</p>
+<p>​GoogLeNet<span><span class="MathJax_Preview">^{[5]}​</span><script type="math/tex">^{[5]}​</script></span>则采用<span><span class="MathJax_Preview">1\times1​</span><script type="math/tex">1\times1​</script></span>卷积核来减少模型的参数量。在原始版本的Inception模块中,由于每一层网络采用了更多的卷积核,大大增加了模型的参数量。此时在每一个较大卷积核的卷积层前引入<span><span class="MathJax_Preview">1\times1​</span><script type="math/tex">1\times1​</script></span>卷积,可以通过分离通道与宽高卷积来减少模型参数量。以图5.2为例,在不考虑参数偏置项的情况下,若输入和输出的通道数为<span><span class="MathJax_Preview">C_1=16​</span><script type="math/tex">C_1=16​</script></span>,则左半边网络模块所需的参数为<span><span class="MathJax_Preview">(1\times1+3\times3+5\times5+0)\times C_1\times C_1=8960​</span><script type="math/tex">(1\times1+3\times3+5\times5+0)\times C_1\times C_1=8960​</script></span>;假定右半边网络模块采用的<span><span class="MathJax_Preview">1\times1​</span><script type="math/tex">1\times1​</script></span>卷积通道数为<span><span class="MathJax_Preview">C_2=8​</span><script type="math/tex">C_2=8​</script></span><span><span class="MathJax_Preview">(满足C_1&gt;C_2)​</span><script type="math/tex">(满足C_1>C_2)​</script></span>,则右半部分的网络结构所需参数量为<span><span class="MathJax_Preview">(1\times1\times (3C_1+C_2)+3\times3\times C_2 +5\times5\times C_2)\times C_1=5248​</span><script type="math/tex">(1\times1\times (3C_1+C_2)+3\times3\times C_2 +5\times5\times C_2)\times C_1=5248​</script></span> ,可以在不改变模型表达能力的前提下大大减少所使用的参数量。</p>
+<p><img alt="image" src="../media/chapter05/Inception%E6%A8%A1%E5%9D%97.png" /></p>
+<p>​图5.2 Inception模块</p>
 <p>综上所述,<span><span class="MathJax_Preview">1\times 1​</span><script type="math/tex">1\times 1​</script></span>卷积的作用主要为以下两点:</p>
+<blockquote>
 <ul>
 <li>实现信息的跨通道交互和整合。</li>
 <li>对卷积核通道数进行降维和升维,减小参数量。</li>
 </ul>
+</blockquote>
 <h2 id="59">5.9 卷积层和池化层有什么区别?</h2>
 <p>​   卷积层核池化层在结构上具有一定的相似性,都是对感受域内的特征进行提取,并且根据步长设置获取到不同维度的输出,但是其内在操作是有本质区别的,如表5.7所示。</p>
 <table>
 <thead>
 <tr>
 <th align="center"></th>
-<th align="center">卷积层</th>
-<th align="center">池化层</th>
+<th align="left">卷积层</th>
+<th align="left">池化层</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td align="center"><strong>结构</strong></td>
-<td align="center">零填充时输出维度不变,而通道数改变</td>
-<td align="center">通常特征维度会降低,通道数不变</td>
+<td align="left">零填充时输出维度不变,而通道数改变</td>
+<td align="left">通常特征维度会降低,通道数不变</td>
 </tr>
 <tr>
 <td align="center"><strong>稳定性</strong></td>
-<td align="center">输入特征发生细微改变时,输出结果会改变</td>
-<td align="center">感受域内的细微变化不影响输出结果</td>
+<td align="left">输入特征发生细微改变时,输出结果会改变</td>
+<td align="left">感受域内的细微变化不影响输出结果</td>
 </tr>
 <tr>
 <td align="center"><strong>作用</strong></td>
-<td align="center">感受域内提取局部关联特征</td>
-<td align="center">感受域内提取泛化特征,降低维度</td>
+<td align="left">感受域内提取局部关联特征</td>
+<td align="left">感受域内提取泛化特征,降低维度</td>
 </tr>
 <tr>
 <td align="center"><strong>参数量</strong></td>
-<td align="center">与卷积核尺寸、卷积核个数相关</td>
-<td align="center">不引入额外参数</td>
+<td align="left">与卷积核尺寸、卷积核个数相关</td>
+<td align="left">不引入额外参数</td>
 </tr>
 </tbody>
 </table>
 <h2 id="510">5.10 卷积核是否一定越大越好?</h2>
-<p>​   在早期的卷积神经网络中(如LeNet-5、AlexNet),用到了一些较大的卷积核(<span><span class="MathJax_Preview">11\times11</span><script type="math/tex">11\times11</script></span>和<span><span class="MathJax_Preview">5\times 5</span><script type="math/tex">5\times 5</script></span>),受限于当时的计算能力和模型结构的设计,无法将网络叠加得很深,因此卷积网络中的卷积层需要设置较大的卷积核以获取更大的感受域。但是这种大卷积核反而会导致计算量大幅增加,不利于训练更深层的模型,相应的计算性能也会降低。后来的卷积神经网络(VGG、GoogLeNet等),发现通过堆叠2个<span><span class="MathJax_Preview">3\times 3</span><script type="math/tex">3\times 3</script></span>卷积核可以获得与<span><span class="MathJax_Preview">5\times 5</span><script type="math/tex">5\times 5</script></span>卷积核相同的感受视野,同时参数量会更少(<span><span class="MathJax_Preview">3×3×2+1</span><script type="math/tex">3×3×2+1</script></span> &lt; $ 5×5×1+1<span><span class="MathJax_Preview">),</span><script type="math/tex">),</script></span>3\times 3$卷积核被广泛应用在许多卷积神经网络中。因此可以认为,在大多数情况下通过堆叠较小的卷积核比直接采用单个更大的卷积核会更加有效。</p>
-<p>​   但是,这并不是表示更大的卷积核就没有作用,在某些领域应用卷积神经网络时仍然可以采用较大的卷积核。譬如在自然语言处理领域,由于文本内容不像图像数据可以对特征进行很深层的抽象,往往在该领域的特征提取只需要较浅层的神经网络即可。在将卷积神经网络应用在自然语言处理领域时,通常都是较为浅层的卷积层组成,但是文本特征有时又需要有较广的感受域让模型能够组合更多的特征(如词组和字符),此时直接采用较大的卷积核将是更好的选择。</p>
-<p>​   综上所述,卷积核的大小并没有绝对的优劣,需要视具体的应用场景而定,但是极大和极小的卷积核都是不合适的,单独的<span><span class="MathJax_Preview">1\times 1</span><script type="math/tex">1\times 1</script></span>极小卷积核只能用作分离卷积而不能对输入的原始特征进行有效的组合,极大的卷积核通常会组合过多的无意义特征从而浪费了大量的计算资源。</p>
+<p>​在早期的卷积神经网络中(如LeNet-5、AlexNet),用到了一些较大的卷积核(<span><span class="MathJax_Preview">11\times11</span><script type="math/tex">11\times11</script></span>和<span><span class="MathJax_Preview">5\times 5</span><script type="math/tex">5\times 5</script></span>),受限于当时的计算能力和模型结构的设计,无法将网络叠加得很深,因此卷积网络中的卷积层需要设置较大的卷积核以获取更大的感受域。但是这种大卷积核反而会导致计算量大幅增加,不利于训练更深层的模型,相应的计算性能也会降低。后来的卷积神经网络(VGG、GoogLeNet等),发现通过堆叠2个<span><span class="MathJax_Preview">3\times 3</span><script type="math/tex">3\times 3</script></span>卷积核可以获得与<span><span class="MathJax_Preview">5\times 5</span><script type="math/tex">5\times 5</script></span>卷积核相同的感受视野,同时参数量会更少(<span><span class="MathJax_Preview">3×3×2+1</span><script type="math/tex">3×3×2+1</script></span> &lt; $ 5×5×1+1<span><span class="MathJax_Preview">),</span><script type="math/tex">),</script></span>3\times 3$卷积核被广泛应用在许多卷积神经网络中。因此可以认为,在大多数情况下通过堆叠较小的卷积核比直接采用单个更大的卷积核会更加有效。</p>
+<p>​但是,这并不是表示更大的卷积核就没有作用,在某些领域应用卷积神经网络时仍然可以采用较大的卷积核。譬如在自然语言处理领域,由于文本内容不像图像数据可以对特征进行很深层的抽象,往往在该领域的特征提取只需要较浅层的神经网络即可。在将卷积神经网络应用在自然语言处理领域时,通常都是较为浅层的卷积层组成,但是文本特征有时又需要有较广的感受域让模型能够组合更多的特征(如词组和字符),此时直接采用较大的卷积核将是更好的选择。</p>
+<p>​综上所述,卷积核的大小并没有绝对的优劣,需要视具体的应用场景而定,但是极大和极小的卷积核都是不合适的,单独的<span><span class="MathJax_Preview">1\times 1</span><script type="math/tex">1\times 1</script></span>极小卷积核只能用作分离卷积而不能对输入的原始特征进行有效的组合,极大的卷积核通常会组合过多的无意义特征从而浪费了大量的计算资源。</p>
 <h2 id="511_1">5.11 每层卷积是否只能用一种尺寸的卷积核?</h2>
-<p>​   经典的神经网络一般都属于层叠式网络,每层仅用一个尺寸的卷积核,如VGG结构中使用了大量的<span><span class="MathJax_Preview">3×3</span><script type="math/tex">3×3</script></span>卷积层。事实上,同一层特征图可以分别使用多个不同尺寸的卷积核,以获得不同尺度的特征,再把这些特征结合起来,得到的特征往往比使用单一卷积核的要好,如GoogLeNet、Inception系列的网络,均是每层使用了多个卷积核结构。如图5.3所示,输入的特征在同一层分别经过<span><span class="MathJax_Preview">1×1</span><script type="math/tex">1×1</script></span>、<span><span class="MathJax_Preview">3×3</span><script type="math/tex">3×3</script></span>和<span><span class="MathJax_Preview">5×5</span><script type="math/tex">5×5</script></span>三种不同尺寸的卷积核,再将分别得到的特征进行整合,得到的新特征可以看作不同感受域提取的特征组合,相比于单一卷积核会有更强的表达能力。</p>
-<p><img alt="image" src="./img/ch5/5.11-1.png" /></p>
-<p>​                               图5.3 Inception模块结构</p>
+<p>​经典的神经网络一般都属于层叠式网络,每层仅用一个尺寸的卷积核,如VGG结构中使用了大量的<span><span class="MathJax_Preview">3×3</span><script type="math/tex">3×3</script></span>卷积层。事实上,同一层特征图可以分别使用多个不同尺寸的卷积核,以获得不同尺度的特征,再把这些特征结合起来,得到的特征往往比使用单一卷积核的要好,如GoogLeNet、Inception系列的网络,均是每层使用了多个卷积核结构。如图5.3所示,输入的特征在同一层分别经过<span><span class="MathJax_Preview">1×1</span><script type="math/tex">1×1</script></span>、<span><span class="MathJax_Preview">3×3</span><script type="math/tex">3×3</script></span>和<span><span class="MathJax_Preview">5×5</span><script type="math/tex">5×5</script></span>三种不同尺寸的卷积核,再将分别得到的特征进行整合,得到的新特征可以看作不同感受域提取的特征组合,相比于单一卷积核会有更强的表达能力。</p>
+<p><img alt="image" src="../media/chapter05/Inception%E6%A8%A1%E5%9D%97%E7%BB%93%E6%9E%84.png" /></p>
+<p>​图5.3 Inception模块结构</p>
 <h2 id="512_1">5.12 怎样才能减少卷积层参数量?</h2>
 <p>减少卷积层参数量的方法可以简要地归为以下几点:</p>
+<blockquote>
 <ul>
 <li>使用堆叠小卷积核代替大卷积核:VGG网络中2个<span><span class="MathJax_Preview">3\times 3</span><script type="math/tex">3\times 3</script></span>的卷积核可以代替1个<span><span class="MathJax_Preview">5\times 5</span><script type="math/tex">5\times 5</script></span>的卷积核</li>
 <li>使用分离卷积操作:将原本<span><span class="MathJax_Preview">K\times K\times C</span><script type="math/tex">K\times K\times C</script></span>的卷积操作分离为<span><span class="MathJax_Preview">K\times K\times 1</span><script type="math/tex">K\times K\times 1</script></span>和<span><span class="MathJax_Preview">1\times1\times C</span><script type="math/tex">1\times1\times C</script></span>的两部分操作</li>
 <li>添加<span><span class="MathJax_Preview">1\times 1</span><script type="math/tex">1\times 1</script></span>的卷积操作:与分离卷积类似,但是通道数可变,在<span><span class="MathJax_Preview">K\times K\times C_1</span><script type="math/tex">K\times K\times C_1</script></span>卷积前添加<span><span class="MathJax_Preview">1\times1\times C_2</span><script type="math/tex">1\times1\times C_2</script></span>的卷积核(满足<span><span class="MathJax_Preview">C_2 &lt;C_1</span><script type="math/tex">C_2 <C_1</script></span>)</li>
 <li>在卷积层前使用池化操作:池化可以降低卷积层的输入特征维度</li>
 </ul>
+</blockquote>
 <h2 id="513_1">5.13 在进行卷积操作时,必须同时考虑通道和区域吗?</h2>
-<p>​   标准卷积中,采用区域与通道同时处理的操作,如下图所示:</p>
+<p>​标准卷积中,采用区域与通道同时处理的操作,如下图所示:</p>
 <p><img alt="image" src="./img/ch5/5.13-1.png" /></p>
 <p>​   这样做可以简化卷积层内部的结构,每一个输出的特征像素都由所有通道的同一个区域提取而来。</p>
 <p>​   但是这种方式缺乏灵活性,并且在深层的网络结构中使得运算变得相对低效,更为灵活的方式是使区域和通道的卷积分离开来,通道分离(深度分离)卷积网络由此诞生。如下图所示,Xception网络可解决上述问题。</p>
