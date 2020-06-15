@@ -117,11 +117,11 @@
               ]},
               {title: "\u56db\u3001numpy\u6559\u7a0b", url: "#numpy", level:2, children: [ 
               ]},
-              {title: "\u4e94\u3001matplotlib\u6559\u7a0b", url: "#matplotlib", level:2, children: [ 
+              {title: "\u4e94\u3001matplotlib\u6559\u7a0b", url: "#matplotlib", level:2, children: [
+                  {title: "5.1 Figure\u753b\u56fe", url: "#51-figure", level:3, children: [
+                  ]}, 
               ]},
-              {title: "\u4e00\u3001\u57fa\u672c\u4f7f\u7528", url: "#_3", level:2, children: [ 
-              ]},
-              {title: "\u4e8c\u3001\u6837\u4f8b", url: "#_4", level:2, children: [
+              {title: "\u4e8c\u3001\u6837\u4f8b", url: "#_3", level:2, children: [
                   {title: "2.1 Lines,bars and markers", url: "#21-linesbars-and-markers", level:3, children: [
                   ]},
                   {title: "2.2 Images, contours and fields", url: "#22-images-contours-and-fields", level:3, children: [
@@ -3152,16 +3152,14 @@ finally:
 <h2 id="numpy">四、numpy教程</h2>
 <p>https://www.numpy.org.cn/reference/routines/math.html#%E5%8A%A0%E6%B3%95%E5%87%BD%E6%95%B0-%E4%B9%98%E6%B3%95%E5%87%BD%E6%95%B0-%E5%87%8F%E6%B3%95%E5%87%BD%E6%95%B0</p>
 <h2 id="matplotlib">五、matplotlib教程</h2>
-<p><img alt="" src="https://pic3.zhimg.com/80/v2-cfe3dd3becbae38d3af4659b4ff1676a_1440w.jpg" /></p>
-<h2 id="_3">一、基本使用</h2>
 <p><img alt="" src="http://pic3.zhimg.com/v2-9345e8a161f2b0363ad0f9cb47ee1862_r.jpg" /></p>
-<p><code>matplotlib</code>的API都位于<code>matplotlib.pyplot</code>模块中,通常的引入约定为:</p>
-<pre><code class="python">import matplotlib.pyplot as plt
-</code></pre>
-
-<ul>
-<li><strong><code>Figure</code>画图</strong></li>
-</ul>
+<p><img src="http://pic3.zhimg.com/80/v2-cfe3dd3becbae38d3af4659b4ff1676a_1440w.jpg" style="width: 60%"></p>
+<p><code>matplotlib</code>的API都位于<code>matplotlib.pyplot</code>模块中,通常的引入约定为: <code>import matplotlib.pyplot as plt</code>。</p>
+<p>画图相关的概念如图:</p>
+<p><img alt="" src="http://pic4.zhimg.com/v2-406d1e6a28e113801a057d8104d81067_r.jpg" /></p>
+<p>https://zhuanlan.zhihu.com/p/139052035</p>
+<p>https://zhuanlan.zhihu.com/p/136854657</p>
+<h3 id="51-figure">5.1 Figure画图</h3>
 <table>
 <thead>
 <tr>
@@ -4134,7 +4132,7 @@ mpl.rcParams['axes.unicode_minus']=False   # 步骤二(解决坐标轴负数的�
 plt.rcParams['axes.unicode_minus'] = False  
 </code></pre>
 
-<h2 id="_4">二、样例</h2>
+<h2 id="_3">二、样例</h2>
 <h3 id="21-linesbars-and-markers">2.1 Lines,bars and markers</h3>
 <ul>
 <li><strong>Filled polygon</strong></li>
