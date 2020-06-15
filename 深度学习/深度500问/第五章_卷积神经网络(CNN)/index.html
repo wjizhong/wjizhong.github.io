@@ -336,7 +336,8 @@ f(x)=
 </blockquote>
 <h2 id="54">5.4 卷积核有什么类型?</h2>
 <p>​   常见的卷积主要是由连续紧密的卷积核对输入的图像特征进行滑窗式点乘求和操作,除此之外还有其他类型的卷积核在不同的任务中会用到,具体分类如表5.5所示。
-​                                                                   表5.5 卷积核分类</p>
+​
+表5.5 卷积核分类</p>
 <table>
 <thead>
 <tr>
@@ -348,37 +349,37 @@ f(x)=
 <tbody>
 <tr>
 <td align="center">标准卷积</td>
-<td align="center"><img alt="image" src="./img/ch5/img7.png" /></td>
+<td align="center"><img alt="image" src="../media/chapter05/%E6%A0%87%E5%87%86%E5%8D%B7%E7%A7%AF.png" /></td>
 <td align="left">最常用的卷积核,连续紧密的矩阵形式可以提取图像区域中的相邻像素之间的关联关系,<span><span class="MathJax_Preview">3\times3</span><script type="math/tex">3\times3</script></span>的卷积核可以获得<span><span class="MathJax_Preview">3\times3</span><script type="math/tex">3\times3</script></span>像素范围的感受视野</td>
 </tr>
 <tr>
 <td align="center">扩张卷积(带孔卷积或空洞卷积)</td>
-<td align="center"><img alt="image" src="./img/ch5/img8.png" /></td>
+<td align="center"><img alt="image" src="../media/chapter05/%E6%89%A9%E5%BC%A0%E5%8D%B7%E7%A7%AF.png" /></td>
 <td align="left">引入一个称作扩张率(Dilation Rate)的参数,使同样尺寸的卷积核可以获得更大的感受视野,相应的在相同感受视野的前提下比普通卷积采用更少的参数。同样是<span><span class="MathJax_Preview">3\times3</span><script type="math/tex">3\times3</script></span>的卷积核尺寸,扩张卷积可以提取<span><span class="MathJax_Preview">5\times5</span><script type="math/tex">5\times5</script></span>范围的区域特征,在实时图像分割领域广泛应用</td>
 </tr>
 <tr>
 <td align="center">转置卷积</td>
-<td align="center"><img alt="image" src="./img/ch5/img10.png" /></td>
+<td align="center"><img alt="image" src="../media/chapter05/%E8%BD%AC%E7%BD%AE%E5%8D%B7%E7%A7%AF.png" /></td>
 <td align="left">先对原始特征矩阵进行填充使其维度扩大到适配卷积目标输出维度,然后进行普通的卷积操作的一个过程,其输入到输出的维度变换关系恰好与普通卷积的变换关系相反,但这个变换并不是真正的逆变换操作,通常称为转置卷积(Transpose Convolution)而不是反卷积(Deconvolution)。转置卷积常见于目标检测领域中对小目标的检测和图像分割领域还原输入图像尺度。</td>
 </tr>
 <tr>
 <td align="center">可分离卷积</td>
-<td align="center"><img alt="image" src="./img/ch5/img11.png" /></td>
-<td align="left">标准的卷积操作是同时对原始图像<span><span class="MathJax_Preview">H\times W\times C</span><script type="math/tex">H\times W\times C</script></span>三个方向的卷积运算,假设有<span><span class="MathJax_Preview">K</span><script type="math/tex">K</script></span>个相同尺寸的卷积核,这样的卷积操作需要用到的参数为<span><span class="MathJax_Preview">H\times W\times C\times K</span><script type="math/tex">H\times W\times C\times K</script></span>个;若将长宽与深度方向的卷积操作分离出变为<span><span class="MathJax_Preview">H\times W</span><script type="math/tex">H\times W</script></span>与<span><span class="MathJax_Preview">C</span><script type="math/tex">C</script></span>的两步卷积操作,则同样的卷积核个数<span><span class="MathJax_Preview">K</span><script type="math/tex">K</script></span>,只需要<span><span class="MathJax_Preview">(H\times W + C)\times K</span><script type="math/tex">(H\times W + C)\times K</script></span>个参数,便可得到同样的输出尺度。可分离卷积(Seperable Convolution)通常应用在模型压缩或一些轻量的卷积神经网络中,如MobileNet<span><span class="MathJax_Preview">^{[1]}</span><script type="math/tex">^{[1]}</script></span>、Xception<span><span class="MathJax_Preview">^{[2]}</span><script type="math/tex">^{[2]}</script></span>等</td>
+<td align="center"><img alt="image" src="../media/chapter05/%E5%8F%AF%E5%88%86%E7%A6%BB%E5%8D%B7%E7%A7%AF.png" /></td>
+<td align="left">标准的卷积操作是同时对原始图像<span><span class="MathJax_Preview">H\times W\times C</span><script type="math/tex">H\times W\times C</script></span>三个方向的卷积运算,假设有<span><span class="MathJax_Preview">K</span><script type="math/tex">K</script></span>个相同尺寸的卷积核,这样的卷积操作需要用到的参数为<span><span class="MathJax_Preview">H\times W\times C\times K</span><script type="math/tex">H\times W\times C\times K</script></span>个;若将长宽与深度方向的卷积操作分离出变为<span><span class="MathJax_Preview">H\times W</span><script type="math/tex">H\times W</script></span>与<span><span class="MathJax_Preview">C</span><script type="math/tex">C</script></span>的两步卷积操作,则同样的卷积核个数<span><span class="MathJax_Preview">K</span><script type="math/tex">K</script></span>,只需要<span><span class="MathJax_Preview">(H\times W + C)\times K</span><script type="math/tex">(H\times W + C)\times K</script></span>个参数,便可得到同样的输出尺度。可分离卷积(Seperable Convolution)通常应用在模型压缩或一些轻量的卷积神经网络中,如MobileNet、Xception等</td>
 </tr>
 </tbody>
 </table>
 <h2 id="55">5.5 二维卷积与三维卷积有什么区别?</h2>
 <ul>
-<li><strong>二维卷积</strong>
-  二维卷积操作如图5.3所示,为了更直观的说明,分别展示在单通道和多通道输入中,对单个通道输出的卷积操作。在单通道输入的情况下,若输入卷积核尺寸为 <span><span class="MathJax_Preview">(k_h, k_w, 1)​</span><script type="math/tex">(k_h, k_w, 1)​</script></span>,卷积核在输入图像的空间维度上进行滑窗操作,每次滑窗和 <span><span class="MathJax_Preview">(k_h, k_w)​</span><script type="math/tex">(k_h, k_w)​</script></span>窗口内的值进行卷积操作,得到输出图像中的一个值。在多通道输入的情况下,假定输入图像特征通道数为3,卷积核尺寸则为<span><span class="MathJax_Preview">(k_h, k_w, 3)​</span><script type="math/tex">(k_h, k_w, 3)​</script></span>,每次滑窗与3个通道上的<span><span class="MathJax_Preview">(k_h, k_w)​</span><script type="math/tex">(k_h, k_w)​</script></span>窗口内的所有值进行卷积操作,得到输出图像中的一个值。</li>
+<li><strong>二维卷积</strong></li>
 </ul>
-<p><img alt="image" src="./img/ch5/5.6.1.png" /></p>
+<p>二维卷积操作如图5.3所示,为了更直观的说明,分别展示在单通道和多通道输入中,对单个通道输出的卷积操作。在单通道输入的情况下,若输入卷积核尺寸为 <span><span class="MathJax_Preview">(k_h, k_w, 1)​</span><script type="math/tex">(k_h, k_w, 1)​</script></span>,卷积核在输入图像的空间维度上进行滑窗操作,每次滑窗和<span><span class="MathJax_Preview">(k_h, k_w)​</span><script type="math/tex">(k_h, k_w)​</script></span>窗口内的值进行卷积操作,得到输出图像中的一个值。在多通道输入的情况下,假定输入图像特征通道数为3,卷积核尺寸则为<span><span class="MathJax_Preview">(k_h, k_w, 3)​</span><script type="math/tex">(k_h, k_w, 3)​</script></span>,每次滑窗与3个通道上的<span><span class="MathJax_Preview">(k_h, k_w)​</span><script type="math/tex">(k_h, k_w)​</script></span>窗口内的所有值进行卷积操作,得到输出图像中的一个值。</p>
+<p><img alt="image" src="../media/chapter05/%E4%BA%8C%E7%BB%B4%E5%8D%B7%E7%A7%AF%E6%93%8D%E4%BD%9C.png" /></p>
 <ul>
-<li><strong>三维卷积</strong>
-  3D卷积操作如图所示,同样分为单通道和多通道,且假定只使用1个卷积核,即输出图像仅有一个通道。对于单通道输入,与2D卷积不同之处在于,输入图像多了一个深度(depth)维度,卷积核也多了一个<span><span class="MathJax_Preview">k_d​</span><script type="math/tex">k_d​</script></span>维度,因此3D卷积核的尺寸为<span><span class="MathJax_Preview">(k_h, k_w, k_d)​</span><script type="math/tex">(k_h, k_w, k_d)​</script></span>,每次滑窗与<span><span class="MathJax_Preview">(k_h, k_w, k_d)​</span><script type="math/tex">(k_h, k_w, k_d)​</script></span>窗口内的值进行相关操作,得到输出3D图像中的一个值。对于多通道输入,则与2D卷积的操作一样,每次滑窗与3个channels上的<span><span class="MathJax_Preview">(k_h, k_w, k_d)​</span><script type="math/tex">(k_h, k_w, k_d)​</script></span>窗口内的所有值进行相关操作,得到输出3D图像中的一个值。</li>
+<li><strong>三维卷积</strong></li>
 </ul>
-<p><img alt="image" src="./img/ch5/5.6.2.png" /></p>
+<p>3D卷积操作如图所示,同样分为单通道和多通道,且假定只使用1个卷积核,即输出图像仅有一个通道。对于单通道输入,与2D卷积不同之处在于,输入图像多了一个深度(depth)维度,卷积核也多了一个<span><span class="MathJax_Preview">k_d​</span><script type="math/tex">k_d​</script></span>维度,因此3D卷积核的尺寸为<span><span class="MathJax_Preview">(k_h, k_w, k_d)​</span><script type="math/tex">(k_h, k_w, k_d)​</script></span>,每次滑窗与<span><span class="MathJax_Preview">(k_h, k_w, k_d)​</span><script type="math/tex">(k_h, k_w, k_d)​</script></span>窗口内的值进行相关操作,得到输出3D图像中的一个值。对于多通道输入,则与2D卷积的操作一样,每次滑窗与3个channels上的<span><span class="MathJax_Preview">(k_h, k_w, k_d)​</span><script type="math/tex">(k_h, k_w, k_d)​</script></span>窗口内的所有值进行相关操作,得到输出3D图像中的一个值。</p>
+<p><img alt="image" src="../media/chapter05/3D%E5%8D%B7%E7%A7%AF%E6%93%8D%E4%BD%9C.png" /></p>
 <h2 id="57">5.7 有哪些池化方法?</h2>
 <p>​   池化操作通常也叫做子采样(Subsampling)或降采样(Downsampling),在构建卷积神经网络时,往往会用在卷积层之后,通过池化来降低卷积层输出的特征维度,有效减少网络参数的同时还可以防止过拟合现象。池化操作可以降低图像维度的原因,本质上是因为图像具有一种“静态性”的属性,这个意思是说在一个图像区域有用的特征极有可能在另一个区域同样有用。因此,为了描述一个大的图像,很直观的想法就是对不同位置的特征进行聚合统计。例如,可以计算图像在固定区域上特征的平均值 (或最大值)来代表这个区域的特征。
 ​                                                                              表5.6 池化分类</p>
