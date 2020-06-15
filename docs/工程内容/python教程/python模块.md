@@ -3332,20 +3332,21 @@ https://www.numpy.org.cn/reference/routines/math.html#%E5%8A%A0%E6%B3%95%E5%87%B
 
 ## 五、matplotlib教程
 
-![](https://pic3.zhimg.com/80/v2-cfe3dd3becbae38d3af4659b4ff1676a_1440w.jpg)
-
-
-## 一、基本使用
-
 ![](http://pic3.zhimg.com/v2-9345e8a161f2b0363ad0f9cb47ee1862_r.jpg)
 
-`matplotlib`的API都位于`matplotlib.pyplot`模块中,通常的引入约定为:
+<img src="http://pic3.zhimg.com/80/v2-cfe3dd3becbae38d3af4659b4ff1676a_1440w.jpg" style="width: 60%">
 
-```python
-import matplotlib.pyplot as plt
-```
+`matplotlib`的API都位于`matplotlib.pyplot`模块中,通常的引入约定为: `import matplotlib.pyplot as plt`。
 
-* **`Figure`画图**
+画图相关的概念如图:
+
+![](http://pic4.zhimg.com/v2-406d1e6a28e113801a057d8104d81067_r.jpg)
+
+https://zhuanlan.zhihu.com/p/139052035
+
+https://zhuanlan.zhihu.com/p/136854657
+
+### 5.1 Figure画图
 
 | 使用 | 代码 | 
 | :--- | :--- |
@@ -3356,7 +3357,6 @@ import matplotlib.pyplot as plt
 | 设置图像大小 | `plt.figure(figsize=[6,6])` |
 | 设置(箭头)标注 | `plt.annotate()` |
 | 添加文字 | `plt.text()`/`AxesSubplot.text()` |    
-
 
 注意设置图像大小的语句要放在`plot()`方法之前
 
