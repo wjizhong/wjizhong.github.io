@@ -3336,17 +3336,14 @@ namespace faiss {
          */
         virtual void train (idx_t n, const float * x, faiss::Index & index, const float *x_weights = nullptr);
 
-
         /** run with encoded vectors
          *
          * win addition to train()'s parameters takes a codec as parameter
          * to decode the input vectors.
          *
-         * @param codec      codec used to decode the vectors (nullptr =
-         *                   vectors are in fact floats)     *
+         * @param codec      codec used to decode the vectors (nullptr = vectors are in fact floats)
          */
-        void train_encoded (idx_t nx, const uint8_t *x_in,const Index * codec, Index & index,
-                const float *weights = nullptr);
+        void train_encoded (idx_t nx, const uint8_t *x_in,const Index * codec, Index & index, const float *weights = nullptr);
 
         /// Post-process the centroids after each centroid update.
         /// includes optional L2 normalization and nearest integer rounding
@@ -3354,7 +3351,6 @@ namespace faiss {
 
         virtual ~Clustering() {}
     };
-
 
     /** simplified interface
      *
@@ -3392,36 +3388,32 @@ namespace faiss {
 namespace faiss {
 
     ClusteringParameters::ClusteringParameters ():
-        niter(25), nredo(1), verbose(false), spherical(false),
-        int_centroids(false), update_index(false), frozen_centroids(false),
-        min_points_per_centroid(39), max_points_per_centroid(256),
-        seed(1234), decode_block_size(32768)
-    {}
+            niter(25), nredo(1), verbose(false), spherical(false),
+            int_centroids(false), update_index(false), frozen_centroids(false),
+            min_points_per_centroid(39), max_points_per_centroid(256),
+            seed(1234), decode_block_size(32768)
+        {}
     // 39 corresponds to 10000 / 256 -> to avoid warnings on PQ tests with randu10k
 
-    Clustering::Clustering (int d, int k): d(d), k(k) {}
 
+    Clustering::Clustering (int d, int k): d(d), k(k) {}
     Clustering::Clustering (int d, int k, const ClusteringParameters &cp):
         ClusteringParameters (cp), d(d), k(k) {}
 
-static double imbalance_factor (int n, int k, int64_t *assign) {
-    std::vector<int> hist(k, 0);
-    for (int i = 0; i < n; i++)
-        hist[assign[i]]++;
-
-    double tot = 0, uf = 0;
-
-    for (int i = 0 ; i < k ; i++) {
-        tot += hist[i];
-        uf += hist[i] * (double) hist[i];
+    static double imbalance_factor (int n, int k, int64_t *assign) {
+        std::vector<int> hist(k, 0);
+        for (int i = 0; i < n; i++)
+            hist[assign[i]]++;
+        double tot = 0, uf = 0;
+        for (int i = 0 ; i < k ; i++) {
+            tot += hist[i];
+            uf += hist[i] * (double) hist[i];
+        }
+        uf = uf * k / (tot * tot);
+        return uf;
     }
-    uf = uf * k / (tot * tot);
-
-    return uf;
-}
 
     void Clustering::post_process_centroids () {
-
         if (spherical) {
             fvec_renorm_L2 (d, k, centroids.data());
         }
@@ -3440,8 +3432,7 @@ static double imbalance_factor (int n, int k, int64_t *assign) {
     namespace {
         using idx_t = Clustering::idx_t;
 
-        idx_t subsample_training_set( const Clustering &clus, idx_t nx, const uint8_t *x,
-                size_t line_size, const float * weights, uint8_t **x_out, float **weights_out){
+        idx_t subsample_training_set( const Clustering &clus, idx_t nx, const uint8_t *x, size_t line_size, const float * weights, uint8_t **x_out, float **weights_out){
             if (clus.verbose) {
                 printf("Sampling a subset of %ld / %ld for training\n", clus.k * clus.max_points_per_centroid, nx);
             }
@@ -3547,8 +3538,7 @@ static double imbalance_factor (int n, int k, int64_t *assign) {
          *
          * @return           nb of spliting operations (larger is worse)
          */
-        int split_clusters (size_t d, size_t k, size_t n,
-                size_t k_frozen, float * hassign, float * centroids) {
+        int split_clusters (size_t d, size_t k, size_t n, size_t k_frozen, float * hassign, float * centroids) {
             k -= k_frozen;
             centroids += k_frozen * d;
 
@@ -3586,7 +3576,6 @@ static double imbalance_factor (int n, int k, int64_t *assign) {
                 }
             }
             return nsplit;
-
         }
     };
 
@@ -3713,15 +3702,12 @@ static double imbalance_factor (int n, int k, int64_t *assign) {
             post_process_centroids ();
 
             // prepare the index
-
             if (index.ntotal != 0) {
                 index.reset();
             }
-
             if (!index.is_trained) {
                 index.train (k, centroids.data());
             }
-
             index.add (k, centroids.data());
 
             // k-means iterations
