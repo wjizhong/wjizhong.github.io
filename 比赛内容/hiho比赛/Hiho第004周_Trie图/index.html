@@ -8,10 +8,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <meta name="author" content="wjizhong">
-    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/hiho%E6%AF%94%E8%B5%9B/hiho%E7%AC%AC004%E5%91%A8/">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/hiho%E6%AF%94%E8%B5%9B/Hiho%E7%AC%AC004%E5%91%A8_Trie%E5%9B%BE/">
     <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-    <title>hiho第004周:Trie图 - 图像/视频算法</title>
+    <title>Hiho第004周:Trie图 - 图像/视频算法</title>
     <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
     <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
     <link href="../../../css/base.css" rel="stylesheet">
@@ -32,7 +32,11 @@
       var is_top_frame = false;
         
         var pageToc = [
-          {title: "hiho\u7b2c004\u5468:Trie\u56fe", url: "#_top", level:1, children: [
+          {title: "Hiho\u7b2c004\u5468:Trie\u56fe", url: "#_top", level:1, children: [
+              {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1", level:2, children: [ 
+              ]},
+              {title: "\u89e3\u9898\u4ee3\u7801", url: "#_2", level:2, children: [ 
+              ]},
           ]},
         ];
     </script>
@@ -66,25 +70,24 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 
 
     
+    
+      
+    
 
-    <h1 id="hiho004trie">hiho第004周:Trie图</h1>
-<ul>
-<li><strong>题目描述</strong></li>
-</ul>
-<blockquote>
+    
+
+    <h1 id="hiho004trie">Hiho第004周:Trie图</h1>
+<h2 id="_1">题目描述</h2>
 <ul>
 <li><strong>前情回顾</strong></li>
 </ul>
-</blockquote>
 <p>上回说到,小Hi和小Ho接受到了河蟹先生伟大而光荣的任务:河蟹先生将要给与他们一篇从互联网上收集来的文章,和一本厚厚的河蟹词典,而他们要做的是判断这篇文章中是否存在那些属于河蟹词典中的词语。</p>
 <p>当时,小Hi和小Ho的水平还是十分有限,他们只能够想到:“枚举每一个单词,然后枚举文章中可能的起始位置,然后进行匹配,看能否成功。”这样非常朴素的想法,但是这样的算法时间复杂度是相当高的,如果说词典的词语数量为N,每个词语长度为L,文章的长度为M,那么需要进行的计算次数是在<code>N*M*L</code>这个级别的,而这个数据在河蟹先生看来是不能够接受的。</p>
 <p>于是河蟹先生决定先给他们个机会学习一下,于是给出了一个条件N=1,也就是说词典里面事实上只有一个词语,但是希望他们能够统计这个词语在文章中出现的次数,这便是我们常说的模式匹配问题。而小Hi和小Ho呢,通过这一周的努力,学习钻研了KMP算法,并在互相帮助之下,已经成功的解决掉了这个问题!</p>
 <p>这便是Hiho一下第三周发生的事情,而现在第四周到了,小Hi和小Ho也要踏上解决真正难题的旅程了呢!</p>
-<blockquote>
 <ul>
 <li><strong>任务回顾</strong></li>
 </ul>
-</blockquote>
 <p>小Hi和小Ho是一对好朋友,出生在信息化社会的他们对编程产生了莫大的兴趣,他们约定好互相帮助,在编程的学习道路上一同前进。</p>
 <p>这一天,他们……咳咳,说远了,且说小Ho好不容易写完了第三周程序,却发现自己错过了HihoCoder上的提交日期,于是找小Hi哭诉,小Hi虽然身为管理员,但是也不好破这个例,于是把小Ho赶去题库交了代码,总算是哄好了小Ho。</p>
 <p>小Ho交完程序然后屁颠屁颠的跑回了小Hi这边,问道:“小Hi,你说我们是不是可以去完成河蟹大大的任务了呢?”</p>
@@ -93,11 +96,9 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>“没错!Trie图就是在Trie树的基础上发展成的一种数据结构。如果要想用一本词典构成Trie图的话,那么就首先要用这本词典构成一棵Trie树,然后在Trie树的基础上添加一些边,就能够变成Trie图了!”小Hi又作老师状。</p>
 <p>“哦!但是你说了这么多,我都不知道Trie图是什么样的呢!”小Ho无奈道。</p>
 <p>“也是!那我们还是从头开始,先讲讲怎么用Trie树来解决这个问题,然后在Trie树的基础上,讨论下一步应该如何。”小Hi想了想说道。</p>
-<blockquote>
 <ul>
 <li><strong>提示一:如何用Trie树进行“河蟹”</strong></li>
 </ul>
-</blockquote>
 <p>“还记得我们在第二周时,是如何使用Trie树解决字符串自动补全问题的么?”小Hi如是问道。</p>
 <p>“还记得,就是对于每一个询问,根据其每个位置上的字符,在Trie树上走出对应的边!”小Ho的记忆力还是挺不错的,很快便答了上来。</p>
 <p>小Hi满意的点了点头,继续问道:“那你想想怎么用Trie树来解决河蟹先生交代的任务?”</p>
@@ -110,11 +111,9 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>“嘿嘿,但是你之前说的Trie图是怎么回事,它又能将计算次数缩减到怎样的数量级呢?”小Ho的好奇心也是燃烧了起来。</p>
 <p>“且听我说~”</p>
 <p>“现在我们有了一个时间复杂度在O(ML)级别的方法,但是我们的征途在星辰大海,啊不,我们不能满足于这样一个60分的方法。所以呢,我们还是要贯彻我们一贯的做法,寻找在这个算法中那些冗余的计算!“小Hi道:”那么我们现在来看看Trie树进行计算的时候都发生了些什么。”</p>
-<blockquote>
 <ul>
 <li><strong>提示二:Trie树的优化思路——后缀结点</strong></li>
 </ul>
-</blockquote>
 <p>“你看这组输入——文章str、词典dic还有我们构建的Trie树tree,我们在算法过程中,<strong>先枚举第一个字符作为起始位置,并最多匹配到第k个字符,因为str[1..k]这一段在tree中对应的结点A结点没有str[k+1]这一条边。这时候我们便要枚举第二个字符作为起始位置,并最多匹配到第k2个字符,这同样是因为str[2..k2]这一段在tree中对应的结点B结点没有str[k2+1]这一条边。也就是说我们在最开始的计算中,要先从tree的0号结点走到A结点,然后回到0号结点,再走到B结点。</strong>”小Hi在黑板上画了一些奇奇怪怪的符号,对小Ho如是解说道。</p>
 <p><img alt="" src="http://media.hihocoder.com//problem_images/20140726/14063718416087.jpg" /></p>
 <p>“是的!等等,我怎么觉得这里似曾相识呢?”小Ho奇道。</p>
@@ -130,11 +129,9 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>“可是小Hi老师~你看在这种情况下,结点C找不到对应的后缀结点,它对应的路径是aaabc,而aabc在Trie里面是走不出来的!”小Ho手中挥舞着一张纸,问道。</p>
 <p><img alt="" src="http://media.hihocoder.com//problem_images/20140726/1.jpg" /></p>
 <p>“你个瓜娃子,老是拆老子台做啥子!……阿不,小Ho你别担心,我这就要讲解如何求后缀结点呢~”小Hi笑容满面的说道。</p>
-<blockquote>
 <ul>
 <li><strong>提示三:如何求解Trie树中每个结点的后缀结点</strong></li>
 </ul>
-</blockquote>
 <p>“先看之前你说的那个例子,如果tree中存在一个结点D,其对应的路径是aabc,那么这个结点的后缀结点是哪一个?”小Hi问道。</p>
 <p><img alt="" src="http://media.hihocoder.com//problem_images/20140726/14063721461492.jpg" /></p>
 <p>“aabc……去掉第一个字符就是abc,对应的是A结点,所以D结点的后缀结点是A!”小Ho很快便做出了回答。</p>
@@ -165,9 +162,9 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>“如果用trie(X)表示X的根节点,next(X)('a')表示从X出发标号为'a'的边指向的结点,我们可以知道trie(0)=0, next(0)('a')=1, next(0)('b')=2, next(0)('c')=3, next(0)('d')=0。”</p>
 <p><img alt="" src="http://media.hihocoder.com//problem_images/20140726/140637232319.jpg" /></p>
 <blockquote>
-<p>“由于trie(1)=0, 我们可以补上从1出发的'a','d'这两条边:next(1)('a')=next(0)('a')=1, next(1)('d')=next(0)('d')=0”
-<br>"由于trie(2)=0, 我们可以补上从2出发的'a','b','d'这三条边:next(2)('a')=next(0)('a')=1, next(2)('b')=next(0)('b')=2, next(2)('d')=next(0)('d')=0”
-<br>“由于trie(2)=0, 我们可以补上从3出发的'a','b','c'这三条边:next(3)('a')=next(0)('a')=1, next(3)('b')=next(0)('b')=2, next(2)('c')=next(0)('c')=3”</p>
+<p>“由于trie(1)=0, 我们可以补上从1出发的'a','d'这两条边:next(1)('a')=next(0)('a')=1, next(1)('d')=next(0)('d')=0”</p>
+<p>"由于trie(2)=0, 我们可以补上从2出发的'a','b','d'这三条边:next(2)('a')=next(0)('a')=1, next(2)('b')=next(0)('b')=2, next(2)('d')=next(0)('d')=0”</p>
+<p>“由于trie(2)=0, 我们可以补上从3出发的'a','b','c'这三条边:next(3)('a')=next(0)('a')=1, next(3)('b')=next(0)('b')=2, next(2)('c')=next(0)('c')=3”</p>
 </blockquote>
 <p><img alt="" src="http://media.hihocoder.com//problem_images/20140726/14063723804676.jpg" /></p>
 <blockquote>
@@ -200,9 +197,9 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>接下来的N行,每一行为一个由小写英文字母组成的河蟹词语。</p>
 <p>接下来的一行,为一篇长度不超过M,由小写英文字母组成的文章。</p>
 <blockquote>
-<p>对于60%的数据,所有河蟹词语的长度总和小于10, M&lt;=10
-<br>对于80%的数据,所有河蟹词语的长度总和小于10^3, M&lt;=10^3
-<br>对于100%的数据,所有河蟹词语的长度总和小于10^6, M&lt;=10^6, N&lt;=1000</p>
+<p>对于60%的数据,所有河蟹词语的长度总和小于10, M&lt;=10</p>
+<p>对于80%的数据,所有河蟹词语的长度总和小于10^3, M&lt;=10^3</p>
+<p>对于100%的数据,所有河蟹词语的长度总和小于10^6, M&lt;=10^6, N&lt;=1000</p>
 <ul>
 <li><strong>输出</strong></li>
 </ul>
@@ -223,9 +220,7 @@ aaaaaaaaaaabaaadaaac
 <pre><code class="sh">YES
 </code></pre>
 
-<ul>
-<li><strong>解题代码</strong></li>
-</ul>
+<h2 id="_2">解题代码</h2>
 <pre><code class="c">#include &lt;stdio.h&gt;
 #include &lt;stdlib.h&gt;
 #include &lt;string.h&gt;
@@ -371,6 +366,11 @@ MathJax.Hub.Config({
 src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
 
+
+    
+    
+      
+    
 
     <br>
 </div>
