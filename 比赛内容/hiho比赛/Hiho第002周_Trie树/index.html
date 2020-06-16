@@ -33,6 +33,10 @@
         
         var pageToc = [
           {title: "hiho\u7b2c002\u5468:Trie\u6811", url: "#_top", level:1, children: [
+              {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1", level:2, children: [ 
+              ]},
+              {title: "\u89e3\u9898\u4ee3\u7801", url: "#_2", level:2, children: [ 
+              ]},
           ]},
         ];
     </script>
@@ -73,9 +77,7 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
     
 
     <h1 id="hiho002trie">hiho第002周:Trie树</h1>
-<ul>
-<li><strong>题目描述</strong></li>
-</ul>
+<h2 id="_1">题目描述</h2>
 <p>小Hi和小Ho是一对好朋友,出生在信息化社会的他们对编程产生了莫大的兴趣,他们约定好互相帮助,在编程的学习道路上一同前进。</p>
 <p>这一天,他们遇到了一本词典,于是小Hi就向小Ho提出了那个经典的问题:“小Ho,你能不能对于<strong>每一个我给出的字符串,都在这个词典里面找到以这个字符串开头的所有单词呢?</strong>”</p>
 <p>身经百战的小Ho答道:“怎么会不能呢!<strong>你每给我一个字符串,我就依次遍历词典里的所有单词,检查你给我的字符串是不是这个单词的前缀不就是了?</strong>”</p>
@@ -85,11 +87,9 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>小Ho想了想,说道:“知道~它是一种基础的数据结构,就像<a src="https://zh.wikipedia.org/wiki/%E6%A0%91_(%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84)">这里</a>说的一样!”</p>
 <p>小Hi满意的点了点头,说道:“那你知道我怎么样用一棵树来表示整个词典么?”</p>
 <p>小Ho摇摇头表示自己不清楚。</p>
-<blockquote>
 <ul>
 <li><strong>提示一:Trie树的建立</strong></li>
 </ul>
-</blockquote>
 <p>小Hi于是在纸上画了一会,递给小Ho,道:“你看这棵树和这个词典有什么关系?”</p>
 <p><img alt="" src="http://media.hihocoder.com//problem_images/20140712/14051554971354.jpg" /></p>
 <p>小Ho盯着手里的纸想了一会道:“我知道了!<strong>对于从树的根节点走到每一个黑色节点所经过的路径,如果将路径上的字母都连起来的话,就都对应着词典中的一个单词呢!</strong>”</p>
@@ -107,11 +107,9 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>“你看,我们现在得到了这样一棵树,那么你看,如果我给你一个字符串ap,你要怎么找到所有以ap开头的单词呢?”小Hi又开始考校小Ho。</p>
 <p>“唔...一个个遍历所有的单词?”小Ho还是不忘自己最开始提出来的算法。</p>
 <p>“笨!这棵树难道就白构建了!”小Hi教训完小Ho,继续道:“看好了!”</p>
-<blockquote>
 <ul>
 <li><strong>提示二:如何使用Trie树</strong></li>
 </ul>
-</blockquote>
 <p>小Hi在树上用绿色标出了一个节点,递给小Ho。</p>
 <p><img alt="" src="http://media.hihocoder.com//problem_images/20140712/14051555696936.jpg" /></p>
 <p>“这个结点……是从根节点先走"a"然后走"p"到达的结点呢!哦~~我知道了,以这个结点为根的子树里所有标记结点都是以"ap"为前缀的单词呢!而且所有以"ap"为前缀的单词都在以这个节点为根的子树里~”小Ho惊喜道。</p>
@@ -120,11 +118,9 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>小Hi笑嘻嘻道:”没想到你自己看出来了呢~我还以为又要教训你了!~那你有什么好的解决方法么?”</p>
 <p>“没呢!小Hi你就别卖关子了,赶紧告诉我吧!”被折磨的够呛的小Ho开始求饶。</p>
 <p>“好吧!就帮你这一回~”</p>
-<blockquote>
 <ul>
 <li><strong>提示三:在建立Trie树时同时进行统计!</strong></li>
 </ul>
-</blockquote>
 <p>“小Ho你有没有想过这样一个问题?<strong>不妨称以T为根的子树中标记节点的个数为L[T],既然我要统计某个L[T1],,而这个结点是不确定的,我有没有办法一次性把所有结点的L[T]求出来呢?</strong>”小Hi整理了下思绪,问道。</p>
 <p>“似乎是有的,老师以前说过,递归什么的。。”小Ho答道。</p>
 <p>“递归太复杂了!我们可以之后再说,你这么想,在你构建Trie树的时候,当你经过一个结点的时候,说明了什么?”小Hi撇了撇头,继续问道。</p>
@@ -167,9 +163,7 @@ bbabbaab
 0
 </code></pre>
 
-<ul>
-<li><strong>解题代码</strong></li>
-</ul>
+<h2 id="_2">解题代码</h2>
 <pre><code class="c">#include&lt;cstdio&gt;
 #include&lt;cstring&gt;
 #include&lt;iostream&gt;
