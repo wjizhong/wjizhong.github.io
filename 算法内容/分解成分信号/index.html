@@ -37,7 +37,7 @@
                   {title: "1.1 \u4e3b\u6210\u5206\u5206\u6790", url: "#11", level:3, children: [
                   ]}, 
               ]},
-              {title: "1.2 \u589e\u91cfPCA (Incremental PCA)", url: "#12-pca-incremental-pca", level:2, children: [ 
+              {title: "1.2 \u589e\u91cfPCA(Incremental PCA)", url: "#12-pcaincremental-pca", level:2, children: [ 
               ]},
           ]},
         ];
@@ -88,27 +88,26 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>主成分分析(Principal Component Analysis)是最常用的一种降维方法,是利用在正交属性空间上的样本点,用一个超平面对所有样本进行恰当的表达。</p>
 <p><img alt="" src="http://img.blog.csdn.net/20160518114416222" /></p>
 <p>如果这里我们可以用直线的斜率和截距(k,b)来表示超平面的一些点,点在直线上的投影点(这时可以把直线看作一维的)来表示。若存在这样的超平面,则应具有的性质为</p>
+<blockquote>
 <ul>
 <li>最近重构性:样本点到这个超平面的距离都足够近</li>
 <li>最大可分性: 样本点在这个超平面上的投影能尽可能分开</li>
 </ul>
+</blockquote>
 <p>假设<span><span class="MathJax_Preview">D=\{x_1,x_2,\dots,x_m\}</span><script type="math/tex">D=\{x_1,x_2,\dots,x_m\}</script></span>为样本集,大小为<span><span class="MathJax_Preview">m</span><script type="math/tex">m</script></span>.</p>
-<p><strong>最近重构性:</strong></p>
-<p>假定对数据样本进行了中心化,即<span><span class="MathJax_Preview">\Sigma_ix_i=0</span><script type="math/tex">\Sigma_ix_i=0</script></span>,投影变换后得到的新坐标系为<span><span class="MathJax_Preview">\{\omega_1,\omega_2,\dots,\omega_d\}</span><script type="math/tex">\{\omega_1,\omega_2,\dots,\omega_d\}</script></span>,其中<span><span class="MathJax_Preview">\omega_i</span><script type="math/tex">\omega_i</script></span>是标准正交基向量:<span><span class="MathJax_Preview">\|\omega_i\|_2=1,\omega_i^T\omega_j=0(i\neq j)</span><script type="math/tex">\|\omega_i\|_2=1,\omega_i^T\omega_j=0(i\neq j)</script></span>,若丢弃新坐标系中的部分向量,则可将维度降为<span><span class="MathJax_Preview">d'&lt;d</span><script type="math/tex">d'<d</script></span>,假设现在丢弃后的坐标系为<span><span class="MathJax_Preview">W=\{\omega_1,\omega_2,\dots,\omega_{d'}\}</span><script type="math/tex">W=\{\omega_1,\omega_2,\dots,\omega_{d'}\}</script></span>,则样本点在低维坐标系中的投影为<span><span class="MathJax_Preview">z_i=\{z_{i1};z_{i2};\dots;z_{id'}\}</span><script type="math/tex">z_i=\{z_{i1};z_{i2};\dots;z_{id'}\}</script></span>,其中<span><span class="MathJax_Preview">z_{ij}=\omega_j^Tx_i</span><script type="math/tex">z_{ij}=\omega_j^Tx_i</script></span>是<span><span class="MathJax_Preview">x_i</span><script type="math/tex">x_i</script></span>在新坐标系下第<span><span class="MathJax_Preview">j</span><script type="math/tex">j</script></span>维的坐标,若基于<span><span class="MathJax_Preview">z_i</span><script type="math/tex">z_i</script></span>来重构<span><span class="MathJax_Preview">x_i</span><script type="math/tex">x_i</script></span>,则得到<span><span class="MathJax_Preview">\hat{x}_i=\Sigma_{j=1}^{d'}z_{ij}\omega_j</span><script type="math/tex">\hat{x}_i=\Sigma_{j=1}^{d'}z_{ij}\omega_j</script></span>。</p>
+<p><strong>最近重构性:</strong> 假定对数据样本进行了中心化,即<span><span class="MathJax_Preview">\Sigma_ix_i=0</span><script type="math/tex">\Sigma_ix_i=0</script></span>,投影变换后得到的新坐标系为<span><span class="MathJax_Preview">\{\omega_1,\omega_2,\dots,\omega_d\}</span><script type="math/tex">\{\omega_1,\omega_2,\dots,\omega_d\}</script></span>,其中<span><span class="MathJax_Preview">\omega_i</span><script type="math/tex">\omega_i</script></span>是标准正交基向量:<span><span class="MathJax_Preview">\|\omega_i\|_2=1,\omega_i^T\omega_j=0(i\neq j)</span><script type="math/tex">\|\omega_i\|_2=1,\omega_i^T\omega_j=0(i\neq j)</script></span>,若丢弃新坐标系中的部分向量,则可将维度降为<span><span class="MathJax_Preview">d'&lt;d</span><script type="math/tex">d'<d</script></span>,假设现在丢弃后的坐标系为<span><span class="MathJax_Preview">W=\{\omega_1,\omega_2,\dots,\omega_{d'}\}</span><script type="math/tex">W=\{\omega_1,\omega_2,\dots,\omega_{d'}\}</script></span>,则样本点在低维坐标系中的投影为<span><span class="MathJax_Preview">z_i=\{z_{i1};z_{i2};\dots;z_{id'}\}</span><script type="math/tex">z_i=\{z_{i1};z_{i2};\dots;z_{id'}\}</script></span>,其中<span><span class="MathJax_Preview">z_{ij}=\omega_j^Tx_i</span><script type="math/tex">z_{ij}=\omega_j^Tx_i</script></span>是<span><span class="MathJax_Preview">x_i</span><script type="math/tex">x_i</script></span>在新坐标系下第<span><span class="MathJax_Preview">j</span><script type="math/tex">j</script></span>维的坐标,若基于<span><span class="MathJax_Preview">z_i</span><script type="math/tex">z_i</script></span>来重构<span><span class="MathJax_Preview">x_i</span><script type="math/tex">x_i</script></span>,则得到<span><span class="MathJax_Preview">\hat{x}_i=\Sigma_{j=1}^{d'}z_{ij}\omega_j</span><script type="math/tex">\hat{x}_i=\Sigma_{j=1}^{d'}z_{ij}\omega_j</script></span>。</p>
 <p>对整个训练集,原样本点<span><span class="MathJax_Preview">x_i</span><script type="math/tex">x_i</script></span>与基于投影重构的样本点<span><span class="MathJax_Preview">\hat{x}_i</span><script type="math/tex">\hat{x}_i</script></span>之间的距离为</p>
 <div>
 <div class="MathJax_Preview">
 \begin{aligned}
-    &amp; \sum\limits_{i=1}^{m}||\sum\limits_{j=1}^{d'}z_{ij}\omega_j-x_i||_2^2 \\
-    &amp; = \sum\limits_{i=1}^{m}||Wz_i-x_i||_2^2 \\
+    \sum\limits_{i=1}^{m}||\sum\limits_{j=1}^{d'}z_{ij}\omega_j-x_i||_2^2 &amp; = \sum\limits_{i=1}^{m}||Wz_i-x_i||_2^2 \\
     &amp; = \sum\limits_{i=1}^mz_i^Tz_i-2\sum\limits_{i=1}^mz_i^TW^Tx_i+const(\sum x_i^Tx_i) \\
     &amp; = -tr(W^T(\sum\limits_{i=1}^mx_ix_i^T)W)
 \end{aligned}
 </div>
 <script type="math/tex; mode=display">
 \begin{aligned}
-    & \sum\limits_{i=1}^{m}||\sum\limits_{j=1}^{d'}z_{ij}\omega_j-x_i||_2^2 \\
-    & = \sum\limits_{i=1}^{m}||Wz_i-x_i||_2^2 \\
+    \sum\limits_{i=1}^{m}||\sum\limits_{j=1}^{d'}z_{ij}\omega_j-x_i||_2^2 & = \sum\limits_{i=1}^{m}||Wz_i-x_i||_2^2 \\
     & = \sum\limits_{i=1}^mz_i^Tz_i-2\sum\limits_{i=1}^mz_i^TW^Tx_i+const(\sum x_i^Tx_i) \\
     & = -tr(W^T(\sum\limits_{i=1}^mx_ix_i^T)W)
 \end{aligned}
@@ -130,8 +129,7 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
 </div>
 <p>其中<span><span class="MathJax_Preview">\omega_j</span><script type="math/tex">\omega_j</script></span>是标准正交基,<span><span class="MathJax_Preview">\sum_ix_ix_i^T</span><script type="math/tex">\sum_ix_ix_i^T</script></span>是协方差矩阵。</p>
-<p><strong>最大可分性:</strong></p>
-<p>样本点<span><span class="MathJax_Preview">x_i</span><script type="math/tex">x_i</script></span>在新空间上的投影为<span><span class="MathJax_Preview">W^Tx_i</span><script type="math/tex">W^Tx_i</script></span>,若所有样本点能近可能分开,则应该使投影后样本的方差最大,即<span><span class="MathJax_Preview">\sum_ix_i^TWW^Tx_i</span><script type="math/tex">\sum_ix_i^TWW^Tx_i</script></span>,由<span><span class="MathJax_Preview">x_i^TWW^Tx_i=tr(W^Tx_ix_i^TW)</span><script type="math/tex">x_i^TWW^Tx_i=tr(W^Tx_ix_i^TW)</script></span>,可知优化目标函数为</p>
+<p><strong>最大可分性:</strong> 样本点<span><span class="MathJax_Preview">x_i</span><script type="math/tex">x_i</script></span>在新空间上的投影为<span><span class="MathJax_Preview">W^Tx_i</span><script type="math/tex">W^Tx_i</script></span>,若所有样本点能近可能分开,则应该使投影后样本的方差最大,即<span><span class="MathJax_Preview">\sum_ix_i^TWW^Tx_i</span><script type="math/tex">\sum_ix_i^TWW^Tx_i</script></span>,由<span><span class="MathJax_Preview">x_i^TWW^Tx_i=tr(W^Tx_ix_i^TW)</span><script type="math/tex">x_i^TWW^Tx_i=tr(W^Tx_ix_i^TW)</script></span>,可知优化目标函数为</p>
 <div>
 <div class="MathJax_Preview">
 \begin{aligned}
@@ -169,21 +167,13 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>对<span><span class="MathJax_Preview">\omega</span><script type="math/tex">\omega</script></span>求导,得到<span><span class="MathJax_Preview">XX^T\omega=\lambda\omega</span><script type="math/tex">XX^T\omega=\lambda\omega</script></span>,可以知道<span><span class="MathJax_Preview">\omega</span><script type="math/tex">\omega</script></span>为<span><span class="MathJax_Preview">XX^T</span><script type="math/tex">XX^T</script></span>的特征向量。</p>
 <p>假设<span><span class="MathJax_Preview">d'&gt;1</span><script type="math/tex">d'>1</script></span>,构造Lagrange函数,可以得到</p>
 <div>
-<div class="MathJax_Preview">
-f(\omega_1,\cdots,\omega_{d'})=\sum\limits_{i=1}^{d'}\omega_i^TXX^T\omega_i+\lambda_{ij}(\omega_i^T\omega_j-\delta_{ij})
-</div>
-<script type="math/tex; mode=display">
-f(\omega_1,\cdots,\omega_{d'})=\sum\limits_{i=1}^{d'}\omega_i^TXX^T\omega_i+\lambda_{ij}(\omega_i^T\omega_j-\delta_{ij})
-</script>
+<div class="MathJax_Preview">f(\omega_1,\cdots,\omega_{d'})=\sum\limits_{i=1}^{d'}\omega_i^TXX^T\omega_i+\lambda_{ij}(\omega_i^T\omega_j-\delta_{ij})</div>
+<script type="math/tex; mode=display">f(\omega_1,\cdots,\omega_{d'})=\sum\limits_{i=1}^{d'}\omega_i^TXX^T\omega_i+\lambda_{ij}(\omega_i^T\omega_j-\delta_{ij})</script>
 </div>
 <p>对<span><span class="MathJax_Preview">\omega_i</span><script type="math/tex">\omega_i</script></span>求导,得到</p>
 <div>
-<div class="MathJax_Preview">
-XX^T\omega_i=\lambda_{ii}\omega_i+(\lambda_{ij}+\lambda_{ji})\omega_j
-</div>
-<script type="math/tex; mode=display">
-XX^T\omega_i=\lambda_{ii}\omega_i+(\lambda_{ij}+\lambda_{ji})\omega_j
-</script>
+<div class="MathJax_Preview">XX^T\omega_i=\lambda_{ii}\omega_i+(\lambda_{ij}+\lambda_{ji})\omega_j</div>
+<script type="math/tex; mode=display">XX^T\omega_i=\lambda_{ii}\omega_i+(\lambda_{ij}+\lambda_{ji})\omega_j</script>
 </div>
 <p>从PCA的目标,我们知道,我们要确定一个超平面来表示<span><span class="MathJax_Preview">x_1,\cdots,x_n</span><script type="math/tex">x_1,\cdots,x_n</script></span>,但是表示这个超平面的基向量可以不唯一,但是这个超平面必须是唯一的,由上面公式可知表示这个超平面的基向量可以互相转换,而且<span><span class="MathJax_Preview">XX^T</span><script type="math/tex">XX^T</script></span>在这个超平面内恰有<span><span class="MathJax_Preview">d'</span><script type="math/tex">d'</script></span>个特征向量,所以我们可以用<span><span class="MathJax_Preview">XX^T</span><script type="math/tex">XX^T</script></span>的特征向量来表示这个超平面。即优化函数的解为</p>
 <div>
@@ -194,15 +184,17 @@ XX^T\omega=\lambda \omega
 XX^T\omega=\lambda \omega
 </script>
 </div>
-<p><strong><code>python</code>实现</strong></p>
+<p><strong>python实现:</strong></p>
 <p>输入:样本集<span><span class="MathJax_Preview">D=\{x_1,\dots ,x_m\}</span><script type="math/tex">D=\{x_1,\dots ,x_m\}</script></span>,低维空间维数<span><span class="MathJax_Preview">d'</span><script type="math/tex">d'</script></span></p>
 <p>算法过程:</p>
+<blockquote>
 <ol>
 <li>对所有样本进行中心化<span><span class="MathJax_Preview">x_i\leftarrow \frac{1}{m}\sum_{i=1}^mx_i</span><script type="math/tex">x_i\leftarrow \frac{1}{m}\sum_{i=1}^mx_i</script></span>;</li>
 <li>计算样本的协方差<span><span class="MathJax_Preview">XX^T</span><script type="math/tex">XX^T</script></span>;</li>
 <li>对协方差<span><span class="MathJax_Preview">XX^T</span><script type="math/tex">XX^T</script></span>做特征值分解;</li>
 <li>取最大的<span><span class="MathJax_Preview">d'</span><script type="math/tex">d'</script></span>个特征值所对应的特征向量<span><span class="MathJax_Preview">\omega_1,\omega_2,\dots,\omega_{d'}</span><script type="math/tex">\omega_1,\omega_2,\dots,\omega_{d'}</script></span>;</li>
 </ol>
+</blockquote>
 <p>输出:投影矩阵<span><span class="MathJax_Preview">W=\{\omega_1,\dots,\omega_{d'}\}</span><script type="math/tex">W=\{\omega_1,\dots,\omega_{d'}\}</script></span></p>
 <pre><code class="python">import numpy as np
 import matplotlib.pyplot as plt
@@ -249,7 +241,9 @@ plt.show()
 
 <p>其中<span><span class="MathJax_Preview">d'</span><script type="math/tex">d'</script></span>还可以由其他方法获得,如设置重构阈值t=95%,s使得<span><span class="MathJax_Preview">\frac{\sum_{i=1}^{d'}\lambda_i}{\sum_{i=1}^d\lambda_i}&gt;t</span><script type="math/tex">\frac{\sum_{i=1}^{d'}\lambda_i}{\sum_{i=1}^d\lambda_i}>t</script></span>成立的最小<span><span class="MathJax_Preview">d'</span><script type="math/tex">d'</script></span>.</p>
 <p><em>注意:</em> 降维导致了舍弃了一部分信息,这往往是必要的,一是舍弃这部分信息后,使得样本的采样密度增大(降维的重要动机);二是最小的特征值所对应的特征值往往与噪声有关,将他们舍弃在一定程度上起到去噪的作用.</p>
-<p><strong>PCA数学理解:</strong></p>
+<ul>
+<li><strong>PCA数学理解:</strong></li>
+</ul>
 <p>PCA的数学定义是:一个正交化线性变换,把数据变换到一个新的坐标系统中,使得这一数据的任何投影的第一大方差在第一个坐标(称为第一主成分)上,第二大方差在第二个坐标(第二主成分)上,依次类推。</p>
 <p>定义一个<span><span class="MathJax_Preview">n×m</span><script type="math/tex">n×m</script></span>的矩阵,<span><span class="MathJax_Preview">X^T</span><script type="math/tex">X^T</script></span>为去平均值(以平均值为中心移动至原点)的数据,其行为数据样本,列为数据类别(注意:这里定义的是<span><span class="MathJax_Preview">X^T</span><script type="math/tex">X^T</script></span>,而不是<span><span class="MathJax_Preview">X</span><script type="math/tex">X</script></span>)。则<span><span class="MathJax_Preview">X</span><script type="math/tex">X</script></span>的奇异值分解为<span><span class="MathJax_Preview">X = W\Sigma V^T</span><script type="math/tex">X = W\Sigma V^T</script></span>,其中<span><span class="MathJax_Preview">m×m</span><script type="math/tex">m×m</script></span>矩阵<span><span class="MathJax_Preview">W</span><script type="math/tex">W</script></span>是<span><span class="MathJax_Preview">XX^T</span><script type="math/tex">XX^T</script></span>的本征矢量矩阵,<span><span class="MathJax_Preview">\Sigma</span><script type="math/tex">\Sigma</script></span>是<span><span class="MathJax_Preview">m×n</span><script type="math/tex">m×n</script></span>的非负矩形对角矩阵,<span><span class="MathJax_Preview">V</span><script type="math/tex">V</script></span>是<span><span class="MathJax_Preview">n×n</span><script type="math/tex">n×n</script></span>的<span><span class="MathJax_Preview">X^TX</span><script type="math/tex">X^TX</script></span>的本征矢量矩阵。据此,</p>
 <div>
@@ -269,12 +263,8 @@ plt.show()
 <p>当<span><span class="MathJax_Preview">m&lt;n-1</span><script type="math/tex">m<n-1</script></span>时,<span><span class="MathJax_Preview">V</span><script type="math/tex">V</script></span>在通常情况下不是唯一定义的,而<span><span class="MathJax_Preview">Y</span><script type="math/tex">Y</script></span>则是唯一定义的。<span><span class="MathJax_Preview">W</span><script type="math/tex">W</script></span>是一个正交矩阵,<span><span class="MathJax_Preview">Y^TW^T=X^T</span><script type="math/tex">Y^TW^T=X^T</script></span>,且<span><span class="MathJax_Preview">Y^T</span><script type="math/tex">Y^T</script></span>的第一列由第一主成分组成,第二列由第二主成分组成,依此类推。</p>
 <p>为了得到一种降低数据维度的有效办法,我们可以利用<span><span class="MathJax_Preview">W_L</span><script type="math/tex">W_L</script></span>把<span><span class="MathJax_Preview">X</span><script type="math/tex">X</script></span>映射到一个只应用前面L个向量的低维空间中去:</p>
 <div>
-<div class="MathJax_Preview">
-\mathbf {Y} =\mathbf {W_{L}} ^{\top }\mathbf {X} =\mathbf {\Sigma _{L}} \mathbf {V} ^{\top }
-</div>
-<script type="math/tex; mode=display">
-\mathbf {Y} =\mathbf {W_{L}} ^{\top }\mathbf {X} =\mathbf {\Sigma _{L}} \mathbf {V} ^{\top }
-</script>
+<div class="MathJax_Preview">\mathbf {Y} =\mathbf {W_{L}} ^{\top }\mathbf {X} =\mathbf {\Sigma _{L}} \mathbf {V} ^{\top }</div>
+<script type="math/tex; mode=display">\mathbf {Y} =\mathbf {W_{L}} ^{\top }\mathbf {X} =\mathbf {\Sigma _{L}} \mathbf {V} ^{\top }</script>
 </div>
 <p>其中<span><span class="MathJax_Preview">\mathbf {\Sigma _{L}} =\mathbf {I} _{L\times m}\mathbf {\Sigma }</span><script type="math/tex">\mathbf {\Sigma _{L}} =\mathbf {I} _{L\times m}\mathbf {\Sigma }</script></span>,且 <span><span class="MathJax_Preview">\mathbf {I} _{L\times m}</span><script type="math/tex">\mathbf {I} _{L\times m}</script></span>为 <span><span class="MathJax_Preview">L\times m</span><script type="math/tex">L\times m</script></span>的单位矩阵。</p>
 <p><span><span class="MathJax_Preview">X</span><script type="math/tex">X</script></span>的单向量矩阵<span><span class="MathJax_Preview">W</span><script type="math/tex">W</script></span>相当于协方差矩阵的本征矢量<span><span class="MathJax_Preview">C = X X^T</span><script type="math/tex">C = X X^T</script></span>,
@@ -304,24 +294,181 @@ plt.show()
 </div>
 <p>然后把求得的第k个主成分带入数据集,得到新的数据集,继续寻找主成分。</p>
 <div>
-<div class="MathJax_Preview">
-\mathbf{w}_k= \underset{\Vert \mathbf{w} \Vert = 1}{\operatorname{arg\,max}}\,E\left\{\left( \mathbf{w}^\top \mathbf{\hat{X}}_{k-1}\right)^2 \right\}.
-</div>
-<script type="math/tex; mode=display">
-\mathbf{w}_k= \underset{\Vert \mathbf{w} \Vert = 1}{\operatorname{arg\,max}}\,E\left\{\left( \mathbf{w}^\top \mathbf{\hat{X}}_{k-1}\right)^2 \right\}.
-</script>
+<div class="MathJax_Preview">\mathbf{w}_k= \underset{\Vert \mathbf{w} \Vert = 1}{\operatorname{arg\,max}}\,E\left\{\left( \mathbf{w}^\top \mathbf{\hat{X}}_{k-1}\right)^2 \right\}.</div>
+<script type="math/tex; mode=display">\mathbf{w}_k= \underset{\Vert \mathbf{w} \Vert = 1}{\operatorname{arg\,max}}\,E\left\{\left( \mathbf{w}^\top \mathbf{\hat{X}}_{k-1}\right)^2 \right\}.</script>
 </div>
 <p>PCA相当于在气象学中使用的经验正交函数(EOF),同时也类似于一个线性隐层神经网络。隐含层K个神经元的权重向量收敛后,将形成一个由前K个主成分跨越空间的基础。但是与PCA不同的是,这种技术并不一定会产生正交向量。</p>
 <p>PCA是一种很流行且主要的的模式识别技术。然而,它并不能最优化类别可分离性 。另一种不考虑这一点的方法是线性判别分析。</p>
-<h2 id="12-pca-incremental-pca">1.2 增量PCA (Incremental PCA)</h2>
-<p>PCA 对象非常有用, 但 针对大型数据集的应用, 仍然具有一定的限制。 最大的限制是 PCA 仅支持批处理，这意味着所有要处理的数据必须放在主内存。 IncrementalPCA 对象使用不同的处理形式, 即允许部分计算以小型批处理方式处理数据的方法进行, 而得到和 PCA 算法差不多的结果。 IncrementalPCA 可以通过以下方式实现核外（out-of-core）主成分分析：</p>
-<p>基于从本地硬盘或网络数据库中连续获取的数据块之上, 使用 partial_fit 方法。
-在 memory mapped file (通过 numpy.memmap 创建)上使用 fit 方法。
-IncrementalPCA 类为了增量式的更新 explainedvariance_ratio ，仅需要存储估计出的分量和噪声方差。 这就是为什么内存使用量依赖于每个批次的样本数量，而不是数据集中需要处理的样本总量。</p>
-<p>在应用SVD之前，IncrementalPCA就像PCA一样,为每个特征聚集而不是缩放输入数据。</p>
-<p>http://sklearn.apachecn.org/cn/0.19.0/_images/sphx_glr_plot_incremental_pca_0011.pnghttp://sklearn.apachecn.org/cn/0.19.0/_images/sphx_glr_plot_incremental_pca_0021.png</p>
-<p>示例</p>
-<p>Incremental PCA</p>
+<pre><code class="python">class sklearn.decomposition.PCA(n_components=None, *, copy=True, whiten=False, svd_solver='auto')
+    &quot;&quot;&quot;
+    Parameters
+        n_componentsint, float, None or str
+            Number of components to keep. if n_components is not set all components are kept:
+                n_components == min(n_samples, n_features)
+                If n_components == 'mle' and svd_solver == 'full', Minka’s MLE is used to guess the dimension. Use of n_components == 'mle' will interpret svd_solver == 'auto' as svd_solver == 'full'.
+                If 0 &lt; n_components &lt; 1 and svd_solver == 'full', select the number of components such that the amount of variance that needs to be explained is greater than the percentage specified by n_components.
+                If svd_solver == 'arpack', the number of components must be strictly less than the minimum of n_features and n_samples.
+        copy bool, default=True
+            If False, data passed to fit are overwritten and running fit(X).transform(X) will not yield the expected results, use fit_transform(X) instead.
+        whiten bool, optional (default False)
+            When True (False by default) the components_ vectors are multiplied by the square root of n_samples and then divided by the singular values to ensure uncorrelated outputs with unit component-wise variances.
+            Whitening will remove some information from the transformed signal (the relative variance scales of the components) but can sometime improve the predictive accuracy of the downstream estimators by making their data respect some hard-wired assumptions.
+        svd_solver str {‘auto’, ‘full’, ‘arpack’, ‘randomized’}
+            If auto : The solver is selected by a default policy based on X.shape and n_components: if the input data is larger than 500x500 and the number of components to extract is lower than 80% of the smallest dimension of the data, then the more efficient ‘randomized’ method is enabled. Otherwise the exact full SVD is computed and optionally truncated afterwards.
+            If full :run exact full SVD calling the standard LAPACK solver via scipy.linalg.svd and select the components by postprocessing
+            If arpack : run SVD truncated to n_components calling ARPACK solver via scipy.sparse.linalg.svds. It requires strictly 0 &lt; n_components &lt; min(X.shape)
+            If randomized : run randomized SVD by the method of Halko et al.
+    Attributes
+        components_array, shape (n_components, n_features)
+            Principal axes in feature space, representing the directions of maximum variance in the data. The components are sorted by explained_variance_.
+        explained_variance_array, shape (n_components,)
+            The amount of variance explained by each of the selected components.
+            Equal to n_components largest eigenvalues of the covariance matrix of X.
+    Examples
+        &gt;&gt;&gt; import numpy as np
+        &gt;&gt;&gt; from sklearn.decomposition import PCA
+        &gt;&gt;&gt; X = np.array([[-1, -1], [-2, -1], [-3, -2], [1, 1], [2, 1], [3, 2]])
+        &gt;&gt;&gt; pca = PCA(n_components=2)
+        &gt;&gt;&gt; pca.fit(X)
+        PCA(n_components=2)
+        &gt;&gt;&gt; print(pca.explained_variance_ratio_)
+        [0.9924... 0.0075...]
+        &gt;&gt;&gt; print(pca.singular_values_)
+        [6.30061... 0.54980...]
+        &gt;&gt;&gt;
+        &gt;&gt;&gt; pca = PCA(n_components=2, svd_solver='full')
+        &gt;&gt;&gt; pca.fit(X)
+        PCA(n_components=2, svd_solver='full')
+        &gt;&gt;&gt; print(pca.explained_variance_ratio_)
+        [0.9924... 0.00755...]
+        &gt;&gt;&gt; print(pca.singular_values_)
+        [6.30061... 0.54980...]
+        &gt;&gt;&gt;
+        &gt;&gt;&gt; pca = PCA(n_components=1, svd_solver='arpack')
+        &gt;&gt;&gt; pca.fit(X)
+        PCA(n_components=1, svd_solver='arpack')
+        &gt;&gt;&gt; print(pca.explained_variance_ratio_)
+        [0.99244...]
+        &gt;&gt;&gt; print(pca.singular_values_)
+        [6.30061...]
+    &quot;&quot;&quot;
+</code></pre>
+
+<p><strong>方法</strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">方法</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>fit(self, X[, y])</code></td>
+<td align="left">Fit the model with X.</td>
+</tr>
+<tr>
+<td align="left"><code>fit_transform(self, X[, y])</code></td>
+<td align="left">Fit the model with X and apply the dimensionality reduction on X.</td>
+</tr>
+<tr>
+<td align="left"><code>get_covariance(self)</code></td>
+<td align="left">Compute data covariance with the generative model.</td>
+</tr>
+<tr>
+<td align="left"><code>get_params(self[, deep])</code></td>
+<td align="left">Get parameters for this estimator.</td>
+</tr>
+<tr>
+<td align="left"><code>get_precision(self)</code></td>
+<td align="left">Compute data precision matrix with the generative model.</td>
+</tr>
+<tr>
+<td align="left"><code>inverse_transform(self, X)</code></td>
+<td align="left">Transform data back to its original space.</td>
+</tr>
+<tr>
+<td align="left"><code>score(self, X[, y])</code></td>
+<td align="left">Return the average log-likelihood of all samples.</td>
+</tr>
+<tr>
+<td align="left"><code>score_samples(self, X)</code></td>
+<td align="left">Return the log-likelihood of each sample.</td>
+</tr>
+<tr>
+<td align="left"><code>set_params(self, **params)</code></td>
+<td align="left">Set the parameters of this estimator.</td>
+</tr>
+<tr>
+<td align="left"><code>transform(self, X)</code></td>
+<td align="left">Apply dimensionality reduction to X.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="12-pcaincremental-pca">1.2 增量PCA(Incremental PCA)</h2>
+<p>PCA对象非常有用,但针对大型数据集的应用,仍然具有一定的限制。最大的限制是PCA仅支持批处理,这意味着所有要处理的数据必须放在主内存。IncrementalPCA对象使用不同的处理形式,即允许部分计算以小型批处理方式处理数据的方法进行,而得到和PCA算法差不多的结果。 IncrementalPCA可以通过以下方式实现核外(out-of-core)主成分分析:</p>
+<blockquote>
+<p>基于从本地硬盘或网络数据库中连续获取的数据块之上,使用partial_fit方法</p>
+<p>在 memory mapped file(通过numpy.memmap创建)上使用fit方法。</p>
+</blockquote>
+<p>IncrementalPCA 类为了增量式的更新explainedvariance_ratio,仅需要存储估计出的分量和噪声方差。 
+在应用SVD之前，IncrementalPCA就像PCA一样,为每个特征聚集而不是缩放输入数据。</p>
+<pre><code class="python">class sklearn.decomposition.IncrementalPCA(n_components=None, *, whiten=False, copy=True, batch_size=None)
+    &quot;&quot;&quot;
+    Incremental principal components analysis (IPCA).
+
+    Linear dimensionality reduction using Singular Value Decomposition of the data, keeping only the most significant singular vectors to project the data to a lower dimensional space. The input data is centered but not scaled for each feature before applying the SVD.
+
+    Depending on the size of the input data, this algorithm can be much more memory efficient than a PCA, and allows sparse input.
+
+    Parameters
+        n_componentsint or None, (default=None)
+            Number of components to keep. If n_components `` is ``None, then n_components is set to min(n_samples, n_features).
+        whiten bool, optional
+            When True (False by default) the components_ vectors are divided by n_samples times components_ to ensure uncorrelated outputs with unit component-wise variances.
+        copy bool, (default=True)
+            If False, X will be overwritten. copy=False can be used to save memory but is unsafe for general use.
+        batch_sizeint or None, (default=None)
+            The number of samples to use for each batch. Only used when calling fit. If batch_size is None, then batch_size is inferred from the data and set to 5 * n_features, to provide a balance between approximation accuracy and memory consumption.
+    Attributes
+        components_array, shape (n_components, n_features)
+            Components with maximum variance.
+        explained_variance_array, shape (n_components,)
+            Variance explained by each of the selected components.
+        explained_variance_ratio_array, shape (n_components,)
+            Percentage of variance explained by each of the selected components. If all components are stored, the sum of explained variances is equal to 1.0.
+        singular_values_array, shape (n_components,)
+            The singular values corresponding to each of the selected components. The singular values are equal to the 2-norms of the n_components variables in the lower-dimensional space.
+        mean_array, shape (n_features,)
+            Per-feature empirical mean, aggregate over calls to partial_fit.
+        var_array, shape (n_features,)
+            Per-feature empirical variance, aggregate over calls to partial_fit.
+        noise_variance_float
+            The estimated noise covariance following the Probabilistic PCA model from Tipping and Bishop 1999. See “Pattern Recognition and Machine Learning” by C. Bishop, 12.2.1 p. 574 or http://www.miketipping.com/papers/met-mppca.pdf.
+        n_components_int
+            The estimated number of components. Relevant when n_components=None.
+        n_samples_seen_int
+            The number of samples processed by the estimator. Will be reset on new calls to fit, but increments across partial_fit calls.
+        batch_size_int
+            Inferred batch size from batch_size.
+    Examples
+        &gt;&gt;&gt; from sklearn.datasets import load_digits
+        &gt;&gt;&gt; from sklearn.decomposition import IncrementalPCA
+        &gt;&gt;&gt; from scipy import sparse
+        &gt;&gt;&gt; X, _ = load_digits(return_X_y=True)
+        &gt;&gt;&gt; transformer = IncrementalPCA(n_components=7, batch_size=200)
+        &gt;&gt;&gt; # either partially fit on smaller batches of data
+        &gt;&gt;&gt; transformer.partial_fit(X[:100, :])
+        IncrementalPCA(batch_size=200, n_components=7)
+        &gt;&gt;&gt; # or let the fit function itself divide the data into batches
+        &gt;&gt;&gt; X_sparse = sparse.csr_matrix(X)
+        &gt;&gt;&gt; X_transformed = transformer.fit_transform(X_sparse)
+        &gt;&gt;&gt; X_transformed.shape
+        (1797, 7)
+    &quot;&quot;&quot;
+</code></pre>
+
+<p>方法参考PCA</p>
 <p>2.5.1.3. 基于随机化SVD的PCA
 通过丢弃具有较低奇异值的奇异向量的分量，将数据降维到低维空间并保留大部分方差信息是非常有意义的。</p>
 <p>例如，如果我们使用64x64像素的灰度级图像进行人脸识别，数据的维数为4096，在这样大的数据上训练含RBF内核的支持向量机是很慢的。此外我们知道这些数据固有维度远低于4096，因为人脸的所有照片都看起来有点相似。样本位于较低维度的流体上（例如约200维）。 PCA算法可以用于线性变换数据，同时降低维数并同时保留大部分可描述的方差信息。</p>
