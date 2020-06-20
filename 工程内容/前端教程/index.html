@@ -45,6 +45,10 @@
                   {title: "2.2 \u591a\u5a92\u4f53\u6807\u7b7e", url: "#22", level:3, children: [
                       {title: "2.2.1 Video\u7684\u51e0\u79cd\u5e94\u7528\u573a\u666f", url: "#221-video", level:4,children: [
                       ]},
+                      {title: "2.2.2 video\u6807\u7b7e\u7684\u5c5e\u6027\u3001\u65b9\u6cd5", url: "#222-video", level:4,children: [
+                      ]},
+                      {title: "2.2.3 audio\u6807\u7b7e\u5c5e\u6027\u548c\u65b9\u6cd5", url: "#223-audio", level:4,children: [
+                      ]},
                   ]},
                   {title: "2.3 canvas\u4f7f\u7528\u6559\u7a0b", url: "#23-canvas", level:3, children: [
                   ]}, 
@@ -536,22 +540,18 @@ videoEl.canPlayType('video/mp2t; codecs=&quot;avc1.42E01E,mp4a.40.2&quot;') !== 
 
 <p>使用canPlayType方法传入要检测的媒体类型或具体编码格式,我们将可能得到'maybe'、'probably'、''三个String值中的一个,当得到空字串的时候,可以确定为不支持。</p>
 <p><img src="http://p2.ssl.qhimg.com/d/inn/2016893c/2.png" style="width:70%" ></p>
-<blockquote>
 <ul>
 <li><strong>使用Video的API和事件交互实现RPG互动游戏</strong></li>
 </ul>
-</blockquote>
-<p>一方面我们可以通过<code>VideoElement</code>的<code>JS API</code>进行状态的修改控制,来实现用户行为对剧情发展的影响带来不同场景间的切换;另一方面我们通过对V<code>ideoElement</code>的事件监听可以响应状态的变化,当剧情发展到特定场景需要用户执行关键抉择。</p>
-<p><a href="https://code.h5jun.com/toji/4/edit?js,output"><img alt="" src="http://p3.ssl.qhimg.com/d/inn/6138c3a9/3.png" /></a></p>
-<p>到这里只是基于最基本的<code>VideoAPI</code>已经可以实现很多有意思的东西了。聪明的你一定想到了举一反三,实现更复杂的一些互动游戏了吧,比如各种风靡微信的密室逃脱...</p>
-<p><img alt="" src="http://p1.ssl.qhimg.com/d/inn/ab7a1003/4.jpg" /></p>
+<p>一方面我们可以通过VideoElement的JS API进行状态的修改控制,来实现用户行为对剧情发展的影响带来不同场景间的切换;另一方面我们通过对VideoElement的事件监听可以响应状态的变化,当剧情发展到特定场景需要用户执行关键抉择。</p>
+<p><img src="https://code.h5jun.com/toji/4/edit?js,output" style="width: 70%"> </p>
+<p>到这里只是基于最基本的VideoAPI已经可以实现很多有意思的东西了。聪明的你一定想到了举一反三,实现更复杂的一些互动游戏了吧,比如各种风靡微信的密室逃脱...</p>
+<p><img src="http://p1.ssl.qhimg.com/d/inn/ab7a1003/4.jpg" style="width: 70%"> </p>
 <p>如果我们接下来在Video的使用上更进一步,加入更宽泛的H5 API应用,脑洞或许可以更大。</p>
-<blockquote>
 <ul>
-<li><strong>使用<code>Video</code>播放本地媒体文件</strong></li>
+<li><strong>使用Video播放本地媒体文件</strong></li>
 </ul>
-</blockquote>
-<p>在这里我们加入<code>FileInput</code>和<code>FileReader API</code>,让用户可以直接在网页中预览并播放自己选择的本地媒体文件。</p>
+<p>在这里我们加入FileInput和FileReader API,让用户可以直接在网页中预览并播放自己选择的本地媒体文件。</p>
 <pre><code class="js">let iptFileEl = document.querySelector('input[type=&quot;file&quot;]');
 let videoEl = document.querySelector('video');
 
@@ -577,14 +577,12 @@ function playFile(file){
 }
 </code></pre>
 
-<p>这里使用了比较简单粗暴的方案:当用户选择了媒体文件,那么直接使用<code>FileReader</code>得到本地文件的<code>DataURI</code>,并塞给<code>video</code>进行播放;虽然这个方案存在一些局限,但实用价值也还是挺高的,比如在线<code>GIF</code>编辑器<code>https://gif.75team.com</code>的视频转GIF功能就有用到类似的方案。</p>
-<p><a href="https://p4.ssl.qhimg.com/d/inn/a59b3bea/5.png"><img alt="" src="https://p4.ssl.qhimg.com/d/inn/a59b3bea/5.png" /></a></p>
-<blockquote>
+<p>这里使用了比较简单粗暴的方案:当用户选择了媒体文件,那么直接使用FileReader得到本地文件的DataURI,并塞给video进行播放;虽然这个方案存在一些局限,但实用价值也还是挺高的,比如在线GIF编辑器<code>https://gif.75team.com</code>的视频转GIF功能就有用到类似的方案。</p>
+<p><img src="https://p4.ssl.qhimg.com/d/inn/a59b3bea/5.png" style="width:70%"></p>
 <ul>
-<li><strong>使用<code>Video</code>播放设备自带摄像头视频流</strong></li>
+<li><strong>使用Video播放设备自带摄像头视频流</strong></li>
 </ul>
-</blockquote>
-<p>随着<code>WebRTC</code>的兴起,以往在WEB端很难实现的需求,也完全可以成为现实。比如通过浏览器提供的<code>getUserMedia API</code>,可以非常容易的开启摄像头并采集的视频流在页面上播放:</p>
+<p>随着WebRTC的兴起,以往在WEB端很难实现的需求,也完全可以成为现实。比如通过浏览器提供的getUserMedia API,可以非常容易的开启摄像头并采集的视频流在页面上播放:</p>
 <pre><code class="js">navigator.getUserMedia(
     { audio: false, video: true},
     function(stream) {
@@ -599,15 +597,13 @@ function playFile(file){
 );
 </code></pre>
 
-<p>既然能拿到摄像头视频流了,自然也就可以做更多的事情了,关于摄像头媒体流播放<a href="https://code.h5jun.com/miri/7/edit?js,output">可以点这里尝试一下</a>;而配合<code>Canvas</code>进行<code>Video</code>的画面的分析处理,我们也可以做更多有趣的尝试,比如:人脸识别 ...</p>
-<p><img alt="" src="https://p3.ssl.qhimg.com/d/inn/d01e7375/6.png" /></p>
-<p>而结合<code>MediaRecorder API</code>,也可以很方便的实现纯WEB前端的<a href="https://code.h5jun.com/zele/2/edit?js,output">视频录制功能</a>。</p>
-<blockquote>
+<p>既然能拿到摄像头视频流了,自然也就可以做更多的事情了,关于摄像头媒体流播放<a href="https://code.h5jun.com/miri/7/edit?js,output">可以点这里尝试一下</a>;而配合Canvas进行Video的画面的分析处理,我们也可以做更多有趣的尝试,比如:人脸识别...</p>
+<p><img src="http://p3.ssl.qhimg.com/d/inn/d01e7375/6.png" style="width: 70%"></p>
+<p>而结合MediaRecorder API,也可以很方便的实现纯WEB前端的<a href="https://code.h5jun.com/zele/2/edit?js,output">视频录制功能</a>。</p>
 <ul>
 <li><strong>使用Video播放JS异步拉取的媒体流</strong></li>
 </ul>
-</blockquote>
-<p>直播行业的兴起,让更多的人了解了动态媒体流的存在,而<code>WebRTC</code>制定之初也主要是定位在多媒体实时通讯方向,这里面包含的<code>MediaSource API</code>让我们可以用JS创建动态媒体源,然后再通过任意异步方式往里<code>appendBuffer</code>,实现不停的拉流播放。</p>
+<p>直播行业的兴起,让更多的人了解了动态媒体流的存在,而WebRTC制定之初也主要是定位在多媒体实时通讯方向,这里面包含的MediaSource API让我们可以用JS创建动态媒体源,然后再通过任意异步方式往里appendBuffer,实现不停的拉流播放。</p>
 <pre><code class="js">var video = document.querySelector('video');
 var mediaSource = new MediaSource();
 video.src = URL.createObjectURL(mediaSource);
@@ -633,15 +629,11 @@ function fetchAB (url, cb) {
 </code></pre>
 
 <p><a href="https://code.h5jun.com/honu/edit?js,output">异步拉流播放效果示例</a></p>
-<p>前面我们在谈到原生<code>Video</code>支持的媒体格式类型时,了解到的<code>M3U8</code>动态切片格式是众多格式中适合直播流的媒体类型,但并不是所有浏览器都支持,而且眼下很多直播平台可能也还是在使用FLV比较多,但原生<code>Video</code>并不支持<code>FLV</code>,但是结合<code>JS</code>动态拉流、解码、编码、<code>MediaSource API</code>,也让WEB前端直接播放原生不支持的媒体格式成为了可能。</p>
-<ul>
-<li><strong><code>video</code>标签的属性、方法</strong></li>
-</ul>
-<blockquote>
+<p>前面我们在谈到原生Video支持的媒体格式类型时,了解到的M3U8动态切片格式是众多格式中适合直播流的媒体类型,但并不是所有浏览器都支持,而且眼下很多直播平台可能也还是在使用FLV比较多,但原生Video并不支持FLV,但是结合JS动态拉流、解码、编码、MediaSource API,也让WEB前端直接播放原生不支持的媒体格式成为了可能。</p>
+<h4 id="222-video">2.2.2 video标签的属性、方法</h4>
 <ul>
 <li><strong>标签的属性</strong></li>
 </ul>
-</blockquote>
 <table>
 <thead>
 <tr>
@@ -652,7 +644,7 @@ function fetchAB (url, cb) {
 <tbody>
 <tr>
 <td align="left"><code>src</code></td>
-<td>视频的地址(可以是<code>url</code>也可以是本地文件)</td>
+<td>视频的地址(可以是url也可以是本地文件)</td>
 </tr>
 <tr>
 <td align="left"><code>poster</code></td>
@@ -660,7 +652,7 @@ function fetchAB (url, cb) {
 </tr>
 <tr>
 <td align="left"><code>preload</code></td>
-<td>用来缓存大体积文件的,有三个可选值:<br>- "<code>none</code>"-不缓存;<br>- "<code>auto</code>"-缓存;<br>- "<code>metadata</code>"-只缓存文件元信息</td>
+<td>用来缓存大体积文件的,有三个可选值:<br>- "none"-不缓存;<br>- "auto"-缓存;<br>- "metadata"-只缓存文件元信息</td>
 </tr>
 <tr>
 <td align="left"><code>autoplay</code></td>
@@ -672,7 +664,7 @@ function fetchAB (url, cb) {
 </tr>
 <tr>
 <td align="left"><code>controls</code></td>
-<td>显示标准的<code>HTML5</code>视频/音频播放器控制条、控制按钮</td>
+<td>显示标准的HTML5视频/音频播放器控制条、控制按钮</td>
 </tr>
 <tr>
 <td align="left"><code>width</code></td>
@@ -691,17 +683,17 @@ function fetchAB (url, cb) {
 Media = document.getElementById(&quot;media&quot;);
 </code></pre>
 
-<blockquote>
 <ul>
-<li><strong><code>Media</code>方法和属性</strong></li>
+<li><strong>Media方法和属性</strong></li>
 </ul>
-</blockquote>
-<p><code>HTMLVideoElement</code>和<code>HTMLAudioElement</code>均继承自<code>HTMLMediaElement</code>。</p>
+<p>HTMLVideoElement和HTMLAudioElement均继承自HTMLMediaElement。</p>
 <pre><code class="js">Media.error;      // null:正常
 Media.error.code; // 1.用户终止;2.网络错误;3.解码错误;4.URL无效
 </code></pre>
 
+<blockquote>
 <p><strong>网络状态</strong></p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -712,11 +704,11 @@ Media.error.code; // 1.用户终止;2.网络错误;3.解码错误;4.URL无效
 <tbody>
 <tr>
 <td align="left"><code>Media.currentSrc</code>;</td>
-<td>返回当前资源的<code>URL</code></td>
+<td>返回当前资源的URL</td>
 </tr>
 <tr>
 <td align="left"><code>Media.src = value</code>;</td>
-<td>返回或设置当前资源的<code>URL</code></td>
+<td>返回或设置当前资源的URL</td>
 </tr>
 <tr>
 <td align="left"><code>Media.canPlayType(type)</code>;</td>
@@ -728,19 +720,23 @@ Media.error.code; // 1.用户终止;2.网络错误;3.解码错误;4.URL无效
 </tr>
 <tr>
 <td align="left"><code>Media.load()</code>;</td>
-<td>重新加载<code>src</code>指定的资源</td>
+<td>重新加载src指定的资源</td>
 </tr>
 <tr>
 <td align="left"><code>Media.buffered</code>;</td>
-<td>返回已缓冲区域,<code>TimeRanges</code></td>
+<td>返回已缓冲区域,TimeRanges</td>
 </tr>
 <tr>
 <td align="left"><code>Media.preload</code>;</td>
-<td>- <code>none</code>:不预载<br>- <code>metadata</code>:预载资源信息<br>- <code>auto</code>:自动</td>
+<td>- none:不预载<br>- metadata:预载资源信息<br>- auto:自动</td>
 </tr>
 </tbody>
 </table>
-<p><strong>准备状态</strong></p>
+<blockquote>
+<ul>
+<li><strong>准备状态</strong></li>
+</ul>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -755,11 +751,15 @@ Media.error.code; // 1.用户终止;2.网络错误;3.解码错误;4.URL无效
 </tr>
 <tr>
 <td align="left"><code>Media.seeking</code>;</td>
-<td>是否正在<code>seeking</code></td>
+<td>是否正在seeking</td>
 </tr>
 </tbody>
 </table>
-<p><strong>回放状态</strong></p>
+<blockquote>
+<ul>
+<li><strong>回放状态</strong></li>
+</ul>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -774,7 +774,7 @@ Media.error.code; // 1.用户终止;2.网络错误;3.解码错误;4.URL无效
 </tr>
 <tr>
 <td align="left"><code>Media.startTime</code>;</td>
-<td>一般为0,如果为流媒体或者不从0开始的资源,则不为<code>0</code></td>
+<td>一般为0,如果为流媒体或者不从0开始的资源,则不为0</td>
 </tr>
 <tr>
 <td align="left"><code>Media.duration</code>;</td>
@@ -794,11 +794,11 @@ Media.error.code; // 1.用户终止;2.网络错误;3.解码错误;4.URL无效
 </tr>
 <tr>
 <td align="left"><code>Media.played</code>;</td>
-<td>返回已经播放的区域,<code>TimeRanges</code>,关于此对象见下文</td>
+<td>返回已经播放的区域,TimeRanges,关于此对象见下文</td>
 </tr>
 <tr>
 <td align="left"><code>Media.seekable</code>;</td>
-<td>返回可以<code>seek</code>的区域<code>TimeRanges</code></td>
+<td>返回可以seek的区域TimeRanges</td>
 </tr>
 <tr>
 <td align="left"><code>Media.ended</code>;</td>
@@ -822,7 +822,11 @@ Media.error.code; // 1.用户终止;2.网络错误;3.解码错误;4.URL无效
 </tr>
 </tbody>
 </table>
-<p><strong>视频控制</strong></p>
+<blockquote>
+<ul>
+<li><strong>视频控制</strong></li>
+</ul>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -845,7 +849,11 @@ Media.error.code; // 1.用户终止;2.网络错误;3.解码错误;4.URL无效
 </tr>
 </tbody>
 </table>
-<p><em><code>TimeRanges</code>(区域)对象</em>*</p>
+<blockquote>
+<ul>
+<li><strong>TimeRanges(区域)对象</strong></li>
+</ul>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -860,19 +868,17 @@ Media.error.code; // 1.用户终止;2.网络错误;3.解码错误;4.URL无效
 </tr>
 <tr>
 <td align="left"><code>TimeRanges.start(index)</code></td>
-<td>第<code>index</code>段区域的开始位置</td>
+<td>第index段区域的开始位置</td>
 </tr>
 <tr>
 <td align="left"><code>TimeRanges.end(index)</code></td>
-<td>第<code>index</code>段区域的结束位置</td>
+<td>第index段区域的结束位置</td>
 </tr>
 </tbody>
 </table>
-<blockquote>
 <ul>
 <li><strong>相关事件</strong></li>
 </ul>
-</blockquote>
 <pre><code class="js">//相关事件
 var eventTester = function(e){
     Media.addEventListener(e,function(){
@@ -931,11 +937,11 @@ var eventTester = function(e){
 </tr>
 <tr>
 <td align="left"><code>eventTester("play")</code>;</td>
-<td><code>play()</code>和<code>autoplay</code>开始播放时触发</td>
+<td>play()和autoplay开始播放时触发</td>
 </tr>
 <tr>
 <td align="left"><code>eventTester("pause")</code>;</td>
-<td><code>pause()</code>触发</td>
+<td>pause()触发</td>
 </tr>
 <tr>
 <td align="left"><code>eventTester("loadedmetadata")</code>;</td>
@@ -991,9 +997,7 @@ var eventTester = function(e){
 </tr>
 </tbody>
 </table>
-<ul>
-<li><strong><code>audio</code>标签属性和方法</strong></li>
-</ul>
+<h4 id="223-audio">2.2.3 audio标签属性和方法</h4>
 <table>
 <thead>
 <tr>
@@ -1004,11 +1008,11 @@ var eventTester = function(e){
 <tbody>
 <tr>
 <td align="left"><code>src</code></td>
-<td>音乐的<code>URL</code></td>
+<td>音乐的URL</td>
 </tr>
 <tr>
 <td align="left"><code>preload</code></td>
-<td>预加载<br>- "<code>none</code>"-不缓存;<br> - "<code>auto</code>"-缓存;<br> - "<code>metadata</code>"-只缓存</td>
+<td>预加载<br>- "none"-不缓存;<br> - "auto"-缓存;<br> - "metadata"-只缓存</td>
 </tr>
 <tr>
 <td align="left"><code>autoplay</code></td>
@@ -1032,7 +1036,7 @@ Media = new Audio(&quot;http://www.abc.com/test.mp3&quot;);
 Media = document.getElementById(&quot;media&quot;);
 </code></pre>
 
-<p><code>audio</code>标签的方法与<code>video</code>标签方法相同。</p>
+<p>audio标签的方法与video标签方法相同。</p>
 <ul>
 <li><strong>视频播放控制示例</strong></li>
 </ul>
@@ -1041,13 +1045,13 @@ Media = document.getElementById(&quot;media&quot;);
 <li><strong>媒体回放控制节</strong></li>
 </ul>
 </blockquote>
-<p>当你已经用新的元素将媒体嵌入<code>HTML</code>文档以后,你就可以用<code>JavaScript</code>代码采用编程的方式来控制它们。比如说,如果你想(重新)开始播放,可以写如下的代码:</p>
+<p>当你已经用新的元素将媒体嵌入HTML文档以后,你就可以用JavaScript代码采用编程的方式来控制它们。比如说,如果你想(重新)开始播放,可以写如下的代码:</p>
 <pre><code class="js">var v = document.getElementsByTagName(&quot;video&quot;)[0];
 v.play();
 </code></pre>
 
-<p>头一行是取得当前文档中第一个视频元素,下一行调用了该元素的<code>play()</code>方法, 这一方法在实现媒体元素的接口中定义。</p>
-<p>控制一个<code>HTML5</code>音频播放器的播放、暂停、增减音量等则直接了当:</p>
+<p>头一行是取得当前文档中第一个视频元素,下一行调用了该元素的play()方法, 这一方法在实现媒体元素的接口中定义。</p>
+<p>控制一个HTML5音频播放器的播放、暂停、增减音量等则直接了当:</p>
 <pre><code class="html">&lt;audio id=&quot;demo&quot; src=&quot;audio.mp3&quot;&gt;&lt;/audio&gt;
 &lt;div&gt;
     &lt;button onclick=&quot;document.getElementById('demo').play()&quot;&gt;播放声音&lt;/button&gt;
@@ -1062,7 +1066,7 @@ v.play();
 <li><strong>终止媒体下载</strong></li>
 </ul>
 </blockquote>
-<p>停止媒体播放很简单,只要调用<code>pause()</code>方法即可,然而浏览器还会继续下载媒体直至媒体元素被垃圾回收机制回收。</p>
+<p>停止媒体播放很简单,只要调用pause()方法即可,然而浏览器还会继续下载媒体直至媒体元素被垃圾回收机制回收。</p>
 <p>以下是即刻停止媒体下载的方法:</p>
 <pre><code class="js">var mediaElement = document.getElementById(&quot;myMediaElementID&quot;);
 mediaElement.pause();
@@ -1071,14 +1075,14 @@ mediaElement.src='';
 mediaElement.removeAttribute(&quot;src&quot;);
 </code></pre>
 
-<p>通过移除媒体元素的src属性(或者直接将其设为一个空字符串——这取决于具体浏览器), 你可以摧毁该元素的内部解码,从而结束媒体下载。<code>removeAttribute()</code>操作并不干净, 而将<code>&lt;video&gt;</code>元素的'<code>src</code>'属性设为空字符串可能会引起我们不想要的请求(Mozilla Firefox 22)。</p>
+<p>通过移除媒体元素的src属性(或者直接将其设为一个空字符串——这取决于具体浏览器), 你可以摧毁该元素的内部解码,从而结束媒体下载。removeAttribute()操作并不干净, 而将<code>&lt;video&gt;</code>元素的'src'属性设为空字符串可能会引起我们不想要的请求(Mozilla Firefox 22)。</p>
 <blockquote>
 <ul>
 <li><strong>在媒体中查找节</strong></li>
 </ul>
 </blockquote>
-<p>媒体元素支持在媒体的内容中从当前播放位置移到某个特定点。这是通过设置元素的属性<code>currentTime</code>的值来达成的;有关元素属性的详细信息请看<code>HTMLMediaElement</code>。简单的设置那个你希望继续播放的以秒为单位时间值。</p>
-<p>你可以使用元素的属性seekable来决定媒体目前能查找的范围。它返回一个你可以查找的<code>TimeRanges</code>时间对象。</p>
+<p>媒体元素支持在媒体的内容中从当前播放位置移到某个特定点。这是通过设置元素的属性currentTime的值来达成的;有关元素属性的详细信息请看HTMLMediaElement。简单的设置那个你希望继续播放的以秒为单位时间值。</p>
+<p>你可以使用元素的属性seekable来决定媒体目前能查找的范围。它返回一个你可以查找的TimeRanges时间对象。</p>
 <pre><code class="js">var mediaElement = document.getElementById('mediaElementID');
 mediaElement.seekable.start();  // 返回开始时间 (in seconds)
 mediaElement.seekable.end();    // 返回结束时间 (in seconds)
@@ -1093,7 +1097,7 @@ mediaElement.played.end();      // 返回浏览器播放的秒数
 </blockquote>
 <p>在给一个<code>&lt;audio&gt;</code>或者<code>&lt;video&gt;</code>元素标签指定媒体的URI的时候,你可以选择性地加入一些额外信息来指定媒体将要播放的部分。要这样做的话,需要附加一个哈希标志("#"),后面跟着媒体片段的描述。</p>
 <p>一条指定时间范围的语句:<code>#t=[starttime][,endtime]</code>。</p>
-<p>时间值可以被指定为秒数(如浮点数)或者为以冒号分隔时/分/秒格式(像2小时5分钟1秒表示为<code>2:05:01</code>)。</p>
+<p>时间值可以被指定为秒数(如浮点数)或者为以冒号分隔时/分/秒格式(像2小时5分钟1秒表示为2:05:01)。</p>
 <p>一些例子:</p>
 <pre><code class="js">http://foo.com/video.ogg#t=10,20
 指定视频播放范围为从第10秒到第20秒.
@@ -1105,7 +1109,7 @@ http://foo.com/video.ogg#t=60
 指定视频从第60秒播放到结束.
 </code></pre>
 
-<p>媒体元素<code>URI</code>中播放范围部分的规范已被加入到<code>Gecko 9.0(Firefox 9.0 / Thunderbird 9.0 / SeaMonkey 2.6)</code>.当下,这是<code>Geoko Media Fragments URI specification</code>唯一实现的部分,并且只有是在非地址栏给媒体元素指定来源时才可使用。</p>
+<p>媒体元素URI中播放范围部分的规范已被加入到Gecko 9.0(Firefox 9.0 / Thunderbird 9.0 / SeaMonkey 2.6).当下,这是Geoko Media Fragments URI specification唯一实现的部分,并且只有是在非地址栏给媒体元素指定来源时才可使用。</p>
 <h3 id="23-canvas">2.3 <code>canvas</code>使用教程</h3>
 <ul>
 <li><strong>前言</strong></li>
