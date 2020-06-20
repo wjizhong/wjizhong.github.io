@@ -133,6 +133,16 @@
               ]},
               {title: "\u516d\u3001scipy\u6559\u7a0b", url: "#scipy", level:2, children: [ 
               ]},
+              {title: "\u4e03\u3001tensorflow", url: "#tensorflow", level:2, children: [
+                  {title: "7.1 Tensor\u5f20\u91cf", url: "#71-tensor", level:3, children: [
+                  ]},
+                  {title: "7.2 \u81ea\u52a8\u5fae\u5206", url: "#72", level:3, children: [
+                  ]},
+                  {title: "7.3 \u7ebf\u6027\u56de\u5f52\u6848\u4f8b", url: "#73", level:3, children: [
+                  ]},
+                  {title: "7.4 \u53d8\u91cf\u4fdd\u5b58&amp;\u8bfb\u53d6", url: "#74", level:3, children: [
+                  ]}, 
+              ]},
           ]},
         ];
     </script>
@@ -4509,6 +4519,127 @@ plt.show()
 </code></pre>
 
 <h2 id="scipy">六、scipy教程</h2>
+<h2 id="tensorflow">七、tensorflow</h2>
+<pre><code class="python"># 导入tensorflow库简写为tf,并输出版本
+import tensorflow as tf
+tf.__version__
+</code></pre>
+
+<h3 id="71-tensor">7.1 Tensor张量</h3>
+<ul>
+<li><strong>常量</strong></li>
+</ul>
+<pre><code class="python"># 创建一个3x3的0常量张量
+c = tf.zeros([3, 3])
+# 根据张量的形状,创建一个一样形状的1常量张量
+tf.ones_like(c)
+# 创建一个2x3,数值全为6的常量张量
+tf.fill([2, 3], 6)  # 2x3全为6的常量Tensor
+# 创建3x3随机的随机数组
+tf.random.normal([3,3])
+# 通过二维数组创建一个常量张量
+a = tf.constant([[1, 2], [3, 4]])  # 形状为(2, 2)的二维常量
+# 取出张量中的numpy数组
+a.numpy()
+# 从1.0-10.0等间距取出5个数形成一个常量张量
+tf.linspace(1.0, 10.0, 5)
+# 从1开始间隔2取1个数字，到大等于10为止
+tf.range(start=1, limit=10, delta=2)
+</code></pre>
+
+<ul>
+<li><strong>运算</strong></li>
+</ul>
+<pre><code class="python"># 将两个张量相加
+a + a
+# 将两个张量做矩阵乘法
+tf.matmul(a, a)
+# 两个张量做点乘
+tf.multiply(a, a)
+# 将一个张量转置
+tf.linalg.matrix_transpose(c)
+# 将一个12x1张量变形成3行的张量
+b = tf.linspace(1.0, 10.0, 12)
+tf.reshape(b,[3,4])
+## 方法二
+tf.reshape(b,[3,-1])
+</code></pre>
+
+<h3 id="72">7.2 自动微分</h3>
+<p>这一部分将会实现<span><span class="MathJax_Preview">y=x^2</span><script type="math/tex">y=x^2</script></span>在<span><span class="MathJax_Preview">x=1</span><script type="math/tex">x=1</script></span>处的导数</p>
+<ul>
+<li><strong>变量</strong></li>
+</ul>
+<pre><code class="python"># 新建一个1x1变量,值为1
+x = tf.Variable([1.0])
+# 新建一个GradientTape追踪梯度,把要微分的公式写在里面
+with tf.GradientTape() as tape:  # 追踪梯度
+    y = x * x
+# 求y对于x的导数
+grad = tape.gradient(y, x)  # 计算梯度
+</code></pre>
+
+<h3 id="73">7.3 线性回归案例</h3>
+<p>这一部分将生成添加随机噪声的沿100个<span><span class="MathJax_Preview">y=3x+2</span><script type="math/tex">y=3x+2</script></span>的数据点,再对这些数据点进行拟合。</p>
+<pre><code class="python"># 生成X,y数据,X为100个随机数,y=3X+2+noise,noise为100个随机数
+X = tf.random.normal([100, 1]).numpy()
+noise = tf.random.normal([100, 1]).numpy()
+y = 3*X+2+noise
+
+# 可视化这些点
+plt.scatter(X, y)
+# 创建需要预测的参数W,b(变量张量)
+W = tf.Variable(np.random.randn())
+b = tf.Variable(np.random.randn())
+print('W: %f, b: %f'%(W.numpy(), b.numpy()))
+# 创建线性回归预测模型
+def linear_regression(x):
+    return W * x + b
+# 创建损失函数，此处采用真实值与预测值的差的平方
+def mean_square(y_pred, y_true):
+    return tf.reduce_mean(tf.square(y_pred-y_true))
+# 创建GradientTape,写入需要微分的过程
+with tf.GradientTape() as tape:
+    pred = linear_regression(X)
+    loss = mean_square(pred, y)
+# 对loss,分别求关于W,b的偏导数
+dW, db = tape.gradient(loss, [W, b])
+# 用最简单朴素的梯度下降更新W,b,learning_rate设置为0.1
+W.assign_sub(0.1*dW)
+b.assign_sub(0.1*db)
+print('W: %f, b: %f'%(W.numpy(), b.numpy()))
+# 以上就是单次迭代的过程,现在我们要继续循环迭代20次,并且记录每次的loss,W,b
+for i in range(20):
+    with tf.GradientTape() as tape:
+        pred = linear_regression(X)
+        loss = mean_square(pred, y)
+    dW, db = tape.gradient(loss, [W, b])
+    W.assign_sub(0.1*dW)
+    b.assign_sub(0.1*db)
+    print(&quot;step: %i, loss: %f, W: %f, b: %f&quot; % (i+1, loss, W.numpy(), b.numpy()))
+# 画出最终拟合的曲线
+plt.plot(X, y, 'ro', label='Original data')
+plt.plot(X, np.array(W * X + b), label='Fitted line')
+plt.legend()
+plt.show()
+</code></pre>
+
+<h3 id="74">7.4 变量保存&amp;读取</h3>
+<p>这一部分,我们实现最简单的保存&amp;读取变量值</p>
+<pre><code class="python"># 新建一个Checkpoint对象，并且往里灌一个刚刚训练完的数据
+save = tf.train.Checkpoint()
+save.listed = [fc3_b]
+save.mapped = {'fc3_b': save.listed[0]}
+# 利用save()的方法保存，并且记录返回的保存路径
+save_path = save.save('/home/kesci/work/data/tf_list_example')
+print(save_path)
+# 新建一个Checkpoint对象,从里读出数据
+restore = tf.train.Checkpoint()
+fc3_b2 = tf.Variable(tf.zeros([10]))
+print(fc3_b2.numpy())
+restore.restore(save_path)
+print(fc3_b2.numpy())
+</code></pre>
 
   <br>
     <style>
