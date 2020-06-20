@@ -43,6 +43,8 @@
                       ]},
                   ]},
                   {title: "2.2 \u591a\u5a92\u4f53\u6807\u7b7e", url: "#22", level:3, children: [
+                      {title: "2.2.1 Video\u7684\u51e0\u79cd\u5e94\u7528\u573a\u666f", url: "#221-video", level:4,children: [
+                      ]},
                   ]},
                   {title: "2.3 canvas\u4f7f\u7528\u6559\u7a0b", url: "#23-canvas", level:3, children: [
                   ]}, 
@@ -402,7 +404,7 @@ console.log(blob2);  // 输出：Blob {size: 3, type: &quot;&quot;}
 </code></pre>
 
 <p>点击下载按钮,浏览器将会下载一个名为file的文件,文件的内容是:Blob Data。通过Blob对象,我们在前端代码中就可以动态生成文件,提供给浏览器下载。打开Chrome浏览器调试窗口,在Elements标签下可以看到生成的Blob URL为:</p>
-<p><img src="http://juejin.im/post/59e35d0e6fb9a045030f1f35](http://user-gold-cdn.xitu.io/2017/10/15/be05532b11cdb0b2ff25224f740cc0c3" style="width: 70%"></p>
+<p><img src="http://user-gold-cdn.xitu.io/2017/10/15/be05532b11cdb0b2ff25224f740cc0c3" style="width: 70%"></p>
 <ul>
 <li><strong>图片资源地址</strong></li>
 </ul>
@@ -425,7 +427,7 @@ console.log(blob2);  // 输出：Blob {size: 3, type: &quot;&quot;}
 <p>input中选择的图片会在里显示出来,如图所示：</p>
 <p><img src="http://user-gold-cdn.xitu.io/2017/10/15/38b2763383ad85667969be5f4267103b" style="width: 70%"></p>
 <p>同时,可以在Network标签栏,发现这个Blob URL的请求信息:</p>
-<p><img src="https://user-gold-cdn.xitu.io/2017/10/15/5fd11de37ea2fbe96db177cd43371445" style="width: 70%"></p>
+<p><img src="http://user-gold-cdn.xitu.io/2017/10/15/5fd11de37ea2fbe96db177cd43371445" style="width: 70%"></p>
 <p>这个请求信息和平时我们使用的Http URL获取图片几乎完全一样。我们还可以使用Data URL加载图片资源:</p>
 <pre><code class="html">&lt;script&gt;
     function handleFile(e) {
@@ -472,40 +474,34 @@ var blobURL = URL.createObjectURL(blob);
 </code></pre>
 
 <h3 id="22">2.2 多媒体标签</h3>
-<p>随着移动设备的飞速发展、各浏览器环境对<code>Video</code>支持的普及、<code>Flash</code>的没落,使用一个简单的<code>VideoHTMLElement</code>标签来替代原有的播放器插件进行视频媒体播放,帮我们更好的提高用户体验、增加更多的产品可能性已经日趋明显。
-这篇文章我们从<code>Video</code>的几种应用场景、各环境中依然或将长期存在的问题、基于原生<code>Video</code>进行业务开发常见的问题等方面,一起学习了解更多的实践方向和可能存在的坑。</p>
+<p>随着移动设备的飞速发展、各浏览器环境对Video支持的普及、Flash的没落,使用一个简单的VideoHTMLElement标签来替代原有的播放器插件进行视频媒体播放,帮我们更好的提高用户体验、增加更多的产品可能性已经日趋明显。</p>
+<p>这篇文章我们从Video的几种应用场景、各环境中依然或将长期存在的问题、基于原生Video进行业务开发常见的问题等方面,一起学习了解更多的实践方向和可能存在的坑。</p>
+<h4 id="221-video">2.2.1 Video的几种应用场景</h4>
 <ul>
-<li><strong><code>Video</code>的几种应用场景</strong></li>
+<li><strong>最基本的HTML标签应用</strong></li>
 </ul>
-<blockquote>
-<ul>
-<li><strong>最基本的<code>HTML</code>标签应用</strong></li>
-</ul>
-</blockquote>
-<p><code>H5</code>中视频播放,像我们以前使用<code>IMG</code>标签插入图片到网页里一样方便,写一个<code>video</code>设置一个<code>src</code>属性指定媒体源地址就可以实现媒体播放了,针对低版本浏览器<code>video</code>的<code>HTML</code>结构也提供了友好的兼容方案,只需要在<code>video</code>标签内写上不兼容时要展示的HTML内容即可。</p>
+<p>H5中视频播放,像我们以前使用IMG标签插入图片到网页里一样方便,写一个video设置一个src属性指定媒体源地址就可以实现媒体播放了,针对低版本浏览器video的HTML结构也提供了友好的兼容方案,只需要在video标签内写上不兼容时要展示的HTML内容即可。</p>
 <pre><code class="html">&lt;video src=&quot;https://chimee.org/vod/1.mp4&quot; controls&gt;
     您的浏览器不支持Video标签。
 &lt;/video&gt;
 </code></pre>
 
-<p>为了便于用户的操作,我们还设置了一个布尔型<code>controls</code>属性,告诉浏览器这个播放器渲染时需要显示控制条,在<code>Chrome</code>中渲染出的效果如下:</p>
-<p><img alt="" src="http://p1.ssl.qhimg.com/d/inn/7b9a4489/1.jpeg" /></p>
-<p>当然<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement"><code>HTMLVideoElement</code>的属性设置</a>不只简单的提供了一个<code>controls</code>,还有更多的可配置项,比如:通过添加<code>autoplay</code>属性开启自动播放、通过添加<code>muted</code>设置为静音模式、通过给<code>volume</code>属性设置<code>0.0~1.0</code>之间的数值控制初始音量大小...</p>
-<blockquote>
+<p>为了便于用户的操作,我们还设置了一个布尔型controls属性,告诉浏览器这个播放器渲染时需要显示控制条,在Chrome中渲染出的效果如下:</p>
+<p><img src="http://p1.ssl.qhimg.com/d/inn/7b9a4489/1.jpeg" style="width:70%"></p>
+<p>当然<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement">HTMLVideoElement的属性设置</a>不只简单的提供了一个controls,还有更多的可配置项,比如:通过添加autoplay属性开启自动播放、通过添加muted设置为静音模式、通过给volume属性设置0.0~1.0之间的数值控制初始音量大小...</p>
 <ul>
 <li><strong>针对不同环境配置其支持的媒体资源</strong></li>
 </ul>
-</blockquote>
-<p>目前原生<code>H5</code>支持的媒体格式主要有<code>MP4</code>、<code>OGG</code>、<code>WebM</code>、<code>M3U8</code>等,基于媒体编码格式存在专利和产权归属问题,所以各大浏览器厂商之间对媒体格式的支持也各不相同:</p>
-<p><strong><code>MP4</code>:</strong></p>
-<p><img alt="" src="http://p4.ssl.qhimg.com/dm/888_199_/d/inn/a86851ea8872/caniuse_mp4.jpg" /></p>
-<p><strong><code>WebM</code>:</strong></p>
-<p><img alt="" src="http://p4.ssl.qhimg.com/dm/888_199_/d/inn/a1ba51ea8872/caniuse_webm.jpg" /></p>
+<p>目前原生H5支持的媒体格式主要有MP4、OGG、WebM、M3U8等,基于媒体编码格式存在专利和产权归属问题,所以各大浏览器厂商之间对媒体格式的支持也各不相同:</p>
+<p><strong>MP4:</strong></p>
+<p><img src="http://p4.ssl.qhimg.com/dm/888_199_/d/inn/a86851ea8872/caniuse_mp4.jpg" style="width:70%"></p>
+<p><strong>WebM:</strong></p>
+<p><img src="http://p4.ssl.qhimg.com/dm/888_199_/d/inn/a1ba51ea8872/caniuse_webm.jpg" style="width:70%"></p>
 <p><strong><code>OGG</code>:</strong></p>
-<p><img alt="" src="http://p0.ssl.qhimg.com/dm/888_199_/d/inn/cb5251ea8872/caniuse_ogg.jpg" /></p>
+<p><img src="http://p0.ssl.qhimg.com/dm/888_199_/d/inn/cb5251ea8872/caniuse_ogg.jpg" style="width:70%"></p>
 <p><strong><code>M3U8</code>:</strong></p>
-<p><img alt="" src="http://p3.ssl.qhimg.com/dm/888_199_/d/inn/195851ea8872/caniuse_m3u8.jpg" /></p>
-<p>通过上面可以看到,目前就<code>MP4</code>各浏览器的兼容较好。这种浏览器之间媒体格式支持的差异化,使得我们必须得考虑不同用户环境的兼容问题。比较庆幸的是<code>Video</code>标准制定中也考虑了这些问题,比如在<code>HTML</code>代码的编写上我们可以在<code>video</code>标签内嵌套<code>source</code>标签来达成不同兼容环境下设定相应媒体源的需求:</p>
+<p><img src="http://p3.ssl.qhimg.com/dm/888_199_/d/inn/195851ea8872/caniuse_m3u8.jpg" style="width:70%"></p>
+<p>通过上面可以看到,目前就MP4各浏览器的兼容较好。这种浏览器之间媒体格式支持的差异化,使得我们必须得考虑不同用户环境的兼容问题。比较庆幸的是Video标准制定中也考虑了这些问题,比如在HTML代码的编写上我们可以在video标签内嵌套source标签来达成不同兼容环境下设定相应媒体源的需求:</p>
 <pre><code class="html">&lt;video controls&gt;
     &lt;source src=&quot;https://chimee.org/vod/2.webm&quot;&gt;
     &lt;source src=&quot;https://chimee.org/vod/2.ogg&quot;&gt;
@@ -515,8 +511,8 @@ var blobURL = URL.createObjectURL(blob);
 &lt;/video&gt;
 </code></pre>
 
-<p>当我们设置了<code>source</code>,就可以让不同的浏览器环境按照自身的支持情况,找到能正常解码播放的媒体源进行播放,为了让浏览器更快速准确的匹配媒体资源,建议同时设定<code>type</code>属性,来明确说明媒体编码格式,以尽可能的减少不必要的等待。</p>
-<p>另外,在编写<code>javascript</code>的时候,也可以通过<code>HTMLVideoElement</code>的<code>canPlayType API</code>进行当前环境的格式兼容判断:</p>
+<p>当我们设置了source,就可以让不同的浏览器环境按照自身的支持情况,找到能正常解码播放的媒体源进行播放,为了让浏览器更快速准确的匹配媒体资源,建议同时设定type属性,来明确说明媒体编码格式,以尽可能的减少不必要的等待。</p>
+<p>另外,在编写javascript的时候,也可以通过HTMLVideoElement的canPlayType API进行当前环境的格式兼容判断:</p>
 <pre><code class="js">let videoEl = document.createElement(&quot;video&quot;);
 
 // 是否支持MP4
@@ -538,11 +534,11 @@ videoEl.canPlayType('application/vnd.apple.mpegURL') !== '';
 videoEl.canPlayType('video/mp2t; codecs=&quot;avc1.42E01E,mp4a.40.2&quot;') !== '';
 </code></pre>
 
-<p>使用<code>canPlayType</code>方法传入要检测的媒体类型或具体编码格式,我们将可能得到'<code>maybe</code>'、'<code>probably</code>'、''三个String值中的一个,当得到空字串的时候,可以确定为不支持。</p>
-<p><img alt="" src="http://p2.ssl.qhimg.com/d/inn/2016893c/2.png" /></p>
+<p>使用canPlayType方法传入要检测的媒体类型或具体编码格式,我们将可能得到'maybe'、'probably'、''三个String值中的一个,当得到空字串的时候,可以确定为不支持。</p>
+<p><img src="http://p2.ssl.qhimg.com/d/inn/2016893c/2.png" style="width:70%" ></p>
 <blockquote>
 <ul>
-<li><strong>使用<code>Video</code>的<code>API</code>和事件交互实现<code>RPG</code>互动游戏</strong></li>
+<li><strong>使用Video的API和事件交互实现RPG互动游戏</strong></li>
 </ul>
 </blockquote>
 <p>一方面我们可以通过<code>VideoElement</code>的<code>JS API</code>进行状态的修改控制,来实现用户行为对剧情发展的影响带来不同场景间的切换;另一方面我们通过对V<code>ideoElement</code>的事件监听可以响应状态的变化,当剧情发展到特定场景需要用户执行关键抉择。</p>
