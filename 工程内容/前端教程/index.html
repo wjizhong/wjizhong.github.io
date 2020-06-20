@@ -39,6 +39,8 @@
                   {title: "1.2 URL\u76f8\u5173", url: "#12-url", level:3, children: [
                       {title: "1.2.1 Web\u4e2d\u7684Blob", url: "#121-webblob", level:4,children: [
                       ]},
+                      {title: "1.2.2 Blob\u4f7f\u7528\u573a\u666f", url: "#122-blob", level:4,children: [
+                      ]},
                   ]},
                   {title: "2.2 \u591a\u5a92\u4f53\u6807\u7b7e", url: "#22", level:3, children: [
                   ]},
@@ -298,16 +300,11 @@ console.log(blob5);  //输出：Blob {size: 15, type: &quot;&quot;}
 console.log(blob6);  //输出：Blob {size: 59, type: &quot;&quot;}
 </code></pre>
 
-<p><code>size</code>代表<code>Blob</code>对象中所包含数据的字节数。这里要注意,使用字符串和普通对象创建<code>Blob</code>时的不同,<code>blob4</code>使用通过<code>JSON.stringify</code>把<code>data4</code>对象转换成<code>json</code>字符串,<code>blob5</code>则直接使用<code>data4</code>创建,两个对象的<code>size</code>分别为<code>14</code>和<code>15</code>。<code>blob4</code>的<code>size</code>等于<code>14</code>很容易理解,因为<code>JSON.stringify(data4)</code>的结果为:"<code>{"name":"abc"}</code>",正好<code>14</code>个字节(不包含最外层的引号)。<code>blob5</code>的<code>size</code>等于<code>15</code>是如何计算而来的呢?实际上,当使用普通对象创建Blob对象时,相当于调用了普通对象的<code>toString()</code>方法得到字符串数据,然后再创建<code>Blob</code>对象。所以,<code>blob5</code>保存的数据是"<code>[object Object]</code>",是<code>15</code>个字节(不包含最外层的引号)。</p>
+<p>size代表Blob对象中所包含数据的字节数。这里要注意,使用字符串和普通对象创建Blob时的不同,blob4使用通过JSON.stringify把data4对象转换成json字符串,blob5则直接使用data4创建,两个对象的size分别为14和15。blob4的size等于14很容易理解,因为JSON.stringify(data4)的结果为:"{"name":"abc"}",正好14个字节(不包含最外层的引号)。blob5的size等于15是如何计算而来的呢?实际上,当使用普通对象创建Blob对象时,相当于调用了普通对象的toString()方法得到字符串数据,然后再创建Blob对象。所以,blob5保存的数据是"[object Object]",是15个字节(不包含最外层的引号)。</p>
 <ul>
-<li><strong><code>slice</code>方法</strong></li>
+<li><strong>slice方法</strong></li>
 </ul>
-<p><code>Blob</code>对象有一个<code>slice</code>方法,返回一个新的<code>Blob</code>对象,包含了源<code>Blob</code>对象中指定范围内的数据。</p>
-<p>使用方法:</p>
-<pre><code class="js">slice([start[, end[, contentType]]])
-</code></pre>
-
-<p>参数说明:</p>
+<p>Blob对象有一个slice方法,返回一个新的Blob对象,包含了源Blob对象中指定范围内的数据。使用方法:<code>slice([start[, end[, contentType]]])</code>。参数说明:</p>
 <table>
 <thead>
 <tr>
@@ -318,15 +315,15 @@ console.log(blob6);  //输出：Blob {size: 59, type: &quot;&quot;}
 <tbody>
 <tr>
 <td align="left"><code>start</code></td>
-<td>可选,代表Blob里的下标,表示第一个会被会被拷贝进新的<code>Blob</code>的字节的起始位置,如果传入的是一个负数,那么这个偏移量将会从数据的末尾从后到前开始计算</td>
+<td>可选,代表Blob里的下标,表示第一个会被会被拷贝进新的Blob的字节的起始位置,如果传入的是一个负数,那么这个偏移量将会从数据的末尾从后到前开始计算</td>
 </tr>
 <tr>
 <td align="left"><code>end</code></td>
-<td>可选,代表的是<code>Blob</code>的一个下标,这个下标<code>-1</code>的对应的字节将会是被拷贝进新的<code>Blob</code> 的最后一个字节,如果你传入了一个负数,那么这个偏移量将会从数据的末尾从后到前开始计算</td>
+<td>可选,代表的是Blob的一个下标,这个下标-1的对应的字节将会是被拷贝进新的Blob的最后一个字节,如果你传入了一个负数,那么这个偏移量将会从数据的末尾从后到前开始计算</td>
 </tr>
 <tr>
 <td align="left"><code>contentType</code></td>
-<td>可选,给新的<code>Blob</code>赋予一个新的文档类型,这将会把它的<code>type</code>属性设为被传入的值,它的默认值是一个空的字符串</td>
+<td>可选,给新的Blob赋予一个新的文档类型,这将会把它的type属性设为被传入的值,它的默认值是一个空的字符串</td>
 </tr>
 </tbody>
 </table>
@@ -339,16 +336,12 @@ console.log(blob1);  // 输出：Blob {size: 6, type: &quot;&quot;}
 console.log(blob2);  // 输出：Blob {size: 3, type: &quot;&quot;}
 </code></pre>
 
-<p>通过<code>slice</code>方法,从<code>blob1</code>中创建出一个新的<code>blob</code>对象,<code>size</code>等于<code>3</code>。</p>
-<ul>
-<li><strong><code>Blob</code>使用场景</strong></li>
-</ul>
-<blockquote>
+<p>通过slice方法,从blob1中创建出一个新的blob对象,size等于3。</p>
+<h4 id="122-blob">1.2.2 Blob使用场景</h4>
 <ul>
 <li><strong>分片上传</strong></li>
 </ul>
-</blockquote>
-<p>前面已经说过,<code>File</code>继承自<code>Blob</code>,因此我们可以调用<code>slice</code>方法对大文件进行分片长传。代码如下:</p>
+<p>前面已经说过,File继承自Blob,因此我们可以调用slice方法对大文件进行分片长传。代码如下:</p>
 <pre><code class="js">function uploadFile(file) {
     var chunkSize = 1024 * 1024;   // 每片1M大小
     var totalSize = file.size;
@@ -389,112 +382,71 @@ console.log(blob2);  // 输出：Blob {size: 3, type: &quot;&quot;}
 }
 </code></pre>
 
-<p>这段代码还可以进一步丰富,比如显示当前的上传进度,使用多个<code>XMLHttpRequest</code>对象并行上传对象(需要传递分片数据的位置参数给服务器端)等。</p>
-<blockquote>
+<p>这段代码还可以进一步丰富,比如显示当前的上传进度,使用多个XMLHttpRequest对象并行上传对象(需要传递分片数据的位置参数给服务器端)等。</p>
 <ul>
-<li><strong><code>Blob URL</code></strong></li>
+<li><strong>Blob URL</strong></li>
 </ul>
-</blockquote>
-<p><code>Blob URL</code>是<code>blob</code>协议的<code>URL</code>,它的格式如:<code>blob:http://XXX</code>。<code>Blob URL</code>可以通过<code>URL.createObjectURL(blob)</code>创建。在绝大部分场景下,我们可以像使用<code>Http</code>协议的<code>URL</code>一样,使用<code>Blob URL</code>。常见的场景有:作为文件的下载地址和作为图片资源地址。</p>
+<p>Blob URL是blob协议的URL,它的格式如:<code>blob:http://XXX</code>。Blob URL可以通过URL.createObjectURL(blob)创建。在绝大部分场景下,我们可以像使用Http协议的URL一样,使用Blob URL。常见的场景有:作为文件的下载地址和作为图片资源地址。</p>
 <p>文件下载地址:</p>
-<pre><code class="html">&lt;!DOCTYPE html&gt;
-&lt;html lang=&quot;en&quot;&gt;
-
-&lt;head&gt;
-    &lt;meta charset=&quot;UTF-8&quot;&gt;
-    &lt;title&gt;Blob Test&lt;/title&gt;
-    &lt;script&gt;
-        function createDownloadFile() {
-            var content = &quot;Blob Data&quot;;
-            var blob = new Blob([content]);
-            var link = document.getElementsByTagName(&quot;a&quot;)[0];
-            link.download = &quot;file&quot;;
-            link.href = URL.createObjectURL(blob);
-        }
-        window.onload = createDownloadFile;
-    &lt;/script&gt;
-&lt;/head&gt;
-
-&lt;body&gt;
-    &lt;a&gt;下载&lt;/a&gt;
-&lt;/body&gt;
-
-&lt;/html&gt;
+<pre><code class="html">&lt;script&gt;
+    function createDownloadFile() {
+        var content = &quot;Blob Data&quot;;
+        var blob = new Blob([content]);
+        var link = document.getElementsByTagName(&quot;a&quot;)[0];
+        link.download = &quot;file&quot;;
+        link.href = URL.createObjectURL(blob);
+    }
+    window.onload = createDownloadFile;
+&lt;/script&gt;
+&lt;a&gt;下载&lt;/a&gt;
 </code></pre>
 
-<p>点击下载按钮,浏览器将会下载一个名为<code>file</code>的文件,文件的内容是:<code>Blob Data</code>。通过<code>Blob</code>对象,我们在前端代码中就可以动态生成文件,提供给浏览器下载。打开<code>Chrome</code>浏览器调试窗口,在<code>Elements</code>标签下可以看到生成的<code>Blob URL</code>为:</p>
-<p><img alt="https://juejin.im/post/59e35d0e6fb9a045030f1f35" src="http://user-gold-cdn.xitu.io/2017/10/15/be05532b11cdb0b2ff25224f740cc0c3" /></p>
-<blockquote>
+<p>点击下载按钮,浏览器将会下载一个名为file的文件,文件的内容是:Blob Data。通过Blob对象,我们在前端代码中就可以动态生成文件,提供给浏览器下载。打开Chrome浏览器调试窗口,在Elements标签下可以看到生成的Blob URL为:</p>
+<p><img src="http://juejin.im/post/59e35d0e6fb9a045030f1f35](http://user-gold-cdn.xitu.io/2017/10/15/be05532b11cdb0b2ff25224f740cc0c3" style="width: 70%"></p>
 <ul>
 <li><strong>图片资源地址</strong></li>
 </ul>
-</blockquote>
-<p>为图片文件创建一个<code>Blob URL</code>,赋值给标签:</p>
-<pre><code class="html">&lt;!DOCTYPE html&gt;
-&lt;html lang=&quot;en&quot;&gt;
-
-&lt;head&gt;
-    &lt;meta charset=&quot;UTF-8&quot;&gt;
-    &lt;title&gt;Blob Test&lt;/title&gt;
-    &lt;script&gt;
-        function handleFile(e) {
-            var file = e.files[0];
-            var blob = URL.createObjectURL(file);
-            var img = document.getElementsByTagName(&quot;img&quot;)[0];
-            img.src = blob;
-            img.onload = function(e) {
-                URL.revokeObjectURL(this.src);  // 释放createObjectURL创建的对象##
-            }
+<p>为图片文件创建一个Blob URL,赋值给标签:</p>
+<pre><code class="html">&lt;script&gt;
+    function handleFile(e) {
+        var file = e.files[0];
+        var blob = URL.createObjectURL(file);
+        var img = document.getElementsByTagName(&quot;img&quot;)[0];
+        img.src = blob;
+        img.onload = function(e) {
+            URL.revokeObjectURL(this.src);  // 释放createObjectURL创建的对象##
         }
-    &lt;/script&gt;
-&lt;/head&gt;
-
-&lt;body&gt;
-    &lt;input type=&quot;file&quot; accept=&quot;image/*&quot; onchange=&quot;handleFile(this)&quot; /&gt;
-    &lt;br/&gt;
-    &lt;img style=&quot;width:200px;height:200px&quot;&gt;
-&lt;/body&gt;
-
-&lt;/html&gt;
+    }
+&lt;/script&gt;
+&lt;input type=&quot;file&quot; accept=&quot;image/*&quot; onchange=&quot;handleFile(this)&quot; /&gt;&lt;br/&gt;
+&lt;img style=&quot;width:200px;height:200px&quot;&gt;
 </code></pre>
 
-<p><code>input</code>中选择的图片会在里显示出来,如图所示：</p>
-<p><img alt="https://juejin.im/post/59e35d0e6fb9a045030f1f35" src="http://user-gold-cdn.xitu.io/2017/10/15/38b2763383ad85667969be5f4267103b" /></p>
-<p>同时,可以在<code>Network</code>标签栏,发现这个<code>Blob URL</code>的请求信息:</p>
-<p><img alt="https://juejin.im/post/59e35d0e6fb9a045030f1f35" src="https://user-gold-cdn.xitu.io/2017/10/15/5fd11de37ea2fbe96db177cd43371445" /></p>
-<p>这个请求信息和平时我们使用的<code>Http URL</code>获取图片几乎完全一样。我们还可以使用<code>Data URL</code>加载图片资源:</p>
-<pre><code class="html">&lt;!DOCTYPE html&gt;
-&lt;html lang=&quot;en&quot;&gt;
-
-&lt;head&gt;
-    &lt;meta charset=&quot;UTF-8&quot;&gt;
-    &lt;title&gt;Blob Test&lt;/title&gt;
-    &lt;script&gt;
-        function handleFile(e) {
-            var file = e.files[0];
-            var fileReader = new FileReader();
-            var img = document.getElementsByTagName(&quot;img&quot;)[0];
-            fileReader.onload = function(e) {
-                img.src = e.target.result;
-            }
-            fileReader.readAsDataURL(file);
+<p>input中选择的图片会在里显示出来,如图所示：</p>
+<p><img src="http://user-gold-cdn.xitu.io/2017/10/15/38b2763383ad85667969be5f4267103b" style="width: 70%"></p>
+<p>同时,可以在Network标签栏,发现这个Blob URL的请求信息:</p>
+<p><img src="https://user-gold-cdn.xitu.io/2017/10/15/5fd11de37ea2fbe96db177cd43371445" style="width: 70%"></p>
+<p>这个请求信息和平时我们使用的Http URL获取图片几乎完全一样。我们还可以使用Data URL加载图片资源:</p>
+<pre><code class="html">&lt;script&gt;
+    function handleFile(e) {
+        var file = e.files[0];
+        var fileReader = new FileReader();
+        var img = document.getElementsByTagName(&quot;img&quot;)[0];
+        fileReader.onload = function(e) {
+            img.src = e.target.result;
         }
-    &lt;/script&gt;
-&lt;/head&gt;
+        fileReader.readAsDataURL(file);
+    }
+&lt;/script&gt;
 
-&lt;body&gt;
-    &lt;input type=&quot;file&quot; accept=&quot;image/*&quot; onchange=&quot;handleFile(this)&quot; /&gt;
-    &lt;br/&gt;
-    &lt;img style=&quot;width:200px;height:200px&quot;&gt;
-&lt;/body&gt;
-
-&lt;/html&gt;
+&lt;input type=&quot;file&quot; accept=&quot;image/*&quot; onchange=&quot;handleFile(this)&quot; /&gt; &lt;br/&gt;
+&lt;img style=&quot;width:200px;height:200px&quot;&gt;
 </code></pre>
 
-<p><code>FileReader</code>的<code>readAsDataURL</code>生成一个<code>Data URL</code>,如图所示:</p>
-<p><img alt="https://juejin.im/post/59e35d0e6fb9a045030f1f35" src="https://user-gold-cdn.xitu.io/2017/10/15/3d18020f92e1ca717088fa2cdcd37b42" /></p>
-<p><code>Data URL</code>对大家来说应该并不陌生,<code>Web</code>性能优化中有一项措施:把小图片用<code>base64</code>编码直接嵌入到<code>HTML</code>文件中,实际上就是利用了<code>Data URL</code>来获取嵌入的图片数据。那么<code>Blob URL</code>和<code>Data URL</code>有什么区别呢?</p>
-<p><code>Blob URL</code>的长度一般比较短,但<code>Data URL</code>因为直接存储图片<code>base64</code>编码后的数据,往往很长,如上图所示,浏览器在显示<code>Data URL</code>时使用了省略号(<code>…</code>)。当显式大图片时,使用<code>Blob URL</code>能获取更好的可能性。<code>Blob URL</code>可以方便的使用<code>XMLHttpRequest</code>获取源数据,例如:</p>
+<p>FileReader的readAsDataURL生成一个Data URL,如图所示:</p>
+<p><img alt="https://juejin.im/post/59e35d0e6fb9a045030f1f35" src="http://user-gold-cdn.xitu.io/2017/10/15/3d18020f92e1ca717088fa2cdcd37b42" /></p>
+<p>Data URL对大家来说应该并不陌生,Web性能优化中有一项措施:把小图片用base64编码直接嵌入到HTML文件中,实际上就是利用了Data URL来获取嵌入的图片数据。那么Blob URL和Data URL有什么区别呢?</p>
+<p>Blob URL的长度一般比较短,但Data URL因为直接存储图片base64编码后的数据,往往很长,如上图所示,浏览器在显示Data URL时使用了省略号(…)。当显式大图片时,使用Blob URL能获取更好的可能性。Blob URL可以方便的使用XMLHttpRequest获取源数据,例如:</p>
 <pre><code class="js">var blobUrl = URL.createObjectURL(new Blob(['Test'], {type: 'text/plain'}));
 var x = new XMLHttpRequest();
 // 如果设置x.responseType = 'blob',将返回一个Blob对象,而不是文本:
@@ -506,8 +458,8 @@ x.open('get', blobUrl);
 x.send();
 </code></pre>
 
-<p>对于<code>Data URL</code>,并不是所有浏览器都支持通过<code>XMLHttpRequest</code>获取源数据的。<code>Blob URL</code>只能在当前应用内部使用,把<code>Blob URL</code>复制到浏览器的地址栏中,是无法获取数据的。<code>Data URL</code>相比之下,就有很好的移植性,你可以在任意浏览器中使用。</p>
-<p>除了可以用作图片资源的网络地址,<code>Blob URL</code>也可以用作其他资源的网络地址,例如<code>html</code>文件、<code>json</code>文件等,为了保证浏览器能正确的解析<code>Blob URL</code>返回的文件类型,需要在创建<code>Blob</code>对象时指定相应的<code>type</code>:</p>
+<p>对于Data URL,并不是所有浏览器都支持通过XMLHttpRequest获取源数据的。Blob URL只能在当前应用内部使用,把Blob URL复制到浏览器的地址栏中,是无法获取数据的。Data URL相比之下,就有很好的移植性,你可以在任意浏览器中使用。</p>
+<p>除了可以用作图片资源的网络地址,Blob URL也可以用作其他资源的网络地址,例如html文件、json文件等,为了保证浏览器能正确的解析Blob URL返回的文件类型,需要在创建Blob对象时指定相应的type:</p>
 <pre><code class="js">// 创建HTML文件的Blob URL
 var data = &quot;&lt;div style='color:red;'&gt;This is a blob&lt;/div&gt;&quot;;
 var blob = new Blob([data], { type: 'text/html' });
