@@ -1782,38 +1782,23 @@ void ctx.putImageData（imageData，dx，dy，dirtyX，dirtyY，dirtyWidth，dir
 <li><strong><code>&lt;body&gt;</code>标签也有margin</strong></li>
 </ul>
 <p><code>&lt;body&gt;</code>标签有必要强调一下。很多人以为<code>&lt;body&gt;</code>标签占据的是整个页面的全部区域,其实是错误的,正确的理解是这样的:整个网页最大的盒子是<code>&lt;document&gt;</code>,即浏览器。而<code>&lt;body&gt;</code>是<code>&lt;document&gt;</code>的儿子。浏览器给<code>&lt;body&gt;</code>默认的<code>margin</code>大小是8个像素,此时<code>&lt;body&gt;</code>占据了整个页面的一大部分区域,而不是全部区域。来看一段代码。</p>
-<pre><code class="html">&lt;!doctype html&gt;
-&lt;html lang=&quot;en&quot;&gt;
-    &lt;head&gt;
-        &lt;meta charset=&quot;UTF-8&quot;&gt;
-        &lt;meta name=&quot;Generator&quot; content=&quot;EditPlus®&quot;&gt;
-        &lt;meta name=&quot;Author&quot; content=&quot;&quot;&gt;
-        &lt;meta name=&quot;Keywords&quot; content=&quot;&quot;&gt;
-        &lt;meta name=&quot;Description&quot; content=&quot;&quot;&gt;
-        &lt;title&gt;Document&lt;/title&gt;
-
-        &lt;style type=&quot;text/css&quot;&gt;
-            div{
-                width: 100px;
-                height: 100px;
-                border: 1px solid red;
-                padding: 20px;
-                margin: 30px;
-            }
-        &lt;/style&gt;
-    &lt;/head&gt;
-
-    &lt;body&gt;
-        &lt;div&gt;有生之年&lt;/div&gt;
-        &lt;div&gt;狭路相逢&lt;/div&gt;
-    &lt;/body&gt;
-&lt;/html&gt;
+<pre><code class="html">&lt;style type=&quot;text/css&quot;&gt;
+    div{
+        width: 100px;
+        height: 100px;
+        border: 1px solid red;
+        padding: 20px;
+        margin: 30px;
+    }
+&lt;/style&gt;
+&lt;div&gt;有生之年&lt;/div&gt;
+&lt;div&gt;狭路相逢&lt;/div&gt;
 </code></pre>
 
 <p>上面的代码中,我们对div标签设置了边距等信息。打开google浏览器,按住F12,显示效果如下:</p>
-<p><img alt="" src="http://img.smyhvae.com/20151003_27.png" /></p>
+<p><img src="http://img.smyhvae.com/20151003_27.png" style="width: 60%"></p>
 <ul>
-<li><strong>认识<code>width</code>、<code>height</code></strong></li>
+<li><strong>认识width、height</strong></li>
 </ul>
 <p><img alt="" src="http://img.smyhvae.com/20170727_2329.png" /></p>
 <p>下面这两个盒子,真实占有宽高,都是302*302:</p>
@@ -1834,13 +1819,13 @@ void ctx.putImageData（imageData，dx，dy，dirtyX，dirtyY，dirtyWidth，dir
 </code></pre>
 
 <p>上面这两个盒子的盒模型图如下:</p>
-<p><img alt="" src="http://img.smyhvae.com/20170728_0925.png" /></p>
+<p><img src="http://img.smyhvae.com/20170728_0925.png" style="width: 70%"></p>
 <ul>
 <li><strong>认识<code>padding</code></strong></li>
 </ul>
-<p><code>padding</code>区域也有颜色,<code>padding</code>就是内边距。<code>padding</code>的区域有背景颜色,css2.1前提下,并且背景颜色一定和内容区域的相同。也就是说,<code>background-color</code>将填充所有border以内的区域。效果如下:</p>
-<p><img alt="" src="http://img.smyhvae.com/20170728_1005.png" /></p>
-<p><code>padding</code>是4个方向的,所以我们能够分别描述4个方向的<code>padding</code>。方法有两种,第一种写小属性;第二种写综合属性,用空格隔开。小属性的写法:</p>
+<p>padding区域也有颜色,padding就是内边距。padding的区域有背景颜色,css2.1前提下,并且背景颜色一定和内容区域的相同。也就是说,background-color将填充所有border以内的区域。效果如下:</p>
+<p><img src="http://img.smyhvae.com/20170728_1005.png" style="width: 60%"></p>
+<p>padding是4个方向的,所以我们能够分别描述4个方向的padding。方法有两种,第一种写小属性;第二种写综合属性,用空格隔开。小属性的写法:</p>
 <pre><code class="css">padding-top: 30px;
 padding-right: 20px;
 padding-bottom: 40px;
@@ -1856,16 +1841,16 @@ padding-left: 100px;
 padding-left: 30px;
 </code></pre>
 
-<p>上面的<code>padding</code>对应盒子模型为:</p>
-<p><img alt="" src="http://img.smyhvae.com/20170728_1039.png" /></p>
+<p>上面的padding对应盒子模型为:</p>
+<p><img src="http://img.smyhvae.com/20170728_1039.png" style="width: 20%"></p>
 <p>下面的写法:</p>
 <pre><code class="css">padding-left: 30px;
 padding: 20px;
 </code></pre>
 
-<p>第一行的小属性无效,因为被第二行的大属性层叠掉了。一些元素,默认带有<code>padding</code>,比如<code>ul</code>标签。如下:</p>
-<p><img alt="" src="http://img.smyhvae.com/20170728_1413.png" /></p>
-<p>上图显示,不加任何样式的<code>ul</code>,也是有<code>40px</code>的<code>padding-left</code>。所以,我们做站的时候,为了便于控制,总是喜欢清除这个默认的<code>padding</code>。</p>
+<p>第一行的小属性无效,因为被第二行的大属性层叠掉了。一些元素,默认带有padding,比如ul标签。如下:</p>
+<p><img src="http://img.smyhvae.com/20170728_1413.png" style="width: 55%"></p>
+<p>上图显示,不加任何样式的ul,也是有40px的padding-left。所以,我们做站的时候,为了便于控制,总是喜欢清除这个默认的padding。</p>
 <p>可以使用<code>*</code>进行清除:</p>
 <pre><code class="css">*{
     margin: 0;
@@ -1881,15 +1866,15 @@ padding: 20px;
 </code></pre>
 
 <ul>
-<li><strong>认识<code>border</code></strong></li>
+<li><strong>认识border</strong></li>
 </ul>
 <p>border就是边框。边框有三个要素:像素(粗细)、线型、颜色。颜色如果不写,默认是黑色。另外两个属性不写,要命了,显示不出来边框。</p>
-<p><strong><code>border-style</code></strong>:<code>border</code>的所有的线型如下:</p>
-<p><img alt="" src="http://img.smyhvae.com/20170728_1435.png" /></p>
-<p>比如<code>border:10px ridge red;</code>这个属性,在<code>chrome</code>和<code>firefox</code>、<code>IE</code>中有细微差别:(因为可以显示出效果,因此并不是兼容性问题,只是有细微差别而已)</p>
-<p><img alt="" src="http://img.smyhvae.com/20170728_1619.png" /></p>
-<p>如果追求极高的页面还原度,那么不能使用<code>css</code>来制作边框。就要用到图片,就要切图了。所以,比较稳定的<code>border-style</code>就几个:<code>solid</code>、<code>dashed</code>、<code>dotted</code>。</p>
-<p><strong><code>border</code>拆分:</strong><code>border</code>是一个大综合属性。比如说:<code>border:1px solid red;</code>,就是把<code>4</code>个边框,都设置为<code>1px</code>宽度、线型实线、red颜色。</p>
+<p><strong>border-style</strong>:border的所有的线型如下:</p>
+<p><img src="http://img.smyhvae.com/20170728_1435.png" style="width:45%"></p>
+<p>比如<code>border:10px ridge red;</code>这个属性,在chrome和firefox、IE中有细微差别:(因为可以显示出效果,因此并不是兼容性问题,只是有细微差别而已)</p>
+<p><img src="http://img.smyhvae.com/20170728_1619.png" style="width:50%"></p>
+<p>如果追求极高的页面还原度,那么不能使用css来制作边框。就要用到图片,就要切图了。所以,比较稳定的border-style就几个:solid、dashed、dotted。</p>
+<p><strong>border拆分:</strong>border是一个大综合属性。比如说:<code>border:1px solid red;</code>,就是把4个边框,都设置为1px宽度、线型实线、red颜色。</p>
 <p>border属性是能够被拆开的,有两大种拆开的方式:</p>
 <blockquote>
 <ol>
@@ -1897,7 +1882,7 @@ padding: 20px;
 <li>按方向拆开:border-top、border-right、border-bottom、border-left。</li>
 </ol>
 </blockquote>
-<p>现在我们明白了:一个<code>border</code>属性,是由三个小属性综合而成的。如果某一个小属性后面是空格隔开的多个值,那么就是上右下左的顺序。举例如下:</p>
+<p>现在我们明白了:一个border属性,是由三个小属性综合而成的。如果某一个小属性后面是空格隔开的多个值,那么就是上右下左的顺序。举例如下:</p>
 <pre><code class="css">border-width:10px 20px;
 border-style:solid dashed dotted;
 border-color:red green blue yellow;
