@@ -69,22 +69,22 @@
                       ]},
                       {title: "2.2.7 \u5176\u4ed6\u5c5e\u6027", url: "#227", level:4,children: [
                       ]},
+                  ]},
+                  {title: "2.3\u3001css\u9009\u62e9\u7b26", url: "#23css", level:3, children: [
+                      {title: "2.3.1 \u5143\u7d20\u9009\u62e9\u7b26", url: "#231", level:4,children: [
+                      ]},
+                      {title: "2.3.2 \u5173\u7cfb\u9009\u62e9\u7b26", url: "#232", level:4,children: [
+                      ]},
+                      {title: "2.3.3 \u5c5e\u6027\u9009\u62e9\u7b26", url: "#233", level:4,children: [
+                      ]},
+                      {title: "2.3.4 \u4f2a\u7c7b\u9009\u62e9\u7b26", url: "#234", level:4,children: [
+                      ]},
+                      {title: "2.2.5 \u4f2a\u5bf9\u8c61\u9009\u62e9\u7b26", url: "#225_1", level:4,children: [
+                      ]},
                   ]}, 
               ]},
-              {title: "\u4e8c\u3001css\u9009\u62e9\u7b26", url: "#css_1", level:2, children: [
-                  {title: "2.1 \u5143\u7d20\u9009\u62e9\u7b26", url: "#21_1", level:3, children: [
-                  ]},
-                  {title: "2.2 \u5173\u7cfb\u9009\u62e9\u7b26", url: "#22_1", level:3, children: [
-                  ]},
-                  {title: "2.3 \u5c5e\u6027\u9009\u62e9\u7b26", url: "#23", level:3, children: [
-                  ]},
-                  {title: "2.4 \u4f2a\u7c7b\u9009\u62e9\u7b26", url: "#24", level:3, children: [
-                  ]},
-                  {title: "2.5 \u4f2a\u5bf9\u8c61\u9009\u62e9\u7b26", url: "#25", level:3, children: [
-                  ]}, 
+              {title: "\u4e09\u3001javascript\u6559\u7a0b", url: "#javascript", level:2, children: [ 
               ]},
-          ]},
-          {title: "Javascript\u6559\u7a0b", url: "#javascript", level:1, children: [
               {title: "\u4e00\u3001Javascript\u6559\u7a0b", url: "#javascript_1", level:2, children: [ 
               ]},
               {title: "\u4e8c\u3001Browser\u5bf9\u8c61", url: "#browser", level:2, children: [
@@ -156,15 +156,15 @@
                   ]}, 
               ]},
               {title: "\u4e8c\u3001\u6df1\u5165\u4e86\u89e3\u7ec4\u4ef6", url: "#_6", level:2, children: [
-                  {title: "2.1 \u7ec4\u4ef6\u6ce8\u518c", url: "#21_2", level:3, children: [
+                  {title: "2.1 \u7ec4\u4ef6\u6ce8\u518c", url: "#21_1", level:3, children: [
                   ]},
                   {title: "2.2 Prop", url: "#22-prop", level:3, children: [
                   ]},
-                  {title: "2.3 \u81ea\u5b9a\u4e49\u4e8b\u4ef6", url: "#23_1", level:3, children: [
+                  {title: "2.3 \u81ea\u5b9a\u4e49\u4e8b\u4ef6", url: "#23", level:3, children: [
                   ]},
-                  {title: "2.4 \u63d2\u69fd", url: "#24_1", level:3, children: [
+                  {title: "2.4 \u63d2\u69fd", url: "#24", level:3, children: [
                   ]},
-                  {title: "2.5 \u52a8\u6001\u7ec4\u4ef6&amp;\u5f02\u6b65\u7ec4\u4ef6", url: "#25_1", level:3, children: [
+                  {title: "2.5 \u52a8\u6001\u7ec4\u4ef6&amp;\u5f02\u6b65\u7ec4\u4ef6", url: "#25", level:3, children: [
                   ]},
                   {title: "2.6 \u5904\u7406\u8fb9\u754c\u60c5\u51b5", url: "#26_1", level:3, children: [
                   ]}, 
@@ -2256,87 +2256,130 @@ p {text-transform:lowercase;}
 </code></pre>
 
 <h4 id="224">2.2.4 列表属性</h4>
-<p>选择器和常用属性-列表属性</p>
-<p>尚学堂前端学院的视频
- · 681 播放
-在HTML中，有两种类型的列表：</p>
-<p>无序列表 - 列表项标记用特殊图形（如小黑点、小方框等）</p>
-<p>有序列表 - 列表项的标记有数字或字母</p>
-<p>4.1list-style-type</p>
-<p>list-style-type 属性设置列表项标记的类型。</p>
-<p>ul.a {list-style-type: circle;}</p>
-<p>ul.b {list-style-type: square;}</p>
-<p>4.2list-style-image</p>
-<p>list-style-image 属性使用图像来替换列表项的标记。</p>
-<p>ul { list-style-image: url('sqpurple.gif'); }</p>
-<p>4.3list-style-position</p>
+<p>在HTML中,有两种类型的列表:</p>
+<blockquote>
+<p>无序列表:列表项标记用特殊图形(如小黑点、小方框等)</p>
+<p>有序列表:列表项的标记有数字或字母</p>
+</blockquote>
+<ul>
+<li><strong>list-style-type</strong></li>
+</ul>
+<p>list-style-type属性设置列表项标记的类型。</p>
+<p><img alt="" src="http://pic3.zhimg.com/80/v2-75ef7fc2685fd15286d0bb38d1632cc6_1440w.jpg" /></p>
+<pre><code class="css">ul.a {list-style-type: circle;}
+ul.b {list-style-type: square;}
+</code></pre>
+
+<ul>
+<li><strong>list-style-image</strong></li>
+</ul>
+<p>list-style-image属性使用图像来替换列表项的标记。</p>
+<pre><code class="css">ul { list-style-image: url('sqpurple.gif'); }
+</code></pre>
+
+<ul>
+<li><strong>list-style-position</strong></li>
+</ul>
 <p>list-style-position属性指示如何相对于对象的内容绘制列表项标记。</p>
-<p>ul { list-style-position: inside; }</p>
-<p>4.4 list-style</p>
-<p>list-style 简写属性在一个声明中设置所有的列表属性。</p>
-<p>可以设置的属性（按顺序）： list-style-type, list-style-position, list-style-image.</p>
-<p>可以不设置其中的某个值，比如 "list-style:circle inside;" 也是允许的。未设置的属性会使用其默认值。</p>
-<p>ul { list-style: none;}</p>
+<p><img alt="" src="http://pic3.zhimg.com/80/v2-f57136c49a9cbd95de843eab678879f6_1440w.jpg" /></p>
+<pre><code class="css">ul { list-style-position: inside; }
+</code></pre>
+
+<ul>
+<li><strong>list-style</strong></li>
+</ul>
+<p>list-style简写属性在一个声明中设置所有的列表属性。可以设置的属性(按顺序):list-style-type,list-style-position,list-style-image。可以不设置其中的某个值,比如"list-style:circle inside;" 也是允许的。未设置的属性会使用其默认值。</p>
+<pre><code class="css">ul { list-style: none;}
+</code></pre>
+
 <h4 id="225">2.2.5 表格属性</h4>
-<p>使用 CSS 可以使 HTML 表格更美观。</p>
-<p>5.1表格边框</p>
-<p>指定CSS表格边框，使用border属性。</p>
-<p>下面的例子指定了一个表格的Th和TD元素的黑色边框：</p>
-<pre><code>  table, th, td { border: 1px solid black; }
+<p>使用CSS可以使HTML表格更美观。</p>
+<ul>
+<li><strong>表格边框</strong></li>
+</ul>
+<p>指定CSS表格边框,使用border属性。</p>
+<p>下面的例子指定了一个表格的Th和TD元素的黑色边框:</p>
+<pre><code class="css">table, th, td { border: 1px solid black; }
 </code></pre>
-<p>5.2折叠边框</p>
-<p>border-collapse 属性设置表格的边框是否被折叠成一个单一的边框或隔开：</p>
-<pre><code>  table { border-collapse:collapse; }
-  table,th, td { border: 1px solid black; }
+
+<ul>
+<li><strong>折叠边框</strong></li>
+</ul>
+<p>border-collapse属性设置表格的边框是否被折叠成一个单一的边框或隔开:</p>
+<pre><code class="csss">table { border-collapse:collapse; }
+table,th, td { border: 1px solid black; }
 </code></pre>
-<p>5.3表格宽度和高度</p>
-<p>Width和height属性定义表格的宽度和高度。</p>
-<p>下面的例子是设置100％的宽度，50像素的th元素的高度的表格：</p>
-<p>table { width:100%; } 
+
+<ul>
+<li><strong>表格宽度和高度</strong></li>
+</ul>
+<p>Width和height属性定义表格的宽度和高度。下面的例子是设置100％的宽度,50像素的th元素的高度的表格:</p>
+<pre><code class="css">table { width:100%; } 
 th { height:50px; }
-5.4表格文字对齐</p>
-<p>表格中的文本对齐和垂直对齐属性。</p>
-<p>text-align属性设置水平对齐方式，向左，右，或中心：</p>
-<p>td { text-align:right; }</p>
-<p>垂直对齐属性设置垂直对齐，比如顶部，底部或中间：</p>
-<pre><code>  td { height:50px; vertical-align:bottom; }
 </code></pre>
-<p>5.5表格填充</p>
-<p>如果在表的内容中控制空格之间的边框，应使用td和th元素的填充属性：</p>
-<p>td { padding:15px; }
-5.6表格颜色</p>
-<p>下面的例子指定边框的颜色，和th元素的文本和背景颜色：</p>
-<p>table, td, th { border:1px solid green; } th { background-color:green; color:white; }</p>
+
+<ul>
+<li><strong>表格文字对齐</strong></li>
+</ul>
+<p>表格中的文本对齐和垂直对齐属性。text-align属性设置水平对齐方式,向左,右,或中心;</p>
+<pre><code class="css">td { text-align:right; }
+td { height:50px; vertical-align:bottom; } # 垂直对齐属性设置垂直对齐，比如顶部，底部或中间：
+</code></pre>
+
+<ul>
+<li><strong>表格填充</strong></li>
+</ul>
+<p>如果在表的内容中控制空格之间的边框,应使用td和th元素的填充属性:<code>td { padding:15px; }</code>。</p>
+<ul>
+<li><strong>表格颜色</strong></li>
+</ul>
+<p>下面的例子指定边框的颜色,和th元素的文本和背景颜色:</p>
+<pre><code class="css">table, td, th { border:1px solid green; } 
+th { background-color:green; color:white; }
+</code></pre>
+
 <h4 id="227">2.2.7 其他属性</h4>
-<p>6.1 letter-spacing</p>
-<p>letter-spacing 属性增加或减少字符间的空白（字符间距）</p>
-<p>h1 {letter-spacing:2px}
-h2 {letter-spacing:-3px}</p>
-<p>6.2 line-height</p>
+<ul>
+<li><strong>letter-spacing</strong></li>
+</ul>
+<p>letter-spacing属性增加或减少字符间的空白(字符间距)</p>
+<p><img alt="" src="http://pic3.zhimg.com/80/v2-9e661c7b889ecc8c4da2d6ce5bd68efa_1440w.jpg" /></p>
+<pre><code class="css">h1 {letter-spacing:2px}
+h2 {letter-spacing:-3px}
+</code></pre>
+
+<ul>
+<li><strong>line-height</strong></li>
+</ul>
 <p>css选择器和常用属-性行高</p>
-<p>尚学堂前端学院的视频
- · 538 播放
-设置行高：.</p>
-<p>注意： 负值是不允许的</p>
-<p>p{
+<p>设置行高,负值是不允许的</p>
+<p><img alt="" src="http://pic3.zhimg.com/80/v2-3943b596ac1d95508d29c98d6dd95886_1440w.jpg" /></p>
+<pre><code class="css">p{
   height: 30px;
   line-height: 30px;
 }
-6.3 white-space</p>
+</code></pre>
+
+<ul>
+<li><strong>white-space</strong></li>
+</ul>
 <p>white-space属性指定元素内的空白怎样处理。</p>
-<p>p {
+<pre><code class="css">p {
 white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
 }
-6.4verticle-align</p>
-<p>vertical-align 属性设置一个元素的垂直对齐方式。</p>
-<p>该属性定义行内元素的基线相对于该元素所在行的基线的垂直对齐。允许指定负长度值和百分比值。这会使元素降低而不是升高。在表单元格中，这个属性会设置单元格框中的单元格内容的对齐方式。</p>
-<p>img{
-    vertical-align:middle;
-}</p>
-<h2 id="css_1">二、css选择符</h2>
-<h3 id="21_1">2.1 元素选择符</h3>
+</code></pre>
+
+<ul>
+<li><strong>verticle-align</strong></li>
+</ul>
+<p>vertical-align属性设置一个元素的垂直对齐方式。该属性定义行内元素的基线相对于该元素所在行的基线的垂直对齐。允许指定负长度值和百分比值。这会使元素降低而不是升高。在表单元格中,这个属性会设置单元格框中的单元格内容的对齐方式。</p>
+<pre><code class="css">img{ vertical-align:middle; }
+</code></pre>
+
+<h3 id="23css">2.3、css选择符</h3>
+<h4 id="231">2.3.1 元素选择符</h4>
 <table>
 <thead>
 <tr>
@@ -2352,7 +2395,7 @@ white-space: nowrap;
 <td align="left">选定所有对象</td>
 </tr>
 <tr>
-<td align="left">`E{ sRules }</td>
+<td align="left"><code>E{ sRules }</code></td>
 <td align="left">类型选择符</td>
 <td align="left">以文档语言对象类型作为选择符</td>
 </tr>
@@ -2368,7 +2411,7 @@ white-space: nowrap;
 </tr>
 </tbody>
 </table>
-<h3 id="22_1">2.2 关系选择符</h3>
+<h4 id="232">2.3.2 关系选择符</h4>
 <table>
 <thead>
 <tr>
@@ -2400,7 +2443,7 @@ white-space: nowrap;
 </tr>
 </tbody>
 </table>
-<h3 id="23">2.3 属性选择符</h3>
+<h4 id="233">2.3.3 属性选择符</h4>
 <table>
 <thead>
 <tr>
@@ -2439,7 +2482,7 @@ white-space: nowrap;
 </tr>
 </tbody>
 </table>
-<h3 id="24">2.4 伪类选择符</h3>
+<h4 id="234">2.3.4 伪类选择符</h4>
 <table>
 <thead>
 <tr>
@@ -2554,7 +2597,7 @@ white-space: nowrap;
 </tr>
 </tbody>
 </table>
-<h3 id="25">2.5 伪对象选择符</h3>
+<h4 id="225_1">2.2.5 伪对象选择符</h4>
 <table>
 <thead>
 <tr>
@@ -2586,7 +2629,7 @@ white-space: nowrap;
 </tbody>
 </table>
 <p>CSS3将伪对象选择符(Pseudo-Element Selectors)前面的单个冒号(<code>:</code>)修改为双冒号(<code>::</code>)用以区别伪类选择符(Pseudo-Classes Selectors).</p>
-<h1 id="javascript">Javascript教程</h1>
+<h2 id="javascript">三、javascript教程</h2>
 <h2 id="javascript_1">一、Javascript教程</h2>
 <h2 id="browser">二、<code>Browser</code>对象</h2>
 <h3 id="21-window">2.1 <code>Window</code>对象</h3>
@@ -6475,7 +6518,7 @@ Vue.component('blog-post', {
 </blockquote>
 <p>到这里,你需要了解的解析DOM模板时的注意事项——实际上也是Vue的全部必要内容,大概就是这些了。</p>
 <h2 id="_6">二、深入了解组件</h2>
-<h3 id="21_2">2.1 组件注册</h3>
+<h3 id="21_1">2.1 组件注册</h3>
 <p>该页面假设你已经阅读过了组件基础。如果你还对组件不太了解,推荐你先阅读它。</p>
 <ul>
 <li><strong>组件名</strong></li>
@@ -6981,7 +7024,7 @@ computed: {
 &gt;&lt;/base-input&gt;
 </code></pre>
 
-<h3 id="23_1">2.3 自定义事件</h3>
+<h3 id="23">2.3 自定义事件</h3>
 <ul>
 <li><strong>事件名</strong></li>
 </ul>
@@ -7112,7 +7155,7 @@ computed: {
 
 <p>这样会把<code>doc</code>对象中的每一个属性(如<code>title</code>)都作为一个独立的<code>prop</code>传进去,然后各自添加用于更新的<code>v-on</code>监听器。</p>
 <p>将<code>v-bind.sync</code>用在一个字面量的对象上,例如<code>v-bind.sync=”{ title: doc.title }”</code>,是无法正常工作的,因为在解析一个像这样的复杂表达式的时候,有很多边缘情况需要考虑。</p>
-<h3 id="24_1">2.4 插槽</h3>
+<h3 id="24">2.4 插槽</h3>
 <ul>
 <li><strong>插槽内容</strong></li>
 </ul>
@@ -7473,7 +7516,7 @@ computed: {
 </code></pre>
 
 <p>这只是作用域插槽用武之地的冰山一角。想了解更多现实生活中的作用域插槽的用法,我们推荐浏览诸如<code>Vue Virtual Scroller</code>、<code>Vue Promised</code>和<code>Portal Vue</code>等库。</p>
-<h3 id="25_1">2.5 动态组件&amp;异步组件</h3>
+<h3 id="25">2.5 动态组件&amp;异步组件</h3>
 <ul>
 <li><strong>在动态组件上使用<code>keep-alive</code></strong></li>
 </ul>
