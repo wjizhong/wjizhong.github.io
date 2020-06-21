@@ -43,8 +43,14 @@
                   {title: "5.3 \u805a\u7c7b\u6307\u6807", url: "#53", level:3, children: [
                   ]}, 
               ]},
-              {title: "\u4e09\u3001\u7ecf\u5178\u7f51\u7edc", url: "#_3", level:2, children: [
+              {title: "\u4e8c\u3001\u57fa\u672c\u7ed3\u6784", url: "#_3", level:2, children: [
+                  {title: "2.1 \u5377\u79ef\u7c7b\u578b", url: "#21", level:3, children: [
+                  ]}, 
+              ]},
+              {title: "\u4e09\u3001\u7ecf\u5178\u7f51\u7edc", url: "#_4", level:2, children: [
                   {title: "3.1 lenet\u7f51\u7edc", url: "#31-lenet", level:3, children: [
+                  ]},
+                  {title: "Alexnet\u7f51\u7edc", url: "#alexnet", level:3, children: [
                   ]}, 
               ]},
           ]},
@@ -1366,11 +1372,13 @@ TPR = \frac {TP}{TP+FN}
 <li><strong>轮廓系数</strong></li>
 <li><strong>互信息</strong></li>
 </ul>
+<h2 id="_3">二、基本结构</h2>
+<h3 id="21">2.1 卷积类型</h3>
 <p>https://www.zhihu.com/question/312556066/answer/600228264</p>
 <p>https://www.zhihu.com/question/291032522/answer/605843215</p>
 <p>https://cloud.tencent.com/developer/article/1352583</p>
 <p>https://zhuanlan.zhihu.com/p/44106492</p>
-<h2 id="_3">三、经典网络</h2>
+<h2 id="_4">三、经典网络</h2>
 <h3 id="31-lenet">3.1 lenet网络</h3>
 <p>卷积神经网络的开山之作,麻雀虽小五脏俱全,卷积层、池化层、全链接层一直沿用至今。</p>
 <p><img alt="" src="http://cuijiahua.com/wp-content/uploads/2018/01/dl_3_4.jpg" /></p>
@@ -1448,6 +1456,121 @@ def lenet_arg_scope(weight_decay=0.0):
         weights_initializer=tf.truncated_normal_initializer(stddev=0.1),
         activation_fn=tf.nn.relu) as sc:
     return sc
+</code></pre>
+
+<h3 id="alexnet">Alexnet网络</h3>
+<p><img alt="" src="http://pic2.zhimg.com/80/v2-5093ccb6ce6313c673c9890dc3cb47d9_1440w.png" /></p>
+<p>AlexNet主要使用到的新技术点如下:</p>
+<blockquote>
+<ol>
+<li>成功使用ReLU作为CNN的激活函数,并验证其效果在较深的网络超过了Sigmoid,成功解决了Sigmoid在网络较深时的梯度弥散问题。虽然ReLU激活函数在很久之前就被提出了,但是直到AlexNet的出现才将其发扬光大。</li>
+<li>训练时使用Dropout随机忽略一部分神经元,以避免模型过拟合。Dropout虽有单独的论文论述,但是AlexNet将其实用化,通过实践证实了它的效果。在AlexNet中主要是最后几个全连接层使用了Dropout。</li>
+<li>在CNN中使用重叠的最大池化。此前CNN中普遍使用平均池化,AlexNet全部使用最大池化,避免平均池化的模糊化效果。并且AlexNet中提出让步长比池化核的尺寸小,这样池化层的输出之间会有重叠和覆盖,提升了特征的丰富性。</li>
+<li>提出了LRN层,对局部神经元的活动创建竞争机制,使得其中响应比较大的值变得相对更大,并抑制其他反馈较小的神经元,增强了模型的泛化能力。</li>
+</ol>
+</blockquote>
+<pre><code class="python"># -*- coding:utf8 -*-
+&quot;&quot;&quot;
+Contains a model definition for AlexNet.
+
+This work was first described in:
+    ImageNet Classification with Deep Convolutional Neural Networks
+    Alex Krizhevsky, Ilya Sutskever and Geoffrey E. Hinton
+
+and later refined in:
+  One weird trick for parallelizing convolutional neural networks
+  Alex Krizhevsky, 2014
+
+Here we provide the implementation proposed in &quot;One weird trick&quot; and not
+&quot;ImageNet Classification&quot;, as per the paper, the LRN layers have been removed.
+
+Usage:
+    with slim.arg_scope(alexnet.alexnet_v2_arg_scope()):
+        outputs, end_points = alexnet.alexnet_v2(inputs)
+&quot;&quot;&quot;
+import tensorflow.compat.v1 as tf
+import tf_slim as slim
+
+# pylint: disable=g-long-lambda
+trunc_normal = lambda stddev: tf.truncated_normal_initializer(0.0, stddev)
+
+
+def alexnet_v2_arg_scope(weight_decay=0.0005):
+  with slim.arg_scope([slim.conv2d, slim.fully_connected],
+                      activation_fn=tf.nn.relu,
+                      biases_initializer=tf.constant_initializer(0.1),
+                      weights_regularizer=slim.l2_regularizer(weight_decay)):
+    with slim.arg_scope([slim.conv2d], padding='SAME'):
+      with slim.arg_scope([slim.max_pool2d], padding='VALID') as arg_sc:
+        return arg_sc
+
+
+def alexnet_v2(inputs,num_classes=1000, is_training=True,dropout_keep_prob=0.5,
+        spatial_squeeze=True,scope='alexnet_v2',global_pool=False):
+    &quot;&quot;&quot;
+    AlexNet version 2.
+
+    Described in: http://arxiv.org/pdf/1404.5997v2.pdf
+    Parameters from: github.com/akrizhevsky/cuda-convnet2/blob/master/layers/layers-imagenet-1gpu.cfg
+
+    Note: All the fully_connected layers have been transformed to conv2d layers.
+          To use in classification mode, resize input to 224x224 or set
+          global_pool=True. To use in fully convolutional mode, set
+          spatial_squeeze to false.
+          The LRN layers have been removed and change the initializers from
+          random_normal_initializer to xavier_initializer.
+
+    Args:
+        inputs: a tensor of size [batch_size, height, width, channels].
+        num_classes: the number of predicted classes. If 0 or None, the logits layer
+            is omitted and the input features to the logits layer are returned instead.
+        is_training: whether or not the model is being trained.
+        dropout_keep_prob: the probability that activations are kept in the dropout
+            layers during training.
+        spatial_squeeze: whether or not should squeeze the spatial dimensions of the
+            logits. Useful to remove unnecessary dimensions for classification.
+        scope: Optional scope for the variables.
+        global_pool: Optional boolean flag. If True, the input to the classification
+            layer is avgpooled to size 1x1, for any input size. (This is not part
+            of the original AlexNet.)
+
+    Returns:
+        net: the output of the logits layer (if num_classes is a non-zero integer),
+            or the non-dropped-out input to the logits layer (if num_classes is 0
+            or None).
+        end_points: a dict of tensors with intermediate activations.
+    &quot;&quot;&quot;
+    with tf.variable_scope(scope, 'alexnet_v2', [inputs]) as sc:
+        end_points_collection = sc.original_name_scope + '_end_points'
+        # Collect outputs for conv2d, fully_connected and max_pool2d.
+        with slim.arg_scope([slim.conv2d, slim.fully_connected, slim.max_pool2d],outputs_collections=[end_points_collection]):
+            net = slim.conv2d(inputs, 64, [11, 11], 4, padding='VALID',scope='conv1')
+            net = slim.max_pool2d(net, [3, 3], 2, scope='pool1')
+            net = slim.conv2d(net, 192, [5, 5], scope='conv2')
+            net = slim.max_pool2d(net, [3, 3], 2, scope='pool2')
+            net = slim.conv2d(net, 384, [3, 3], scope='conv3')
+            net = slim.conv2d(net, 384, [3, 3], scope='conv4')
+            net = slim.conv2d(net, 256, [3, 3], scope='conv5')
+            net = slim.max_pool2d(net, [3, 3], 2, scope='pool5')
+
+            # Use conv2d instead of fully_connected layers.
+            with slim.arg_scope([slim.conv2d],weights_initializer=trunc_normal(0.005),biases_initializer=tf.constant_initializer(0.1)):
+                net = slim.conv2d(net, 4096, [5, 5], padding='VALID',scope='fc6')
+                net = slim.dropout(net, dropout_keep_prob, is_training=is_training,scope='dropout6')
+                net = slim.conv2d(net, 4096, [1, 1], scope='fc7')
+                # Convert end_points_collection into a end_point dict.
+                end_points = slim.utils.convert_collection_to_dict(end_points_collection)
+                if global_pool:
+                    net = tf.reduce_mean(input_tensor=net, axis=[1, 2], keepdims=True, name='global_pool')
+                    end_points['global_pool'] = net
+                if num_classes:
+                    net = slim.dropout(net, dropout_keep_prob, is_training=is_training,scope='dropout7')
+                    net = slim.conv2d(net,num_classes, [1, 1],activation_fn=None,normalizer_fn=None,biases_initializer=tf.zeros_initializer(),scope='fc8')
+                if spatial_squeeze:
+                    net = tf.squeeze(net, [1, 2], name='fc8/squeezed')
+                end_points[sc.name + '/fc8'] = net
+            return net, end_points
+alexnet_v2.default_image_size = 224
 </code></pre>
 
   <br>
