@@ -1889,12 +1889,8 @@ border-color:red green blue yellow;
 </code></pre>
 
 <p>效果如下:</p>
-<p><img alt="" src="http://img.smyhvae.com/20170728_1516.png" /></p>
-<blockquote>
-<ol>
-<li>按三要素拆:</li>
-</ol>
-</blockquote>
+<p><img src="http://img.smyhvae.com/20170728_1516.png" style="width: 65%"></p>
+<p><strong>按三要素拆:</strong></p>
 <pre><code class="css">border-width:10px;    //边框宽度
 border-style:solid;   //线型
 border-color:red;     //颜色。
@@ -1904,11 +1900,7 @@ border-color:red;     //颜色。
 <pre><code class="css">border:10px solid red;
 </code></pre>
 
-<blockquote>
-<ol>
-<li>按方向来拆:</li>
-</ol>
-</blockquote>
+<p><strong>按方向来拆:</strong></p>
 <pre><code class="css">border-top:10px solid red;
 border-right:10px solid red;
 border-bottom:10px solid red;
@@ -1919,11 +1911,7 @@ border-left:10px solid red;
 <pre><code class="css">border:10px solid red;
 </code></pre>
 
-<blockquote>
-<ol>
-<li>按三要素和方向来拆:(就是把每个方向的,每个要素拆开。<code>3*4 = 12</code>)</li>
-</ol>
-</blockquote>
+<p><strong>按三要素和方向来拆:</strong> (就是把每个方向的,每个要素拆开。3*4 = 12)</p>
 <pre><code class="css">border-top-width:10px;
 border-top-style:solid;
 border-top-color:red;
@@ -1942,41 +1930,40 @@ border-left-color:red;
 <pre><code class="css">border:10px solid red;
 </code></pre>
 
-<p>用小属性层叠大属性。举例如下:</p>
-<p><img alt="" src="http://img.smyhvae.com/20170728_1606.png" /></p>
+<p><strong>用小属性层叠大属性:</strong> 举例如下:</p>
+<p><img src="http://img.smyhvae.com/20170728_1606.png" style="width: 20%"></p>
 <p>为了实现上方效果,写法如下:</p>
 <pre><code class="css">border:10px solid red;
 border-right-color:blue;
 </code></pre>
 
-<p><img alt="" src="http://img.smyhvae.com/20170728_1608.png" /></p>
+<p><img src="http://img.smyhvae.com/20170728_1608.png" style="width: 30%"></p>
 <p>为了实现上方效果,写法如下:</p>
 <pre><code class="css">border:10px solid red;
 border-style:solid dashed;
 </code></pre>
 
-<p><code>border</code>可以没有:<code>border:none;</code>,可以某一条边没有:<code>border-left: none;</code>,也可以调整左边边框的宽度为0:<code>border-left-width: 0;</code>。</p>
+<p>border可以没有:<code>border:none;</code>,可以某一条边没有:<code>border-left: none;</code>,也可以调整左边边框的宽度为0:<code>border-left-width: 0;</code>。</p>
 <p><strong>举例:利用border属性画一个三角形(小技巧)</strong> 步骤如下:</p>
 <blockquote>
 <ol>
 <li>当我们设置盒子的width和height为0时,此时效果如下:</li>
 </ol>
-<p><img alt="" src="http://img.smyhvae.com/20170728_1640.png" />
-2. 然后将border的底部取消</p>
-<p><img alt="" src="http://img.smyhvae.com/20170728_1645.png" />
-3. 最后设置border的左边和右边为白色:</p>
-<p><img alt="" src="http://img.smyhvae.com/20170728_1649.png" /></p>
+<p><img src="http://img.smyhvae.com/20170728_1640.png" style="45%"></p>
+<ol>
+<li>然后将border的底部取消</li>
+</ol>
+<p><img src="http://img.smyhvae.com/20170728_1645.png" style="45%"></p>
+<ol>
+<li>最后设置border的左边和右边为白色:</li>
+</ol>
+<p><img src="http://img.smyhvae.com/20170728_1649.png" style="45%"></p>
 </blockquote>
 <ul>
 <li><strong>定位</strong></li>
 </ul>
 <p>定位(position)有四个值:<code>static</code>,<code>relative</code>,<code>absolute</code>和<code>fixed</code></p>
-<blockquote>
-<ul>
-<li><strong>static</strong></li>
-</ul>
-</blockquote>
-<p>一般如果我们不设置<code>position</code>的话它的默认值就是<code>static</code>,这个时候<code>left</code>、<code>top</code>、<code>bottom</code>、<code>right</code>是不起作用的,现在有如下两个div,他们的关系是兄弟关系:</p>
+<p><strong>static:</strong> 一般如果我们不设置<code>position</code>的话它的默认值就是<code>static</code>,这个时候<code>left</code>、<code>top</code>、<code>bottom</code>、<code>right</code>是不起作用的,现在有如下两个div,他们的关系是兄弟关系:</p>
 <pre><code class="css">.red{
     width:200px;
     height:200px;
@@ -1994,12 +1981,7 @@ border-style:solid dashed;
 <p>效果图:</p>
 <p><img alt="" src="https://pic2.zhimg.com/80/v2-2ead78f0cda1b43d09fceff9b974fc71_hd.png" /></p>
 <p>可以发现,并没有什么变化。红色方块的<code>left</code>和<code>top</code>加不加都一样。</p>
-<blockquote>
-<ul>
-<li><strong>relative</strong></li>
-</ul>
-</blockquote>
-<p>给红色方块加个<code>position:relative</code>:</p>
+<p><strong>relative:</strong> 给红色方块加个<code>position:relative</code>:</p>
 <pre><code class="css">.red{
     position:relative;
     width:200px;
@@ -2013,12 +1995,7 @@ border-style:solid dashed;
 <p>嘿嘿,变这样了:</p>
 <p><img alt="" src="https://pic3.zhimg.com/80/v2-5164f074294a2a3d1cf3c8e42efe19ba_hd.png" /></p>
 <p>可以发现,红色方块跑到蓝色方块的右边了,左边缘和顶边缘都距离原来100px,但是蓝色方块还是在原来的地方不动,现在可以得出一个结论:使用相对定位给元素加<code>left/top/right/buttom</code>元素会以原来的位置为基础加上这些值,即以原来的位置为基础定位,并且没有脱离文档流</p>
-<blockquote>
-<ul>
-<li><strong>absolute</strong></li>
-</ul>
-</blockquote>
-<p>把<code>position</code>改为<code>absolute</code>:</p>
+<p><strong>absolute:</strong> 把<code>position</code>改为<code>absolute</code>:</p>
 <pre><code class="css">.red{
     position:absolute;
     width:200px;
@@ -2055,12 +2032,7 @@ border-style:solid dashed;
 <p>可以发现在给蓝色方块添加<code>position:absolute</code>前,蓝色方块像我们想的那样在红色方块的左上角;当我们给蓝色方块添加<code>position:absolute</code>并且添加<code>left</code>和<code>top</code>时,蓝色方块就跑到了红色方块的右下角。</p>
 <p>那么这次这个蓝色方块是以谁为参考进行位移的？刚刚你说的以body为参考又是什么情况？</p>
 <p>好,我这里就给大家说清楚,当给一个元素设置<code>position:absolute</code>时,这个元素的位置就是以他父代元素position不为static的元素作为参考,如果他的父代元素都是<code>position:static</code>那就以<code>body</code>作为参考。刚刚红色方块的情况就是他父代元素没有<code>position</code>不为<code>static</code>的元素,所以只能以<code>body</code>作为参考。</p>
-<blockquote>
-<ul>
-<li><strong>fixed</strong></li>
-</ul>
-</blockquote>
-<p>现在让我们再来创建一个绿色方块:</p>
+<p><strong>fixed:</strong> 现在让我们再来创建一个绿色方块:</p>
 <pre><code class="css">.green{
     position:fixed;
     top:150px;
@@ -2076,12 +2048,7 @@ border-style:solid dashed;
 <p>这个看起来貌似没有什么特别的,现在我们来给<code>body</code>加个<code>height:2000px</code>(这个高度随意,但是要使浏览器右边出现滚动条),然后把浏览器的滚动条往下拉,一个神奇的事情发生了:绿色方块固定在我们定义的位置上屏幕上不动了！</p>
 <p>这个fixed我们见得最多的就是网页中顽固的小广告,不管我们怎么拖拽滚动条,它总是固定在那,就是一个升级版的<code>absolute</code>。</p>
 <p><img alt="" src="https://pic3.zhimg.com/80/v2-c860ddecfc043d9425e8acf1d33c17da_hd.png" /></p>
-<blockquote>
-<ul>
-<li><strong><code>z-index</code></strong></li>
-</ul>
-</blockquote>
-<p>说到定位,肯定少不了<code>z-index</code>。用上面的例子来说z-index就是灵魂飘的高度,设置得越大,自然就飘得越高,既然扯到了灵魂,<code>z-index</code>肯定是对活人(<code>static</code>)无效的了。</p>
+<p><strong><code>z-index</code>:</strong> 说到定位,肯定少不了<code>z-index</code>。用上面的例子来说z-index就是灵魂飘的高度,设置得越大,自然就飘得越高,既然扯到了灵魂,<code>z-index</code>肯定是对活人(<code>static</code>)无效的了。</p>
 <p>正常情况下(没有加<code>z-index</code>),元素是按照后来居上原则进行堆叠。在这个例子上的html元素是这样的:</p>
 <pre><code class="html">&lt;div class=&quot;red&quot;&gt;
         &lt;div class=&quot;blue&quot;&gt;&lt;/div&gt;
