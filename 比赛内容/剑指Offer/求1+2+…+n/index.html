@@ -86,6 +86,199 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 
 <p>限制:<code>1 &lt;= n &lt;= 10000</code></p>
 <h2 id="_2">解题技巧</h2>
+<ul>
+<li><strong>方法一:递归</strong></li>
+</ul>
+<p>试想一下如果不加限制地使用递归的方法来实现这道题,相信大家都能很容易地给出下面的实现(以C++为例):</p>
+<pre><code class="c++">class Solution {
+    public:
+        int sumNums(int n) {
+            return n == 0 ? 0 : n + sumNums(n - 1);
+        }
+};
+</code></pre>
+
+<p>通常实现递归的时候我们都会利用条件判断语句来决定递归的出口,但由于题目的限制我们不能使用条件判断语句,那么我们是否能使用别的办法来确定递归出口呢?答案就是逻辑运算符的短路性质。</p>
+<p>以逻辑运算符&amp;&amp;为例,对于A &amp;&amp; B这个表达式,如果A表达式返回False,那么A &amp;&amp; B已经确定为False,此时不会去执行表达式B。同理,对于逻辑运算符||,对于A || B这个表达式,如果A表达式返回True,那么A || B已经确定为True,此时不会去执行表达式B。</p>
+<p>利用这一特性,我们可以将判断是否为递归的出口看作A &amp;&amp; B表达式中的A部分,递归的主体函数看作B部分。如果不是递归出口,则返回True,并继续执行表达式B的部分,否则递归结束。当然,你也可以用逻辑运算符||给出类似的实现,这里我们只提供结合逻辑运算符&amp;&amp;的递归实现。</p>
+<pre><code class="c++">class Solution {
+    public:
+        int sumNums(int n) {
+            n &amp;&amp; (n += sumNums(n-1));
+            return n;
+        }
+};
+</code></pre>
+
+<p>复杂度分析:</p>
+<blockquote>
+<p>时间复杂度:<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>。递归函数递归n次,每次递归中计算时间复杂度为<span><span class="MathJax_Preview">O(1)</span><script type="math/tex">O(1)</script></span>,因此总时间复杂度为<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>。</p>
+<p>空间复杂度:<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>。递归函数的空间复杂度取决于递归调用栈的深度,这里递归函数调用栈深度为<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>,因此空间复杂度为<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>。</p>
+</blockquote>
+<ul>
+<li><strong>方法二:快速乘</strong></li>
+</ul>
+<p>考虑A和B两数相乘的时候我们如何利用加法和位运算来模拟,其实就是将B二进制展开,如果B的二进制表示下第i位为1,那么这一位对最后结果的贡献就是<code>A*(1&lt;&lt;i)A*(1&lt;&lt;i)</code>,即<code>A&lt;&lt;i</code>。我们遍历B二进制展开下的每一位,将所有贡献累加起来就是最后的答案,这个方法也被称作「俄罗斯农民乘法」,感兴趣的读者可以自行网上搜索相关资料。这个方法经常被用于两数相乘取模的场景,如果两数相乘已经超过数据范围,但取模后不会超过,我们就可以利用这个方法来拆位取模计算贡献,保证每次运算都在数据范围内。</p>
+<p>下面给出这个算法的C++实现:</p>
+<pre><code class="c++">int quickMulti(int A, int B) {
+    int ans = 0;
+    for ( ; B; B &gt;&gt;= 1) {
+        if (B &amp; 1) {
+            ans += A;
+        }
+        A &lt;&lt;= 1;
+    }
+    return ans;
+}
+</code></pre>
+
+<p>回到本题,由等差数列求和公式我们可以知道<span><span class="MathJax_Preview">1+2+\cdots+n</span><script type="math/tex">1+2+\cdots+n</script></span>等价于<span><span class="MathJax_Preview">\frac{n(n+1)}{2}</span><script type="math/tex">\frac{n(n+1)}{2}</script></span>,对于除以2我们可以用右移操作符来模拟,那么等式变成了<code>n(n+1)&gt;&gt;1</code>,剩下不符合题目要求的部分即为<code>n(n+1)</code>,根据上文提及的快速乘,我们可以将两个数相乘用加法和位运算来模拟,但是可以看到上面的C++实现里我们还是需要循环语句,有没有办法去掉这个循环语句呢?答案是有的,那就是自己手动展开,因为题目数据范围n为[1,10000],所以n二进制展开最多不会超过14位,我们手动展开14层代替循环即可,至此满足了题目的要求,具体实现可以参考下面给出的代码。</p>
+<pre><code class="c++">class Solution {
+    public:
+        int sumNums(int n) {
+            int ans = 0, A = n, B = n + 1;
+
+            (B &amp; 1) &amp;&amp; (ans += A);
+            A &lt;&lt;= 1;
+            B &gt;&gt;= 1;
+
+            (B &amp; 1) &amp;&amp; (ans += A);
+            A &lt;&lt;= 1;
+            B &gt;&gt;= 1;
+
+            (B &amp; 1) &amp;&amp; (ans += A);
+            A &lt;&lt;= 1;
+            B &gt;&gt;= 1;
+
+            (B &amp; 1) &amp;&amp; (ans += A);
+            A &lt;&lt;= 1;
+            B &gt;&gt;= 1;
+
+            (B &amp; 1) &amp;&amp; (ans += A);
+            A &lt;&lt;= 1;
+            B &gt;&gt;= 1;
+
+            (B &amp; 1) &amp;&amp; (ans += A);
+            A &lt;&lt;= 1;
+            B &gt;&gt;= 1;
+
+            (B &amp; 1) &amp;&amp; (ans += A);
+            A &lt;&lt;= 1;
+            B &gt;&gt;= 1;
+
+            (B &amp; 1) &amp;&amp; (ans += A);
+            A &lt;&lt;= 1;
+            B &gt;&gt;= 1;
+
+            (B &amp; 1) &amp;&amp; (ans += A);
+            A &lt;&lt;= 1;
+            B &gt;&gt;= 1;
+
+            (B &amp; 1) &amp;&amp; (ans += A);
+            A &lt;&lt;= 1;
+            B &gt;&gt;= 1;
+
+            (B &amp; 1) &amp;&amp; (ans += A);
+            A &lt;&lt;= 1;
+            B &gt;&gt;= 1;
+
+            (B &amp; 1) &amp;&amp; (ans += A);
+            A &lt;&lt;= 1;
+            B &gt;&gt;= 1;
+
+            (B &amp; 1) &amp;&amp; (ans += A);
+            A &lt;&lt;= 1;
+            B &gt;&gt;= 1;
+
+            (B &amp; 1) &amp;&amp; (ans += A);
+            A &lt;&lt;= 1;
+            B &gt;&gt;= 1;
+
+            return ans &gt;&gt; 1;
+        }
+};
+</code></pre>
+
+<p>复杂度分析:</p>
+<blockquote>
+<p>时间复杂度:<span><span class="MathJax_Preview">O(\log n)</span><script type="math/tex">O(\log n)</script></span>。快速乘需要的时间复杂度为<span><span class="MathJax_Preview">O(\log n)</span><script type="math/tex">O(\log n)</script></span>。</p>
+<p>空间复杂度:<span><span class="MathJax_Preview">O(1)</span><script type="math/tex">O(1)</script></span>。只需要常数空间存放若干变量。</p>
+</blockquote>
+<ul>
+<li><strong>方法3:利用构造函数求解</strong></li>
+</ul>
+<pre><code class="c++">class Temp{
+    public:
+        Temp(){++N;Sum += N;}
+        static void Reset(){N=0;Sum=0;}
+        static int GetNum(){return Sum;}
+    private:
+        static int N;
+        static int Sum;
+};
+
+int Temp::N = 0;
+int Temp::Sum = 0;
+class Solution {
+    public:
+        int sumNums(int n) {
+            Temp::Reset();
+            Temp *a=new Temp[n];
+            delete []a;
+            a=NULL;
+            return Temp::GetNum();
+        }
+};
+</code></pre>
+
+<ul>
+<li><strong>方法4:利用虚函数求解</strong></li>
+</ul>
+<pre><code class="c++">class A;
+A* Array[2];
+class A{
+    public:
+        virtual int Sum(int n){
+            return 0;
+        }
+};
+class B:public A {
+    public:
+        virtual int Sum(int n){
+            return Array[!!n]-&gt;Sum(n-1) +n;
+        }
+};
+class Solution {
+    public:
+        int sumNums(int n) {
+            A a;
+            B b;
+            Array[0] = &amp;a;
+            Array[1] = &amp;b;
+            int value = Array[1]-&gt;Sum(n);
+            return value;
+        }
+};
+</code></pre>
+
+<ul>
+<li><strong>方法5:利用函数指针</strong></li>
+</ul>
+<pre><code class="c++">typedef int (*fun)(int);
+int temp(int n){
+    return 0;
+};
+int solution(int n){
+    static fun f[2] = {temp, solution};
+    return n + f[!!n](n-1);
+}
+class Solution {
+    public:
+        int sumNums(int n) {
+            return solution(n);
+        }
+};
+</code></pre>
 
   <br>
     <style>
