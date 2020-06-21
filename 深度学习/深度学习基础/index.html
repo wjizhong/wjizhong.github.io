@@ -45,31 +45,11 @@
                   {title: "1.5 \u68c0\u6d4b\u6307\u6807", url: "#15", level:3, children: [
                   ]}, 
               ]},
-          ]},
-          {title: "get mser object", url: "#get-mser-object", level:1, children: [
-          ]},
-          {title: "Detect MSER regions", url: "#detect-mser-regions", level:1, children: [
-          ]},
-          {title: "\u7ed8\u5236\u6587\u672c\u533a\u57df\uff08\u4e0d\u89c4\u5219\u8f6e\u5ed3\uff09", url: "#_3", level:1, children: [
-          ]},
-          {title: "\u4e24\u79cd\u7ed8\u5236\u77e9\u5f62\u8f6e\u5ed3", url: "#_4", level:1, children: [
-          ]},
-          {title: "for box in boxes:", url: "#for-box-in-boxes", level:1, children: [
-          ]},
-          {title: "x, y, w, h = box", url: "#x-y-w-h-box", level:1, children: [
-          ]},
-          {title: "cv2.rectangle(vis_1, (x,y),(x+w, y+h), (255, 0, 0), 1)", url: "#cv2rectanglevis_1-xyxw-yh-255-0-0-1", level:1, children: [
-          ]},
-          {title: "\u4f7f\u7528\u975e\u6781\u5927\u503c\u6291\u5236\u83b7\u53d6\u4e0d\u91cd\u590d\u7684\u77e9\u5f62\u6846", url: "#_5", level:1, children: [
-          ]},
-          {title: "loop over the picked bounding boxes and draw them", url: "#loop-over-the-picked-bounding-boxes-and-draw-them", level:1, children: [
-          ]},
-          {title: "\u5408\u5e76\u56fe\u7247", url: "#_6", level:1, children: [
-              {title: "\u4e8c\u3001\u57fa\u672c\u7ed3\u6784", url: "#_7", level:2, children: [
+              {title: "\u4e8c\u3001\u57fa\u672c\u7ed3\u6784", url: "#_3", level:2, children: [
                   {title: "2.1 \u5377\u79ef\u7c7b\u578b", url: "#21", level:3, children: [
                   ]}, 
               ]},
-              {title: "\u4e09\u3001\u7ecf\u5178\u7f51\u7edc", url: "#_8", level:2, children: [
+              {title: "\u4e09\u3001\u7ecf\u5178\u7f51\u7edc", url: "#_4", level:2, children: [
                   {title: "3.1 lenet\u7f51\u7edc", url: "#31-lenet", level:3, children: [
                   ]},
                   {title: "Alexnet\u7f51\u7edc", url: "#alexnet", level:3, children: [
@@ -1501,191 +1481,266 @@ GIoU总是小于等于IoU，对于IoU，有 [公式] ,GIoU则是 [公式] 。在
 <ul>
 <li><strong>NMS</strong></li>
 </ul>
-<p>非极大值抑制（non maximum suppression, nms）是通常用于目标检测算法，作用是去除重复的区域，就是抑制不是极大值的元素，在这里就是去除和想要的框重叠部分过大的框。</p>
-<p>NMS的基本思想是将所有框按得分进行排序，然后无条件保留其中得分最高的框，然后遍历其余框找到和当前最高分的框的重叠面积（IOU）大于一定阈值的框，并删除。然后继续这个过程，找另一个得分高的框，再删除和其IOU大于阈值的框，一直循环直到所有的框都被处理。</p>
-<p>在目标检测中，常用非极大值抑制算法(NMS)对生成的大量候选框进行后处理，在 faster R-CNN 中，每一个 bbox 都有一个得分，然后使用 NMS 去除冗余的候选框，得到最具代表性的 bbox，以加快目标检测的效率。</p>
-<p>NMS的具体实现流程为：</p>
-<p>根据候选框的类别分类概率（得分），按最高到最低将BBox排序，例如：A&gt;B&gt;C&gt;D&gt;E&gt;F
-先标记最大概率矩形框A是要保留下来的，即A的分数最高，则无条件保留
-将B~E分别与A求重叠率IoU（两框的交并比），假设B、D与A的IoU大于设定的阈值，那么B和D可以认为是重复标记被剔除
-继续从剩下的矩形框C、E、F中选择概率最大的C，标记为要无条件保留下来的框，然后分别计算C与E、F的重叠度，扔掉重叠度超过设定阈值的矩形框
-就这样一直重复下去，直到剩下的矩形框没有了，得到所有要保留下来的矩形框</p>
-<p>下面是一段 nms 的代码，参考自：Faster Non-Maximum Suppression for Object Detection，详情见注释。</p>
-<p>import numpy as np</p>
-<p>def non_max_suppression_fast(boxes, overlapThresh):
-    """
+<p>非极大值抑制(non maximum suppression,nms)是通常用于目标检测算法,作用是去除重复的区域,就是抑制不是极大值的元素,在这里就是去除和想要的框重叠部分过大的框。</p>
+<p>NMS的基本思想是将所有框按得分进行排序,然后无条件保留其中得分最高的框,然后遍历其余框找到和当前最高分的框的重叠面积(IOU)大于一定阈值的框,并删除。然后继续这个过程,找另一个得分高的框,再删除和其IOU大于阈值的框,一直循环直到所有的框都被处理。</p>
+<p>在目标检测中,常用非极大值抑制算法(NMS)对生成的大量候选框进行后处理,在faster R-CNN中,每一个bbox都有一个得分,然后使用NMS去除冗余的候选框,得到最具代表性的bbox以加快目标检测的效率。</p>
+<p><img alt="" src="http://pic2.zhimg.com/80/v2-322e883d277481276d0af294073662f5_1440w.jpg" /></p>
+<p>NMS的具体实现流程为:</p>
+<blockquote>
+<ol>
+<li>根据候选框的类别分类概率(得分),按最高到最低将BBox排序,例如:A&gt;B&gt;C&gt;D&gt;E&gt;F</li>
+<li>先标记最大概率矩形框A是要保留下来的,即A的分数最高,则无条件保留</li>
+<li>将B~E分别与A求重叠率IoU(两框的交并比),假设B、D与A的IoU大于设定的阈值,那么B和D可以认为是重复标记被剔除</li>
+<li>继续从剩下的矩形框C、E、F中选择概率最大的C,标记为要无条件保留下来的框,然后分别计算C与E、F的重叠度,扔掉重叠度超过设定阈值的矩形框</li>
+<li>就这样一直重复下去,直到剩下的矩形框没有了,得到所有要保留下来的矩形框</li>
+</ol>
+</blockquote>
+<pre><code class="python">import numpy as np
+
+def non_max_suppression_fast(boxes, overlapThresh):
+    &quot;&quot;&quot;
     boxes: boxes为一个m*n的矩阵，m为bbox的个数，n的前4列为每个bbox的坐标，
            格式为（x1,y1,x2,y2），有时会有第5列，该列为每一类的置信
     overlapThresh: 最大允许重叠率
-    """
+    &quot;&quot;&quot;
     # if there are no boxes, return an empty list
     if len(boxes) == 0:
-        return []</p>
-<pre><code># if the bounding boxes are integers, convert them to floats
-# this is important since we'll be doing a bunch of divisions
-if boxes.dtype.kind == "i":
-    boxes = boxes.astype("float")
+        return []
 
-# initialize the list of picked indexes
-pick = []
+    # if the bounding boxes are integers, convert them to floats
+    # this is important since we'll be doing a bunch of divisions
+    if boxes.dtype.kind == &quot;i&quot;:
+        boxes = boxes.astype(&quot;float&quot;)
 
-# grab the coordinates of all bounding boxes respectively
-x1 = boxes[:,0]  # startX
-y1 = boxes[:,1]  # startY
-x2 = boxes[:,2]  # endX
-y2 = boxes[:,3]  # endY
-# probs = boxes[:,4]
+    # initialize the list of picked indexes
+    pick = []
 
-# compute the area of the bounding boxes and sort the bboxes 
-# by the bottom y-coordinate of the bboxes by ascending order
-# and grab the indexes of the sorted coordinates of bboxes
-area = (x2 - x1 + 1) * (y2 - y1 + 1)
-idxs = np.argsort(y2)
+    # grab the coordinates of all bounding boxes respectively
+    x1 = boxes[:,0]  # startX
+    y1 = boxes[:,1]  # startY
+    x2 = boxes[:,2]  # endX
+    y2 = boxes[:,3]  # endY
+    # probs = boxes[:,4]
 
-# if probabilities are provided, sort by them instead
-# idxs = np.argsort(probs)
+    # compute the area of the bounding boxes and sort the bboxes 
+    # by the bottom y-coordinate of the bboxes by ascending order
+    # and grab the indexes of the sorted coordinates of bboxes
+    area = (x2 - x1 + 1) * (y2 - y1 + 1)
+    idxs = np.argsort(y2)
 
-# keep looping while some indexes still remain in the idxs list
-while len(idxs) &gt; 0:
-    # grab the last index in the idxs list (the bottom-right box)
-    # and add the index value to the list of picked indexes
-    last = len(idxs) - 1
-    i = idxs[last]
-    pick.append(i)
+    # if probabilities are provided, sort by them instead
+    # idxs = np.argsort(probs)
 
-    # find the largest coordinates for the start of the bbox 
-    # and the smallest coordinates for the end of the bbox
-    # in the rest of bounding boxes.
-    xx1 = np.maximum(x1[i], x1[idxs[:last]])
-    yy1 = np.maximum(y1[i], y1[idxs[:last]])
-    xx2 = np.minimum(x2[i], x2[idxs[:last]])
-    yy2 = np.minimum(y2[i], y2[idxs[:last]])
+    # keep looping while some indexes still remain in the idxs list
+    while len(idxs) &gt; 0:
+        # grab the last index in the idxs list (the bottom-right box)
+        # and add the index value to the list of picked indexes
+        last = len(idxs) - 1
+        i = idxs[last]
+        pick.append(i)
 
-    # the width and height of the bounding box
-    w = np.maximum(0, xx2 - xx1 + 1)
-    h = np.maximum(0, yy2 - yy1 + 1)
-    # the ratio of overlap in the bounding box
-    overlap = (w * h) / area[idxs[:last]]
+        # find the largest coordinates for the start of the bbox 
+        # and the smallest coordinates for the end of the bbox
+        # in the rest of bounding boxes.
+        xx1 = np.maximum(x1[i], x1[idxs[:last]])
+        yy1 = np.maximum(y1[i], y1[idxs[:last]])
+        xx2 = np.minimum(x2[i], x2[idxs[:last]])
+        yy2 = np.minimum(y2[i], y2[idxs[:last]])
 
-    # delete all indexes from the index list that overlap is larger than overlapThresh
-    idxs = np.delete(idxs, np.concatenate(([last], np.where(overlap &gt; overlapThresh)[0])))
+        # the width and height of the bounding box
+        w = np.maximum(0, xx2 - xx1 + 1)
+        h = np.maximum(0, yy2 - yy1 + 1)
+        # the ratio of overlap in the bounding box
+        overlap = (w * h) / area[idxs[:last]]
 
-# return only the bounding boxes that were picked using the
-# integer data type
-return boxes[pick].astype("int")
+        # delete all indexes from the index list that overlap is larger than overlapThresh
+        idxs = np.delete(idxs, np.concatenate(([last], np.where(overlap &gt; overlapThresh)[0])))
+
+    # return only the bounding boxes that were picked using the
+    # integer data type
+    return boxes[pick].astype(&quot;int&quot;)
 </code></pre>
-<p>上面这段代码没有指定每个框的置信度，所以使用的是框的右下角的 y 坐标来代替。</p>
-<p>参考：</p>
-<p>目标检测研究综述+LocNet: Improving Localization Accuracy for Object Detection CVPR2016 阅读</p>
-<p>https://blog.csdn.net/pandav5/article/details/50997272</p>
-<p>https://blog.csdn.net/u011534057/article/details/51235718</p>
-<p>soft_nms
-这是对 nms 的改进，它没有删除所有IOU大于阈值的框，而是降低其置信度。</p>
-<p>这个暂时还没看。</p>
-<p>soft-nms 代码</p>
-<p>bharatsingh430/soft-nms</p>
-<p>胡孟：Soft-NMS(1)_初探_NMS</p>
-<p>一行代码改进NMS</p>
-<p>xiaozhi：NMS也能玩出花样来……</p>
-<p>MSER
-MSER全称叫做最大稳定极值区域（MSER-Maximally Stable Extremal Regions），是一种检测图像中文本区域的传统图像算法，主要是基于分水岭的思想来对图像进行斑点（blob）区域检测。</p>
-<p>就准确率来说，MSER对文本区域的检测效果是不能和深度学习如CTPN、Pixellink等相比的，但是可以用于自然场景的文本检测的前期阶段，产生尽可能多的proposals。</p>
-<p>MSER对灰度图像取阈值进行二值化处理，阈值从0到255依次进行递增，阈值的递增类似于分水岭算法中的水平面的上升，随着水平面的上升，有一些山谷和较矮的丘陵会被淹没，如果从天空往下看，则整个区域被分为陆地和水域两个部分，这类似于二值图像。图像中灰度值的不同就对应地势高低的不同，每个阈值都都会生成一个二值图。</p>
+
+<ul>
+<li><strong>soft_nms</strong></li>
+</ul>
+<p>这是对nms的改进,它没有删除所有IOU大于阈值的框,而是降低其置信度。</p>
+<pre><code class="python">def cpu_soft_nms(np.ndarray[float, ndim=2] boxes, float sigma=0.5, float Nt=0.3, float threshold=0.001, unsigned int method=0):
+    cdef unsigned int N = boxes.shape[0]
+    cdef float iw, ih, box_area
+    cdef float ua
+    cdef int pos = 0
+    cdef float maxscore = 0
+    cdef int maxpos = 0
+    cdef float x1,x2,y1,y2,tx1,tx2,ty1,ty2,ts,area,weight,ov
+
+    for i in range(N):　　　　　　　　　　　　　　每次找最大的得分和相应的box
+        maxscore = boxes[i, 4]
+        maxpos = i
+
+        tx1 = boxes[i,0]
+        ty1 = boxes[i,1]
+        tx2 = boxes[i,2]
+        ty2 = boxes[i,3]
+        ts = boxes[i,4]
+
+        pos = i + 1
+    # get max box
+        while pos &lt; N:
+            if maxscore &lt; boxes[pos, 4]:
+                maxscore = boxes[pos, 4]
+                maxpos = pos
+            pos = pos + 1
+
+    # add max box as a detection 
+        boxes[i,0] = boxes[maxpos,0]
+        boxes[i,1] = boxes[maxpos,1]
+        boxes[i,2] = boxes[maxpos,2]
+        boxes[i,3] = boxes[maxpos,3]
+        boxes[i,4] = boxes[maxpos,4]
+
+    # swap ith box with position of max box　　　　　　把得分最大的放到当前第一个位置
+        boxes[maxpos,0] = tx1
+        boxes[maxpos,1] = ty1
+        boxes[maxpos,2] = tx2
+        boxes[maxpos,3] = ty2
+        boxes[maxpos,4] = ts
+
+        tx1 = boxes[i,0]
+        ty1 = boxes[i,1]
+        tx2 = boxes[i,2]
+        ty2 = boxes[i,3]
+        ts = boxes[i,4]
+
+        pos = i + 1
+    # NMS iterations, note that N changes if detection boxes fall below threshold
+        while pos &lt; N:　　　　　　　　　　　　　　　　　　　　　　当前第一个，也就是得分最高的一个，和后面所有的box进行nms操作
+            x1 = boxes[pos, 0]
+            y1 = boxes[pos, 1]
+            x2 = boxes[pos, 2]
+            y2 = boxes[pos, 3]
+            s = boxes[pos, 4]
+
+            area = (x2 - x1 + 1) * (y2 - y1 + 1)
+            iw = (min(tx2, x2) - max(tx1, x1) + 1)　　　　　　width的重叠部分长度
+            if iw &gt; 0:
+                ih = (min(ty2, y2) - max(ty1, y1) + 1)　　　 height的重叠部分长度
+                if ih &gt; 0:
+                    ua = float((tx2 - tx1 + 1) * (ty2 - ty1 + 1) + area - iw * ih)
+                    ov = iw * ih / ua #iou between max box and detection box
+
+                    if method == 1: # linear
+                        if ov &gt; Nt: 
+                            weight = 1 - ov
+                        else:
+                            weight = 1
+                    elif method == 2: # gaussian
+                        weight = np.exp(-(ov * ov)/sigma)
+                    else: # original NMS
+                        if ov &gt; Nt: 
+                            weight = 0
+                        else:
+                            weight = 1
+
+                    boxes[pos, 4] = weight*boxes[pos, 4]
+
+            # if box score falls below threshold, discard the box by swapping with last box
+            # update N
+                    if boxes[pos, 4] &lt; threshold:
+                        boxes[pos,0] = boxes[N-1, 0]
+                        boxes[pos,1] = boxes[N-1, 1]
+                        boxes[pos,2] = boxes[N-1, 2]
+                        boxes[pos,3] = boxes[N-1, 3]
+                        boxes[pos,4] = boxes[N-1, 4]
+                        N = N - 1
+                        pos = pos - 1
+
+            pos = pos + 1
+
+    keep = [i for i in range(N)]
+    return keep
+</code></pre>
+
+<ul>
+<li><strong>MSER</strong></li>
+</ul>
+<p>MSER全称叫做最大稳定极值区域(MSER-Maximally Stable Extremal Regions),是一种检测图像中文本区域的传统图像算法,主要是基于分水岭的思想来对图像进行斑点(blob)区域检测。</p>
+<p>就准确率来说,MSER对文本区域的检测效果是不能和深度学习如CTPN、Pixellink等相比的,但是可以用于自然场景的文本检测的前期阶段,产生尽可能多的proposals。</p>
+<p>MSER对灰度图像取阈值进行二值化处理,阈值从0到255依次进行递增，阈值的递增类似于分水岭算法中的水平面的上升,随着水平面的上升,有一些山谷和较矮的丘陵会被淹没，如果从天空往下看，则整个区域被分为陆地和水域两个部分，这类似于二值图像。图像中灰度值的不同就对应地势高低的不同，每个阈值都都会生成一个二值图。</p>
 <p>随着阈值的增加，首先会看到一个全白图像，然后出现小黑点，随着阈值的增加，黑色部分会逐渐增大， 这些黑色区域最终会融合，直到整个图像变成黑色。在得到的所有二值图像中，图像中的某些连通区域变化很小，甚至没有变化，则该区域就被称为最大稳定极值区域。</p>
+<p><img alt="" src="http://pic1.zhimg.com/80/v2-37d31b9bdbf2e03a9260102578f94bcc_1440w.jpg" /></p>
 <p>在一幅含有文字的图像上，由于文字区域的灰度值是一致的，而且和文字周边像素的灰度值差别较大，因此在水平面（阈值）持续增长的一段时间内它们都不会被覆盖，直到阈值涨到文字本身的灰度值时才会被淹没，所以文字区域可以作为最大稳定极值区域。</p>
 <p>所以如果一个区域在给定的阈值范围内保持其形状和大小基本稳定不变，而不会与其他区域合并，该区域被认为是稳定的。</p>
 <p>上述做法只能检测出灰度图像的黑色区域，不能检测出白色区域，因此还需要对原图进行反转（负片图像），然后再进行阈值从0～255递增的二值化处理过程。这两种操作分别被称为MSER+和MSER-。</p>
-<p>MSER 的公式如下：</p>
-<p>[公式]</p>
-<p>[公式] 表示阈值为 i 时的某一连通区域，Δ 为灰度阈值的微小增加量， [公式] 为阈值是 i 时的区域 [公式] 的变化率， [公式] 表示区域 [公式] 的面积。当 [公式] 为局部极小值时，说明 [公式] 区域的变化非常小，则 [公式] 为可以被认为是最大稳定极值区域。</p>
-<p>其实mser的数学原理比这个复杂，详情可以查看下面的参考文章。</p>
+<p>MSER 的公式如下:</p>
+<div>
+<div class="MathJax_Preview">q(i)=\dfrac {|R(i + Δ)-R(i)|}{|R(i)|}</div>
+<script type="math/tex; mode=display">q(i)=\dfrac {|R(i + Δ)-R(i)|}{|R(i)|}</script>
+</div>
+<p><span><span class="MathJax_Preview">R(i)</span><script type="math/tex">R(i)</script></span>表示阈值为i时的某一连通区域,<span><span class="MathJax_Preview">Δ</span><script type="math/tex">Δ</script></span>为灰度阈值的微小增加量,<span><span class="MathJax_Preview">q(i)</span><script type="math/tex">q(i)</script></span>为阈值是i时的区域<span><span class="MathJax_Preview">R(i)</span><script type="math/tex">R(i)</script></span>的变化率,<span><span class="MathJax_Preview">|R(i)|</span><script type="math/tex">|R(i)|</script></span>表示区域<span><span class="MathJax_Preview">R(i)</span><script type="math/tex">R(i)</script></span>的面积。当<span><span class="MathJax_Preview">q(i)</span><script type="math/tex">q(i)</script></span>为局部极小值时,说明<span><span class="MathJax_Preview">R(i)</span><script type="math/tex">R(i)</script></span>区域的变化非常小,则<span><span class="MathJax_Preview">R(i)</span><script type="math/tex">R(i)</script></span>为可以被认为是最大稳定极值区域。</p>
 <p>该算法可以用来粗略地寻找图像中的文字区域，虽然算法思想简单，但要做到效果又快又好还是需要一定基础的，OpenCV直接提供了该算法的接口。</p>
-<p>使用 mser = cv2.MSER_create() 来得到一个mser对象，cv2.MSER_create() 的参数如下：</p>
-<p><em>delta   it compares (size_i − size</em>{i−delta}) / size_{i−delta}, default 5
-_min_area   prune the area which smaller than minArea
-_max_area   prune the area which bigger than maxArea
-_max_variation   prune the area have similar size to its children
-_min_diversity   for color image, trace back to cut off mser with diversity less than min_diversity
-_max_evolution   for color image, the evolution steps
-_area_threshold   for color image, the area threshold to cause re-initialize
-_min_margin   for color image, ignore too small margin
-_edge_blur_size   for color image, the aperture size for edge blur
-_delta: 允许灰度阈值的最小变化步长，即一次灰度值增加的量，取值范围（0,160），默认为5
-_min_area: 允许区域最小的面积，默认为60
-_max_area: 允许区域最大的面积，默认为14400
-_max_variation: 允许不同强度阈值下的区域之间的最大面积变化率，取值范围为(0,1)，越接近1，则越多区域被认为是稳定的，如果接近0，则只能找到非常少的稳定区域，默认为0.25</p>
-<p>使用 regions, boxes = mser.detectRegions(gray) 来获取mser区域。输入图像可以是灰度图或者灰度图的梯度图，regions 和 boxes 都是 mser 区域，不过形式不同。</p>
-<p>regions是一个列表，其中每个元素都表示一个区域，每个区域为表示该区域的所有像素点的坐标的集合，每个区域的尺寸为(n_points, 2)，区域的面积就是这些点的个数。
-boxes是一个二维数组，尺寸为(n_regions, 4)，每一行表示一个区域的信息：(x,y,w,h)。</p>
-<p>获取 mser 区域后，可以进行如下后续处理：</p>
-<p>之后可以结合角点检测将筛选出准确的文字区域；
-根据角度，长宽比等几何关系剔除较明显的非文字区域；
-对mser区域的二值图进行腐蚀膨胀等操作，得到文字区域的连通域，然后获取其轮廓；
-使用非极大值抑制获取不重复的区域。</p>
-<p>下面是一个使用 mser 进行文字检测的例子（需要用到上面的非极大值抑制）：</p>
-<p>'''
+<pre><code class="python">'''
 MSER+NMS实现图像文本区域检测
 '''
 path = '/home/zxd/Downloads/co120110121029-12.jpg'
 img = cv2.imread(path)
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)  # 灰度图
 vis_1 = img.copy()
-vis_2 = img.copy()</p>
-<h1 id="get-mser-object">get mser object</h1>
-<p>mser = cv2.MSER_create(_delta=5, _min_area=10, _max_variation=0.5)</p>
-<h1 id="detect-mser-regions">Detect MSER regions</h1>
-<p>regions, boxes = mser.detectRegions(gray)</p>
-<h1 id="_3">绘制文本区域（不规则轮廓）</h1>
-<p>hulls = [cv2.convexHull(p.reshape(-1, 1, 2)) for p in regions]<br />
-cv2.polylines(img, hulls, 1, (0, 255, 0), 1)</p>
-<h1 id="_4">两种绘制矩形轮廓</h1>
-<h1 id="for-box-in-boxes">for box in boxes:</h1>
-<h1 id="x-y-w-h-box">x, y, w, h = box</h1>
-<h1 id="cv2rectanglevis_1-xyxw-yh-255-0-0-1">cv2.rectangle(vis_1, (x,y),(x+w, y+h), (255, 0, 0), 1)</h1>
-<p>keep = []
+vis_2 = img.copy()
+
+# get mser object
+mser = cv2.MSER_create(_delta=5, _min_area=10, _max_variation=0.5)
+# Detect MSER regions
+regions, boxes = mser.detectRegions(gray)
+
+# 绘制文本区域（不规则轮廓）
+hulls = [cv2.convexHull(p.reshape(-1, 1, 2)) for p in regions]  
+cv2.polylines(img, hulls, 1, (0, 255, 0), 1)
+
+# 两种绘制矩形轮廓
+# for box in boxes:
+#     x, y, w, h = box
+#     cv2.rectangle(vis_1, (x,y),(x+w, y+h), (255, 0, 0), 1)
+
+keep = []
 for hull in hulls:
     x, y, w, h = cv2.boundingRect(hull)
     keep.append([x, y, x + w, y + h])
     cv2.rectangle(vis_1, (x, y), (x + w, y + h), (255, 0, 0), 1)
-print("%d bounding boxes before nms" % (len(keep)))</p>
-<h1 id="_5">使用非极大值抑制获取不重复的矩形框</h1>
-<p>pick = non_max_suppression_fast(np.array(keep), overlapThresh=0.4)
-print("%d bounding boxes after nms" % (len(pick)))</p>
-<h1 id="loop-over-the-picked-bounding-boxes-and-draw-them">loop over the picked bounding boxes and draw them</h1>
-<p>for (startX, startY, endX, endY) in pick:
-    cv2.rectangle(vis_2, (startX, startY), (endX, endY), (0, 0, 255), 1)</p>
-<h1 id="_6">合并图片</h1>
-<p>boxing_list = [img, vis_1, vis_2]
-boxing = np.concatenate(boxing_list, axis=0)</p>
-<p>plt.figure(figsize=(10, 20))  # w,h
+print(&quot;%d bounding boxes before nms&quot; % (len(keep)))
+
+# 使用非极大值抑制获取不重复的矩形框
+pick = non_max_suppression_fast(np.array(keep), overlapThresh=0.4)
+print(&quot;%d bounding boxes after nms&quot; % (len(pick)))
+
+# loop over the picked bounding boxes and draw them
+for (startX, startY, endX, endY) in pick:
+    cv2.rectangle(vis_2, (startX, startY), (endX, endY), (0, 0, 255), 1)
+
+# 合并图片
+boxing_list = [img, vis_1, vis_2]
+boxing = np.concatenate(boxing_list, axis=0)
+
+plt.figure(figsize=(10, 20))  # w,h
 plt.imshow(boxing, cmap='gray')
 plt.show()
-结果如下，下面三张图分别为，对区域绘制不规则轮廓，绘制矩形轮廓，应用非极大值抑制后的矩形轮廓。</p>
-<p>得到文字区域后，可以单独提取出文字区域部分：</p>
-<p>text_mask = np.zeros((img.shape[0], img.shape[1]), dtype=np.uint8)
+
+text_mask = np.zeros((img.shape[0], img.shape[1]), dtype=np.uint8)
 for contour in hulls:
-    cv2.drawContours(text_mask, [contour], -1, (255, 255, 255), -1)</p>
-<p>img = cv2.imread(path)
+    cv2.drawContours(text_mask, [contour], -1, (255, 255, 255), -1)
+
+img = cv2.imread(path)
 img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 text_region = cv2.bitwise_and(img, img, mask=mask)
-得到的text_mask和text_region分别如下：</p>
-<p>可以看到我们不仅得到文字区域，还得到了纹理复杂的背景区域，这是使用 mser 方法不可避免的，因为使用的是类似于分水岭的水淹法，这时可以通过笔画宽度变换（Stroke Width Transform，SWT）只得到其中的文字部分。</p>
-<p>下次讲讲 Stroke Width Transform 吧。</p>
-<p>参考文章：</p>
-<p>Tutorials &gt; MSER feature detector</p>
-<p>https://blog.csdn.net/zhaocj/article/details/40742191</p>
-<p>https://en.wikipedia.org/wiki/Maximally_stable_extremal_regions</p>
-<p>Exact Meaning of the parameters given to initialize MSER in OpenCV 2.4.x?</p>
-<p>Detect MSER features and return MSERRegions object</p>
-<p>https://www.cnblogs.com/frischzenger/p/3334569.html</p>
-<p>编辑于 2019-08-30</p>
-<h2 id="_7">二、基本结构</h2>
+</code></pre>
+
+<h2 id="_3">二、基本结构</h2>
 <h3 id="21">2.1 卷积类型</h3>
 <p>https://www.zhihu.com/question/312556066/answer/600228264</p>
 <p>https://www.zhihu.com/question/291032522/answer/605843215</p>
 <p>https://cloud.tencent.com/developer/article/1352583</p>
 <p>https://zhuanlan.zhihu.com/p/44106492</p>
-<h2 id="_8">三、经典网络</h2>
+<h2 id="_4">三、经典网络</h2>
 <h3 id="31-lenet">3.1 lenet网络</h3>
 <p>卷积神经网络的开山之作,麻雀虽小五脏俱全,卷积层、池化层、全链接层一直沿用至今。</p>
 <p><img alt="" src="http://cuijiahua.com/wp-content/uploads/2018/01/dl_3_4.jpg" /></p>
