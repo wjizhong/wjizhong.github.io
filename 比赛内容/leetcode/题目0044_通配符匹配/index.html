@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/Leetcode/%E9%A2%98%E7%9B%AE0044_%E9%80%9A%E9%85%8D%E7%AC%A6%E5%8C%B9%E9%85%8D/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>题目0044:通配符匹配 - 图像/视频算法</title>
+    <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "\u9898\u76ee0044:\u901a\u914d\u7b26\u5339\u914d", url: "#_top", level:1, children: [
+              {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1", level:2, children: [ 
+              ]},
+              {title: "\u89e3\u9898\u6280\u5de7", url: "#_2", level:2, children: [ 
+              ]},
+          ]},
+        ];
+    </script>
+    <script src="../../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    
+
+    <h1 id="0044">题目0044:通配符匹配</h1>
+<h2 id="_1">题目描述</h2>
+<p>给定一个字符串(s)和一个字符模式(p),实现一个支持'?'和'*'的通配符匹配。</p>
+<blockquote>
+<p>'?'可以匹配任何单个字符。</p>
+<p>'*'可以匹配任意字符串(包括空字符串)。</p>
+</blockquote>
+<p>两个字符串完全匹配才算匹配成功。</p>
+<p>说明:</p>
+<blockquote>
+<p>s可能为空,且只包含从a-z的小写字母。</p>
+<p>p可能为空,且只包含从a-z的小写字母,以及字符?和*。</p>
+</blockquote>
+<p>示例1:</p>
+<pre><code>输入:
+s = &quot;aa&quot;
+p = &quot;a&quot;
+输出: false
+解释: &quot;a&quot; 无法匹配 &quot;aa&quot; 整个字符串。
+</code></pre>
+
+<p>示例2:</p>
+<pre><code>输入:
+s = &quot;aa&quot;
+p = &quot;*&quot;
+输出: true
+解释: '*' 可以匹配任意字符串。
+</code></pre>
+
+<p>示例3:</p>
+<pre><code>输入:
+s = &quot;cb&quot;
+p = &quot;?a&quot;
+输出: false
+解释: '?' 可以匹配 'c', 但第二个 'a' 无法匹配 'b'。
+</code></pre>
+
+<p>示例4:</p>
+<pre><code>输入:
+s = &quot;adceb&quot;
+p = &quot;*a*b&quot;
+输出: true
+解释: 第一个 '*' 可以匹配空字符串, 第二个 '*' 可以匹配字符串 &quot;dce&quot;.
+</code></pre>
+
+<p>示例5:</p>
+<pre><code>输入:
+s = &quot;acdcb&quot;
+p = &quot;a*c?b&quot;
+输出: false
+</code></pre>
+
+<h2 id="_2">解题技巧</h2>
+<ul>
+<li><strong>方法一:带记忆的递归</strong></li>
+</ul>
+<p>这里的第一个想法是递归,是一个较为简单的方法,但是如果输入的字符串过长会导致递归深度很大,因此比较耗时。</p>
+<blockquote>
+<ul>
+<li>如果字符串相等p==s,返回 True。</li>
+<li>如果p=='*',返回True。</li>
+<li>如果p为空或s为空,返回False。</li>
+<li>若当前字符匹配,即p[0]==s[0]或p[0]=='?',然后比较下一个字符,返回isMatch(s[1:], p[1:])。</li>
+<li>如果当前的字符模式是一个星号p[0]=='*',则有两种情况。</li>
+<li>星号没有匹配字符,因此答案是isMatch(s, p[1:])。</li>
+<li>星号匹配一个字符或更多字符,因此答案是isMatch(s[1:], p)。</li>
+<li>若p[0] != s[0],返回False。</li>
+</ul>
+</blockquote>
+<p><img alt="" src="http://imgconvert.csdnimg.cn/aHR0cHM6Ly9waWMubGVldGNvZGUtY24uY29tL0ZpZ3VyZXMvNDQvc3R1cGlkLnBuZw?x-oss-process=image/format,png" /></p>
+<p>这个算法由于时间限制,他没有通过所有的测试用例,因此必须进行优化,以下是可以做到的:</p>
+<blockquote>
+<ol>
+<li>记忆。这是优化递归的标准方法。我们使用(s,p)作为键,使用匹配与不匹配作为布尔值。创建一个记忆的哈希映射。将所有已经检查的(s,p)保留在哈希映射中。这样，如果有任何重复的检查，只需查看哈希表，而不需再次进行计算。</li>
+<li>清理输入数据,不管<code>a****bc**cc</code>中有多少个星号,它们都可以简化为<code>a*bc*cc</code>。这样的清理有助于减少递归深度。</li>
+</ol>
+</blockquote>
+<p>算法:</p>
+<blockquote>
+<ul>
+<li>清理输入数据用一个星号代替多个星号:<code>p = remove_duplicate_stars(p)</code>。</li>
+<li>初始化记忆哈希表dp。</li>
+<li>返回helper函数,用清理后的输入作为参数。</li>
+<li>helper(s,p):</li>
+<li>如果(s,p)已经计算过存储在dp中,则返回dp中的值。</li>
+<li>如果字符串相等p == s或p == '*',在dp添加<code>dp[(s, p)] = True</code>。</li>
+<li>反之如果p或s为空,则<code>dp[(s, p)] = False</code>。</li>
+<li>反之如果当前字符匹配,即p[0] == s[0]或<code>p[0] == '?'</code>,则继续检查下一个字符并<code>dp[(s, p)] = helper(s[1:], p[1:])</code>。</li>
+<li>反之如果当前字符模式是一个星号<code>p[0] == '*'</code>,则有两种情况,要么不匹配字符要么匹配一个或多个，符,则<code>dp[(s, p)] = helper(s, p[1:]) or helper(s, p[1:])</code>。</li>
+<li>反之如果<code>p[0] != s[0]</code>,则<code>dp[(s, p)] = False</code>。</li>
+<li>返回<code>dp[(s, p)]</code>。</li>
+</ul>
+</blockquote>
+<pre><code class="python">class Solution:
+    def remove_duplicate_stars(self, p):
+        if p == '':
+            return p
+        p1 = [p[0],]
+        for x in p[1:]:
+            if p1[-1] != '*' or p1[-1] == '*' and x != '*':
+                p1.append(x)
+        return ''.join(p1) 
+
+    def helper(self, s, p):
+        dp = self.dp
+        if (s, p) in dp:
+            return dp[(s, p)]
+
+        if p == s or p == '*':
+            dp[(s, p)] = True
+        elif p == '' or s == '':
+            dp[(s, p)] = False
+        elif p[0] == s[0] or p[0] == '?':
+            dp[(s, p)] = self.helper(s[1:], p[1:])
+        elif p[0] == '*':
+            dp[(s, p)] = self.helper(s, p[1:]) or self.helper(s[1:], p)
+        else:
+            dp[(s, p)] = False
+
+        return dp[(s, p)]
+
+    def isMatch(self, s, p):
+        p = self.remove_duplicate_stars(p)
+        # memorization hashmap to be used during the recursion
+        self.dp = {}
+        return self.helper(s, p)
+</code></pre>
+
+<p>复杂度分析</p>
+<blockquote>
+<p>时间复杂度:最好的情况下<span><span class="MathJax_Preview">\mathcal{O}(\min(S, P))</span><script type="math/tex">\mathcal{O}(\min(S, P))</script></span>,最坏的情况下是<span><span class="MathJax_Preview">\mathcal{O}(2^{\min(S, P/2)})</span><script type="math/tex">\mathcal{O}(2^{\min(S, P/2)})</script></span>。其中<span><span class="MathJax_Preview">S</span><script type="math/tex">S</script></span>和<span><span class="MathJax_Preview">P</span><script type="math/tex">P</script></span>指的是输入字符串和字符模式的长度。最好的情况很明显,让我们估算最坏的情况。最耗时的递归是字符模式上的星号形成树的情况,将执行两个分支<code>helper(s, p[1:])</code>和<code>helper(s[1:], p)</code>。数据清理后字符模式中的最大星树为<span><span class="MathJax_Preview">P/2</span><script type="math/tex">P/2</script></span>,因此时间复杂度为<span><span class="MathJax_Preview">\mathcal{O}(2^{\min(S, P/2)})</span><script type="math/tex">\mathcal{O}(2^{\min(S, P/2)})</script></span>。</p>
+<p>空间复杂度:<span><span class="MathJax_Preview">\mathcal{O}(2^{\min(S, P/2)})</span><script type="math/tex">\mathcal{O}(2^{\min(S, P/2)})</script></span>,用来存储记忆哈希表和递归调用堆栈。</p>
+</blockquote>
+<ul>
+<li><strong>方法二:动态规划</strong></li>
+</ul>
+<p>上面的递归方法体现了当递归深度大的时候有多耗时,所以我们尝试一些更迭代的方法。</p>
+<p>第一种方法中的记忆给出了尝试动态规划的想法。这个问题和编辑距离非常相似,所以我们在这里使用完全相同的方法。</p>
+<p>我们的想法是将问题简化为简单的问题,例如,有一个字符串<code>adcebdk</code>和字符模式<code>*a*b?k</code>,计算是否匹配<code>D = True/False</code>。我们将输入字符串和字符模式的长度<code>p_len</code>,<code>s_len</code>和是否匹配<code>D[p_len][s_len]</code>联系起来。</p>
+<p>让我们进一步介绍<code>D[p_idx][s_idx]</code>,<code>D[p_idx][s_idx]</code>代表的是字符模式中的第<code>p_idx</code>字符和输入字符串的第<code>s_idx</code>字符是否匹配。</p>
+<p><img alt="" src="http://imgconvert.csdnimg.cn/aHR0cHM6Ly9waWMubGVldGNvZGUtY24uY29tL0ZpZ3VyZXMvNDQvZHBfbWF0Y2gyLnBuZw?x-oss-process=image/format,png" /></p>
+<p>如果字符相同或字符模式的字符为<code>?</code>,则</p>
+<p><strong>规则1:<span><span class="MathJax_Preview">D[p_{idx}][s_{idx}] = D[p_{idx} - 1][s_{idx} - 1] \qquad (1)</span><script type="math/tex">D[p_{idx}][s_{idx}] = D[p_{idx} - 1][s_{idx} - 1] \qquad (1)</script></span></strong></p>
+<p><img alt="" src="http://imgconvert.csdnimg.cn/aHR0cHM6Ly9waWMubGVldGNvZGUtY24uY29tL0ZpZ3VyZXMvNDQvd29yZF9tYXRjaDMucG5n?x-oss-process=image/format,png" /></p>
+<p>如果字符模式的字符为星号且<code>D[p_idx - 1][s_idx - 1] = True</code>,则:</p>
+<blockquote>
+<ul>
+<li>星号匹配完成。</li>
+<li>星号继续匹配更多的字符。</li>
+</ul>
+</blockquote>
+<p><strong>规则2:<span><span class="MathJax_Preview">D[p_{idx} - 1][i] = \textrm{True}, i \ge s_{idx} - 1 \qquad(2)</span><script type="math/tex">D[p_{idx} - 1][i] = \textrm{True}, i \ge s_{idx} - 1 \qquad(2)</script></span></strong></p>
+<p>所以,每一步的计算是基于之前完成的计算完成的。</p>
+<p><img alt="" src="http://imgconvert.csdnimg.cn/aHR0cHM6Ly9waWMubGVldGNvZGUtY24uY29tL0ZpZ3VyZXMvNDQvaWZfbWF0Y2gucG5n?x-oss-process=image/format,png" /></p>
+<p><img alt="" src="http://imgconvert.csdnimg.cn/aHR0cHM6Ly9waWMubGVldGNvZGUtY24uY29tL0ZpZ3VyZXMvNDQvZHBzdGFyLnBuZw?x-oss-process=image/format,png" /></p>
+<p>算法:</p>
+<blockquote>
+<p>初始化匹配表为False,除了<code>D[0][0] = True</code>。</p>
+<p>使用规则1和规则2计算表格,最后返回<code>D[p_len][s_len]</code>作为答案。</p>
+</blockquote>
+<pre><code class="python">class Solution:
+    def isMatch(self, s, p):
+        s_len = len(s)
+        p_len = len(p)
+
+        # base cases
+        if p == s or p == '*':
+            return True
+        if p == '' or s == '':
+            return False
+
+        # init all matrix except [0][0] element as False
+        d = [ [False] * (s_len + 1) for _ in range(p_len + 1)]
+        d[0][0] = True
+
+        # DP compute 
+        for p_idx in range(1, p_len + 1):
+            # the current character in the pattern is '*'
+            if p[p_idx - 1] == '*':
+                s_idx = 1
+                # d[p_idx - 1][s_idx - 1] is a string-pattern match 
+                # on the previous step, i.e. one character before.
+                # Find the first idx in string with the previous math.
+                while not d[p_idx - 1][s_idx - 1] and s_idx &lt; s_len + 1:
+                    s_idx += 1
+                # If (string) matches (pattern), 
+                # when (string) matches (pattern)* as well
+                d[p_idx][s_idx - 1] = d[p_idx - 1][s_idx - 1]
+                # If (string) matches (pattern), 
+                # when (string)(whatever_characters) matches (pattern)* as well
+                while s_idx &lt; s_len + 1:
+                    d[p_idx][s_idx] = True
+                    s_idx += 1
+            # the current character in the pattern is '?'
+            elif p[p_idx - 1] == '?':
+                for s_idx in range(1, s_len + 1): 
+                    d[p_idx][s_idx] = d[p_idx - 1][s_idx - 1] 
+            # the current character in the pattern is not '*' or '?'
+            else:
+                for s_idx in range(1, s_len + 1): 
+                    # Match is possible if there is a previous match
+                    # and current characters are the same
+                    d[p_idx][s_idx] = \
+                    d[p_idx - 1][s_idx - 1] and p[p_idx - 1] == s[s_idx - 1]  
+
+        return d[p_len][s_len]
+</code></pre>
+
+<p>复杂度分析</p>
+<blockquote>
+<p>时间复杂度:<span><span class="MathJax_Preview">\mathcal{O}(S P)</span><script type="math/tex">\mathcal{O}(S P)</script></span>,其中<span><span class="MathJax_Preview">S</span><script type="math/tex">S</script></span>和<span><span class="MathJax_Preview">P</span><script type="math/tex">P</script></span>指的是字符模式和输入字符串的长度。</p>
+<p>空间复杂度:<span><span class="MathJax_Preview">\mathcal{O}(S P)</span><script type="math/tex">\mathcal{O}(S P)</script></span>,用来存储匹配表格。</p>
+</blockquote>
+<ul>
+<li><strong>方法三:回溯</strong></li>
+</ul>
+<p>复杂度<span><span class="MathJax_Preview">\mathcal{O}(S P)</span><script type="math/tex">\mathcal{O}(S P)</script></span>比<span><span class="MathJax_Preview">\mathcal{O}(2^{\min(S, P/2)})</span><script type="math/tex">\mathcal{O}(2^{\min(S, P/2)})</script></span>好的多,但是仍然有改进的余地。不需要计算整个表格,也就是检查每个星号的所有可能性:</p>
+<blockquote>
+<ul>
+<li>匹配0个字符。</li>
+<li>匹配1个字符。</li>
+<li>匹配2个字符。</li>
+<li>...</li>
+<li>匹配所有剩余的字符。</li>
+</ul>
+</blockquote>
+<p>让我们从匹配0个字符开始,如果这个假设导致不匹配,则回溯:回到前一个星号,假设它匹配一个字符,然后继续。若又是不匹配的情况?再次回溯:回到上一个星号,假设匹配两个字符,等等。</p>
+<p><img alt="" src="http://imgconvert.csdnimg.cn/aHR0cHM6Ly9waWMubGVldGNvZGUtY24uY29tL0ZpZ3VyZXMvNDQvYmFja3RyYWNrLnBuZw?x-oss-process=image/format,png" /></p>
+<p>算法:</p>
+<p>我们使用两个指针:<code>s_idx</code>遍历输入字符串,<code>p_idx</code>遍历字符模式。当<code>s_idx &lt; s_len</code>:</p>
+<blockquote>
+<ul>
+<li>如果字符模式仍有字符<code>p_idx &lt; p_len</code>且指针下的字符匹配<code>p[p_idx] == s[s_idx]</code>或<code>p[p_idx] == '?'</code>,则两个指针向前移动。</li>
+<li>反之如果字符模式仍有字符<code>p_idx &lt; p_len</code>且<code>p[p_idx] == '*'</code>,则首先检查匹配0字符的情况,即只增加模式指针<code>p_idx++</code>。记下可能回溯的位置<code>star_idx</code>和当前字符串的位置<code>s_tmp_idx</code>。</li>
+<li>反之如果出现不匹配的情况:</li>
+<li>如果字符模式中没有星号,则返回False。</li>
+<li>如果有星号,则回溯:设置<code>p_idx = star_idx + 1</code>和<code>s_idx = s_tmp_idx + 1</code>,假设这次的星匹配多个字符。则可能的回溯为<code>s_tmp_idx = s_idx</code>。</li>
+<li>如果字符模式的所有剩余字符都是星号,则返回True。</li>
+</ul>
+</blockquote>
+<pre><code class="python">class Solution:
+    def isMatch(self, s, p):
+        &quot;&quot;&quot;
+        :type s: str
+        :type p: str
+        :rtype: bool
+        &quot;&quot;&quot;
+        s_len, p_len = len(s), len(p)
+        s_idx = p_idx = 0
+        star_idx = s_tmp_idx = -1
+
+        while s_idx &lt; s_len:
+            # If the pattern caracter = string character
+            # or pattern character = '?'
+            if p_idx &lt; p_len and p[p_idx] in ['?', s[s_idx]]:
+                s_idx += 1
+                p_idx += 1
+            # If pattern character = '*'
+            elif p_idx &lt; p_len and p[p_idx] == '*':
+                # Check the situation
+                # when '*' matches no characters
+                star_idx = p_idx
+                s_tmp_idx = s_idx
+                p_idx += 1
+            # If pattern character != string character
+            # or pattern is used up
+            # and there was no '*' character in pattern 
+            elif star_idx == -1:
+                return False
+            # If pattern character != string character
+            # or pattern is used up
+            # and there was '*' character in pattern before
+            else:
+                # Backtrack: check the situation
+                # when '*' matches one more character
+                p_idx = star_idx + 1
+                s_idx = s_tmp_idx + 1
+                s_tmp_idx = s_idx
+
+        # The remaining characters in the pattern should all be '*' characters
+        return all(x == '*' for x in p[p_idx:])
+</code></pre>
+
+<p>复杂度分析</p>
+<blockquote>
+<p>时间复杂度:最好的情况下是<span><span class="MathJax_Preview">\mathcal{O}(\min(S, P))</span><script type="math/tex">\mathcal{O}(\min(S, P))</script></span>,平均情况下是<span><span class="MathJax_Preview">\mathcal{O}(S \log P)</span><script type="math/tex">\mathcal{O}(S \log P)</script></span>,其中<span><span class="MathJax_Preview">S</span><script type="math/tex">S</script></span>和<span><span class="MathJax_Preview">P</span><script type="math/tex">P</script></span>指的是字符模式和输入字符串的长度。详细证明可点击:<a href="https://arxiv.org/pdf/1407.0950.pdf">证明过程</a>。</p>
+<p>空间复杂度:<span><span class="MathJax_Preview">\mathcal{O}(1)</span><script type="math/tex">\mathcal{O}(1)</script></span>。</p>
+</blockquote>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    <br>
+</div>
+
+</body>
+</html>
