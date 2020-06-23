@@ -4578,3 +4578,148 @@ print(fc3_b2.numpy())
 restore.restore(save_path)
 print(fc3_b2.numpy())
 ```
+
+
+## 八、python压缩
+
+压缩文件格式一般有下列几种:
+
+> gz:即gzip,通常只能压缩一个文件。与tar结合起来就可以实现先打包,再压缩。
+> 
+> tar:linux系统下的打包工具,只打包,不压缩
+> 
+> tgz:即tar.gz。先用tar打包,然后再用gz压缩得到的文件
+> 
+> zip:不同于gzip,虽然使用相似的算法,可以打包压缩多个文件,不过分别压缩文件,压缩率低于tar。
+> 
+> rar:打包压缩文件,最初用于DOS,基于window操作系统。压缩率比zip高,但速度慢,随机访问的速度也慢。
+
+
+* **gz**
+
+由于gz一般只压缩一个文件,所有常与其他打包工具一起工作。比如可以先用tar打包为XXX.tar,然后在压缩为XXX.tar.gz
+
+```python
+
+import gzip
+import os
+def un_gz(file_name):
+    """ungz zip file"""
+    f_name = file_name.replace(".gz", "")
+    #获取文件的名称，去掉
+    g_file = gzip.GzipFile(file_name)
+    #创建gzip对象
+    open(f_name, "w+").write(g_file.read())
+    #gzip对象用read()打开后，写入open()建立的文件中。
+    g_file.close()
+    #关闭gzip对象
+```
+
+* **tar**
+
+XXX.tar.gz解压后得到XXX.tar,还要进一步解压出来。
+
+```python
+import tarfile
+def un_tar(file_name):
+       untar zip file"""
+    tar = tarfile.open(file_name)
+    names = tar.getnames()
+    if os.path.isdir(file_name + "_files"):
+        pass
+    else:
+        os.mkdir(file_name + "_files")
+    #由于解压后是许多文件，预先建立同名文件夹
+    for name in names:
+        tar.extract(name, file_name + "_files/")
+    tar.close()
+```
+
+* **zip**
+
+与tar类似,先读取多个文件名,然后解压,如下：
+
+```python
+import zipfile
+def un_zip(file_name):
+    """unzip zip file"""
+    zip_file = zipfile.ZipFile(file_name)
+    if os.path.isdir(file_name + "_files"):
+        pass
+    else:
+        os.mkdir(file_name + "_files")
+    for names in zip_file.namelist():
+        zip_file.extract(names,file_name + "_files/")
+    zip_file.close()
+```
+
+* **rar**
+
+```python
+import rarfile
+import os
+def un_rar(file_name):
+    """unrar zip file"""
+    rar = rarfile.RarFile(file_name)
+    if os.path.isdir(file_name + "_files"):
+        pass
+    else:
+        os.mkdir(file_name + "_files")
+    os.chdir(file_name + "_files"):
+    rar.extractall()
+    rar.close()
+```
+
+* **tar打包**
+
+在写打包代码的过程中,使用tar.add()增加文件时,会把文件本身的路径也加进去,加上arcname就能根据自己的命名规则将文件加入tar包
+
+```python
+# 打包代码：
+import tarfile  
+import os  
+import time  
+  
+start = time.time()  
+tar=tarfile.open('/path/to/your.tar,'w')  
+for root,dir,files in os.walk('/path/to/dir/'):  
+        for file in files:  
+                fullpath=os.path.join(root,file)  
+                tar.add(fullpath,arcname=file)  
+tar.close()  
+print time.time()-start  
+```
+
+在打包的过程中可以设置压缩规则,如想要以gz压缩的格式打包:`tar=tarfile.open('/path/to/your.tar.gz','w:gz')`,其他格式如下表:(tarfile.open的mode有很多种)
+
+| mode | action |
+| `'r'` or `'r:*'` | Open for reading with transparent compression (recommended). |
+| `'r:'` | Open for reading exclusively without compression. |
+| `'r:gz'` | Open for reading with gzip compression. |
+| `'r:bz2'` | Open for reading with bzip2 compression. |
+| `'a'` or `'a:'` | Open for appending with no compression. The file is created if it does not exist. |
+| `'w' or 'w:'` | Open for uncompressed writing. |
+| `'w:gz'` | Open for gzip compressed writing. |
+| `'w:bz2'` | Open for bzip2 compressed writing. |
+ 
+* **tar解包**
+
+tar解包也可以根据不同压缩格式来解压。
+
+```python
+import tarfile  
+import time  
+  
+start = time.time()  
+t = tarfile.open("/path/to/your.tar", "r:")  
+t.extractall(path = '/path/to/extractdir/')  
+t.close()  
+print time.time()-start  
+```
+
+```python 
+tar = tarfile.open(filename, 'r:gz')  
+for tar_info in tar:  
+    file = tar.extractfile(tar_info)  
+    do_something_with(file) 
+```
