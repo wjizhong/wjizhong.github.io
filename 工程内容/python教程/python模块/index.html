@@ -139,13 +139,37 @@
                   {title: "7.2 \u81ea\u52a8\u5fae\u5206", url: "#72", level:3, children: [
                   ]},
                   {title: "7.3 \u7ebf\u6027\u56de\u5f52\u6848\u4f8b", url: "#73", level:3, children: [
-                  ]},
-                  {title: "\u8bfb\u53d8\u91cf", url: "#_4", level:3, children: [
-                  ]},
-                  {title: "7.4 \u53d8\u91cf\u4fdd\u5b58&amp;\u8bfb\u53d6", url: "#74", level:3, children: [
-                  ]},
-                  {title: "7.5 tensorflow\u56fa\u5316\u6a21\u578b", url: "#75-tensorflow", level:3, children: [
                   ]}, 
+              ]},
+              {title: "PB", url: "#pb", level:2, children: [ 
+              ]},
+          ]},
+          {title: "\u9700\u8981\u6709\u4e00\u4e2a\u521d\u59cb\u5316\u7684\u8fc7\u7a0b", url: "#_4", level:1, children: [
+          ]},
+          {title: "\u9700\u8981\u5148\u590d\u539f\u53d8\u91cf", url: "#_5", level:1, children: [
+          ]},
+          {title: "1", url: "#1", level:1, children: [
+          ]},
+          {title: "\u8f93\u5165", url: "#_6", level:1, children: [
+          ]},
+          {title: "\u8f93\u51fa 26", url: "#26", level:1, children: [
+          ]},
+          {title: "\u6dfb\u52a0\u7b2c\u4e8c\u4e2a MetaGraphDef", url: "#metagraphdef", level:1, children: [
+          ]},
+          {title: "with tf.Session(graph=tf.Graph()) as sess:", url: "#with-tfsessiongraphtfgraph-as-sess", level:1, children: [
+          ]},
+          {title: "...", url: "#_7", level:1, children: [
+          ]},
+          {title: "builder.add_meta_graph([tag_constants.SERVING])", url: "#builderadd_meta_graphtag_constantsserving", level:1, children: [
+          ]},
+          {title: "...", url: "#_8", level:1, children: [
+          ]},
+          {title: "\u53ea\u9700\u8981\u6307\u5b9a\u8981\u6062\u590d\u6a21\u578b\u7684 session\uff0c\u6a21\u578b\u7684 tag\uff0c\u6a21\u578b\u7684\u4fdd\u5b58\u8def\u5f84\u5373\u53ef,\u4f7f\u7528\u8d77\u6765\u66f4\u52a0\u7b80\u5355", url: "#session-tag", level:1, children: [
+              {title: "\u8bfb\u53d8\u91cf", url: "#_9", level:2, children: [ 
+              ]},
+              {title: "7.4 \u53d8\u91cf\u4fdd\u5b58&amp;\u8bfb\u53d6", url: "#74", level:2, children: [ 
+              ]},
+              {title: "7.5 tensorflow\u56fa\u5316\u6a21\u578b", url: "#75-tensorflow", level:2, children: [ 
               ]},
               {title: "\u516b\u3001python\u538b\u7f29", url: "#python_1", level:2, children: [ 
               ]},
@@ -4630,7 +4654,144 @@ plt.legend()
 plt.show()
 </code></pre>
 
-<h3 id="_4">读变量</h3>
+<h2 id="pb">PB</h2>
+<p>这种 PB 文件是表示 MetaGraph 的 protocol buffer格式的文件，MetaGraph 包括计算图，数据流，以及相关的变量和输入输出signature以及 asserts 指创建计算图时额外的文件。</p>
+<p>这是我找到第一个MetaGraph的解释，比较容易懂：</p>
+<p>When you are saving your graph, a MetaGraph is created. This is the graph itself, and all the other metadata necessary for computations in this graph, as well as some user info that can be saved and version specification.</p>
+<p>主要使用tf.SavedModelBuilder 类来完成这个工作，并且可以把多个计算图保存到一个 PB 文件中，如果有多个MetaGraph，那么只会保留第一个 MetaGraph 的版本号，并且必须为每个MetaGraph 指定特殊的名称 tag 用以区分，通常这个名称 tag 以该计算图的功能和使用到的设备命名，比如 serving or training， CPU or GPU。</p>
+<p>我们来看看典型的保存 PB 文件的代码：</p>
+<p>import tensorflow as tf
+import os
+from tensorflow.python.framework import graph_util</p>
+<p>pb_file_path = os.getcwd()</p>
+<p>with tf.Session(graph=tf.Graph()) as sess:
+    x = tf.placeholder(tf.int32, name='x')
+    y = tf.placeholder(tf.int32, name='y')
+    b = tf.Variable(1, name='b')
+    xy = tf.multiply(x, y)
+    # 这里的输出需要加上name属性
+    op = tf.add(xy, b, name='op_to_store')</p>
+<pre><code>sess.run(tf.global_variables_initializer())
+
+# convert_variables_to_constants 需要指定output_node_names，list()，可以多个
+constant_graph = graph_util.convert_variables_to_constants(sess, sess.graph_def, ['op_to_store'])
+
+# 测试 OP
+feed_dict = {x: 10, y: 3}
+print(sess.run(op, feed_dict))
+
+# 写入序列化的 PB 文件
+with tf.gfile.FastGFile(pb_file_path+'model.pb', mode='wb') as f:
+    f.write(constant_graph.SerializeToString())
+
+# 输出
+# INFO:tensorflow:Froze 1 variables.
+# Converted 1 variables to const ops.
+# 31
+</code></pre>
+<p>加载 PB 模型文件典型代码：</p>
+<p>from tensorflow.python.platform import gfile</p>
+<p>sess = tf.Session()
+with gfile.FastGFile(pb_file_path+'model.pb', 'rb') as f:
+    graph_def = tf.GraphDef()
+    graph_def.ParseFromString(f.read())
+    sess.graph.as_default()
+    tf.import_graph_def(graph_def, name='') # 导入计算图</p>
+<h1 id="_4">需要有一个初始化的过程</h1>
+<p>sess.run(tf.global_variables_initializer())</p>
+<h1 id="_5">需要先复原变量</h1>
+<p>print(sess.run('b:0'))</p>
+<h1 id="1">1</h1>
+<h1 id="_6">输入</h1>
+<p>input_x = sess.graph.get_tensor_by_name('x:0')
+input_y = sess.graph.get_tensor_by_name('y:0')</p>
+<p>op = sess.graph.get_tensor_by_name('op_to_store:0')</p>
+<p>ret = sess.run(op,  feed_dict={input_x: 5, input_y: 5})
+print(ret)</p>
+<h1 id="26">输出 26</h1>
+<p>另外保存为 save model 格式也可以生成模型的 PB 文件，并且更加简单。</p>
+<p>import tensorflow as tf
+import os
+from tensorflow.python.framework import graph_util</p>
+<p>pb_file_path = os.getcwd()</p>
+<p>with tf.Session(graph=tf.Graph()) as sess:
+    x = tf.placeholder(tf.int32, name='x')
+    y = tf.placeholder(tf.int32, name='y')
+    b = tf.Variable(1, name='b')
+    xy = tf.multiply(x, y)
+    # 这里的输出需要加上name属性
+    op = tf.add(xy, b, name='op_to_store')</p>
+<pre><code>sess.run(tf.global_variables_initializer())
+
+# convert_variables_to_constants 需要指定output_node_names，list()，可以多个
+constant_graph = graph_util.convert_variables_to_constants(sess, sess.graph_def, ['op_to_store'])
+
+# 测试 OP
+feed_dict = {x: 10, y: 3}
+print(sess.run(op, feed_dict))
+
+# 写入序列化的 PB 文件
+with tf.gfile.FastGFile(pb_file_path+'model.pb', mode='wb') as f:
+    f.write(constant_graph.SerializeToString())
+
+# INFO:tensorflow:Froze 1 variables.
+# Converted 1 variables to const ops.
+# 31
+
+
+# 官网有误，写成了 saved_model_builder  
+builder = tf.saved_model.builder.SavedModelBuilder(pb_file_path+'savemodel')
+# 构造模型保存的内容，指定要保存的 session，特定的 tag, 
+# 输入输出信息字典，额外的信息
+builder.add_meta_graph_and_variables(sess,
+                                   ['cpu_server_1'])
+</code></pre>
+<h1 id="metagraphdef">添加第二个 MetaGraphDef</h1>
+<h1 id="with-tfsessiongraphtfgraph-as-sess">with tf.Session(graph=tf.Graph()) as sess:</h1>
+<h1 id="_7">...</h1>
+<h1 id="builderadd_meta_graphtag_constantsserving">builder.add_meta_graph([tag_constants.SERVING])</h1>
+<h1 id="_8">...</h1>
+<p>builder.save()  # 保存 PB 模型
+保存好以后到saved_model_dir目录下，会有一个saved_model.pb文件以及variables文件夹。顾名思义，variables保存所有变量，saved_model.pb用于保存模型结构等信息。</p>
+<p>这种方法对应的导入模型的方法：</p>
+<p>with tf.Session(graph=tf.Graph()) as sess:
+    tf.saved_model.loader.load(sess, ['cpu_1'], pb_file_path+'savemodel')
+    sess.run(tf.global_variables_initializer())</p>
+<pre><code>input_x = sess.graph.get_tensor_by_name('x:0')
+input_y = sess.graph.get_tensor_by_name('y:0')
+
+op = sess.graph.get_tensor_by_name('op_to_store:0')
+
+ret = sess.run(op,  feed_dict={input_x: 5, input_y: 5})
+print(ret)
+</code></pre>
+<h1 id="session-tag">只需要指定要恢复模型的 session，模型的 tag，模型的保存路径即可,使用起来更加简单</h1>
+<p>这样和之前的导入 PB 模型一样，也是要知道tensor的name。那么如何可以在不知道tensor name的情况下使用呢，实现彻底的解耦呢？ 给add_meta_graph_and_variables方法传入第三个参数，signature_def_map即可。</p>
+<p>PS: 写完文章才发现，保存为 ckpt 的时候也可以直接加载网络结构，而不用再重新再定义一次，使用方式如下：</p>
+<p>def restore_model_ckpt(ckpt_file_path):
+    sess = tf.Session()</p>
+<pre><code># 《《《 加载模型结构 》》》
+saver = tf.train.import_meta_graph('./ckpt/model.ckpt.meta') 
+# 只需要指定目录就可以恢复所有变量信息
+</code></pre>
+<p>saver.restore(sess, tf.train.latest_checkpoint('./ckpt'))  </p>
+<pre><code># 直接获取保存的变量
+print(sess.run('b:0'))
+
+# 获取placeholder变量
+input_x = sess.graph.get_tensor_by_name('x:0')
+input_y = sess.graph.get_tensor_by_name('y:0')
+# 获取需要进行计算的operator
+op = sess.graph.get_tensor_by_name('op_to_store:0')
+
+# 加入新的操作
+add_on_op = tf.multiply(op, 2)
+
+ret = sess.run(add_on_op, {input_x: 5, input_y: 5})
+print(ret)
+</code></pre>
+<p>这样看来，CKPT 在使用 TensorFlow 框架下使用还是挺方便的。</p>
+<h3 id="_9">读变量</h3>
 <pre><code>import os
 import path
 import numpy as np
