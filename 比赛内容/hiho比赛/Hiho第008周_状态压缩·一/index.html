@@ -8,10 +8,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <meta name="author" content="wjizhong">
-    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/Hiho%E6%AF%94%E8%B5%9B/hiho%E7%AC%AC008%E5%91%A8/">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/Hiho%E6%AF%94%E8%B5%9B/Hiho%E7%AC%AC008%E5%91%A8_%E7%8A%B6%E6%80%81%E5%8E%8B%E7%BC%A9%C2%B7%E4%B8%80/">
     <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-    <title>hiho第008周:状态压缩·一 - 图像/视频算法</title>
+    <title>Hiho第008周:状态压缩·一 - 图像/视频算法</title>
     <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
     <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
     <link href="../../../css/base.css" rel="stylesheet">
@@ -32,7 +32,17 @@
       var is_top_frame = false;
         
         var pageToc = [
-          {title: "hiho\u7b2c008\u5468:\u72b6\u6001\u538b\u7f29\u00b7\u4e00", url: "#_top", level:1, children: [
+          {title: "Hiho\u7b2c008\u5468:\u72b6\u6001\u538b\u7f29\u00b7\u4e00", url: "#_top", level:1, children: [
+              {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1", level:2, children: [
+                  {title: "\u63d0\u793a\u4e00:\u65e0\u8bba\u662f\u4ec0\u4e48\u52a8\u6001\u89c4\u5212,\u90fd\u9700\u8981\u4e00\u4e2a\u72b6\u6001\u8f6c\u79fb\u65b9\u7a0b!", url: "#_2", level:3, children: [
+                  ]},
+                  {title: "\u63d0\u793a\u4e8c:\u597d\u50cf\u4ec0\u4e48\u4e0d\u5bf9\u52b2?\u72b6\u6001\u538b\u7f29\u54ea\u91cc\u53bb\u4e86?", url: "#_3", level:3, children: [
+                  ]}, 
+              ]},
+              {title: "\u8f93\u5165\u8f93\u51fa", url: "#_4", level:2, children: [ 
+              ]},
+              {title: "\u89e3\u9898\u4ee3\u7801", url: "#_5", level:2, children: [ 
+              ]},
           ]},
         ];
     </script>
@@ -66,22 +76,21 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 
 
     
+    
+      
+    
 
-    <h1 id="hiho008">hiho第008周:状态压缩·一</h1>
-<ul>
-<li><strong>题目描述</strong></li>
-</ul>
+    
+
+    <h1 id="hiho008">Hiho第008周:状态压缩·一</h1>
+<h2 id="_1">题目描述</h2>
 <p>小Hi和小Ho在兑换到了喜欢的奖品之后,便继续起了他们的美国之行,思来想去,他们决定乘坐火车前往下一座城市——那座城市即将举行美食节!</p>
 <p>但是不幸的是,小Hi和小Ho并没有能够买到很好的火车票——他们只能够乘坐最为破旧的火车进行他们的旅程。</p>
 <p>不仅如此,因为美食节的吸引,许多人纷纷踏上了和小Hi小Ho一样的旅程,于是有相当多的人遭遇到了和小Hi小Ho一样的情况——这导致这辆车上的人非常非常的多,以至于都没有足够的位置能让每一个人都有地方坐下来。</p>
 <p>小Hi和小Ho本着礼让他们的心情——当然还因为本来他们买的就是站票,老老实实的呆在两节车厢的结合处。他们本以为就能够这样安稳抵达目的地,但事与愿违,他们这节车厢的乘务员是一个强迫症,每隔一小会总是要清扫一次卫生,而时值深夜,大家都早已入睡,这种行为总是会惊醒一些人。而一旦相邻的一些乘客被惊醒了大多数的话,就会同乘务员吵起来,弄得大家都睡不好。</p>
 <p>将这一切看在眼里的小Hi与小Ho决定利用他们的算法知识,来帮助这个有着强迫症的乘务员——在不与乘客吵起来的前提下尽可能多的清扫垃圾。</p>
 <p>小Hi和小Ho所处的车厢可以被抽象成连成一列的N个位置,按顺序分别编号为1..N,每个位置上都有且仅有一名乘客在休息。同时每个位置上都有一些垃圾需要被清理,其中第i个位置的垃圾数量为Wi。乘务员可以选择其中一些位置进行清理,但是值得注意的是,一旦有编号连续的M个位置中有超过Q个的位置都在这一次清理中被选中的话(即这M个位置上的乘客有至少Q+1个被惊醒了),就会发生令人不愉快的口角。而小Hi和小Ho的任务是,计算选择哪些位置进行清理,在不发生口角的情况下,清扫尽可能多的垃圾。</p>
-<blockquote>
-<ul>
-<li><strong>提示一:无论是什么动态规划,都需要一个状态转移方程!</strong></li>
-</ul>
-</blockquote>
+<h3 id="_2">提示一:无论是什么动态规划,都需要一个状态转移方程!</h3>
 <p>小Hi面对这个问题也是不慌不忙,反倒决定借此机会让小Ho学习一下状态压缩动态规划,于是推了推一旁仍然晕晕乎乎的小Ho,问道:“小Ho,你说这样的问题能否使用动态规划进行解决?”</p>
 <p>小Ho思索了一番,在心中默默将这个问题与背包问题进行类比后,道:“我觉得似乎不可以,这个问题和背包问题其实是很类似的,不过背包问题对于选取物品的限制是总重量不能超过一定数额。但在这里却是要求不能够在连续的一段位置中选取太多,如果我仍然以编号从小到大划分阶段,单单以best(i)表示当前已经决定了编号为1..i的位置是否选取的情况下最多可以清扫的垃圾数量的话,因为我不知道之前具体的选取方案,我是没有办法判断当前这个位置能否进行选取的,这便是违反了动态规划状态定义的无后效性!”</p>
 <p>小Hi点了点头表示赞同,但随即继续问道:”在背包问题中,正如我们之前经历时所说,我们是通过将best(i)变成best(i, j),增加一个量——当前已经选取物品的总重量j到状态中,从而能够判断当前是否能够继续选取物品,那么在这里,你觉得我们需要添加什么样的量才能够达成我们的目的呢?”</p>
@@ -97,11 +106,7 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p><img alt="" src="http://media.hihocoder.com/problem_images/20140823/14087736915690.jpg" /></p>
 <p>“那具体的计算顺序呢?”小Hi也是将每个步骤都问的详详细细的。</p>
 <p>小Ho张口便道:“这个容易,因为每次转移都是从i向i+1进行的,所以我只需要按照i从小到大的顺序进行计算就可以了!”</p>
-<blockquote>
-<ul>
-<li><strong>提示二:好像什么不对劲?状态压缩哪里去了?</strong></li>
-</ul>
-</blockquote>
+<h3 id="_3">提示二:好像什么不对劲?状态压缩哪里去了?</h3>
 <p>在得出结论之后,小Ho便拿出笔记本开始写程序,写着写着便注意到:“这个M是根据输入来的,那么我怎么开数组呢!难道要使用一些动态的方法?这样也未免太过复杂了吧,更何况即使我动态的开了数组,我也没有很好的方法来枚举这些位置,难道要写一大串的条件分支语句?”</p>
 <p>思索无奈之下,只能够去询问小Hi,小Hi仿佛早就预料到了这个情况,掏出一张草稿纸来,写下了一个长度为5的01串10101,问道:“你看这是什么?”</p>
 <p>“一个2进制串?我算算……等于21?”小Ho耿直的算了出来。</p>
@@ -110,23 +115,17 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p><img alt="" src="http://media.hihocoder.com//problem_images/20140823/14087736915342.jpg" /></p>
 <p>“是的!这便是所说的状态压缩,它在处理一些变长/变维度的状态时时非常有效的,同时也可以利用位运算来优化代码,方便计算!”小Hi适时的做了总结。</p>
 <p>“嗯嗯!我这便去写~”</p>
-<ul>
-<li><strong>输入输出</strong></li>
-</ul>
-<blockquote>
+<h2 id="_4">输入输出</h2>
 <ul>
 <li><strong>输入</strong></li>
 </ul>
-</blockquote>
 <p>每个测试点(输入文件)有且仅有一组测试数据。</p>
 <p>每组测试数据的第一行为三个正整数N、M和Q,意义如前文所述。</p>
 <p>每组测试数据的第二行为N个整数,分别为W1到WN,代表每一个位置上的垃圾数目。</p>
 <p>对于100%的数据,满足N&lt;=1000, 2&lt;=M&lt;=10,1&lt;=Q&lt;=M, Wi&lt;=100</p>
-<blockquote>
 <ul>
 <li><strong>输出</strong></li>
 </ul>
-</blockquote>
 <p>对于每组测试数据,输出一个整数Ans,表示在不发生口角的情况下,乘务员最多可以清扫的垃圾数目。</p>
 <p>样例输入</p>
 <pre><code class="sh">5 2 1
@@ -137,10 +136,8 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <pre><code class="sh">201
 </code></pre>
 
-<ul>
-<li><strong>解题代码</strong></li>
-</ul>
-<pre><code class="c">#include &quot;iostream&quot;
+<h2 id="_5">解题代码</h2>
+<pre><code class="c++">#include &quot;iostream&quot;
 #include &quot;algorithm&quot;
 #include &quot;cstdio&quot;
 #include &quot;cstring&quot;
@@ -218,6 +215,11 @@ MathJax.Hub.Config({
 src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
 
+
+    
+    
+      
+    
 
     <br>
 </div>

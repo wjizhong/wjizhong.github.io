@@ -8,10 +8,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <meta name="author" content="wjizhong">
-    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/Hiho%E6%AF%94%E8%B5%9B/hiho%E7%AC%AC015%E5%91%A8/">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/Hiho%E6%AF%94%E8%B5%9B/Hiho%E7%AC%AC015%E5%91%A8_%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88%C2%B7%E4%BA%8C/">
     <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-    <title>hiho第015周:最近公共祖先·二 - 图像/视频算法</title>
+    <title>Hiho第015周:最近公共祖先·二 - 图像/视频算法</title>
     <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
     <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
     <link href="../../../css/base.css" rel="stylesheet">
@@ -32,7 +32,17 @@
       var is_top_frame = false;
         
         var pageToc = [
-          {title: "hiho\u7b2c015\u5468:\u6700\u8fd1\u516c\u5171\u7956\u5148\u00b7\u4e8c", url: "#_top", level:1, children: [
+          {title: "Hiho\u7b2c015\u5468:\u6700\u8fd1\u516c\u5171\u7956\u5148\u00b7\u4e8c", url: "#_top", level:1, children: [
+              {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1", level:2, children: [
+                  {title: "\u63d0\u793a\u4e00:\u8001\u8001\u5b9e\u5b9e\u5206\u60c5\u51b5\u8ba8\u8bba\u5c31\u4e0d\u4f1a\u51fa\u9519\u7684\u5566!", url: "#_2", level:3, children: [
+                  ]},
+                  {title: "\u63d0\u793a\u4e8c:\u5e76\u67e5\u96c6\u5176\u5b9e\u957f\u5f97\u5f88\u50cf\u4e00\u68f5\u6811\u4f60\u4eec\u4e0d\u89c9\u5f97\u4e48?", url: "#_3", level:3, children: [
+                  ]}, 
+              ]},
+              {title: "\u8f93\u5165\u8f93\u51fa", url: "#_4", level:2, children: [ 
+              ]},
+              {title: "\u89e3\u9898\u4ee3\u7801", url: "#_5", level:2, children: [ 
+              ]},
           ]},
         ];
     </script>
@@ -66,21 +76,20 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 
 
     
+    
+      
+    
 
-    <h1 id="hiho015">hiho第015周:最近公共祖先·二</h1>
-<ul>
-<li><strong>题目描述</strong></li>
-</ul>
+    
+
+    <h1 id="hiho015">Hiho第015周:最近公共祖先·二</h1>
+<h2 id="_1">题目描述</h2>
 <p>上上回说到,小Hi和小Ho用非常拙劣——或者说粗糙的手段山寨出了一个神奇的网站,这个网站可以计算出某两个人的所有共同祖先中辈分最低的一个是谁。远在美国的他们利用了一些奇妙的技术获得了国内许多人的相关信息,并且搭建了一个小小的网站来应付来自四面八方的请求。</p>
 <p>但正如我们所能想象到的……这样一个简单的算法并不能支撑住非常大的访问量,所以摆在小Hi和小Ho面前的无非两种选择:</p>
 <p>其一是购买更为昂贵的服务器,通过提高计算机性能的方式来满足需求——但小Hi和小Ho并没有那么多的钱;其二则是改进他们的算法,通过提高计算机性能的利用率来满足需求——这个主意似乎听起来更加靠谱。</p>
 <p>于是为了他们第一个在线产品的顺利运作,小Hi决定对小Ho进行紧急训练——好好的修改一番他们的算法。</p>
 <p>而为了更好的向小Ho讲述这个问题,小Hi将这个问题抽象成了这个样子:假设现小Ho现在知道了N对父子关系——父亲和儿子的名字,并且这N对父子关系中涉及的所有人都拥有一个共同的祖先(这个祖先出现在这N对父子关系中),他需要对于小Hi的若干次提问——每次提问为两个人的名字(这两个人的名字在之前的父子关系中出现过),告诉小Hi这两个人的所有共同祖先中辈分最低的一个是谁?</p>
-<blockquote>
-<ul>
-<li><strong>提示一:老老实实分情况讨论就不会出错的啦!</strong></li>
-</ul>
-</blockquote>
+<h3 id="_2">提示一:老老实实分情况讨论就不会出错的啦!</h3>
 <p>“唔……我感觉你这个问题和上次提出的问题没有什么太大区别嘛,还简化了许多……那我就用上次的算法不行么?”小Ho疑问道。</p>
 <p>“NoNoNo,仔细注意一下数据范围,这可不是上次的算法就能够解决的~”小Hi道。</p>
 <p>“是诶,上次无论是人数还是询问数,都远远少于这一次的……那么我该如何进行计算呢?”小Ho不禁问道。</p>
@@ -109,11 +118,7 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p><img alt="" src="http://media.hihocoder.com/problem_images/20141011/14129981183454.png" /></p>
 <p>“是的!那么你有没有发现,这样一遍处理下来,你就可以求出所有准备好的询问的结果了——我先计算每个结点涉及到的询问,然后在深度优先搜索的过程中对结点染色,如果发现当前访问的结点是涉及到某个询问,那么我就看这个询问中另一个结点的颜色,如果是白色,则留待之后处理,如果是灰色,那么最近公共祖先必然就是这个灰色结点,如果是黑色,那么最近公共祖先就是这个黑色结点向上的第一个灰色结点。”小Hi总结道:“而我们唯一剩下的问题,就是怎么样快速的找到一个黑色结点向上的第一个灰色结点。”</p>
 <p>小Ho若有所思的点了点头。</p>
-<blockquote>
-<ul>
-<li><strong>提示二:并查集其实长得很像一棵树你们不觉得么?</strong></li>
-</ul>
-</blockquote>
+<h3 id="_3">提示二:并查集其实长得很像一棵树你们不觉得么?</h3>
 <p>“还记得上周我和你讲的并查集问题么?”小Hi问道。</p>
 <p>“还记得呢!但是那和这个问题又有什么关系呢?”小Ho问道。</p>
 <p>“我们来这样想,当深度优先搜索进行到刚刚第二次经过C结点这一步的时候,是不是以C为根的子树中所有结点,它们向上找的第一个灰色结点都是C结点?”小Hi没有直接回答小Ho的问题,反倒提出了一个新的问题。</p>
@@ -127,25 +132,19 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>“原来是这样!”小Ho感慨道。</p>
 <p>“所以你接下来要做的事情,就是在深度优先搜索的过程中,不断的给结点染色,同时维护好这样的一些集合,并且对于询问一一做出回答呢!”小Hi笑道:“这可是有点难度哦~”</p>
 <p>“没事!这对我来说,可是小菜一碟呢!”</p>
-<ul>
-<li><strong>输入输出</strong></li>
-</ul>
-<blockquote>
+<h2 id="_4">输入输出</h2>
 <ul>
 <li><strong>输入</strong></li>
 </ul>
-</blockquote>
 <p>每个测试点(输入文件)有且仅有一组测试数据。</p>
 <p>每组测试数据的第1行为一个整数N,意义如前文所述。</p>
 <p>每组测试数据的第2~N+1行,每行分别描述一对父子关系,其中第i+1行为两个由大小写字母组成的字符串<code>Father_i</code>, <code>Son_i</code>,分别表示父亲的名字和儿子的名字。</p>
 <p>每组测试数据的第N+2行为一个整数M,表示小Hi总共询问的次数。</p>
 <p>每组测试数据的第N+3~N+M+2行,每行分别描述一个询问,其中第N+i+2行为两个由大小写字母组成的字符串<code>Name1_i</code>,<code>Name2_i</code>,分别表示小Hi询问中的两个名字。</p>
 <p>对于100%的数据,满足N&lt;=10^5,M&lt;=10^5, 且数据中所有涉及的人物中不存在两个名字相同的人(即姓名唯一的确定了一个人),所有询问中出现过的名字均在之前所描述的N对父子关系中出现过,第一个出现的名字所确定的人是其他所有人的公共祖先。</p>
-<blockquote>
 <ul>
 <li><strong>输出</strong></li>
 </ul>
-</blockquote>
 <p>对于每组测试数据,对于每个小Hi的询问,按照在输入中出现的顺序,各输出一行,表示查询的结果:他们的所有共同祖先中辈分最低的一个人的名字。</p>
 <p>样例输入</p>
 <pre><code class="sh">4
@@ -165,10 +164,8 @@ Adam
 Adam
 </code></pre>
 
-<ul>
-<li><strong>解题代码</strong></li>
-</ul>
-<pre><code class="c">#include &lt;cstdio&gt;
+<h2 id="_5">解题代码</h2>
+<pre><code class="c++">#include &lt;cstdio&gt;
 using namespace std;
 #define C(c) (c&lt;='Z'?c-'A':c-'a'+26)
 const int N=100100;
@@ -244,6 +241,11 @@ MathJax.Hub.Config({
 src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
 
+
+    
+    
+      
+    
 
     <br>
 </div>

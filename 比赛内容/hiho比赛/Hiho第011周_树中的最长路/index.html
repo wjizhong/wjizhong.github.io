@@ -8,10 +8,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <meta name="author" content="wjizhong">
-    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/Hiho%E6%AF%94%E8%B5%9B/hiho%E7%AC%AC011%E5%91%A8/">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/Hiho%E6%AF%94%E8%B5%9B/Hiho%E7%AC%AC011%E5%91%A8_%E6%A0%91%E4%B8%AD%E7%9A%84%E6%9C%80%E9%95%BF%E8%B7%AF/">
     <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-    <title>hiho第011周:树中的最长路 - 图像/视频算法</title>
+    <title>Hiho第011周:树中的最长路 - 图像/视频算法</title>
     <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
     <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
     <link href="../../../css/base.css" rel="stylesheet">
@@ -32,7 +32,15 @@
       var is_top_frame = false;
         
         var pageToc = [
-          {title: "hiho\u7b2c011\u5468:\u6811\u4e2d\u7684\u6700\u957f\u8def", url: "#_top", level:1, children: [
+          {title: "Hiho\u7b2c011\u5468:\u6811\u4e2d\u7684\u6700\u957f\u8def", url: "#_top", level:1, children: [
+              {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1", level:2, children: [
+                  {title: "\u63d0\u793a\u4e00:\u8def\u603b\u6709\u6298\u70b9,\u8def\u5f84\u4e5f\u4e0d\u4f8b\u5916!", url: "#_2", level:3, children: [
+                  ]}, 
+              ]},
+              {title: "\u8f93\u5165\u8f93\u51fa", url: "#_3", level:2, children: [ 
+              ]},
+              {title: "\u89e3\u9898\u4ee3\u7801", url: "#_4", level:2, children: [ 
+              ]},
           ]},
         ];
     </script>
@@ -66,11 +74,14 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 
 
     
+    
+      
+    
 
-    <h1 id="hiho011">hiho第011周:树中的最长路</h1>
-<ul>
-<li><strong>描述</strong></li>
-</ul>
+    
+
+    <h1 id="hiho011">Hiho第011周:树中的最长路</h1>
+<h2 id="_1">题目描述</h2>
 <p>上回说到,小Ho得到了一棵二叉树玩具,这个玩具是由小球和木棍连接起来的,而在拆拼它的过程中,小Ho发现他不仅仅可以拼凑成一棵二叉树!还可以拼凑成一棵多叉树——好吧,其实就是更为平常的树而已。</p>
 <p>但是不管怎么说,小Ho喜爱的玩具又升级换代了,于是他更加爱不释手(其实说起来小球和木棍有什么好玩的是吧==)。小Ho手中的这棵玩具树现在由N个小球和N-1根木棍拼凑而成,这N个小球都被小Ho标上了不同的数字,并且这些数字都是出于1..N的范围之内,每根木棍都连接着两个不同的小球,并且保证任意两个小球间都不存在两条不同的路径可以互相到达。总而言之,是一个相当好玩的玩具啦!</p>
 <p>但是小Hi瞧见小Ho这个样子,觉得他这样沉迷其中并不是一件好事,于是寻思着再找点问题让他来思考思考——不过以小Hi的水准,自然是手到擒来啦!</p>
@@ -80,11 +91,7 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>“诶!别别别,你说你说,我听着呢。”一向习惯于开启跟随模式的小Ho忍不住了,马上喊道。</p>
 <p>小Hi满意的点了点头,随即说道:“这才对嘛,我的问题很简单,就是——你这棵树中哪两个结点之间的距离最长?当然,这里的距离是指从一个结点走到另一个结点经过的木棍数。”。</p>
 <p>“啊?”小Ho低头看了看手里的玩具树,困惑了。</p>
-<blockquote>
-<ul>
-<li><strong>提示一:路总有折点,路径也不例外!</strong></li>
-</ul>
-</blockquote>
+<h3 id="_2">提示一:路总有折点,路径也不例外!</h3>
 <p>小Ho为了能够回国也是很拼,但是一连思考了几天却仍然毫无结果,虽然仍然是在折腾自己的树玩具,但是却没有了那种单纯的快乐……小Ho无奈之下,只得乖乖去请教小Hi。</p>
 <p>小Hi仿佛早就知道这个死脑筋不知道什么叫举一反三的同伴即将到来,马上递上了一张画着小Ho树玩具千千万万种形态中的一种。</p>
 <p><img alt="" src="http://media.hihocoder.com/problem_images/20140913/14105773975774.png" /></p>
@@ -125,28 +132,22 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>小Hi点了点头,答道:“所以就要利用一种神奇的性质了——如果我用first(t),second(t)分别表示以t为根节点的子树中最长路和次长路的长度,那么我只需要求出t的所有子结点的first值,first(t)便是这些first值中的最大值+1,second(t)便是这些first值中的次大值+1.”</p>
 <p>“原来是这样,也就是说我只要以类似后序遍历的方式依次访问每个结点,从下往上依次计算每个结点的first值和second值,我就能够用O(N)的时间复杂度来解决这个问题咯!”</p>
 <p>“是的呢!所以快去写程序吧~~”</p>
-<ul>
-<li><strong>输入输出</strong></li>
-</ul>
-<blockquote>
+<h2 id="_3">输入输出</h2>
 <ul>
 <li><strong>输入</strong></li>
 </ul>
-</blockquote>
 <p>每个测试点(输入文件)有且仅有一组测试数据。</p>
 <p>每组测试数据的第一行为一个整数N,意义如前文所述。</p>
 <p>每组测试数据的第2~N行,每行分别描述一根木棍,其中第i+1行为两个整数Ai,Bi,表示第i根木棍连接的两个小球的编号。</p>
 <blockquote>
-<p>对于20%的数据,满足N&lt;=10。
-<br>对于50%的数据,满足N&lt;=10^3。
-<br>对于100%的数据,满足N&lt;=10^5,1&lt;=Ai&lt;=N, 1&lt;=Bi&lt;=N</p>
+<p>对于20%的数据,满足N&lt;=10。</p>
+<p>对于50%的数据,满足N&lt;=10^3。</p>
+<p>对于100%的数据,满足N&lt;=10^5,1&lt;=Ai&lt;=N, 1&lt;=Bi&lt;=N</p>
 </blockquote>
 <p>小Hi的Tip:那些用数组存储树边的记得要开两倍大小哦!</p>
-<blockquote>
 <ul>
 <li><strong>输出</strong></li>
 </ul>
-</blockquote>
 <p>对于每组测试数据,输出一个整数Ans,表示给出的这棵树中距离最远的两个结点之间相隔的距离。</p>
 <p>样例输入</p>
 <pre><code class="sh">8
@@ -163,9 +164,7 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <pre><code class="sh">6
 </code></pre>
 
-<ul>
-<li><strong>解题代码</strong></li>
-</ul>
+<h2 id="_4">解题代码</h2>
 <pre><code class="c">#include &lt;cstdio&gt;
 const int maxn=100005;
 int to[maxn*3],nx[maxn*3],hd[maxn],cn,ans;
@@ -215,6 +214,11 @@ MathJax.Hub.Config({
 src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
 
+
+    
+    
+      
+    
 
     <br>
 </div>

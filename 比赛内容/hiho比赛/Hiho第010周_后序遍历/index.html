@@ -8,10 +8,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <meta name="author" content="wjizhong">
-    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/Hiho%E6%AF%94%E8%B5%9B/hiho%E7%AC%AC010%E5%91%A8/">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/Hiho%E6%AF%94%E8%B5%9B/Hiho%E7%AC%AC010%E5%91%A8_%E5%90%8E%E5%BA%8F%E9%81%8D%E5%8E%86/">
     <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-    <title>hiho第010周:后序遍历 - 图像/视频算法</title>
+    <title>Hiho第010周:后序遍历 - 图像/视频算法</title>
     <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
     <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
     <link href="../../../css/base.css" rel="stylesheet">
@@ -32,7 +32,15 @@
       var is_top_frame = false;
         
         var pageToc = [
-          {title: "hiho\u7b2c010\u5468:\u540e\u5e8f\u904d\u5386", url: "#_top", level:1, children: [
+          {title: "Hiho\u7b2c010\u5468:\u540e\u5e8f\u904d\u5386", url: "#_top", level:1, children: [
+              {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1", level:2, children: [
+                  {title: "\u63d0\u793a:\u5206\u800c\u6cbb\u4e4b\u2014\u2014\u5316\u5927\u4e3a\u5c0f,\u5316\u5c0f\u4e3a\u65e0", url: "#_2", level:3, children: [
+                  ]}, 
+              ]},
+              {title: "\u8f93\u5165\u8f93\u51fa", url: "#_3", level:2, children: [ 
+              ]},
+              {title: "\u89e3\u9898\u4ee3\u7801", url: "#_4", level:2, children: [ 
+              ]},
           ]},
         ];
     </script>
@@ -66,11 +74,14 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 
 
     
+    
+      
+    
 
-    <h1 id="hiho010">hiho第010周:后序遍历</h1>
-<ul>
-<li><strong>题目描述</strong></li>
-</ul>
+    
+
+    <h1 id="hiho010">Hiho第010周:后序遍历</h1>
+<h2 id="_1">题目描述</h2>
 <p>在参与过了美食节之后,小Hi和小Ho在别的地方又玩耍了一阵子,在这个过程中,小Ho得到了一个非常有意思的玩具——一棵由小球和木棍连接起来的二叉树!</p>
 <p>小Ho对这棵二叉树爱不释手,于是给它的每一个节点都标记了一个标号——一个属于A..Z的大写字母,并且没有任意两个节点的标号是一样的。小Hi也瞅准了这个机会,重新巩固了一下小Ho关于二叉树遍历的基础知识~就这样,日子安稳的过了两天。</p>
 <p>这天,小Ho正好在求解这棵二叉树的前序、中序和后序遍历的结果,但是却在求出前序遍历和中序遍历之后不小心把二叉树摔到了地上,小球和木棍等零件散落了一地!</p>
@@ -79,11 +90,7 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>“这个简单,你不是刚刚求出了这棵二叉树的前序和中序遍历的结果么,利用这两个信息就可以还原出整棵二叉树来哦!”</p>
 <p>“这样么?!!”小Ho止住了泪水,问道:“那要怎么做呢?”</p>
 <p>没错!小Ho在这一周遇到的问题便是:给出一棵二叉树的前序和中序遍历的结果,还原这棵二叉树并输出其后序遍历的结果。</p>
-<blockquote>
-<ul>
-<li><strong>提示:分而治之——化大为小,化小为无</strong></li>
-</ul>
-</blockquote>
+<h3 id="_2">提示:分而治之——化大为小,化小为无</h3>
 <p>“这可就要从头说起了,我们先找一棵二叉树作为例子吧!”小Hi在纸上画了画,递给了小Ho。</p>
 <p><img alt="" src="http://media.hihocoder.com/problem_images/20140906/14099742763846.jpg" /></p>
 <p>“不妨假设你的二叉树长成这个样子~”小Hi道。</p>
@@ -104,23 +111,17 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>“这只要根据之前求出的结果,和‘后序遍历’=‘左子树的后序遍历’+‘右子树的后序遍历’+‘根节点’,便可以知道——<code>post_order(str1, str2)=post_order(str1l, str2l)+post_order(str1r, str2r)+root</code>这样一个式子来!而这个问题的规模——也就是二叉树的大小,是一直在缩小的,所以是能够这样不断的划分做下去的!也就是说我之后可以将当前根节点的左子树又拆分成为两个问题来解决,一直到当前节点是叶子节点了为止!然后慢慢的将这些答案拼成上层的问题的答案,而这个过程只需要使用递归完成就可以了!”</p>
 <p>“听起来很容易的样子呢!那你要不要赶紧去实现了算法,算出你的宝贝二叉树长什么样呢?”小Hi满意的点了点头,随即笑着问道。</p>
 <p>“那是自然!”</p>
-<ul>
-<li><strong>输入输出</strong></li>
-</ul>
-<blockquote>
+<h2 id="_3">输入输出</h2>
 <ul>
 <li><strong>输入</strong></li>
 </ul>
-</blockquote>
 <p>每个测试点(输入文件)有且仅有一组测试数据。</p>
 <p>每组测试数据的第一行为一个由大写英文字母组成的字符串,表示该二叉树的前序遍历的结果。</p>
 <p>每组测试数据的第二行为一个由大写英文字母组成的字符串,表示该二叉树的中序遍历的结果。</p>
 <p>对于100%的数据,满足二叉树的节点数小于等于26。</p>
-<blockquote>
 <ul>
 <li><strong>输出</strong></li>
 </ul>
-</blockquote>
 <p>对于每组测试数据,输出一个由大写英文字母组成的字符串,表示还原出的二叉树的后序遍历的结果。</p>
 <p>样例输入</p>
 <pre><code class="sh">AB
@@ -131,10 +132,8 @@ BA
 <pre><code class="sh">BA
 </code></pre>
 
-<ul>
-<li><strong>解题代码</strong></li>
-</ul>
-<pre><code class="c">#include &lt;cstdio&gt;
+<h2 id="_4">解题代码</h2>
+<pre><code class="c++">#include &lt;cstdio&gt;
 char pre[30], in[30];
 void postorder(int i, int j, int k) {
     int t;
@@ -170,6 +169,11 @@ MathJax.Hub.Config({
 src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
 
+
+    
+    
+      
+    
 
     <br>
 </div>

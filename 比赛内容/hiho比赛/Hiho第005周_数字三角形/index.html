@@ -8,10 +8,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <meta name="author" content="wjizhong">
-    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/Hiho%E6%AF%94%E8%B5%9B/hiho%E7%AC%AC005%E5%91%A8/">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/Hiho%E6%AF%94%E8%B5%9B/Hiho%E7%AC%AC005%E5%91%A8_%E6%95%B0%E5%AD%97%E4%B8%89%E8%A7%92%E5%BD%A2/">
     <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-    <title>hiho第005周:数字三角形 - 图像/视频算法</title>
+    <title>Hiho第005周_数字三角形 - 图像/视频算法</title>
     <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
     <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
     <link href="../../../css/base.css" rel="stylesheet">
@@ -32,7 +32,19 @@
       var is_top_frame = false;
         
         var pageToc = [
-          {title: "hiho\u7b2c005\u5468:\u6570\u5b57\u4e09\u89d2\u5f62", url: "#_top", level:1, children: [
+          {title: "Hiho\u7b2c005\u5468:\u6570\u5b57\u4e09\u89d2\u5f62", url: "#_top", level:1, children: [
+              {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1", level:2, children: [
+                  {title: "\u63d0\u793a\u4e00:\u76f2\u76ee\u8d2a\u5fc3\u4e0d\u53ef\u53d6,\u641c\u7d22\u8ba1\u7b97\u592a\u8017\u65f6", url: "#_2", level:3, children: [
+                  ]},
+                  {title: "\u63d0\u793a\u4e8c:\u8bb0\u5fc6\u6df1\u641c\u901e\u795e\u5a01,\u5bbd\u5ea6\u4f18\u5148\u89e3\u96be\u9898", url: "#_3", level:3, children: [
+                  ]},
+                  {title: "\u63d0\u793a\u4e09:\u603b\u7ed3\u5f52\u7eb3\u63d0\u516c\u5f0f,\u51cf\u5c11\u5197\u4f59\u662f\u771f\u7406", url: "#_4", level:3, children: [
+                  ]}, 
+              ]},
+              {title: "\u8f93\u5165\u8f93\u51fa", url: "#_5", level:2, children: [ 
+              ]},
+              {title: "\u89e3\u9898\u4ee3\u7801", url: "#_6", level:2, children: [ 
+              ]},
           ]},
         ];
     </script>
@@ -66,19 +78,18 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 
 
     
+    
+      
+    
 
-    <h1 id="hiho005">hiho第005周:数字三角形</h1>
-<ul>
-<li><strong>题目描述</strong></li>
-</ul>
+    
+
+    <h1 id="hiho005">Hiho第005周:数字三角形</h1>
+<h2 id="_1">题目描述</h2>
 <p>小Hi和小Ho在经历了螃蟹先生的任务之后被奖励了一次出国旅游的机会,于是他们来到了大洋彼岸的美国。美国人民的生活非常有意思,经常会有形形色色、奇奇怪怪的活动举办,这不,小Hi和小Ho刚刚下飞机,就赶上了当地的迷宫节活动。迷宫节里展览出来的迷宫都特别的有意思,但是小Ho却相中了一个其实并不怎么像迷宫的迷宫——因为这个迷宫的奖励非常丰富~</p>
 <p>于是小Ho找到了小Hi,让小Hi帮助他获取尽可能多的奖品,小Hi把手一伸道:“迷宫的介绍拿来!”</p>
 <p>小Ho选择的迷宫是一个被称为“数字三角形”的n(n不超过200)层迷宫,这个迷宫的第i层有i个房间,分别编号为1..i。除去最后一层的房间,每一个房间都会有一些通往下一层的房间的楼梯,用符号来表示的话,就是从第i层的编号为j的房间出发会有两条路,一条通向第i+1层的编号为j的房间,另一条会通向第i+1层的编号为j+1的房间,而最后一层的所有房间都只有一条离开迷宫的道路。这样的道路都是单向的,也就是说当沿着这些道路前往下一层的房间或者离开迷宫之后,小Ho没有办法再次回到这个房间。迷宫里同时只会有一个参与者,而在每个参与者进入这个迷宫的时候,每个房间里都会生成一定数量的奖券,这些奖券可以在通过迷宫之后兑换各种奖品。小Ho的起点在第1层的编号为1的房间,现在小Ho悄悄向其他参与者弄清楚了每个房间里的奖券数量,希望小Hi帮他计算出他最多能获得多少奖券。</p>
-<blockquote>
-<ul>
-<li><strong>提示一:盲目贪心不可取,搜索计算太耗时</strong></li>
-</ul>
-</blockquote>
+<h3 id="_2">提示一:盲目贪心不可取,搜索计算太耗时</h3>
 <p>小Hi拿到迷宫的介绍,仔细想了想,问道:“你自己有什么思路么?”</p>
 <p>小Ho想了想,道:“反正每次只有两种选择,我就选通向有更多奖券的房间的那条路呗~”</p>
 <p>小Hi笑了笑:“你这叫盲目贪心,如果我是迷宫的创造者,一定在第2层的第1个房间放10张奖券,第2个房间一张不放,然后在第3层的第3个房间放999张奖券,这样你就因为占一点小便宜就失掉了大头,你说是不是?”</p>
@@ -88,11 +99,7 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>“是的,但是这种搜索的方法其实是可以有方法进行优化的哦~”小Hi循循诱导着。</p>
 <p>“什么样的方法?”</p>
 <p>“别急,听我慢慢说~”</p>
-<blockquote>
-<ul>
-<li><strong>提示二:记忆深搜逞神威,宽度优先解难题</strong></li>
-</ul>
-</blockquote>
+<h3 id="_3">提示二:记忆深搜逞神威,宽度优先解难题</h3>
 <p>“我们可以来分分情况,我们要搜索所有的路径,然后依次计算每条路径的收益,这是我们现在的问题模型是不是?”小Hi问道。</p>
 <p><img alt="" src="http://media.hihocoder.com/problem_images/20140802/1406970286672.png" /></p>
 <p>小Ho点头:“仔细分析这个迷宫的话,我们有两种搜索方法,一种是深度优先搜索,就像这幅图画的一样,我们先试着顺着每个房间的第一条路一直下去,一直走到最后一层,然后返回至倒数第二层,选择第二条路走到最后一个房间,然后返回到倒数第三层,选择第二条路走到倒数第二层,然后选择第一条路走到最后一层……期间维护已经走过的房间的奖券之和sum,然后每次到达最后一层的房间的时候将sum与全局最优解ans进行比较,如果sum&gt;ans的话就用sum替换ans。这样在所有路径都计算过一遍之后,Ans中存储的就是我们要的答案了~~而第二种……”</p>
@@ -122,11 +129,7 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>“原来是这样,那么现在问题差不多解决了呢!”小Ho高兴道:“赶紧算出来,我好去拿奖品。”</p>
 <p>“急什么!你从这之中可学到了什么知识么?”小Hi拦住了急冲冲的小Ho,问道。</p>
 <p>“啊?”</p>
-<blockquote>
-<ul>
-<li><strong>提示三:总结归纳提公式,减少冗余是真理</strong></li>
-</ul>
-</blockquote>
+<h3 id="_4">提示三:总结归纳提公式,减少冗余是真理</h3>
 <p>“且不说深度优先这样一个最坏情况下仍然有问题的方法,我们来说这个宽度优先搜索,我们能够使用best(i, j)来进行优化,无非是因为这个问题存在这样两个性质。”小Hi道。</p>
 <p>“第一便是无论我是通过怎么样的方式到达第i层第j个房间的,我之前做出的选择不会对我之后的选择做出限制与优待。就像如果我规定至少要向右走3次,那么状态就不仅仅是(i, j, k)这样,还要加上一个已经向右走的次数t,那么你觉得还能就直接像我们之前的方法进行计算么?如果到达第i层第j个房间的路上向右走过3次了,那么之后的走法就没有任何限制,不然就仍会有一个至少要向右走一定次数的限制。这样对于两个状态(i, j, k, l)和(i, j, k', l'),我们就不能够直接判断出那个状态是更加好的。</p>
 <p>“没错~其实就是best(i, j)有两个关键字进行参考,而这样的话就不是任意两个状态都可以进行比较的了。”小Ho总结道。</p>
@@ -142,29 +145,25 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>“你这个公式的边界情况还有待考虑嘛,比如j=1的时候就不需要取max了,直接使用best(i - 1, j)计算即可~”小Hi指出了小Ho存在的一个问题。</p>
 <p>“哦~那么j=i的时候也有相似的处理是吧。”</p>
 <p>“是的呢!所以快去写程序吧~”小Hi笑了笑:“抓紧时间,迷宫节就要结束了哦!”</p>
-<ul>
-<li><strong>输入输出</strong></li>
-</ul>
-<blockquote>
+<h2 id="_5">输入输出</h2>
 <ul>
 <li><strong>输入</strong></li>
 </ul>
-</blockquote>
 <p>每个测试点(输入文件)有且仅有一组测试数据。</p>
 <p>每组测试数据的第一行为一个正整数n,表示这个迷宫的层数。</p>
 <p>接下来的n行描述这个迷宫中每个房间的奖券数,其中第i行的第j个数代表着迷宫第i层的编号为j的房间中的奖券数量。</p>
 <blockquote>
-<p>测试数据保证,有100%的数据满足n不超过100
-<br>对于100%的数据,迷宫的层数n不超过100
-<br>对于100%的数据,每个房间中的奖券数不超过1000
-<br>对于50%的数据,迷宫的层数不超过15(小Ho表示2^15才3万多呢,也就是说……)
-<br>对于10%的数据,迷宫的层数不超过1(小Hi很好奇你的边界情况处理的如何?~)
-<br>对于10%的数据,迷宫的构造满足:对于90%以上的结点,左边道路通向的房间中的奖券数比右边道路通向的房间中的奖券数要多。
-<br>对于10%的数据,迷宫的构造满足:对于90%以上的结点,左边道路通向的房间中的奖券数比右边道路通向的房间中的奖券数要少。</p>
+<p>测试数据保证,有100%的数据满足n不超过100</p>
+<p>对于100%的数据,迷宫的层数n不超过100</p>
+<p>对于100%的数据,每个房间中的奖券数不超过1000</p>
+<p>对于50%的数据,迷宫的层数不超过15(小Ho表示2^15才3万多呢,也就是说……)</p>
+<p>对于10%的数据,迷宫的层数不超过1(小Hi很好奇你的边界情况处理的如何?~)
+对于10%的数据,迷宫的构造满足:对于90%以上的结点,左边道路通向的房间中的奖券数比右边道路通向的房间中的奖券数要多。
+对于10%的数据,迷宫的构造满足:对于90%以上的结点,左边道路通向的房间中的奖券数比右边道路通向的房间中的奖券数要少。</p>
+</blockquote>
 <ul>
 <li><strong>输出</strong></li>
 </ul>
-</blockquote>
 <p>对于每组测试数据,输出一个整数Ans,表示小Ho可以获得的最多奖券数。</p>
 <p>样例输入</p>
 <pre><code class="sh">5
@@ -179,10 +178,8 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <pre><code class="sh">28
 </code></pre>
 
-<ul>
-<li><strong>解题代码</strong></li>
-</ul>
-<pre><code class="c">#include&lt;cstdio&gt;
+<h2 id="_6">解题代码</h2>
+<pre><code class="c++">#include&lt;cstdio&gt;
 int a[202],n,i,j,x,y,t;
 int main(int argc, char** argv){
     scanf(&quot;%d&quot;,&amp;n);
@@ -212,6 +209,11 @@ MathJax.Hub.Config({
 src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
 
+
+    
+    
+      
+    
 
     <br>
 </div>

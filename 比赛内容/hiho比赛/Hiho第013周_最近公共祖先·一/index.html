@@ -8,10 +8,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <meta name="author" content="wjizhong">
-    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/Hiho%E6%AF%94%E8%B5%9B/hiho%E7%AC%AC013%E5%91%A8/">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/Hiho%E6%AF%94%E8%B5%9B/Hiho%E7%AC%AC013%E5%91%A8_%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88%C2%B7%E4%B8%80/">
     <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-    <title>hiho第013周:最近公共祖先·一 - 图像/视频算法</title>
+    <title>Hiho第013周:最近公共祖先·一 - 图像/视频算法</title>
     <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
     <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
     <link href="../../../css/base.css" rel="stylesheet">
@@ -32,7 +32,15 @@
       var is_top_frame = false;
         
         var pageToc = [
-          {title: "hiho\u7b2c013\u5468:\u6700\u8fd1\u516c\u5171\u7956\u5148\u00b7\u4e00", url: "#_top", level:1, children: [
+          {title: "Hiho\u7b2c013\u5468:\u6700\u8fd1\u516c\u5171\u7956\u5148\u00b7\u4e00", url: "#_top", level:1, children: [
+              {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1", level:2, children: [
+                  {title: "\u63d0\u793a:\u4e0d\u7740\u6025,\u6162\u6162\u6765,\u53e6\u5916\u6211\u6709\u4e00\u4e2a\u95ee\u9898:\u6316\u6398\u673a\u6280\u672f\u54ea\u5bb6\u5f3a?", url: "#_2", level:3, children: [
+                  ]}, 
+              ]},
+              {title: "\u8f93\u5165\u8f93\u51fa", url: "#_3", level:2, children: [ 
+              ]},
+              {title: "\u89e3\u9898\u4ee3\u7801", url: "#_4", level:2, children: [ 
+              ]},
           ]},
         ];
     </script>
@@ -66,11 +74,14 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 
 
     
+    
+      
+    
 
-    <h1 id="hiho013">hiho第013周:最近公共祖先·一</h1>
-<ul>
-<li><strong>题目描述</strong></li>
-</ul>
+    
+
+    <h1 id="hiho013">Hiho第013周:最近公共祖先·一</h1>
+<h2 id="_1">题目描述</h2>
 <p>小Ho最近发现了一个神奇的网站!虽然还不够像58同城那样神奇,但这个网站仍然让小Ho乐在其中,但这是为什么呢?</p>
 <p>“为什么呢?”小Hi如是问道,在他的观察中小Ho已经沉迷这个网站一周之久了,甚至连他心爱的树玩具都弃置一边。</p>
 <p>“嘿嘿,小Hi,你快过来看!”小Ho招呼道。</p>
@@ -80,36 +91,26 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>“别2,我说的是他能弄到这些数据很厉害,而人类的繁殖树这种层数比较浅的树对这类算法的要求可是简单的不得了,你都能写出来呢!”小Hi道。</p>
 <p>“啊?我也能写出来?可是……该从哪开始呢?”小Ho困惑了。</p>
 <p>小Ho要面临的问题是这样的,假设现在他知道了N个人的信息——他们的父亲是谁,他需要对于小Hi的每一次提问——两个人的名字,告诉小Hi这两个人的是否存在同一个祖先,如果存在,那么他们的所有共同祖先中辈分最低的一个是谁?</p>
-<blockquote>
-<ul>
-<li><strong>提示:不着急,慢慢来,另外我有一个问题:挖掘机技术哪家强?</strong></li>
-</ul>
-</blockquote>
+<h3 id="_2">提示:不着急,慢慢来,另外我有一个问题:挖掘机技术哪家强?</h3>
 <p>小Hi道:“这个问题也应该是树结构许许多多问题中颇为经典的一个了,如果就简单的将父子关系视作树结构中的父子结点关系的话,这个问题其实就是在问树中两个结点层数最高的公共祖先——也就是所谓的最近公共祖先,而这个问题有非常多的解决方法,分别适合于不同的场景,像在线算法离线算法什么的现在说给你听你也不一定能够很快理解。”</p>
 <p>“但是……你不是说我能够写出来的么?”小Ho纳闷了。</p>
 <p>“所以说我们慢慢来不要急,先教你个最简单的法子。”小Hi如是说道。</p>
 <p>“最简单的法子……如果数据量不大的话,我完全可以直接将这两个人的祖先全部找出来,然后取它们的交集,然后再找到其中辈分最低的一个不就行了。”小Ho思考了会这般说道。</p>
 <p>小Hi点了点头道:“差不多就是这样!当然你也先将一个人的祖先全都标记出来,然后顺着另一个的父亲一直向上找,直到找到第一个被标记过的结点,便是它们的最近公共祖先结点了。”</p>
 <p>“原来这么简单!”小Ho笑道:“那我先去写着了。”</p>
-<ul>
-<li><strong>输入输出</strong></li>
-</ul>
-<blockquote>
+<h2 id="_3">输入输出</h2>
 <ul>
 <li><strong>输入</strong></li>
 </ul>
-</blockquote>
 <p>每个测试点(输入文件)有且仅有一组测试数据。</p>
 <p>每组测试数据的第1行为一个整数N,意义如前文所述。</p>
 <p>每组测试数据的第2~N+1行,每行分别描述一对父子关系,其中第i+1行为两个由大小写字母组成的字符串Father_i, Son_i,分别表示父亲的名字和儿子的名字。</p>
 <p>每组测试数据的第N+2行为一个整数M,表示小Hi总共询问的次数。</p>
 <p>每组测试数据的第N+3~N+M+2行,每行分别描述一个询问,其中第N+i+2行为两个由大小写字母组成的字符串Name1_i, Name2_i,分别表示小Hi询问中的两个名字。</p>
 <p>对于100%的数据,满足N&lt;=10^2,M&lt;=10^2, 且数据中所有涉及的人物中不存在两个名字相同的人(即姓名唯一的确定了一个人)。</p>
-<blockquote>
 <ul>
 <li><strong>输出</strong></li>
 </ul>
-</blockquote>
 <p>对于每组测试数据,对于每个小Hi的询问,输出一行,表示查询的结果:如果根据已知信息,可以判定询问中的两个人存在共同的祖先,则输出他们的所有共同祖先中辈分最低的一个人的名字,否则输出-1。</p>
 <p>样例输入</p>
 <pre><code class="sh">11
@@ -136,10 +137,8 @@ JiaZheng
 -1
 </code></pre>
 
-<ul>
-<li><strong>解题代码</strong></li>
-</ul>
-<pre><code class="c">#include &lt;iostream&gt;
+<h2 id="_4">解题代码</h2>
+<pre><code class="c++">#include &lt;iostream&gt;
 #include &lt;stdio.h&gt;
 #include &lt;string.h&gt;
 #include &lt;map&gt;
@@ -192,6 +191,11 @@ MathJax.Hub.Config({
 src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
 
+
+    
+    
+      
+    
 
     <br>
 </div>
