@@ -66,11 +66,16 @@ nav:
             - 题目1143:最长公共子序列: 比赛内容/Leetcode/题目1143_最长公共子序列.md
             - 题目1318:或运算的最小翻转次数: 比赛内容/Leetcode/题目1318_或运算的最小翻转次数.md
         - Hiho比赛:
-            - Hiho第001周:最长回文子串: 比赛内容/hiho比赛/Hiho第001周_最长回文子串.md
-            - Hiho第002周:Trie树:  比赛内容/hiho比赛/Hiho第002周_Trie树.md
-            - Hiho第003周:KMP算法: 比赛内容/hiho比赛/Hiho第003周_KMP算法.md
-            - Hiho第004周:Trie图: 比赛内容/hiho比赛/Hiho第004周_Trie图.md
-            - Hiho第301周:缺失的拼图: 比赛内容/hiho比赛/Hiho第301周_缺失的拼图.md
+            - Hiho第001周:最长回文子串: 比赛内容/Hiho比赛/Hiho第001周_最长回文子串.md
+            - Hiho第002周:Trie树:  比赛内容/Hiho比赛/Hiho第002周_Trie树.md
+            - Hiho第003周:KMP算法: 比赛内容/Hiho比赛/Hiho第003周_KMP算法.md
+            - Hiho第004周:Trie图: 比赛内容/Hiho比赛/Hiho第004周_Trie图.md
+            - Hiho第095周:数论四·扩展欧几里德: 比赛内容/Hiho比赛/Hiho第095周_数论四·扩展欧几里德.md
+            - Hiho第096周:数论五·欧拉函数: 比赛内容/Hiho比赛/Hiho第096周_数论五·欧拉函数.md
+            - Hiho第097周:数论六·模线性方程组: 比赛内容/Hiho比赛/Hiho第097周_数论六·模线性方程组.md
+            - Hiho第098周:搜索一·24点: 比赛内容/Hiho比赛/Hiho第098周_搜索一·24点.md
+            - Hiho第099周:搜索二·骑士问题: 比赛内容/Hiho比赛/Hiho第099周_搜索二·骑士问题.md
+            - Hiho第301周:缺失的拼图: 比赛内容/Hiho比赛/Hiho第301周_缺失的拼图.md
         - 剑指Offer:
             - 求1+2+…+n: 比赛内容/剑指Offer/求1+2+…+n.md
     - 数学内容:
