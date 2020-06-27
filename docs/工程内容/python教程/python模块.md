@@ -4559,6 +4559,34 @@ plt.legend()
 plt.show()
 ```
 
+
+
+### 读变量
+
+```
+import os
+import path
+import numpy as np
+from tensorflow.python import pywrap_tensorflow
+checkpoint_path='./checkpoints/VGG_VOC0712_SSD_300x300_ft_iter_120000.ckpt/VGG_VOC0712_SSD_300x300_ft_iter_120000.ckpt'
+# print(path.getcwdu())
+print(checkpoint_path)
+#read data from checkpoint file
+reader=pywrap_tensorflow.NewCheckpointReader(checkpoint_path)
+var_to_shape_map=reader.get_variable_to_shape_map()
+ 
+ 
+data_print=np.array([])
+for key in var_to_shape_map:
+    print('tensor_name',key)
+    ckpt_data=np.array(reader.get_tensor(key))#cast list to np arrary
+    ckpt_data=ckpt_data.flatten()#flatten list
+    data_print=np.append(data_print,ckpt_data,axis=0)
+ 
+ 
+print(data_print,data_print.shape,np.max(data_print),np.min(data_print),np.mean(data_print))
+```
+
 ### 7.4 变量保存&读取
 
 这一部分,我们实现最简单的保存&读取变量值
@@ -4578,6 +4606,10 @@ print(fc3_b2.numpy())
 restore.restore(save_path)
 print(fc3_b2.numpy())
 ```
+
+### 7.5 tensorflow固化模型
+
+https://blog.csdn.net/yjl9122/article/details/78341689
 
 
 ## 八、python压缩
