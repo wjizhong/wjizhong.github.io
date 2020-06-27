@@ -8,10 +8,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <meta name="author" content="wjizhong">
-    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/Hiho%E6%AF%94%E8%B5%9B/hiho%E7%AC%AC092%E5%91%A8/">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/Hiho%E6%AF%94%E8%B5%9B/Hiho%E7%AC%AC092%E5%91%A8_%E6%95%B0%E8%AE%BA%E4%B8%80%C2%B7Miller-Rabin%E8%B4%A8%E6%95%B0%E6%B5%8B%E8%AF%95/">
     <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-    <title>hiho第092周:数论一·Miller-Rabin质数测试 - 图像/视频算法</title>
+    <title>Hiho第092周:数论一·Miller-Rabin质数测试.md - 图像/视频算法</title>
     <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
     <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
     <link href="../../../css/base.css" rel="stylesheet">
@@ -32,7 +32,13 @@
       var is_top_frame = false;
         
         var pageToc = [
-          {title: "hiho\u7b2c092\u5468:\u6570\u8bba\u4e00\u00b7Miller-Rabin\u8d28\u6570\u6d4b\u8bd5", url: "#_top", level:1, children: [
+          {title: "Hiho\u7b2c092\u5468:\u6570\u8bba\u4e00\u00b7Miller-Rabin\u8d28\u6570\u6d4b\u8bd5", url: "#_top", level:1, children: [
+              {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1", level:2, children: [ 
+              ]},
+              {title: "\u8f93\u5165\u8f93\u51fa", url: "#_2", level:2, children: [ 
+              ]},
+              {title: "\u89e3\u9898\u4ee3\u7801", url: "#_3", level:2, children: [ 
+              ]},
           ]},
         ];
     </script>
@@ -66,11 +72,14 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 
 
     
+    
+      
+    
 
-    <h1 id="hiho092miller-rabin">hiho第092周:数论一·Miller-Rabin质数测试</h1>
-<ul>
-<li><strong>描述</strong></li>
-</ul>
+    
+
+    <h1 id="hiho092miller-rabin">Hiho第092周:数论一·Miller-Rabin质数测试</h1>
+<h2 id="_1">题目描述</h2>
 <p>小Hi和小Ho最近突然对密码学产生了兴趣其中有个叫RSA的公钥密码算法。RSA算法的计算过程中,需要找一些很大的质数。</p>
 <p>小Ho:要如何来找出足够大的质数呢?</p>
 <p>小Hi：我倒是有一个想法,我们可以先随机一个特别大的初始奇数,然后检查它是不是质数,如果不是就找比它大2的数,一直重复，直到找到一个质数为止。</p>
@@ -150,21 +159,15 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>小Ho:恩,每一次单独的MR测试,需要O(log n)的时间。一共要进行S次MR测试,也就是O(Slog n)。</p>
 <p>小Hi:没错,这样就能够在很短的时间内完成质数的测试了。当然如果你还是不放心,可以把S的值设定的更高一点。</p>
 <p>小Ho:好!这样就能够顺利的找到大质数了。</p>
+<h2 id="_2">输入输出</h2>
 <ul>
-<li><strong>输入输出</strong></li>
+<li><strong>输入</strong></li>
 </ul>
-<blockquote>
-<ul>
-<li>输入</li>
-</ul>
-</blockquote>
 <p>第1行:1个正整数t,表示数字的个数,10≤t≤50</p>
 <p>第2..t+1行:每行1个正整数,第i+1行表示正整数a[i],2≤a[i]≤10^18</p>
-<blockquote>
 <ul>
-<li>输出</li>
+<li><strong>输出</strong></li>
 </ul>
-</blockquote>
 <p>第1..t行:每行1个字符串,若a[i]为质数,第i行输出"Yes",否则输出"No"</p>
 <p>样例输入</p>
 <pre><code>3
@@ -179,10 +182,7 @@ Yes
 No
 </code></pre>
 
-<ul>
-<li><strong>解题代码</strong></li>
-</ul>
-<p><code>C++</code>代码:</p>
+<h2 id="_3">解题代码</h2>
 <pre><code class="c++">#include &lt;iostream&gt; 
 #include&lt;cstdlib&gt;
 using namespace std; 
@@ -247,7 +247,6 @@ int main(){
 }
 </code></pre>
 
-<p><code>python</code>代码:</p>
 <pre><code class="python">def MillerRabin(n):
     if n == 2: return True
     if n &lt; 2 or n % 2 == 0: return False
@@ -284,6 +283,11 @@ MathJax.Hub.Config({
 src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
 
+
+    
+    
+      
+    
 
     <br>
 </div>

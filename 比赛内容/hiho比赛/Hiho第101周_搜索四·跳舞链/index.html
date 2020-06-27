@@ -8,10 +8,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <meta name="author" content="wjizhong">
-    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/Hiho%E6%AF%94%E8%B5%9B/hiho%E7%AC%AC101%E5%91%A8/">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/Hiho%E6%AF%94%E8%B5%9B/Hiho%E7%AC%AC101%E5%91%A8_%E6%90%9C%E7%B4%A2%E5%9B%9B%C2%B7%E8%B7%B3%E8%88%9E%E9%93%BE/">
     <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-    <title>hiho第101周:搜索四·跳舞链 - 图像/视频算法</title>
+    <title>Hiho第101周:搜索四·跳舞链 - 图像/视频算法</title>
     <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
     <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
     <link href="../../../css/base.css" rel="stylesheet">
@@ -32,7 +32,15 @@
       var is_top_frame = false;
         
         var pageToc = [
-          {title: "hiho\u7b2c101\u5468:\u641c\u7d22\u56db\u00b7\u8df3\u821e\u94fe", url: "#_top", level:1, children: [
+          {title: "Hiho\u7b2c101\u5468:\u641c\u7d22\u56db\u00b7\u8df3\u821e\u94fe", url: "#_top", level:1, children: [
+              {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1", level:2, children: [
+                  {title: "\u63d0\u793a:\u8df3\u821e\u94fe", url: "#_2", level:3, children: [
+                  ]}, 
+              ]},
+              {title: "\u8f93\u5165\u8f93\u51fa", url: "#_3", level:2, children: [ 
+              ]},
+              {title: "\u89e3\u9898\u4ee3\u7801", url: "#_4", level:2, children: [ 
+              ]},
           ]},
         ];
     </script>
@@ -66,11 +74,14 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 
 
     
+    
+      
+    
 
-    <h1 id="hiho101">hiho第101周:搜索四·跳舞链</h1>
-<ul>
-<li><strong>描述</strong></li>
-</ul>
+    
+
+    <h1 id="hiho101">Hiho第101周:搜索四·跳舞链</h1>
+<h2 id="_1">题目描述</h2>
 <p>小Ho最近遇到一个难题,他需要破解一个棋局。</p>
 <p>棋局分成了n行,m列,每行有若干个棋子。小Ho需要从中选择若干行使得每一列有且恰好只有一个棋子。</p>
 <p>比如下面这样局面:</p>
@@ -86,11 +97,7 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>小Hi:小Ho你这个做法本身没什么问题,但是对于棋盘行数再多一点的情况就不行了。</p>
 <p>小Ho:恩，我也这么觉得,那你有什么好方法么?</p>
 <p>小Hi:我当然有了,你听我慢慢道来。</p>
-<blockquote>
-<ul>
-<li><strong>提示:跳舞链</strong></li>
-</ul>
-</blockquote>
+<h3 id="_2">提示:跳舞链</h3>
 <p>小Hi:对于这一类的问题,我们可以把所有的列看成一个集合S,每一行是一个S的子集s[i]。</p>
 <p>我们要做的是选取若干个s[i],满足两个条件:</p>
 <pre><code>1. 对于任何选择的s[i],s[j]，s[i]∩s[j]=∅
@@ -162,7 +169,9 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>第二次也是同样的,由于第3行只包含节点4,因此我们只需要删除a列的头结点。而第1行删除时,需要把其对应的节点2删除,但是第c列并没有被覆盖到,所以并不需要删除第c列的头结点。</p>
 <p>小Ho:原来如此,我大概明白了跳舞链的思想。那么它应该怎么实现呢?尤其是这个删除和恢复节点的过程。</p>
 <p>小Hi:如何去实现也确实是跳舞链的一个难点,我们将其分解为4个部分:构造,删除,恢复,搜索。</p>
-<p><strong>1. 构造</strong></p>
+<ul>
+<li><strong>1. 构造</strong></li>
+</ul>
 <p>构造部分就是如何将原来的01矩阵转化为双十字循环链表的过程。</p>
 <p>每个节点需要包含有6个信息,上下左右四个指针,以及该节点所在的坐标。</p>
 <pre><code>Node:
@@ -330,23 +339,17 @@ Build:
 
 <p>在充分利用链表的情况下将跳舞链实现了,是不是很简单啊。</p>
 <p>小Ho:(⊙o⊙)哦,我这就去写写看!</p>
-<ul>
-<li><strong>输入输出</strong></li>
-</ul>
-<blockquote>
+<h2 id="_3">输入输出</h2>
 <ul>
 <li><strong>输入</strong></li>
 </ul>
-</blockquote>
 <p>第1行:1个正整数t,表示数据组数,1≤t≤10。</p>
 <p>接下来t组数据,每组的格式为:</p>
 <p>第1行:2个正整数n,m,表示输入数据的行数和列数。2≤n,m≤100。</p>
 <p>第2..n+1行:每行m个数,只会出现0或1。</p>
-<blockquote>
 <ul>
 <li><strong>输出</strong></li>
 </ul>
-</blockquote>
 <p>第1..t行:第i行表示第i组数据是否存在解,若存在输出"Yes",否则输出"No"。</p>
 <p>样例输入</p>
 <pre><code>2
@@ -367,10 +370,7 @@ Build:
 Yes
 </code></pre>
 
-<ul>
-<li><strong>解题代码</strong></li>
-</ul>
-<p><code>c++</code>代码:</p>
+<h2 id="_4">解题代码</h2>
 <pre><code class="c++">#include&lt;iostream&gt;
 #include&lt;cstdio&gt;
 #include&lt;bitset&gt;
@@ -465,6 +465,11 @@ MathJax.Hub.Config({
 src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
 
+
+    
+    
+      
+    
 
     <br>
 </div>

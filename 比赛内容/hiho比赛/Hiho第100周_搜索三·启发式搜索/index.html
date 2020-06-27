@@ -8,10 +8,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <meta name="author" content="wjizhong">
-    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/Hiho%E6%AF%94%E8%B5%9B/hiho%E7%AC%AC100%E5%91%A8/">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/Hiho%E6%AF%94%E8%B5%9B/Hiho%E7%AC%AC100%E5%91%A8_%E6%90%9C%E7%B4%A2%E4%B8%89%C2%B7%E5%90%AF%E5%8F%91%E5%BC%8F%E6%90%9C%E7%B4%A2/">
     <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-    <title>hiho第100周:搜索三·启发式搜索 - 图像/视频算法</title>
+    <title>Hiho第100周:搜索三·启发式搜索 - 图像/视频算法</title>
     <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
     <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
     <link href="../../../css/base.css" rel="stylesheet">
@@ -32,7 +32,13 @@
       var is_top_frame = false;
         
         var pageToc = [
-          {title: "hiho\u7b2c100\u5468:\u641c\u7d22\u4e09\u00b7\u542f\u53d1\u5f0f\u641c\u7d22", url: "#_top", level:1, children: [
+          {title: "Hiho\u7b2c100\u5468:\u641c\u7d22\u4e09\u00b7\u542f\u53d1\u5f0f\u641c\u7d22", url: "#_top", level:1, children: [
+              {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1", level:2, children: [
+                  {title: "\u63d0\u793a:\u542f\u53d1\u5f0f\u641c\u7d22", url: "#_2", level:3, children: [
+                  ]}, 
+              ]},
+              {title: "\u8f93\u5165\u8f93\u51fa", url: "#_3", level:2, children: [ 
+              ]},
           ]},
         ];
     </script>
@@ -66,11 +72,14 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 
 
     
+    
+      
+    
 
-    <h1 id="hiho100">hiho第100周:搜索三·启发式搜索</h1>
-<ul>
-<li><strong>描述</strong></li>
-</ul>
+    
+
+    <h1 id="hiho100">Hiho第100周:搜索三·启发式搜索</h1>
+<h2 id="_1">题目描述</h2>
 <p>在小Ho的手机上有一款叫做八数码的游戏,小Ho在坐车或者等人的时候经常使用这个游戏来打发时间。</p>
 <p>游戏的棋盘被分割成3x3的区域,上面放着标记有1~8八个数字的方形棋子,剩下一个区域为空。</p>
 <p><img alt="" src="http://media.hihocoder.com/problem_images/20160528/14644336271419.png" /></p>
@@ -78,11 +87,7 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p><img alt="" src="http://media.hihocoder.com/problem_images/20160528/14644336274267.png" /></p>
 <p>小Hi:小Ho,你觉得如果用计算机来玩这个游戏应该怎么做?</p>
 <p>小Ho:用计算机来玩么?我觉得应该是搜索吧,让我想一想。</p>
-<blockquote>
-<ul>
-<li><strong>提示:启发式搜索</strong></li>
-</ul>
-</blockquote>
+<h3 id="_2">提示:启发式搜索</h3>
 <p>小Ho:这个问题和上一次一样嘛,用宽度优先搜索来求解。</p>
 <p>然后把这个3x3的二维数组拉伸成一个长度为9的数组,将长度为9的数组作为状态。</p>
 <p>那么最终状态就是{1,2,3,4,5,6,7,8,0}。</p>
@@ -247,21 +252,15 @@ unused = {1}, a[3] = 0, num[3] = 1
 <p>其中openlist.getMinFStatus()可以使用堆来实现。</p>
 <p>启发式搜索在某些情况下并不一定好用,一方面取决于评估函数的选取,另一个方面由于在选取状态时也会有额外的开销。而快速趋近目标结果所减少的时间.能否弥补这一部分开销也是非常关键的。</p>
 <p>所以根据题目选取合适的搜索方法才是最重要的。</p>
-<ul>
-<li><strong>输入输出</strong></li>
-</ul>
-<blockquote>
+<h2 id="_3">输入输出</h2>
 <ul>
 <li><strong>输入</strong></li>
 </ul>
-</blockquote>
 <p>第1行:1个正整数t,表示数据组数。1≤t≤8。</p>
 <p>接下来有t组数据,每组数据有3行,每行3个整数,包含0~8,每个数字只出现一次,其中0表示空位。</p>
-<blockquote>
 <ul>
 <li><strong>输出</strong></li>
 </ul>
-</blockquote>
 <p>第1..t行:每行1个整数,表示该组数据解的步数。若无解输出"No Solution!"</p>
 <p>样例输入</p>
 <pre><code>3
@@ -470,6 +469,11 @@ MathJax.Hub.Config({
 src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
 
+
+    
+    
+      
+    
 
     <br>
 </div>

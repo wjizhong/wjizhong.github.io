@@ -8,10 +8,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <meta name="author" content="wjizhong">
-    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/Hiho%E6%AF%94%E8%B5%9B/hiho%E7%AC%AC102%E5%91%A8/">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/Hiho%E6%AF%94%E8%B5%9B/Hiho%E7%AC%AC102%E5%91%A8_%E6%90%9C%E7%B4%A2%E4%BA%94%C2%B7%E6%95%B0%E7%8B%AC/">
     <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-    <title>hiho第102周:搜索五·数独 - 图像/视频算法</title>
+    <title>Hiho第102周:搜索五·数独 - 图像/视频算法</title>
     <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
     <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
     <link href="../../../css/base.css" rel="stylesheet">
@@ -32,7 +32,15 @@
       var is_top_frame = false;
         
         var pageToc = [
-          {title: "hiho\u7b2c102\u5468:\u641c\u7d22\u4e94\u00b7\u6570\u72ec", url: "#_top", level:1, children: [
+          {title: "Hiho\u7b2c102\u5468:\u641c\u7d22\u4e94\u00b7\u6570\u72ec", url: "#_top", level:1, children: [
+              {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1", level:2, children: [
+                  {title: "\u63d0\u793a:\u6570\u72ec", url: "#_2", level:3, children: [
+                  ]}, 
+              ]},
+              {title: "\u8f93\u5165\u8f93\u51fa", url: "#_3", level:2, children: [ 
+              ]},
+              {title: "\u89e3\u9898\u4ee3\u7801", url: "#_4", level:2, children: [ 
+              ]},
           ]},
         ];
     </script>
@@ -66,11 +74,14 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 
 
     
+    
+      
+    
 
-    <h1 id="hiho102">hiho第102周:搜索五·数独</h1>
-<ul>
-<li><strong>描述</strong></li>
-</ul>
+    
+
+    <h1 id="hiho102">Hiho第102周:搜索五·数独</h1>
+<h2 id="_1">题目描述</h2>
 <p>在上一次学会了跳舞链的搜索方法之后,小Ho觉得这个算法真是棒极了。</p>
 <p>小Ho:小Hi,还有没有什么有意思的题目可以用跳舞链解决的啊？</p>
 <p>小Hi:我想想,首先可以确定的是给出01矩阵的精确覆盖问题都可以解决。</p>
@@ -91,11 +102,7 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>小Ho:规则看上去还是蛮简单的嘛。</p>
 <p>小Hi:对啊。那么你觉得这个问题可以用跳舞链解决么?</p>
 <p>小Ho:嗯,我想一想啊。</p>
-<blockquote>
-<ul>
-<li><strong>提示:数独</strong></li>
-</ul>
-</blockquote>
+<h3 id="_2">提示:数独</h3>
 <p>小Ho:不行不行,我觉得搞不定啊!</p>
 <p>小Hi:什么搞不定?你先说说你的想法?</p>
 <p>小Ho:我是这样想的,要用跳舞链来解决数独问题,那就要求把数独问题转化为01的矩阵。我们之前遇到的问题是,一个格子只存在覆盖或是不覆盖的情况。而数独这个问题里面,一个位置是从数字当中选择一个。这样我就没有办法去覆盖一个解了。</p>
@@ -307,22 +314,16 @@ End While
 </code></pre>
 
 <p>小Ho:我知道了!我这加上这个优化。</p>
-<ul>
-<li><strong>输入输出</strong></li>
-</ul>
-<blockquote>
+<h2 id="_3">输入输出</h2>
 <ul>
 <li><strong>输入</strong></li>
 </ul>
-</blockquote>
 <p>第1行:1个正整数t,表示数据组数,2≤t≤5</p>
 <p>接下来t组数据,每组按照如下格式给出:</p>
 <p>第1..9行：9个整数,可能包含0~9。0表示该格未填写数字,其他数字表示该格已经填写有该数字。</p>
-<blockquote>
 <ul>
 <li><strong>输出</strong></li>
 </ul>
-</blockquote>
 <p>与输入数据相对应的t组输出数据:</p>
 <p>第1..9行:9个整数,表示第i组数据完成后的状态,满足数独的要求,保证每组数据有且仅有一组合法解。</p>
 <p>样例输入</p>
@@ -350,10 +351,7 @@ End While
 6 3 8 1 9 7 2 5 4
 </code></pre>
 
-<ul>
-<li><strong>解题代码</strong></li>
-</ul>
-<p><code>c++</code>代码:</p>
+<h2 id="_4">解题代码</h2>
 <pre><code class="c++">#include &lt;iostream&gt;
 #include &lt;cstdio&gt;
 #include &lt;cstring&gt;
@@ -562,6 +560,11 @@ MathJax.Hub.Config({
 src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
 
+
+    
+    
+      
+    
 
     <br>
 </div>

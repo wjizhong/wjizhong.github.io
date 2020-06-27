@@ -8,10 +8,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <meta name="author" content="wjizhong">
-    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/Hiho%E6%AF%94%E8%B5%9B/hiho%E7%AC%AC094%E5%91%A8/">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/Hiho%E6%AF%94%E8%B5%9B/Hiho%E7%AC%AC094%E5%91%A8_%E6%95%B0%E8%AE%BA%E4%B8%89%C2%B7%E7%BA%A6%E7%91%9F%E5%A4%AB%E9%97%AE%E9%A2%98/">
     <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-    <title>hiho第094周:数论三·约瑟夫问题 - 图像/视频算法</title>
+    <title>Hiho第094周:数论三·约瑟夫问题 - 图像/视频算法</title>
     <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
     <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
     <link href="../../../css/base.css" rel="stylesheet">
@@ -32,7 +32,15 @@
       var is_top_frame = false;
         
         var pageToc = [
-          {title: "hiho\u7b2c094\u5468:\u6570\u8bba\u4e09\u00b7\u7ea6\u745f\u592b\u95ee\u9898", url: "#_top", level:1, children: [
+          {title: "Hiho\u7b2c094\u5468:\u6570\u8bba\u4e09\u00b7\u7ea6\u745f\u592b\u95ee\u9898", url: "#_top", level:1, children: [
+              {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1", level:2, children: [
+                  {title: "\u63d0\u793a:\u7ea6\u745f\u592b\u95ee\u9898", url: "#_2", level:3, children: [
+                  ]}, 
+              ]},
+              {title: "\u8f93\u5165\u8f93\u51fa", url: "#_3", level:2, children: [ 
+              ]},
+              {title: "\u89e3\u9898\u4ee3\u7801", url: "#_4", level:2, children: [ 
+              ]},
           ]},
         ];
     </script>
@@ -66,11 +74,14 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 
 
     
+    
+      
+    
 
-    <h1 id="hiho094">hiho第094周:数论三·约瑟夫问题</h1>
-<ul>
-<li><strong>题目描述</strong></li>
-</ul>
+    
+
+    <h1 id="hiho094">Hiho第094周:数论三·约瑟夫问题</h1>
+<h2 id="_1">题目描述</h2>
 <p>小Hi和小Ho的班级正在进行班长的选举,他们决定通过一种特殊的方式来选择班长。</p>
 <p>首先N个候选人围成一个圈,依次编号为0..N-1。然后随机抽选一个数K,并0号候选人开始按从1到K的顺序依次报数,N-1号候选人报数之后,又再次从0开始。当有人报到K时,这个人被淘汰,从圈里出去。下一个人从1开始重新报数。</p>
 <p>也就是说每报K个数字,都会淘汰一人。这样经过N-1轮报数之后,圈内就只剩下1个人了,这个人就作为新的班长。</p>
@@ -93,11 +104,7 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>小Ho:我也想当班长,小Hi你能提前告诉我应该站在哪个位置么?</p>
 <p>小Hi:我可以告诉你怎么去求最后一个被淘汰的位置,不过具体的值你得自己去求解。</p>
 <p>小Ho:嗯,没问题,那么你快告诉我方法吧！</p>
-<blockquote>
-<ul>
-<li>提示:约瑟夫问题</li>
-</ul>
-</blockquote>
+<h3 id="_2">提示:约瑟夫问题</h3>
 <p>小Hi:这个问题其实还蛮有名的,它被称为约瑟夫的问题。</p>
 <p>最直观的解法是用循环链表模拟报数、淘汰的过程,复杂度是O(NM)。</p>
 <p>今天我们来学习两种更高效的算法,一种是递推,另一种也是递推。第一种递推的公式为:</p>
@@ -107,9 +114,13 @@ f[n] = (f[n - 1] + K) mod n
 </code></pre>
 
 <p>接下来我们用数学归纳法来证明这个递推公式的正确性:</p>
-<p>(1) <strong>f[1] = 0</strong></p>
+<ul>
+<li>(1) <strong>f[1] = 0</strong></li>
+</ul>
 <p>显然当只有1个候选人时,该候选人就是当选者,并且他的编号为0。</p>
-<p>(2) <strong>f[n] = (f[n - 1] + K) mod n</strong></p>
+<ul>
+<li>(2) <strong>f[n] = (f[n - 1] + K) mod n</strong></li>
+</ul>
 <p>假设我们已经求解出了f[n-1],并且保证f[n-1]的值是正确的。</p>
 <p>现在先将n个人按照编号进行排序:</p>
 <pre><code>0 1 2 3 ... n-1
@@ -197,21 +208,15 @@ n-K'              n-2'   0'  1'  2' ... n-K-1'
 </code></pre>
 
 <p>改进后的算法可以很快将N的规模减小到K,对于K不是很大的问题能够快速求解。</p>
+<h2 id="_3">输入输出</h2>
 <ul>
-<li><strong>输入输出</strong></li>
+<li><strong>输入</strong></li>
 </ul>
-<blockquote>
-<ul>
-<li>输入</li>
-</ul>
-</blockquote>
 <p>第1行:1个正整数t,表示多组输入数据,1≤t≤100</p>
 <p>第2..t+1行:每行2个正整数n,k,第i+1行表示第i组测试数据,2≤n≤1,000,000,000。2≤k≤1,000</p>
-<blockquote>
 <ul>
-<li>输出</li>
+<li><strong>输出</strong></li>
 </ul>
-</blockquote>
 <p>第1..t行:每行1个整数,第i行表示第i组数据的解</p>
 <p>样例输入</p>
 <pre><code>2
@@ -224,9 +229,7 @@ n-K'              n-2'   0'  1'  2' ... n-K-1'
 6
 </code></pre>
 
-<ul>
-<li><strong>解题代码</strong></li>
-</ul>
+<h2 id="_4">解题代码</h2>
 <pre><code class="c++">#define _CRT_SECURE_NO_WARNINGS
 
 #include&lt;iostream&gt;
@@ -282,6 +285,11 @@ MathJax.Hub.Config({
 src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
 
+
+    
+    
+      
+    
 
     <br>
 </div>
