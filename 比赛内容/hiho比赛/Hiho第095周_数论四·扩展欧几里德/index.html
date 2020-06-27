@@ -8,10 +8,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <meta name="author" content="wjizhong">
-    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/hiho%E6%AF%94%E8%B5%9B/hiho%E7%AC%AC95%E5%91%A8/">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/Hiho%E6%AF%94%E8%B5%9B/Hiho%E7%AC%AC095%E5%91%A8_%E6%95%B0%E8%AE%BA%E5%9B%9B%C2%B7%E6%89%A9%E5%B1%95%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%B7/">
     <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-    <title>hiho第95周:数论四·扩展欧几里德 - 图像/视频算法</title>
+    <title>Hiho第095周:数论四·扩展欧几里德 - 图像/视频算法</title>
     <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
     <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
     <link href="../../../css/base.css" rel="stylesheet">
@@ -32,10 +32,14 @@
       var is_top_frame = false;
         
         var pageToc = [
-          {title: "hiho\u7b2c95\u5468:\u6570\u8bba\u56db\u00b7\u6269\u5c55\u6b27\u51e0\u91cc\u5fb7", url: "#_top", level:1, children: [
+          {title: "Hiho\u7b2c95\u5468:\u6570\u8bba\u56db\u00b7\u6269\u5c55\u6b27\u51e0\u91cc\u5fb7", url: "#_top", level:1, children: [
               {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1", level:2, children: [
                   {title: "\u63d0\u793a:\u6269\u5c55\u6b27\u51e0\u91cc\u5fb7", url: "#_2", level:3, children: [
                   ]}, 
+              ]},
+              {title: "\u8f93\u5165\u8f93\u51fa", url: "#_3", level:2, children: [ 
+              ]},
+              {title: "\u89e3\u9898\u4ee3\u7801", url: "#_4", level:2, children: [ 
               ]},
           ]},
         ];
@@ -70,8 +74,13 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 
 
     
+    
+      
+    
 
-    <h1 id="hiho95">hiho第95周:数论四·扩展欧几里德</h1>
+    
+
+    <h1 id="hiho95">Hiho第95周:数论四·扩展欧几里德</h1>
 <h2 id="_1">题目描述</h2>
 <p>小Hi和小Ho周末在公园溜达。公园有一堆围成环形的石板,小Hi和小Ho分别站在不同的石板上。已知石板总共有m块,编号为 0..m-1,小Hi一开始站在s1号石板上,小Ho一开始站在s2号石板上。</p>
 <p>小Hi:小Ho,你说我们俩如果从现在开始按照固定的间隔数同时同向移动,我们会不会在某个时间点站在同一块石板上呢?</p>
@@ -82,7 +91,7 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>小Hi:让我想想啊。。</p>
 <h3 id="_2">提示:扩展欧几里德</h3>
 <p>小Hi:首先可以我俩现在的情况列出一个式子:</p>
-<pre><code>s1+v1*t=s2+v2*t-k*m (v1&lt;v2)
+<pre><code>s1+v1*t=s2+v2*t-k*m  (v1&lt;v2)
 </code></pre>
 
 <p>也就是经过t时间过后,速度快的人刚好超过了速度慢的人k圈,且到达同一个位置。</p>
@@ -95,7 +104,9 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>小Hi:恩,没错。</p>
 <p>求解该式子的算法我们称为扩展欧几里德算法。</p>
 <p>该算法分为两个部分:</p>
-<p>(1) <strong>判定是否存在解</strong></p>
+<ul>
+<li>(1) <strong>判定是否存在解</strong></li>
+</ul>
 <p>对于形如"Ax+By=C"的式子,其存在解的条件为C为A和B最大公约数的整数倍。</p>
 <p>我们将A和B的最大公约数记为gcd(A,B)。因此其有解的条件是C=n*gcd(A,B)。</p>
 <p>那么我们应该如何来求解gcd(A,B)呢?</p>
@@ -103,8 +114,8 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>为了求解gcd(A,B),欧几里德提出了一个辗转相除法:</p>
 <p>首先要证明一个定理:gcd(A,B) = gcd(B, A mod B)</p>
 <p>证明:</p>
-<pre><code>假设A = k\*B+r,有r = A mod B。不妨设d为A和B的一个任意一个公约数,则有A = pd, B = qd。
-由r = A - k\*B = pd - k\*qd = (p - kq)*d,所以有d也为r的约数,因此d是B和A mod B的公约数。
+<pre><code>假设A = k*B+r,有r = A mod B。不妨设d为A和B的一个任意一个公约数,则有A = pd, B = qd。
+由r = A - k*B = pd - k*qd = (p - kq)*d,所以有d也为r的约数,因此d是B和A mod B的公约数。
 由于对任意一个A和B的公约数都满足这个性质,gcd(A,B)也满足,因此有gcd(A,B)=gcd(B,A mod B)。
 </code></pre>
 
@@ -121,81 +132,159 @@ A mod B ≠ 0, 则gcd(A,B) = gcd(B, A mod B)
     Return gcd(B, A mod B)
 </code></pre>
 
-<p>(2) <strong>求解</strong></p>
+<ul>
+<li>(2) <strong>求解</strong></li>
+</ul>
 <p>在判定有解之后,我们需要在其基础上再求出一组(x,y)。由于A,B,C均是gcd(A,B)的整数倍,因此可以将它们都缩小gcd(A,B)倍。即A'=A/gcd(A,B),B'=B/gcd(A,B),C'=C/gcd(A,B)。</p>
 <p>化简为A'x+B'y=C',gcd(A',B')=1,即A',B'互质。</p>
 <p>此时,我们可以先求解出A'x+B'y=1的解(x',y'),再将其扩大C'倍,即为我们要求的最后解(x,y)=(C'x', C'y')。</p>
 <p>那么接下来我们来研究如何求解A'x+B'y=1:</p>
 <p>假设A&gt;B&gt;0,同时我们设:</p>
-<p>A * x[1] + B * y[1] = gcd(A, B)
-B * x[2] + (A mod B) * y[2] = gcd(B, A mod B)</p>
-<p>已知gcd(A,B)=gcd(B, A mod B),因此有:</p>
-<pre><code>A * x[1] + B * y[1] = B * x[2] + (A mod B) * y[2]
+<pre><code>A * x[1] + B * y[1] = gcd(A, B)
+B * x[2] + (A mod B) * y[2] = gcd(B, A mod B)
 </code></pre>
-<p>=&gt;  A * x[1] + B * y[1] = B * x[2] + (A - kB) * y[2]    // A = kB + r
+
+<p>已知gcd(A,B)=gcd(B, A mod B),因此有:</p>
+<pre><code>    A * x[1] + B * y[1] = B * x[2] + (A mod B) * y[2]
+=&gt;  A * x[1] + B * y[1] = B * x[2] + (A - kB) * y[2]    // A = kB + r
 =&gt;  A * x[1] + B * y[1] = A * y[2] + B * x[2] - kB * y[2]
 =&gt;  A * x[1] + B * y[1] = A * y[2] + B * (x[2] - ky[2])
-=&gt;  x[1] = y[2], y[1] = (x[2] - ky[2])</p>
+=&gt;  x[1] = y[2], y[1] = (x[2] - ky[2])
+</code></pre>
+
 <p>利用这个性质,我们可以递归的去求解(x,y)。</p>
 <p>其终止条件为gcd(A, B)=B,此时对应的(x,y)=(0,1)</p>
 <p>将这个过程写成伪代码为:</p>
-<p>extend_gcd(A, B):
+<pre><code>extend_gcd(A, B):
     If (A mod B == 0) Then
         Return (0, 1)
     End If
     (tempX, tempY) = extend_gcd(B, A mod B)
     x = tempY
     y = tempX - (A / B) * tempY
-    Return (x, y)   </p>
+    Return (x, y)   
+</code></pre>
+
 <p>小Ho:那么我只需要把A=(v1-v2),B=m,C=(s2-s1),x=t,y=k代入就可以得到t了么?</p>
 <p>小Hi:是的,在已知A,B,C的情况下,我们的确能够顺利求解出一组合法的(x,y)。</p>
 <p>但是在求解过程中,我们并没有保证x是最小的非负整数,它不能直接作为我们的解。</p>
 <p>小Ho:那还需要做怎样的处理么?</p>
 <p>小Hi:我们需要将(A',B',x',y')扩充为一个解系。</p>
 <p>由于A'B'是互质的,所以可以将A'x'+B'y'=1扩展为:</p>
-<pre><code>A'x'+B'y'+(u+(-u))A'B'=1
+<pre><code>    A'x'+B'y'+(u+(-u))A'B'=1
+=&gt;  (x' + uB')*A' + (y' - uA')*B' = 1
+=&gt;  X = x' + uB', Y = y' - uA'
 </code></pre>
-<p>=&gt;  (x' + uB')<em>A' + (y' - uA')</em>B' = 1
-=&gt;  X = x' + uB', Y = y' - uA'</p>
+
 <p>可以求得最小的X为(x'+uB') mod B',(x'+uB'&gt;0)</p>
 <p>同时我们还需要将X扩大C'倍,因此最后解为:</p>
-<p>x = (x'*C') mod B'</p>
+<pre><code>x = (x'*C') mod B'
+</code></pre>
+
 <p>若x&lt;0,则不断累加B',直到x&gt;0为止。</p>
 <p>那么最后,小Ho你来总结一下主体部分的伪代码吧！</p>
 <p>小Ho:好的,最后的代码为:</p>
-<p>solve(s1, s2, v1, v2, m):
+<pre><code>solve(s1, s2, v1, v2, m):
     A = v1 - v2
     B = m
-    C = s2 - s1</p>
-<pre><code>If (A &lt; 0) Then
-    A = A + m // 相对距离变化
-End If
-D = gcd(A, B)
+    C = s2 - s1
 
-If (C mod D) Then
-    Return -1
-End If
+    If (A &lt; 0) Then
+        A = A + m // 相对距离变化
+    End If
+    D = gcd(A, B)
 
-A = A / D
-B = B / D
-C = C / D
+    If (C mod D) Then
+        Return -1
+    End If
 
-(x, y) = extend_gcd(A, B)
-x = (x * C) mod B
-While (x &lt; 0)
-    x = x + B
-End While
-Return x
+    A = A / D
+    B = B / D
+    C = C / D
+
+    (x, y) = extend_gcd(A, B)
+    x = (x * C) mod B
+    While (x &lt; 0)
+        x = x + B
+    End While
+    Return x
 </code></pre>
-<p>输入
-第1行:每行5个整数s1,s2,v1,v2,m,0≤v1,v2≤m≤1,000,000,000。0≤s1,s2&lt;m</p>
+
+<h2 id="_3">输入输出</h2>
+<ul>
+<li><strong>输入</strong></li>
+</ul>
+<p>第1行:每行5个整数s1,s2,v1,v2,m,0≤v1,v2≤m≤1,000,000,000。0≤s1,s2&lt; m</p>
 <p>中间过程可能很大,最好使用64位整型</p>
-<p>输出
-第1行:每行1个整数,表示解,若该组数据无解则输出-1</p>
-<p>样例输入
-0 1 1 2 6
-样例输出
-5</p>
+<ul>
+<li><strong>输出</strong></li>
+</ul>
+<p>第1行:每行1个整数,表示解,若该组数据无解则输出-1</p>
+<p>样例输入</p>
+<pre><code>0 1 1 2 6
+</code></pre>
+
+<p>样例输出</p>
+<pre><code>5
+</code></pre>
+
+<h2 id="_4">解题代码</h2>
+<pre><code class="c++">#include &lt;iostream&gt;
+using namespace std;
+long gcd(long a,long b){
+    if(a%b==0)return b;
+    return gcd(b,a%b);
+}
+void exgcd(long a,long b,long &amp;x,long &amp;y){
+    if(b==0){
+        x=1;
+        y=0;
+        return; 
+    }
+    exgcd(b,a%b,x,y);
+    long tx = x;
+    x = y;
+    y = tx-a/b*y;
+}
+int main(){
+    long s1,s2,v1,v2,m;
+    cin&gt;&gt;s1&gt;&gt;s2&gt;&gt;v1&gt;&gt;v2&gt;&gt;m;
+    long a = v1 - v2;
+    long b = m;
+    long c = s2 - s1;
+    if(a&lt;0) a+=m;
+    long d = gcd(a,b);
+    if(c%d) {
+        cout&lt;&lt;-1&lt;&lt;endl;return 0;
+    }
+    a/=d;
+    b/=d;
+    c/=d;
+    long x,y;
+    exgcd(a,b,x,y);
+    x = x*c%b;
+    while(x&lt;0)  x+=b;
+    cout&lt;&lt;x&lt;&lt;endl;
+    return 0;
+}
+</code></pre>
+
+<pre><code class="python">def egcd(a, b):
+    if b == 0: return a, 1, 0
+    g, x, y = egcd(b, a % b)
+    return g, y, x - a / b * y
+s1, s2, v1, v2, m = map(int, raw_input().split())
+if v1 &lt; v2: v1, v2, s1, s2 = v2, v1, s2, s1
+a, b, c = v1 - v2, m, (s2 - s1 + m) % m
+g, x, y = egcd(a, b)
+if c % g or not a and c:
+    print -1
+    exit()
+b /= g
+x = (x * c / g) % b
+while x &lt; 0: x += b
+print x
+</code></pre>
 
   <br>
     <style>
@@ -214,6 +303,11 @@ MathJax.Hub.Config({
 src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
 
+
+    
+    
+      
+    
 
     <br>
 </div>
