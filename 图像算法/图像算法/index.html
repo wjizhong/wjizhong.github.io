@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E5%9B%BE%E5%83%8F%E7%AE%97%E6%B3%95/%E5%9B%BE%E5%83%8F%E7%AE%97%E6%B3%95/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>图像算法 - 图像/视频算法</title>
+    <link href="../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "\u56fe\u50cf\u7b97\u6cd5", url: "#_top", level:1, children: [
+              {title: "\u4e00\u3001opencv\u57fa\u7840\u77e5\u8bc6", url: "#opencv", level:2, children: [ 
+              ]},
+              {title: "\u4e8c\u3001opencv\u57fa\u7840\u8fd0\u7b97", url: "#opencv_1", level:2, children: [ 
+              ]},
+              {title: "\u4e09\u3001opencv\u7279\u5f81", url: "#opencv_2", level:2, children: [ 
+              ]},
+              {title: "\u56db\u3001opencv\u7279\u5f81\u5b66\u4e60", url: "#opencv_3", level:2, children: [
+                  {title: "\u4f7f\u7528Haar\u5206\u7c7b\u5668\u8fdb\u884c\u9762\u90e8\u68c0\u6d4b", url: "#haar", level:3, children: [
+                  ]}, 
+              ]},
+          ]},
+        ];
+    </script>
+    <script src="../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+    <h1 id="_1">图像算法</h1>
+<p>https://blog.csdn.net/zmdsjtu/article/details/80736258</p>
+<h2 id="opencv">一、opencv基础知识</h2>
+<h2 id="opencv_1">二、opencv基础运算</h2>
+<h2 id="opencv_2">三、opencv特征</h2>
+<h2 id="opencv_3">四、opencv特征学习</h2>
+<h3 id="haar">使用Haar分类器进行面部检测</h3>
+<p>https://blog.csdn.net/stdcoutzyx/article/details/34842233</p>
+<p>基于Haar特征的Adaboost级联人脸检测分类器,简称haar分类器。通过这个算法的名字,我们可以看到这个算法其实包含了几个关键点:Haar特征、Adaboost、级联。</p>
+<p>1        算法要点
+Haar分类器 = Haar-like特征 + 积分图方法 + AdaBoost +级联；</p>
+<p>Haar分类器算法的要点如下：</p>
+<p>a)        使用Haar-like特征做检测。</p>
+<p>b)       使用积分图（IntegralImage）对Haar-like特征求值进行加速。</p>
+<p>c)        使用AdaBoost算法训练区分人脸和非人脸的强分类器。</p>
+<p>d)       使用筛选式级联把分类器级联到一起，提高准确率。</p>
+<p>2        历史
+在2001年，Viola和Jones两位大牛发表了经典的《Rapid Object Detectionusing a Boosted Cascade of Simple Features》和《Robust Real-Time Face Detection》，在AdaBoost算法的基础上，使用Haar-like小波特征和积分图方法进行人脸检测，他俩不是最早使用提出小波特征的，但是他们设计了针对人脸检测更有效的特征，并对AdaBoost训练出的强分类器进行级联。这可以说是人脸检测史上里程碑式的一笔了，也因此当时提出的这个算法被称为Viola-Jones检测器。又过了一段时间，RainerLienhart和Jochen Maydt两位大牛将这个检测器进行了扩展，最终形成了OpenCV现在的Haar分类器。</p>
+<p>AdaBoost是Freund和Schapire在1995年提出的算法，是对传统Boosting算法的一大提升。Boosting算法的核心思想，是将弱学习方法提升成强学习算法，也就是“三个臭皮匠顶一个诸葛亮”</p>
+<p><strong>Haar特征</strong></p>
+<p>什么是特征，特征就是分类器的输入。把它放在下面的情景中来描述，假设在人脸检测时我们需要有这么一个子窗口在待检测的图片窗口中不断的移位滑动，子窗口每到一个位置，就会计算出该区域的特征，然后用我们训练好的级联分类器对该特征进行筛选，一旦该特征通过了所有强分类器的筛选，则判定该区域为人脸。</p>
+<p>那么这个特征如何表示呢？好了，这就是大牛们干的好事了。后人称这他们搞出来的这些东西叫Haar-Like特征。</p>
+<p>Viola大牛在[1]中提出的haar特征如下：</p>
+<p>Rainer大牛改进了这些特征，提出了更多的haar特征。如下图所示：</p>
+<p>这些所谓的特征不就是一堆堆带条纹的矩形么，到底是干什么用的？我这样给出解释，将上面的任意一个矩形放到人脸区域上，然后，将白色区域的像素和减去黑色区域的像素和，得到的值我们暂且称之为人脸特征值，如果你把这个矩形放到一个非人脸区域，那么计算出的特征值应该和人脸特征值是不一样的，而且越不一样越好，所以这些方块的目的就是把人脸特征量化，以区分人脸和非人脸。</p>
+<p>4        Adaboost算法
+本节旨在介绍AdaBoost在Haar分类器中的应用，所以只是描述了它在Haar分类器中的特性，而实际上AdaBoost是一种具有一般性的分类器提升算法，它使用的分类器并不局限某一特定算法。</p>
+<p>[1]中给出的Adaboost算法流程如下图。</p>
+<p>由adaboost在haar特征上构建分类器的流程可知，adaboost算法就是构建多个简单的分类器，每个简单的分类器都建立在之前分类器的基础上（对之前分类器分错了的样例提高其权重），然后将这些分类器加权，得到一个强大的分类器。</p>
+<p>Adaboost的每一步训练出的分类器，如下图所示。其中，f表示特征的值，theta表示阈值，p则表示不等式的方向。这样的一个分类器就是基于一个特征的弱分类器。</p>
+<p>更进一步，adaboost的一般算法框架如下。可以看到，Discrete Adaboost和GentleAdaboost在分类器的计算上和权重的更新上是有差别的。还有一种是RealAdaboost，即分类器输出的是一个概率而不只是+1与-1。[3]中就比较了这三种Adaboost的变种的效果。</p>
+<p>5        级联
+什么是级联分类器？级联分类器就是如下图所示的一种退化了的决策树。为什么说是退化了的决策树呢？是因为一般决策树中，判断后的两个分支都会有新的分支出现，而级联分类器中，图像被拒绝后就直接被抛弃，不会再有判断了。</p>
+<p>级联强分类器的策略是，将若干个强分类器由简单到复杂排列，希望经过训练使每个强分类器都有较高检测率，而误识率可以放低，比如几乎99%的人脸可以通过，但50%的非人脸也可以通过，这样如果有20个强分类器级联，那么他们的总识别率为0.99^20约等于98%，错误接受率也仅为0.5^20约等于0.0001%。这样的效果就可以满足现实的需要了。文献[1]中给出了一种由简单到复杂设计级联分类器的方法，那就是添加特征法，对于第一个分类器，只用少数几个特征，之后的每个分类器都在上一个的基础上添加特征，直到满足该级的要求。</p>
+<p>训练级联分类器的目的就是为了检测的时候，更加准确，这涉及到Haar分类器的另一个体系，检测体系，检测体系是以现实中的一幅大图片作为输入，然后对图片中进行多区域，多尺度的检测，所谓多区域，是要对图片划分多块，对每个块进行检测，由于训练的时候用的照片一般都是20*20左右的小图片，所以对于大的人脸，还需要进行多尺度的检测，多尺度检测机制一般有两种策略，一种是不改变搜索窗口的大小，而不断缩放图片，这种方法显然需要对每个缩放后的图片进行区域特征值的运算，效率不高，而另一种方法，是不断初始化搜索窗口size为训练时的图片大小，不断扩大搜索窗口，进行搜索，解决了第一种方法的弱势。</p>
+<p>6        积分图
+积分图是用来加速计算haar特征的方法。Haar特征的计算所需要的基本数据就是区域内像素的和。而仅仅对于24*24的图片来说，它的不同类型的haar特征数目就有11W个（参考[3]）。为了快速的计算出这些特征的值，就有了积分图表示图像的方法。</p>
+<p>什么是积分图？对于与图像边界平行的haar特征来说，积分图就是与图像大小一样的一个二维数组。该数组中，(x,y)位置的值是原始图像中从(0,0)到(x,y)处的像素值的和。对于45度偏向的haar特征来说，也类似。如下图所示：</p>
+<p>对于a、c图所示的haar特征。计算公式如下：</p>
+<p>其中，SAT即为积分图中的值，RecSum即为(x,y)处的长宽为(w,h)的区域的和。有了RecSum后，就可以计算haar特征了。</p>
+<p>相似的，b，d图所示的haar特征计算公式如下：</p>
+<p>意义类似，不一一解释了。</p>
+<p>积分图的好处在于，只对图片进行一次累计计算，就可以很方便的计算出haar特征值了。</p>
+<p>7        总结
+基于Haar特征的Adaboost级联分类器，在人脸的识别效果上并没有比其他算法高，其亮点在于检测速度。而速度的提升，有如下几方面的因素。第一：使用的特征简单，haar特征只需计算像素的和就可以了。第二：即便是如此简单的特征，还添加了积分图进行加速。第三，级联分类器的设定，使得大量的没有人脸的子窗口被抛弃。</p>
+<p>参考文献
+[1]. Viola P, Jones M. Rapid object detection using a boosted cascade of simple features[C]//Computer Vision and Pattern Recognition, 2001. CVPR 2001. Proceedings of the 2001 IEEE Computer Society Conference on. IEEE, 2001, 1: I-511-I-518 vol. 1.
+[2]. Lienhart R, Maydt J. An extended set of haar-like features for rapid object detection[C]//Image Processing. 2002. Proceedings. 2002 International Conference on. IEEE, 2002, 1: I-900-I-903 vol. 1.
+[3]. Lienhart R, Kuranov A, Pisarevsky V. Empirical analysis of detection cascades of boosted classifiers for rapid object detection[M]//Pattern Recognition. Springer Berlin Heidelberg, 2003: 297-304.
+————————————————
+版权声明：本文为CSDN博主「张雨石」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/stdcoutzyx/java/article/details/34842233</p>
+<pre><code class="python">
+'''
+以 Haar 特征分类器为基础的面部检测技术
+将面部检测扩展到眼部检测等。
+
+以 Haar 特征分类器为基础的对 检测技术是一种 常有效的对 检测 技术 2001 年 Paul_Viola 和 Michael_Jones 提出 。它是基于机器学习的    使用大 的正 样本图像 练得到一个 cascade_function 最后再用它 来做对 检测。
+现在我们来学习  检测。开始时 算法  大 的正样本图像   图 像 和 样本图像 不含  的图像 来 练分类器。我们  从其中提取特 征。下图中的 Haar 特征会 使用。它们就像我们的卷积核。每一个特征是一 个值  个值等于 色矩形中的像素值之后减去白色矩形中的像素值之和。
+
+ 那么我们怎样从超过160000+ 个特征中 出最好的特征呢 ？
+ 使用 Adaboost。
+
+OpenCV 自带了训练器和检测器。如果你想自己训练一个分类器来检测 汽车飞机等的
+可以使用 OpenCV 构建。
+Cascade Classifier Training :http://docs.opencv.org/2.4/doc/user_guide/ug_traincascade.html
+
+
+'''
+
+import numpy as np
+import cv2
+
+# 运行之前，检查cascade文件路径是否在你的电脑上
+face_cascade = cv2.CascadeClassifier('/usr/local/share/OpenCV/haarcascades/haarcascade_frontalface_default.xml')
+eye_cascade = cv2.CascadeClassifier('/usr/local/share/OpenCV/haarcascades/haarcascade_eye.xml')
+
+# img = cv2.imread('../data/sachin.jpg')
+# img = cv2.imread('../data/kongjie_hezhao.jpg')
+img = cv2.imread('../data/airline-stewardess-bikini.jpg')
+gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+# cv2.imshow('gray', gray)
+
+
+# Detects objects of different sizes in the input image.
+# The detected objects are returned as a list of rectangles.
+# cv2.CascadeClassifier.detectMultiScale(image, scaleFactor, minNeighbors, flags, minSize, maxSize)
+# scaleFactor – Parameter specifying how much the image size is reduced at each image
+# scale.
+# minNeighbors – Parameter specifying how many neighbors each candidate rectangle should
+# have to retain it.
+# minSize – Minimum possible object size. Objects smaller than that are ignored.
+# maxSize – Maximum possible object size. Objects larger than that are ignored.
+# faces = face_cascade.detectMultiScale(gray, 1.3, 5)
+faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30), flags=cv2.CASCADE_SCALE_IMAGE)#改进
+print(&quot;Detected &quot;, len(faces), &quot; face&quot;)
+
+for (x, y, w, h) in faces:
+    img = cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 2)
+    roi_gray = gray[y:y + h, x:x + w]
+    roi_color = img[y:y + h, x:x + w]
+
+    eyes = eye_cascade.detectMultiScale(roi_gray)
+    for (ex, ey, ew, eh) in eyes:
+        cv2.rectangle(roi_color, (ex, ey), (ex + ew, ey + eh), (0, 255, 0), 2)
+
+cv2.imshow('img', img)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+</code></pre>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    <br>
+</div>
+
+</body>
+</html>
