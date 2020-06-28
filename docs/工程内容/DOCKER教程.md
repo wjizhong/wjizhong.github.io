@@ -5,6 +5,7 @@
 如今Docker的使用已经非常普遍,特别在一线互联网公司。使用Docker技术可以帮助企业快速水平扩展服务,从而到达弹性部署业务的能力。在云服务概念兴起之后,Docker的使用场景和范围进一步发展,如今在微服务架构越来越流行的情况下,微服务+Docker的完美组合,更加方便微服务架构运维部署落地。
 
 ## 一、引言
+
 ### 1.1 什么是Docker
 
 Docker是世界领先的软件容器平台。开发人员利用Docker可以消除协作编码时“在我的机器上可正常工作”的问题。运维人员利用Docker可以在隔离容器中并行运行和管理应用,获得更好的计算密度。企业利用Docker可以构建敏捷的软件交付管道,以更快的速度、更高的安全性和可靠的信誉为Linux和Windows Server应用发布新功能。Docker属于Linux容器的一种封装,提供简单易用的容器使用接口。它是目前最流行的Linux容器解决方案。Docker将应用程序与该程序的依赖,打包在一个文件里面。运行这个文件,就会生成一个虚拟容器。程序在这个虚拟容器里运行,就好像在真实的物理机上运行一样。有了Docker,就不用担心环境问题。总体来说,Docker的接口相当简单,用户可以方便地创建和使用容器,把自己的应用放入容器。容器还可以进行版本管理、复制、分享、修改,就像管理普通的代码一样。
@@ -15,27 +16,19 @@ Docker最初是dotCloud公司创始人Solomon Hykes在法国期间发起的一�
 
 容器除了运行其中应用外,基本不消耗额外的系统资源,使得应用的性能很高,同时系统的开销尽量小。传统虚拟机方式运行10个不同的应用就要起10个虚拟机,而Docker只需要启动10个隔离的应用即可。具体说来,Docker在如下几个方面具有较大的优势。
 
-> * **更快速的交付和部署**
+**更快速的交付和部署** :对开发和运维(devop)人员来说,最希望的就是一次创建或配置,可以在任意地方正常运行。开发者可以使用一个标准的镜像来构建一套开发容器,开发完成之后,运维人员可以直接使用这个容器来部署代码。Docker可以快速创建容器,快速迭代应用程序,并让整个过程全程可见,使团队中的其他成员更容易理解应用程序是如何创建和工作的。Docker容器很轻很快!容器的启动时间是秒级的,大量地节约开发、测试、部署的时间。
 
-对开发和运维(devop)人员来说,最希望的就是一次创建或配置,可以在任意地方正常运行。开发者可以使用一个标准的镜像来构建一套开发容器,开发完成之后,运维人员可以直接使用这个容器来部署代码。Docker可以快速创建容器,快速迭代应用程序,并让整个过程全程可见,使团队中的其他成员更容易理解应用程序是如何创建和工作的。Docker容器很轻很快!容器的启动时间是秒级的,大量地节约开发、测试、部署的时间。
+**更高效的虚拟化** :Docker容器的运行不需要额外的hypervisor支持,它是内核级的虚拟化,因此可以实现更高的性能和效率。
 
-> * **更高效的虚拟化**
+**更轻松的迁移和扩展** :Docker容器几乎可以在任意的平台上运行,包括物理机、虚拟机、公有云、私有云、个人电脑、服务器等。这种兼容性可以让用户把一个应用程序从一个平台直接迁移到另外一个。
 
-Docker容器的运行不需要额外的hypervisor支持,它是内核级的虚拟化,因此可以实现更高的性能和效率。
-
-> * **更轻松的迁移和扩展**
-
-Docker容器几乎可以在任意的平台上运行,包括物理机、虚拟机、公有云、私有云、个人电脑、服务器等。这种兼容性可以让用户把一个应用程序从一个平台直接迁移到另外一个。
-
-> * **更简单的管理**
-
-使用Docker,只需要小小的修改,就可以替代以往大量的更新工作。所有的修改都以增量的方式被分发和更新,从而实现自动化并且高效的管理。
+**更简单的管理**:使用Docker,只需要小小的修改,就可以替代以往大量的更新工作。所有的修改都以增量的方式被分发和更新,从而实现自动化并且高效的管理。
 
 ### 1.3 Docker vs VM
 
 从下图可以看出,VM是一个运行在宿主机之上的完整的操作系统,VM运行自身操作系统会占用较多的CPU、内存、硬盘资源。Docker不同于VM,只包含应用程序以及依赖库,基于libcontainer运行在宿主机上,并处于一个隔离的环境中,这使得Docker更加轻量高效,启动容器只需几秒钟之内完成。由于Docker轻量、资源占用少,使得Docker可以轻易的应用到构建标准化的应用中。但Docker目前还不够完善,比如隔离效果不如VM,共享宿主机操作系统的一些基础库等;网络配置功能相对简单,主要以桥接方式为主;查看日志也不够方便灵活。
 
-![](http://www.ityouknow.com/assets/images/2018/docker/docker_vs_vm.png)
+<img src="http://www.ityouknow.com/assets/images/2018/docker/docker_vs_vm.png" style="width: 50%"> 
 
 Docker在容器的基础上,进行了进一步的封装,从文件系统、网络互联到进程隔离等等,极大的简化了容器的创建和维护。使得Docker技术比虚拟机技术更为轻便、快捷。作为一种新兴的虚拟化方式,Docker跟传统的虚拟化方式相比具有众多的优势。Docker容器的启动可以在秒级实现,这相比传统的虚拟机方式要快得多;Docker对系统资源的利用率很高,一台主机上可以同时运行数千个Docker容器。
 
@@ -43,23 +36,27 @@ Docker在容器的基础上,进行了进一步的封装,从文件系统、网络
 
 Docker是CS架构,主要有两个概念:
 
-> * Docker daemon: 运行在宿主机上,Docker守护进程,用户通过Docker client(Docker命令)与Docker daemon交互
-> * Docker client: Docker 命令行工具,是用户使用Docker的主要方式,Docker client与Docker daemon通信并将结果返回给用户,Docker client也可以通过socket或者RESTful api访问远程的Docker daemon
+> **Docker daemon** :运行在宿主机上,Docker守护进程,用户通过Docker client(Docker命令)与Docker daemon交互
+> 
+> **Docker client** :Docker命令行工具,是用户使用Docker的主要方式,Docker client与Docker daemon通信并将结果返回给用户,Docker client也可以通过socket或者RESTful api访问远程的Docker daemon
 
-![](http://www.ityouknow.com/assets/images/2018/docker/docker_component.png)
+<img src="http://www.ityouknow.com/assets/images/2018/docker/docker_component.png" style="width: 50%"> 
 
 了解了Docker的组成,再来了解一下Docker的三个主要概念:
 
-> * Docker image:镜像是只读的,镜像中包含有需要运行的文件。镜像用来创建container,一个镜像可以运行多个container;镜像可以通过Dockerfile创建,也可以从Docker hub/registry上下载。
-> * Docker container:容器是Docker的运行组件,启动一个镜像就是一个容器,容器是一个隔离环境,多个容器之间不会相互影响,保证容器中的程序运行在一个相对安全的环境中。
-> * Docker hub/registry: 共享和管理Docker镜像,用户可以上传或者下载上面的镜像,官方地址为https://registry.hub.docker.com/,也可以搭建自己私有的Docker registry。
+> **Docker image** :镜像是只读的,镜像中包含有需要运行的文件。镜像用来创建container,一个镜像可以运行多个container;镜像可以通过Dockerfile创建,也可以从Docker hub/registry上下载。
+> 
+> **Docker container** :容器是Docker的运行组件,启动一个镜像就是一个容器,容器是一个隔离环境,多个容器之间不会相互影响,保证容器中的程序运行在一个相对安全的环境中。
+> 
+> **Docker hub/registry** :共享和管理Docker镜像,用户可以上传或者下载上面的镜像,官方地址为https://registry.hub.docker.com/,也可以搭建自己私有的Docker registry。
 
 镜像就相当于打包好的版本,镜像启动之后运行在容器中,仓库就是装存储镜像的地方。
 
 ## 二、Docker配置
+
 ### 2.1 Docker安装
 
-建议在linux环境下安装Docker,window环境搭建比较复杂且容易出错,使用Centos7+yum来安装Docker环境很方便。Docker软件包已经包括在默认的CentOS-Extras软件源里。因此想要安装docker,只需要运行yum命令:yum install docker。安装完成后,使用下面的命令来启动 docker 服务,并将其设置为开机启动:
+建议在linux环境下安装Docker,window环境搭建比较复杂且容易出错,使用Centos7+yum来安装Docker环境很方便。Docker软件包已经包括在默认的CentOS-Extras软件源里。因此想要安装docker,只需要运行yum命令:yum install docker。安装完成后,使用下面的命令来启动docker服务,并将其设置为开机启动:
 
 ```sh
 systemctl start docker.service
@@ -72,7 +69,7 @@ systemctl enable docker.service
 
 主要用法:`docker [docker命令选项] [子命令] [子命令选项]`, 可以用`docker [子命令] --help`可查看每个子命令的详细用法。
 
-![](http://upload-images.jianshu.io/upload_images/10006770-1cbcbd231e853471)
+<img src="http://upload-images.jianshu.io/upload_images/10006770-1cbcbd231e853471" style="width: 50%">
 
 ### 2.2 docker命令选项列表
 
@@ -657,7 +654,7 @@ $ curl -k https://example:5000/v2/_catalog
 
 首先通过一张图来了解Docker镜像、容器和Dockerfile三者之间的关系。
 
-![](http://www.mooooc.com/assets/images/2018/docker/DockerFile.png)
+<img src="http://www.mooooc.com/assets/images/2018/docker/DockerFile.png" style="width: 50%">
 
 通过上图可以看出使用Dockerfile定义镜像,运行镜像启动容器。
 
@@ -893,7 +890,7 @@ COPY hom* /mydir/
 COPY hom?.txt /mydir/
 ```
 
-\<目标路径\>可以是容器内的绝对路径,也可以是相对于工作目录的相对路径(工作目录可以用WORKDIR指令来指定)。目标路径不需要事先创建,如果目录不存在会在复制文件前先行创建缺失目录。
+<目标路径\>可以是容器内的绝对路径,也可以是相对于工作目录的相对路径(工作目录可以用WORKDIR指令来指定)。目标路径不需要事先创建,如果目录不存在会在复制文件前先行创建缺失目录。
 
 此外,还需要注意一点,使用COPY指令,源文件的各种元数据都会保留。比如读、写、执行权限、文件变更时间等。这个特性对于镜像定制很有用。特别是构建相关文件都在使用Git进行管理的时候。
 
