@@ -20,6 +20,7 @@ nav:
     - 工程内容:
         - 计算机概论: 工程内容/计算机概论.md
         - linux三剑客: 工程内容/linux三剑客.md
+        - DOCKER教程: 工程内容/DOCKER教程.md
         - shell教程: 工程内容/shell教程.md
         - 前端教程: 工程内容/前端教程.md
         - c/c++教程:
