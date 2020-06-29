@@ -2126,6 +2126,7 @@ def lenet_arg_scope(weight_decay=0.0):
 </code></pre>
 
 <h3 id="32-alexnet">3.2 Alexnet网络</h3>
+<p>AlexNet是Hinton和他的学生Alex在2012设计的网络,并获得了当年的ImageNet竞赛冠军。参考论文: <a href="https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf">ImageNet Classification with Deep Convolutional Neural Networks</a></p>
 <p><img src="http://pic2.zhimg.com/80/v2-5093ccb6ce6313c673c9890dc3cb47d9_1440w.png" style="width: 60%"></p>
 <p>AlexNet主要使用到的新技术点如下:</p>
 <blockquote>
@@ -2134,9 +2135,9 @@ def lenet_arg_scope(weight_decay=0.0):
 <li>训练时使用Dropout随机忽略一部分神经元,以避免模型过拟合。Dropout虽有单独的论文论述,但是AlexNet将其实用化,通过实践证实了它的效果。在AlexNet中主要是最后几个全连接层使用了Dropout。</li>
 <li>在CNN中使用重叠的最大池化。此前CNN中普遍使用平均池化,AlexNet全部使用最大池化,避免平均池化的模糊化效果。并且AlexNet中提出让步长比池化核的尺寸小,这样池化层的输出之间会有重叠和覆盖,提升了特征的丰富性。</li>
 <li>提出了LRN层,对局部神经元的活动创建竞争机制,使得其中响应比较大的值变得相对更大,并抑制其他反馈较小的神经元,增强了模型的泛化能力。</li>
-<li>相比LeNet,AlexNet设计了更深层的网络。
-6.通过裁剪,旋转等方式增强了训练数据。
-7.受于当时的算力限制,Alexnet创新地将图像分为上下两块分别训练,然后在全连接层合并在一起(AlexNet网络图,可以看到有上下两部分）。</li>
+<li>相比LeNet,AlexNet设计了更深层的网络。</li>
+<li>通过裁剪,旋转等方式增强了训练数据。</li>
+<li>受于当时的算力限制,Alexnet创新地将图像分为上下两块分别训练,然后在全连接层合并在一起(AlexNet网络图,可以看到有上下两部分）。</li>
 </ol>
 </blockquote>
 <pre><code class="python"># -*- coding:utf8 -*-
@@ -2244,7 +2245,8 @@ alexnet_v2.default_image_size = 224
 </code></pre>
 
 <h3 id="33-vgg">3.3 VGG网络</h3>
-<p><img alt="" src="https://pic2.zhimg.com/80/v2-ab442f19d6e2328ac721cf8e552d04a9_1440w.jpg" /></p>
+<p>参考论文: <a href="http://arxiv.org/pdf/1409.1556.pdf">Very Deep Convolutional Networks for Large-Scale Image Recognition</a></p>
+<p><img src="https://pic2.zhimg.com/80/v2-ab442f19d6e2328ac721cf8e552d04a9_1440w.jpg" style="width: 50%"> </p>
 <p>VGG优点:</p>
 <blockquote>
 <p>VGGNet的结构非常简洁,整个网络都使用了同样大小的卷积核尺寸(3x3)和最大池化尺寸(2x2)。</p>
