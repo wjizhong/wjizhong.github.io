@@ -54,11 +54,17 @@
                   ]}, 
               ]},
               {title: "\u4e09\u3001\u7ecf\u5178\u7f51\u7edc", url: "#_4", level:2, children: [
-                  {title: "3.1 lenet\u7f51\u7edc", url: "#31-lenet", level:3, children: [
+                  {title: "3.1 Lenet\u7f51\u7edc", url: "#31-lenet", level:3, children: [
                   ]},
-                  {title: "Alexnet\u7f51\u7edc", url: "#alexnet", level:3, children: [
+                  {title: "3.2 Alexnet\u7f51\u7edc", url: "#32-alexnet", level:3, children: [
                   ]},
-                  {title: "VGG\u7f51\u7edc", url: "#vgg", level:3, children: [
+                  {title: "3.3 VGG\u7f51\u7edc", url: "#33-vgg", level:3, children: [
+                  ]},
+                  {title: "3.4 GoogleNet", url: "#34-googlenet", level:3, children: [
+                      {title: "3.4.1 InceptionV1", url: "#341-inceptionv1", level:4,children: [
+                      ]},
+                      {title: "2.4.2 InceptionV2", url: "#242-inceptionv2", level:4,children: [
+                      ]},
                   ]}, 
               ]},
               {title: "faster RCNN", url: "#faster-rcnn", level:2, children: [ 
@@ -2027,9 +2033,14 @@ Adam可以看作是Momentum与RMSProp的结合，既然Nesterov的表现较Momen
 <p>https://blog.csdn.net/SIGAI_CSDN/article/details/85098096</p>
 <p>https://zhuanlan.zhihu.com/p/32787886</p>
 <p>https://zhuanlan.zhihu.com/p/57399396</p>
-<h3 id="31-lenet">3.1 lenet网络</h3>
+<h3 id="31-lenet">3.1 Lenet网络</h3>
 <p>卷积神经网络的开山之作,麻雀虽小五脏俱全,卷积层、池化层、全链接层一直沿用至今。</p>
 <p><img alt="" src="http://cuijiahua.com/wp-content/uploads/2018/01/dl_3_4.jpg" /></p>
+<p>特点:</p>
+<blockquote>
+<p>相比MLP,LeNet使用了相对更少的参数,获得了更好的结果。</p>
+<p>设计了maxpool来提取特征</p>
+</blockquote>
 <pre><code class="python"># Contains a variant of the LeNet model definition.
 
 from __future__ import absolute_import
@@ -2106,8 +2117,8 @@ def lenet_arg_scope(weight_decay=0.0):
     return sc
 </code></pre>
 
-<h3 id="alexnet">Alexnet网络</h3>
-<p><img alt="" src="http://pic2.zhimg.com/80/v2-5093ccb6ce6313c673c9890dc3cb47d9_1440w.png" /></p>
+<h3 id="32-alexnet">3.2 Alexnet网络</h3>
+<p><img src="http://pic2.zhimg.com/80/v2-5093ccb6ce6313c673c9890dc3cb47d9_1440w.png" style="width: 70%"></p>
 <p>AlexNet主要使用到的新技术点如下:</p>
 <blockquote>
 <ol>
@@ -2115,6 +2126,9 @@ def lenet_arg_scope(weight_decay=0.0):
 <li>训练时使用Dropout随机忽略一部分神经元,以避免模型过拟合。Dropout虽有单独的论文论述,但是AlexNet将其实用化,通过实践证实了它的效果。在AlexNet中主要是最后几个全连接层使用了Dropout。</li>
 <li>在CNN中使用重叠的最大池化。此前CNN中普遍使用平均池化,AlexNet全部使用最大池化,避免平均池化的模糊化效果。并且AlexNet中提出让步长比池化核的尺寸小,这样池化层的输出之间会有重叠和覆盖,提升了特征的丰富性。</li>
 <li>提出了LRN层,对局部神经元的活动创建竞争机制,使得其中响应比较大的值变得相对更大,并抑制其他反馈较小的神经元,增强了模型的泛化能力。</li>
+<li>相比LeNet,AlexNet设计了更深层的网络。
+6.通过裁剪,旋转等方式增强了训练数据。
+7.受于当时的算力限制,Alexnet创新地将图像分为上下两块分别训练,然后在全连接层合并在一起(AlexNet网络图,可以看到有上下两部分）。</li>
 </ol>
 </blockquote>
 <pre><code class="python"># -*- coding:utf8 -*-
@@ -2221,7 +2235,8 @@ def alexnet_v2(inputs,num_classes=1000, is_training=True,dropout_keep_prob=0.5,
 alexnet_v2.default_image_size = 224
 </code></pre>
 
-<h3 id="vgg">VGG网络</h3>
+<h3 id="33-vgg">3.3 VGG网络</h3>
+<p><img alt="" src="https://pic2.zhimg.com/80/v2-ab442f19d6e2328ac721cf8e552d04a9_1440w.jpg" /></p>
 <p>VGG优点:</p>
 <blockquote>
 <p>VGGNet的结构非常简洁,整个网络都使用了同样大小的卷积核尺寸(3x3)和最大池化尺寸(2x2)。</p>
@@ -2232,7 +2247,6 @@ alexnet_v2.default_image_size = 224
 <blockquote>
 <p>VGG耗费更多计算资源,并且使用了更多的参数(这里不是3x3卷积的锅)m导致更多的内存占用(140M)。其中绝大多数的参数都是来自于第一个全连接层。VGG可是有3个全连接层啊!</p>
 </blockquote>
-<p><img alt="" src="http://pic4.zhimg.com/80/v2-ea924e733676e0da534f677a97c98653_1440w.jpg" /></p>
 <pre><code class="python"># -*- coding:utf8 -*-
 &quot;&quot;&quot;
 Contains model definitions for versions of the Oxford VGG network.
@@ -2485,9 +2499,30 @@ vgg_d = vgg_16
 vgg_e = vgg_19
 </code></pre>
 
+<h3 id="34-googlenet">3.4 GoogleNet</h3>
+<p>https://zhuanlan.zhihu.com/p/66215918</p>
 <p>https://blog.csdn.net/marsjhao/article/details/73088850</p>
-<p>https://blog.csdn.net/hejin_some/article/details/78636586
-https://zhuanlan.zhihu.com/p/39927488</p>
+<p>https://blog.csdn.net/hejin_some/article/details/78636586</p>
+<h4 id="341-inceptionv1">3.4.1 InceptionV1</h4>
+<p>参考论文: http://arxiv.org/abs/1409.4842</p>
+<p><img alt="" src="http://pic3.zhimg.com/80/v2-54468fc87ff65a25950db4f2dd8059a6_1440w.jpg" /></p>
+<p><img alt="" src="https://pic1.zhimg.com/80/v2-b3731d293a7775eab0203e4e0182b5d8_1440w.jpg" /></p>
+<p><img alt="" src="http://img-blog.csdn.net/20170612110417837?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbWFyc2poYW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" /></p>
+<p><img alt="" src="http://img-blog.csdn.net/20170612110417837?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbWFyc2poYW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" /></p>
+<p>网络的特点:</p>
+<blockquote>
+<ol>
+<li>引入Inception概念,在当时流行模型"加深"情况下,设计了"加宽"的思路</li>
+<li>采用Network in Network中用Average pool来代替全连接层的思想。实际在最后一层还是添加了一个全连接层,是为了做finetune。</li>
+<li>另外增加了两个辅助的softmax分支,作用有两点,一是为了避免梯度消失,用于向前传导梯度。反向传播时如果有一层求导为0,链式求导结果则为0。二是将中间某一层输出用作分类,起到模型融合作用。最后的loss=loss_2 + 0.3 * loss_1 + 0.3 * loss_0。实际测试时,这两个辅助softmax分支会被去掉。</li>
+<li>在NIN模型中与1*1卷积层等效的MLPConv既能跨通道组织信息,提高网络的表达能力,同时可以对输出有效进行降维。</li>
+</ol>
+</blockquote>
+<pre><code class="python">
+</code></pre>
+
+<h4 id="242-inceptionv2">2.4.2 InceptionV2</h4>
+<p>https://zhuanlan.zhihu.com/p/39927488</p>
 <p>https://www.learnopencv.com/selective-search-for-object-detection-cpp-python/</p>
 <h2 id="faster-rcnn">faster RCNN</h2>
 <p>https://zhuanlan.zhihu.com/p/31426458</p>
