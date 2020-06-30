@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/%E5%89%91%E6%8C%87Offer/%E6%9C%80%E5%B0%8F%E7%9A%84k%E4%B8%AA%E6%95%B0/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>最小的k个数 - 图像/视频算法</title>
+    <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "\u6700\u5c0f\u7684k\u4e2a\u6570", url: "#_top", level:1, children: [
+              {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1", level:2, children: [ 
+              ]},
+              {title: "\u89e3\u9898\u6280\u5de7", url: "#_2", level:2, children: [ 
+              ]},
+          ]},
+        ];
+    </script>
+    <script src="../../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    
+
+    <h1 id="k">最小的k个数</h1>
+<h2 id="_1">题目描述</h2>
+<p>输入整数数组arr,找出其中最小的k个数。例如,输入4、5、1、6、2、7、3、8这8个数字，则最小的4个数字是1、2、3、4。</p>
+<p>示例1:</p>
+<pre><code>输入：arr = [3,2,1], k = 2
+输出：[1,2] 或者 [2,1]
+</code></pre>
+
+<p>示例2:</p>
+<pre><code>输入：arr = [0,1,2,1], k = 1
+输出：[0]
+</code></pre>
+
+<p>限制:</p>
+<blockquote>
+<p>0 &lt;= k &lt;= arr.length &lt;= 10000</p>
+<p>0 &lt;= arr[i] &lt;= 10000</p>
+</blockquote>
+<h2 id="_2">解题技巧</h2>
+<ul>
+<li><strong>方法一:排序</strong></li>
+</ul>
+<p>对原数组从小到大排序后取出前k个数即可。</p>
+<pre><code class="python">class Solution:
+    def getLeastNumbers(self, arr: List[int], k: int) -&gt; List[int]:
+        arr.sort()
+        return arr[:k]
+</code></pre>
+
+<p>复杂度分析</p>
+<blockquote>
+<p>时间复杂度:<span><span class="MathJax_Preview">O(n\log n)</span><script type="math/tex">O(n\log n)</script></span>,其中n是数组arr的长度。算法的时间复杂度即排序的时间复杂度。</p>
+<p>空间复杂度:<span><span class="MathJax_Preview">O(\log n)</span><script type="math/tex">O(\log n)</script></span>,排序所需额外的空间复杂度为<span><span class="MathJax_Preview">O(\log n)</span><script type="math/tex">O(\log n)</script></span>。</p>
+</blockquote>
+<ul>
+<li><strong>方法二:堆</strong></li>
+</ul>
+<p>我们用一个大根堆实时维护数组的前k小值。首先将前k个数插入大根堆中,随后从第k+1个数开始遍历,如果当前遍历到的数比大根堆的堆顶的数要小,就把堆顶的数弹出,再插入当前遍历到的数。最后将大根堆里的数存入数组返回即可。在下面的代码中,由于C++语言中的堆(即优先队列)为大根堆,我们可以这么做。而Python语言中的对为小根堆,因此我们要对数组中所有的数取其相反数,才能使用小根堆维护前k小值。</p>
+<p>C++Python</p>
+<pre><code class="python">class Solution:
+    def getLeastNumbers(self, arr: List[int], k: int) -&gt; List[int]:
+        if k == 0:
+            return list()
+
+        hp = [-x for x in arr[:k]]
+        heapq.heapify(hp)
+        for i in range(k, len(arr)):
+            if -hp[0] &gt; arr[i]:
+                heapq.heappop(hp)
+                heapq.heappush(hp, -arr[i])
+        ans = [-x for x in hp]
+        return ans
+</code></pre>
+
+<p>复杂度分析</p>
+<blockquote>
+<p>时间复杂度:<span><span class="MathJax_Preview">O(n\log k)</span><script type="math/tex">O(n\log k)</script></span>,其中n是数组arr的长度。由于大根堆实时维护前k小值,所以插入删除都是<span><span class="MathJax_Preview">O(\log k)</span><script type="math/tex">O(\log k)</script></span>的时间复杂度,最坏情况下数组里n个数都会插入,所以一共需要<span><span class="MathJax_Preview">O(n\log k)</span><script type="math/tex">O(n\log k)</script></span>的时间复杂度。</p>
+<p>空间复杂度<span><span class="MathJax_Preview">O(k)</span><script type="math/tex">O(k)</script></span>,因为大根堆里最多k个数。</p>
+</blockquote>
+<ul>
+<li><strong>方法三:快排思想</strong></li>
+</ul>
+<p>我们可以借鉴快速排序的思想。我们知道快排的划分函数每次执行完后都能将数组分成两个部分,小于等于分界值pivot的元素的都会被放到数组的左边,大于的都会被放到数组的右边,然后返回分界值的下标。与快速排序不同的是,快速排序会根据分界值的下标递归处理划分的两侧,而这里我们只处理划分的一边。</p>
+<p>我们定义函数<code>randomized_selected(arr, l, r, k)</code>表示划分数组arr的[l,r]部分,使前k小的数在数组的左侧,在函数里我们调用快排的划分函数,假设划分函数返回的下标是pos(表示分界值pivot最终在数组中的位置),即pivot是数组中第pos-l+1小的数,那么一共会有三种情况:</p>
+<blockquote>
+<p>如果pos-l+1==k,表示pivot就是第k小的数,直接返回即可;</p>
+<p>如果pos - l + 1 &lt; k，表示第 kk 小的数在 pivot 的右侧，因此递归调用 randomized_selected(arr, pos + 1, r, k - (pos - l + 1))；</p>
+<p>如果 pos - l + 1 &gt; k，表示第 kk 小的数在 pivot 的左侧，递归调用 randomized_selected(arr, l, pos - 1, k)。</p>
+</blockquote>
+<p>函数递归入口为<code>randomized_selected(arr, 0, arr.length - 1, k)</code>。在函数返回后,将前<code>k</code>个数放入答案数组返回即可。</p>
+<pre><code class="python">class Solution:
+    def partition(self, nums, l, r):
+        pivot = nums[r]
+        i = l - 1
+        for j in range(l, r):
+            if nums[j] &lt;= pivot:
+                i += 1
+                nums[i], nums[j] = nums[j], nums[i]
+        nums[i + 1], nums[r] = nums[r], nums[i + 1]
+        return i + 1
+
+    def randomized_partition(self, nums, l, r):
+        i = random.randint(l, r)
+        nums[r], nums[i] = nums[i], nums[r]
+        return self.partition(nums, l, r)
+
+    def randomized_selected(self, arr, l, r, k):
+        pos = self.randomized_partition(arr, l, r)
+        num = pos - l + 1
+        if k &lt; num:
+            self.randomized_selected(arr, l, pos - 1, k)
+        elif k &gt; num:
+            self.randomized_selected(arr, pos + 1, r, k - num)
+
+    def getLeastNumbers(self, arr: List[int], k: int) -&gt; List[int]:
+        if k == 0:
+            return list()
+        self.randomized_selected(arr, 0, len(arr) - 1, k)
+        return arr[:k]
+</code></pre>
+
+<p>复杂度分析</p>
+<blockquote>
+<p>时间复杂度:期望为<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>,由于证明过程很繁琐,所以不再这里展开讲。具体证明可以参考《算法导论》第9章第2小节。最坏情况下的时间复杂度为<span><span class="MathJax_Preview">O(n^2)</span><script type="math/tex">O(n^2)</script></span>。情况最差时,每次的划分点都是最大值或最小值，一共需要划分n-1次,而一次划分需要线性的时间复杂度,所以最坏情况下时间复杂度为<span><span class="MathJax_Preview">O(n^2)</span><script type="math/tex">O(n^2)</script></span>。</p>
+<p>空间复杂度:期望为<span><span class="MathJax_Preview">O(\log n)</span><script type="math/tex">O(\log n)</script></span>,递归调用的期望深度为<span><span class="MathJax_Preview">O(\log n)</span><script type="math/tex">O(\log n)</script></span>,每层需要的空间为<span><span class="MathJax_Preview">O(1)</span><script type="math/tex">O(1)</script></span>,只有常数个变量。最坏情况下的空间复杂度为<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>。最坏情况下需要划分n次,即<code>randomized_selected</code>函数递归调用最深n-1层,而每层由于需要<span><span class="MathJax_Preview">O(1)</span><script type="math/tex">O(1)</script></span>的空间,所以一共需要<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>的空间复杂度。</p>
+</blockquote>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    <br>
+</div>
+
+</body>
+</html>
