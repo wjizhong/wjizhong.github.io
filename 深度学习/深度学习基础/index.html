@@ -2510,19 +2510,18 @@ vgg_e = vgg_19
 </code></pre>
 
 <h3 id="34-googlenet">3.4 GoogleNet</h3>
-<p>https://zhuanlan.zhihu.com/p/66215918</p>
-<p>https://blog.csdn.net/marsjhao/article/details/73088850</p>
-<p>https://blog.csdn.net/hejin_some/article/details/78636586</p>
 <h4 id="341-inceptionv1">3.4.1 InceptionV1</h4>
-<p>参考论文: http://arxiv.org/abs/1409.4842</p>
+<p>参考论文: <a href="http://arxiv.org/abs/1409.4842"><code>Going deeper with convolutions</code></a></p>
+<p>inception模块:</p>
+<p><img src="http://img-blog.csdn.net/20170612110417837" style="width: 70%"></p>
+<p>网络结构: </p>
 <p><img alt="" src="http://pic3.zhimg.com/80/v2-54468fc87ff65a25950db4f2dd8059a6_1440w.jpg" /></p>
-<p><img alt="" src="http://pic4.zhimg.com/80/v2-4a5d576e354b8d45b7e8c6a5b9880dc7_1440w.jpg" /></p>
-<p><img alt="" src="http://img-blog.csdn.net/20170612110417837" /></p>
+<p><img alt="" src="https://static.oschina.net/uploads/space/2018/0317/141544_FfKB_876354.jpg" /></p>
 <p>网络的特点:</p>
 <blockquote>
 <ol>
-<li>引入Inception概念,在当时流行模型"加深"情况下,设计了"加宽"的思路</li>
-<li>采用Network in Network中用Average pool来代替全连接层的思想。实际在最后一层还是添加了一个全连接层,是为了做finetune。</li>
+<li>引入Inception概念,人为构建稀疏连接,引入多尺度感受野和多尺度融合</li>
+<li>采用Network in Network中用Average pool来代替全连接层的思想,大幅度减少参数数目和计算量,一定程度上引入了正则化,同时使得网络输入的尺寸可变。实际在最后一层还是添加了一个全连接层,是为了做finetune。</li>
 <li>另外增加了两个辅助的softmax分支,作用有两点,一是为了避免梯度消失,用于向前传导梯度。反向传播时如果有一层求导为0,链式求导结果则为0。二是将中间某一层输出用作分类,起到模型融合作用。最后的loss=loss_2 + 0.3 * loss_1 + 0.3 * loss_0。实际测试时,这两个辅助softmax分支会被去掉。</li>
 <li>在NIN模型中与1*1卷积层等效的MLPConv既能跨通道组织信息,提高网络的表达能力,同时可以对输出有效进行降维。</li>
 </ol>
@@ -2889,6 +2888,12 @@ inception_v1_arg_scope = inception_utils.inception_arg_scope
 </code></pre>
 
 <h4 id="242-inceptionv2">2.4.2 InceptionV2</h4>
+<p>参考论文: <a href="http://arxiv.org/abs/1502.03167"><code>Batch Normalization:Accelerating Deep Network Training by Reducing Internal Covariate Shift</code></a></p>
+<p>BN层:</p>
+<p><img alt="" src="https://img-blog.csdnimg.cn/20181101091505271.png" /></p>
+<p><img alt="" src="https://img-blog.csdnimg.cn/20181101090914888.png" /></p>
+<p><img alt="" src="https://img-blog.csdnimg.cn/2018110109043690.png" /></p>
+<p>其中，是常数，为数值稳定性添加到小批量方差中。</p>
 <p><img alt="" src="http://ask.qcloudimg.com/http-save/yehe-1147573/qm0yl9n5m.png?imageView2/2/w/1620" /></p>
 <p>网络特点:</p>
 <blockquote>
