@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/%E5%89%91%E6%8C%87Offer/%E4%B8%91%E6%95%B0/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>丑数 - 图像/视频算法</title>
+    <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "\u4e11\u6570", url: "#_top", level:1, children: [
+              {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_2", level:2, children: [ 
+              ]},
+              {title: "\u89e3\u9898\u6280\u5de7", url: "#_3", level:2, children: [ 
+              ]},
+          ]},
+        ];
+    </script>
+    <script src="../../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+    <h1 id="_1">丑数</h1>
+<h2 id="_2">题目描述</h2>
+<p>我们把只包含质因子2、3和5 的数称作丑数(Ugly Number)。求按从小到大的顺序的第n个丑数。</p>
+<p>示例:</p>
+<pre><code>输入: n = 10
+输出: 12
+解释: 1, 2, 3, 4, 5, 6, 8, 9, 10, 12 是前 10 个丑数。
+</code></pre>
+
+<p>说明:  </p>
+<blockquote>
+<p>1是丑数。</p>
+<p>n不超过1690。</p>
+</blockquote>
+<h2 id="_3">解题技巧</h2>
+<ul>
+<li><strong>动态规划</strong></li>
+</ul>
+<p>丑数的递推性质:丑数只包含因子2,3,5,因此有"丑数=某较小丑数×某因子"(例如:10=5×2)。</p>
+<p>设已知长度为n的丑数序列<span><span class="MathJax_Preview">x_1,x_2,\cdots,x_n</span><script type="math/tex">x_1,x_2,\cdots,x_n</script></span>,求第n+1个丑数<span><span class="MathJax_Preview">x_{n+1}</span><script type="math/tex">x_{n+1}</script></span>。根根据递推性质,丑数<span><span class="MathJax_Preview">x_{n+1}</span><script type="math/tex">x_{n+1}</script></span>,只可能是以下三种情况其中之一(索引a,b,c为未知数):</p>
+<div>
+<div class="MathJax_Preview">x_{n+1} = \begin{cases} x_{a} \times 2 &amp; ,a \in [1, n] \\ x_{b} \times 3 &amp; ,b \in [1, n] \\ x_{c} \times 5 &amp; ,c \in [1, n] \end{cases}</div>
+<script type="math/tex; mode=display">x_{n+1} = \begin{cases} x_{a} \times 2 & ,a \in [1, n] \\ x_{b} \times 3 & ,b \in [1, n] \\ x_{c} \times 5 & ,c \in [1, n] \end{cases}</script>
+</div>
+<p>由于<span><span class="MathJax_Preview">x_{n+1}</span><script type="math/tex">x_{n+1}</script></span>是最接近<span><span class="MathJax_Preview">x_n</span><script type="math/tex">x_n</script></span>的丑数,因此索引a,b,c需满足以下条件:</p>
+<div>
+<div class="MathJax_Preview">
+\begin{cases} 
+    x_{a} \times 2 &gt; x_n \geq x_{a-1} \times 2 &amp; ,即x_a为首个乘以 2 后大于 x_n 的丑数 \\ 
+    x_{b} \times 3 &gt; x_n \geq x_{b-1} \times 3 &amp; ,即 x_b 为首个乘以 3 后大于 x_n 的丑数 \\ 
+    x_{c} \times 5 &gt; x_n \geq x_{c-1} \times 5 &amp; ,即 x_c 为首个乘以 5 后大于 x_n 的丑数 \\ 
+\end{cases}
+</div>
+<script type="math/tex; mode=display">
+\begin{cases} 
+    x_{a} \times 2 > x_n \geq x_{a-1} \times 2 & ,即x_a为首个乘以 2 后大于 x_n 的丑数 \\ 
+    x_{b} \times 3 > x_n \geq x_{b-1} \times 3 & ,即 x_b 为首个乘以 3 后大于 x_n 的丑数 \\ 
+    x_{c} \times 5 > x_n \geq x_{c-1} \times 5 & ,即 x_c 为首个乘以 5 后大于 x_n 的丑数 \\ 
+\end{cases}
+</script>
+</div>
+<p>若索引a,b,c满足以上条件,则可使用递推公式计算下个丑数<span><span class="MathJax_Preview">x_{n+1}</span><script type="math/tex">x_{n+1}</script></span>,其为三种情况中的最小值,即:</p>
+<div>
+<div class="MathJax_Preview">x_{n+1} = \min(x_{a} \times 2, x_{b} \times 3, x_{c} \times 5)</div>
+<script type="math/tex; mode=display">x_{n+1} = \min(x_{a} \times 2, x_{b} \times 3, x_{c} \times 5)</script>
+</div>
+<p>因此,可设置指针a,b,c指向首个丑数(即11),循环根据递推公式得到下个丑数,并每轮将对应指针执行+1即可。</p>
+<p><img alt="" src="http://pic.leetcode-cn.com/837411664f096417badf857fa51e77fd30cb1309a5637c37d24d8a4a48a42b03-Picture1.png" /></p>
+<p>动态规划解析:</p>
+<ul>
+<li>状态定义:设动态规划列表dp,dp[i]代表第i+1个丑数。</li>
+<li>转移方程:<ol>
+<li>当索引a,b,c满足以下条件时,dp[i]为三种情况的最小值;</li>
+<li>每轮计算dp[i]后,需要更新索引a,b,c的值,使其始终满足方程条件。实现方法:分别独立判断dp[i]和dp[a]x2,dp[b]×3,dp[c]×5的大小关系,若相等则将对应索引a,b,c加1。
+<span><span class="MathJax_Preview"><span><span class="MathJax_Preview">\begin{cases} dp[a] \times 2 &gt; dp[i-1] \geq dp[a-1] \times 2 \\ dp[b] \times 3 &gt; dp[i-1] \geq dp[b-1] \times 3 \\ dp[c] \times 5 &gt; dp[i-1] \geq dp[c-1] \times 5 \\ \end{cases}</span><script type="math/tex">\begin{cases} dp[a] \times 2 > dp[i-1] \geq dp[a-1] \times 2 \\ dp[b] \times 3 > dp[i-1] \geq dp[b-1] \times 3 \\ dp[c] \times 5 > dp[i-1] \geq dp[c-1] \times 5 \\ \end{cases}</script></span></span><script type="math/tex"><span><span class="MathJax_Preview">\begin{cases} dp[a] \times 2 &gt; dp[i-1] \geq dp[a-1] \times 2 \\ dp[b] \times 3 &gt; dp[i-1] \geq dp[b-1] \times 3 \\ dp[c] \times 5 &gt; dp[i-1] \geq dp[c-1] \times 5 \\ \end{cases}</span><script type="math/tex">\begin{cases} dp[a] \times 2 > dp[i-1] \geq dp[a-1] \times 2 \\ dp[b] \times 3 > dp[i-1] \geq dp[b-1] \times 3 \\ dp[c] \times 5 > dp[i-1] \geq dp[c-1] \times 5 \\ \end{cases}</script></span></script></span></li>
+</ol>
+</li>
+<li>初始状态:dp[0]=1,即第一个丑数为1;</li>
+<li>返回值:dp[n−1],即返回第n个丑数。</li>
+</ul>
+<p><img alt="" src="images/ugly_number.gif" /></p>
+<pre><code class="python">class Solution:
+    def nthUglyNumber(self, n: int) -&gt; int:
+        dp, a, b, c = [1] * n, 0, 0, 0
+        for i in range(1, n):
+            n2, n3, n5 = dp[a] * 2, dp[b] * 3, dp[c] * 5
+            dp[i] = min(n2, n3, n5)
+            if dp[i] == n2: a += 1
+            if dp[i] == n3: b += 1
+            if dp[i] == n5: c += 1
+        return dp[-1]
+</code></pre>
+
+<p>复杂度分析:</p>
+<blockquote>
+<p>时间复杂度<span><span class="MathJax_Preview">O(N)</span><script type="math/tex">O(N)</script></span>:其中N=n,动态规划需遍历计算dp列表。</p>
+<p>空间复杂度<span><span class="MathJax_Preview">O(N)</span><script type="math/tex">O(N)</script></span>:长度为N的dp列表使用<span><span class="MathJax_Preview">O(N)</span><script type="math/tex">O(N)</script></span>的额外空间。</p>
+</blockquote>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    <br>
+</div>
+
+</body>
+</html>
