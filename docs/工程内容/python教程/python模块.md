@@ -1,25 +1,22 @@
 # python模块
-## 一、模块打包
 
-### 1.1 setup.py编写指南
+## 一、python基本模块
+
+### 1.1 模块打包
 
 python有非常丰富的第三方库可以使用,很多开发者会向pypi上提交自己的python包。要想向pypi包仓库提交自己开发的包,首先要将自己的代码打包,才能上传分发。
 
-* **distutils简介**
-
 distutils是标准库中负责建立python第三方库的安装器,使用它能够进行python模块的安装和发布。distutils对于简单的分发很有用,但功能缺少。大部分python用户会使用更先进的setuptools模块。
-
-* **setuptools简介**
 
 setuptools是distutils增强版,不包括在标准库中。其扩展了很多功能,能够帮助开发者更好的创建和分发python包。大部分python用户都会使用更先进的setuptools模块。
 
-Setuptools有一个fork分支是distribute。它们共享相同的命名空间,因此如果安装了distribute,import setuptools时实际上将导入使用distribute创建的包。Distribute已经合并回setuptools。
+setuptools有一个fork分支是distribute。它们共享相同的命名空间,因此如果安装了distribute,import setuptools时实际上将导入使用distribute创建的包。Distribute已经合并回setuptools。
 
-还有一个大包分发工具是distutils2,其试图尝试充分利用distutils,detuptools和distribute并成为python标准库中的标准工具。但该计划并没有达到预期的目的,且已经是一个废弃的项目。
+还有一个大包分发工具是distutils2,其试图尝试充分利用distutils,setuptools和distribute并成为python标准库中的标准工具。但该计划并没有达到预期的目的,且已经是一个废弃的项目。
 
 因此setuptools是一个优秀的，可靠的python包安装与分发工具。以下设计到包的安装与分发均针对setuptools,并不保证distutils可用。
 
-#### 1.1.1 包格式
+* **包格式**
 
 python库打包的格式包括wheel和egg。egg格式是由setuptools在2004年引入,而wheel格式是由PEP427在2012年定义。使用wheel和egg安装都不需要重新构建和编译,其在发布之前就应该完成测试和构建。
 
@@ -27,15 +24,21 @@ egg和wheel本质上都是一个zip格式包,egg文件使用.egg扩展名,wheel�
 
 以下是wheel和egg的主要区别:
 
-> * wheel有一个官方的PEP427来定义,而egg没有PEP定义
-> * wheel是一种分发格式,即打包格式。而egg既是一种分发格式,也是一种运行时安装的格式,并且是可以被直接import
-> * wheel文件不会包含.pyc文件
-> * wheel使用和PEP376兼容的.dist-info目录,而egg使用.egg-info目录
-> * wheel有着更丰富的命名规则。
-> * wheel是有版本的。每个wheel文件都包含wheel规范的版本和打包的实现
-> * wheel在内部被sysconfig path type管理,因此转向其他格式也更容易
+> wheel有一个官方的PEP427来定义,而egg没有PEP定义
+> 
+> wheel是一种分发格式,即打包格式。而egg既是一种分发格式,也是一种运行时安装的格式,并且是可以被直接import
+> 
+> wheel文件不会包含.pyc文件
+> 
+> wheel使用和PEP376兼容的.dist-info目录,而egg使用.egg-info目录
+> 
+> wheel有着更丰富的命名规则。
+> 
+> wheel是有版本的。每个wheel文件都包含wheel规范的版本和打包的实现
+> 
+> wheel在内部被sysconfig path type管理,因此转向其他格式也更容易
 
-#### 1.1.2 setup.py文件
+* **setup.py文件**
 
 python库打包分发的关键在于编写setup.py文件。setup.py文件编写的规则是从setuptools或者distuils模块导入setup函数,并传入各类参数进行调用。
 
@@ -92,11 +95,9 @@ setup函数常用的参数如下：
 | `extras_require` | 当前包的高级/额外特性需要依赖的分发包 |
 | `zip_safe` | 不压缩包,而是以目录的形式安装 |
 
-更多参数可见: https://setuptools.readthedocs.io/en/latest/setuptools.html
+更多参数可见: [`https://setuptools.readthedocs.io/en/latest/setuptools.html`](https://setuptools.readthedocs.io/en/latest/setuptools.html)
 
-* **`find_packages`**
-
-对于简单工程来说,手动增加`packages`参数是容易。而对于复杂的工程来说,可能添加很多的包,这是手动添加就变得麻烦。setuptools模块提供了一个`find_packages`函数,它默认在与setup.py文件同一目录下搜索各个含有`__init__.py`的目录做为要添加的包。
+**`find_packages`**: 对于简单工程来说,手动增加`packages`参数是容易。而对于复杂的工程来说,可能添加很多的包,这是手动添加就变得麻烦。setuptools模块提供了一个`find_packages`函数,它默认在与setup.py文件同一目录下搜索各个含有`__init__.py`的目录做为要添加的包。
 
 ```python
 find_packages(where='.', exclude=(), include=('*',))
@@ -116,7 +117,7 @@ find_packages(where='.', exclude=(), include=('*',))
 
 **`manifest template`:** manifest template即编写MANIFEST.in文件,文件内容就是需要包含在分发包中的文件。一个MANIFEST.in文件如下:
 
-```
+```c
 include *.txt
 recursive-include examples *.txt *.py
 prune examples/sample?/build
@@ -126,7 +127,7 @@ prune examples/sample?/build
 
 * **生成脚本**
 
-有两个参数scripts参数或console\_scripts可用于生成脚本。
+有两个参数scripts参数或`console_scripts`可用于生成脚本。
 
 `entry_points`参数用来支持自动生成脚本,其值应该为是一个字典,从`entry_point`组名映射到一个表示`entry_point`的字符串或字符串列表,如:
 
@@ -148,7 +149,7 @@ scripts参数是一个list,安装包时在该参数中列出的文件会被安�
 scripts=['bin/foo.sh', 'bar.py']
 ```
 
-用如下方法可以将脚本重命名,例如去掉脚本文件的扩展名(.py、.sh):
+用如下方法可以将脚本重命名,例如去掉脚本文件的扩展名(`.py`、`.sh`):
 
 ```python
 from setuptools.command.install_scripts import install_scripts
@@ -175,9 +176,9 @@ setup(
 )
 ```
 
-其中,cmdclass参数表示自定制命令,后文详述。
+其中,`cmdclass`参数表示自定制命令,后文详述。
 
-**`ext_modules`**
+* **`ext_modules`**
 
 `ext_modules`参数用于构建C和C++扩展扩展包。其是`Extension`实例的列表,每一个`Extension`实例描述了一个独立的扩展模块,扩展模块可以设置扩展包名,头文件、源文件、链接库及其路径、宏定义和编辑参数等。如:
 
@@ -193,13 +194,13 @@ setup(
 )
 ```
 
-详细了解可参考:https://docs.python.org/3.6/distutils/setupscript.html#preprocessor-options
+详细了解可参考:[`https://docs.python.org/3.6/distutils/setupscript.html#preprocessor-options`](https://docs.python.org/3.6/distutils/setupscript.html#preprocessor-options)
 
-**`zip_safe`**
+* **`zip_safe`**
 
 `zip_safe`参数决定包是否作为一个`zip`压缩后的`egg`文件安装,还是作为一个以`.egg`结尾的目录安装。因为有些工具不支持`zip`压缩文件,而且压缩后的包也不方便调试,所以建议将其设为`False`,即`zip_safe=False`。
 
-> * **自定义命令**
+* **自定义命令**
 
 `setup.py`文件有很多内置的的命令,可以使用`python setup.py --help-commands`查看。如果想要定制自己需要的命令,可以添加`cmdclass`参数,其值为一个`dict`。实现自定义命名需要继承`setuptools.Command`或者`distutils.core.Command`并重写`run`方法。
 
@@ -226,7 +227,7 @@ setup(
 )
 ```
 
-> * **依赖关系**
+* **依赖关系**
 
 如果包依赖其他的包,可以指定`install_requires`参数,其值为一个`list`,如:
 
@@ -248,9 +249,9 @@ dependency_links = [
 ]
 ```
 
-> * **分类信息**
+* **分类信息**
 
-`classifiers`参数说明包的分类信息。所有支持的分类列表见:`https://pypi.org/pypi?%3Aaction=list_classifiers`。示例:
+`classifiers`参数说明包的分类信息。所有支持的分类列表见:[`https://pypi.org/pypi?%3Aaction=list_classifiers`](https://pypi.org/pypi?%3Aaction=list_classifiers)。示例:
 
 ```python
 classifiers = [
@@ -289,33 +290,23 @@ python setup.py --help-commands
 
 此处列举一些常用命令:
 
-build:构建安装时所需的所有内容
-
-sdist:构建源码分发包,在Windows下为zip格式,Linux下为tag.gz格式。执行sdist命令时,默认会被打包的文件:
-
-> 所有`py_modules`或`packages`指定的源码文件
->
-> 所有`ext_modules`指定的文件
->
-> 所有`package_data`或`data_files`指定的文件
->
-> 所有`scripts`指定的脚本文件
-> 
-> `README`、`README.txt`、`setup.py`和`setup.cfg`文件
+> - `build`:构建安装时所需的所有内容
+> - ·sdist·:构建源码分发包,在Windows下为zip格式,Linux下为tag.gz格式。执行sdist命令时,默认会被打包的文件:
+>   + 所有`py_modules`或`packages`指定的源码文件
+>   + 所有`ext_modules`指定的文件
+>   + 所有`package_data`或`data_files`指定的文件
+>   + 所有`scripts`指定的脚本文件
+>   + `README`、`README.txt`、`setup.py`和`setup.cfg`文件
 
 该命令构建的包主要用于发布,例如上传到`pypi`上。
 
-bdist:构建一个二进制的分发包。
+> - `bdist`:构建一个二进制的分发包。
+> - `bdist_egg`: 构建一个egg分发包,经常用来替代基于bdist生成的模式
+> - `install`:安装包到系统环境中。
+> - `develop`:以开发方式安装包,该命名不会真正的安装包,而是在系统环境中创建一个软链接指向包实际所在目录。这边在修改包之后不用再安装就能生效,便于调试。
+> - `register、upload`:用于包的上传发布，后文详述。
 
-bdist_egg: 构建一个egg分发包,经常用来替代基于bdist生成的模式
-
-install:安装包到系统环境中。
-
-develop:以开发方式安装包,该命名不会真正的安装包,而是在系统环境中创建一个软链接指向包实际所在目录。这边在修改包之后不用再安装就能生效,便于调试。
-
-register、upload:用于包的上传发布，后文详述。
-
-`setup.cfg`文件:setup.cfg文件用于提供setup.py的默认参数,详细的书写规则可参考:`https://docs.python.org/3/distutils/configfile.html`
+`setup.cfg`文件:setup.cfg文件用于提供setup.py的默认参数,详细的书写规则可参考:[`https://docs.python.org/3/distutils/configfile.html`](https://docs.python.org/3/distutils/configfile.html)
 
 版本命名:包版本的命名格式应为如下形式:
 
@@ -325,17 +316,12 @@ N.N[.N]+[{a|b|c|rc}N[.N]+][.postN][.devN]
 
 从左向右做一个简单的解释:
 
-> "N.N": 必须的部分,两个"N"分别代表了主版本和副版本号
->
-> "[.N]": 次要版本号,可以有零或多个
->
-> "{a|b|c|rc}": 阶段代号,可选a,b,c,rc分别代表alpha,beta,candidate和release candidate
-> 
-> "N[.N]": 阶段版本号,如果提供,则至少有一位主版本号,后面可以加无限多位的副版本号
-> 
-> ".postN": 发行后更新版本号,可选
->
-> ".devN": 开发期间的发行版本号,可选
+> - "N.N": 必须的部分,两个"N"分别代表了主版本和副版本号
+> - "[.N]": 次要版本号,可以有零或多个
+> - "{a|b|c|rc}": 阶段代号,可选a,b,c,rc分别代表alpha,beta,candidate和release candidate
+> - "N[.N]": 阶段版本号,如果提供,则至少有一位主版本号,后面可以加无限多位的副版本号
+> - ".postN": 发行后更新版本号,可选
+> - ".devN": 开发期间的发行版本号,可选
 
 * **`easy_install`与`pip`**
 
@@ -343,23 +329,15 @@ N.N[.N]+[{a|b|c|rc}N[.N]+][.postN][.devN]
 
 `pip`相对于`easy_install`进行了以下几个方面的改进:
 
-> 所有的包是在安装之前就下载了,所以不可能出现只安装了一部分的情况
-> 
-> 在终端上的输出更加友好
-> 
-> 对于动作的原因进行持续的跟踪。例如,如果一个包正在安装,那么pip就会跟踪为什么这个包会被安装
-> 
-> 错误信息会非常有用
-> 
-> 代码简洁精悍可以很好的编程
-> 
-> 不必作为egg存档,能扁平化安装(仍然保存egg元数据)
-> 
-> 原生的支持其他版本控制系统(Git,Mercurial and Bazaar)
-> 
-> 加入卸载包功能
-> 
-> 可以简单的定义修改一系列的安装依赖,还可以可靠的赋值一系列依赖包
+> - 所有的包是在安装之前就下载了,所以不可能出现只安装了一部分的情况
+> - 在终端上的输出更加友好
+> - 对于动作的原因进行持续的跟踪。例如,如果一个包正在安装,那么pip就会跟踪为什么这个包会被安装
+> - 错误信息会非常有用
+> - 代码简洁精悍可以很好的编程
+> - 不必作为egg存档,能扁平化安装(仍然保存egg元数据)
+> - 原生的支持其他版本控制系统(Git,Mercurial and Bazaar)
+> - 加入卸载包功能
+> - 可以简单的定义修改一系列的安装依赖,还可以可靠的赋值一系列依赖包
 
 * **发布包**
 
@@ -383,7 +361,7 @@ password:xxx
 该命令在`PyPi`上注册项目信息,成功注册之后,可以在PyPi上看到项目信息。最后构建源码包发布即可:`python setup.py sdist upload`
 
 
-## 二、python与c参考手册
+### 1.2 python与c参考手册
 
 应用程序程序员的python接口使C和C++程序员可以在各种级别访问python解释器。API可以与C++同等地使用,但为了简洁起见,它通常被称为python/C API。使用python/C API有两个根本不同的原因。第一个原因是为特定目的写扩展模块;这些是扩展python解释器的C模块。这可能是最常用的。第二个原因是使用python作为大型应用程序中的一个组件;这种技术通常被称为嵌入pythonin一个应用程序.
 
