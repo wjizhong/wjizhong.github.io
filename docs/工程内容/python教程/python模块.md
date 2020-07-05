@@ -3336,8 +3336,39 @@ def catch_all(path):
 
 ## 四、numpy教程
 
+参考链接:[`https://www.numpy.org.cn/reference/routines/`](https://www.numpy.org.cn/reference/routines/)
 
-https://www.numpy.org.cn/reference/routines/math.html#%E5%8A%A0%E6%B3%95%E5%87%BD%E6%95%B0-%E4%B9%98%E6%B3%95%E5%87%BD%E6%95%B0-%E5%87%8F%E6%B3%95%E5%87%BD%E6%95%B0
+### 4.1 创建数组
+### 4.2 数组操作
+### 4.3 二进制操作
+### 4.4 字符串操作
+### 4.5 时间日期相关
+### 4.6 数据类型相关
+### 4.7 可选的Scipy加速支持(numpy.dual)
+### 4.8 具有自动域的数学函数(numpy.emath)
+### 4.9 浮点错误处理
+### 4.10 离散傅立叶变换(numpy.fft)
+### 1.11 财金相关
+### 1.12 实用的功能
+### 1.13 特殊的NumPy帮助功能
+### 1.14 索引相关
+### 1.15 输入和输出
+### 1.16 线性代数(numpy.linalg)
+### 1.17 逻辑函数
+### 1.18 操作掩码数组
+### 1.19 数学函数
+### 1.20 矩阵库(numpy.matlib)
+### 1.21 杂项
+### 1.22 填充数组
+### 1.23 多项式
+### 1.24 随机抽样(numpy.random)
+### 1.25 集合操作
+### 1.26 排序、搜索和计数
+### 1.27 统计相关
+### 1.28 测试支持(numpy.testing)
+### 1.29 窗口函数
+
+
 
 ## 五、matplotlib教程
 
