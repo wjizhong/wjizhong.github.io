@@ -2075,7 +2075,7 @@ logobj.addFilter(NoParsingFilter())
 > * lineno是行号
 > * msg是日志本身
 
-#### 2.4.5 logging组件记录日志
+#### 3.4.5 logging组件记录日志
 
 现在,我们对logging模块的重要组件及整个日志流处理流程都应该有了一个比较全面的了解,下面我们来看一个例子。 现在有以下几个日志记录的需求:
 
@@ -2109,7 +2109,7 @@ logger.error('error message')
 logger.critical('critical message')
 ```
 
-### 2.5 logging日志流处理流程
+### 3.3 logging日志流处理流程
 
 下面这个图描述了日志流的处理流程:
 
@@ -2129,7 +2129,7 @@ logger.critical('critical message')
 
 可见,一条日志信息要想被最终输出需要依次经过以下几次过滤:日志器等级过滤 -> 日志器的过滤器过滤 -> 日志器的处理器等级过滤 -> 日志器的处理器的过滤器过滤。需要说明的是:关于上面第9个步骤,如果propagate值为1,那么日志消息会直接传递交给上一级logger的handlers进行处理,此时上一级logger的日志等级并不会对该日志消息进行等级过滤。
 
-## 四、logging配置日志
+### 3.4 logging配置日志
 
 作为开发者,可以通过以下3种方式来配置logging:
 
@@ -2139,7 +2139,7 @@ logger.critical('critical message')
 
 需要说明的是,logging.basicConfig()也属于第一种方式,它只是对loggers,handlers和formatters的配置函数进行了封装。另外,第二种配置方式相对于第一种配置方式的优点在于,它将配置信息和代码进行了分离,这一方面降低了日志的维护成本,同时还使得非开发人员也能够去很容易地修改日志配置。
 
-### 4.1 Python代码配置日志
+#### 3.4.1 python代码配置日志
 
 代码如下:
 
@@ -2177,7 +2177,7 @@ logger.critical('critical message')
 2019-02-01 21:37:53,824 - simple_logger - CRITICAL - critical message
 ```
 
-### 4.2 配置文件和fileConfig()函数配置日志
+#### 3.4.2 配置文件和fileConfig()函数配置日志
 
 现在我们通过配置文件的方式来实现与上面同样的功能:
 
@@ -2251,19 +2251,19 @@ logging.config.fileConfig(fname,defaults=None,disable_existing_loggers=True)
 
 其中参数:
 
-> * fname:表示配置文件的文件名或文件对象
-> * defaults:指定传给ConfigParser的默认值
-> * disable\_existing\_loggers:这是一个布尔型值,默认值为True(为了向后兼容)表示禁用已经存在的logger,除非它们或者它们的祖先明确的出现在日志配置中;如果值为False则对已存在的loggers保持启动状态。
+> * `fname`:表示配置文件的文件名或文件对象
+> * `defaults`:指定传给ConfigParser的默认值
+> * `disable_existing_loggers`:这是一个布尔型值,默认值为True(为了向后兼容)表示禁用已经存在的logger,除非它们或者它们的祖先明确的出现在日志配置中;如果值为False则对已存在的loggers保持启动状态。
 
 * **配置文件格式说明:**
 
-上面提到过,fileConfig()函数是对ConfigParser/configparser模块的封装,也就是说fileConfig()函数是基于ConfigParser/configparser模块来理解日志配置文件的。换句话说,fileConfig()函数所能理解的配置文件基础格式是与ConfigParser/configparser模块一致的,只是在此基础上对文件中包含的section和option做了一下规定和限制,比如:
+上面提到过,`fileConfig()`函数是对`ConfigParser/configparser`模块的封装,也就是说`fileConfig()`函数是基于`ConfigParser/configparser`模块来理解日志配置文件的。换句话说,`fileConfig()`函数所能理解的配置文件基础格式是与`ConfigParser/configparser`模块一致的,只是在此基础上对文件中包含的section和option做了一下规定和限制,比如:
 
-> * 配置文件中一定要包含loggers、handlers、formatters这些section,它们通过keys这个option来指定该配置文件中已经定义好的loggers、handlers和formatters,多个值之间用逗号分隔;另外loggers这个section中的keys一定要包含root这个值;
-> * loggers、handlers、formatters中所指定的日志器、处理器和格式器都需要在下面以单独的section进行定义。seciton的命名规则为[logger\_loggerName]、[formatter\_formatterName]、[handler\_handlerName]
+> * 配置文件中一定要包含`loggers`、`handlers`、`formatters`这些section,它们通过keys这个option来指定该配置文件中已经定义好的loggers、handlers和formatters,多个值之间用逗号分隔;另外loggers这个section中的keys一定要包含root这个值;
+> * loggers、handlers、formatters中所指定的日志器、处理器和格式器都需要在下面以单独的section进行定义。seciton的命名规则为`[logger_loggerName]`、`[formatter_formatterName]`、`[handler_handlerName]`
 > * 定义logger的section必须指定level和handlers这两个option,level的可取值为DEBUG、INFO、WARNING、ERROR、CRITICAL、NOTSET,其中NOTSET表示所有级别的日志消息都要记录,包括用户定义级别;handlers的值是以逗号分隔的handler名字列表,这里出现的handler必须出现在[handlers]这个section中,并且相应的handler必须在配置文件中有对应的section定义;
 > * 对于非root logger来说,除了level和handlers这两个option之外,还需要一些额外的option,其中qualname是必须提供的option,它表示在logger层级中的名字,在应用代码中通过这个名字得到logger;propagate是可选项,其默认是为1,表示消息将会传递给高层次logger的handler,通常我们需要指定其值为0,这个可以看下下面的例子;另外,对于非root logger的level如果设置为NOTSET,系统将会查找高层次的logger来决定此logger的有效level。
-> V. 定义handler的section中必须指定class和args这两个option,level和formatter为可选option;class表示用于创建handler的类名,args表示传递给class所指定的handler类初始化方法参数,它必须是一个元组(tuple)的形式,即便只有一个参数值也需要是一个元组的形式;level与logger中的level一样,而formatter指定的是该处理器所使用的格式器,这里指定的格式器名称必须出现在formatters这个section中,且在配置文件中必须要有这个formatter的section定义;如果不指定formatter则该handler将会以消息本身作为日志消息进行记录,而不添加额外的时间、日志器名称等信息;
+> * 定义handler的section中必须指定class和args这两个option,level和formatter为可选option;class表示用于创建handler的类名,args表示传递给class所指定的handler类初始化方法参数,它必须是一个元组(tuple)的形式,即便只有一个参数值也需要是一个元组的形式;level与logger中的level一样,而formatter指定的是该处理器所使用的格式器,这里指定的格式器名称必须出现在formatters这个section中,且在配置文件中必须要有这个formatter的section定义;如果不指定formatter则该handler将会以消息本身作为日志消息进行记录,而不添加额外的时间、日志器名称等信息;
 
 定义formatter的sectioin中的option都是可选的,其中包括format用于指定格式字符串,默认为消息字符串本身;datefmt用于指定asctime的时间格式,默认为'%Y-%m-%d %H:%M:%S';class用于指定格式器类名,默认为logging.Formatter;
 
@@ -2300,7 +2300,7 @@ logger.critical('critical message')
 
 会发现,除了在控制台有输出信息时候,在logging.log文件中也有内容输出。这说明·simpleExample·这个logger在处理完日志记录后,把日志记录传递给了上级的root logger再次做处理,所有才会有两个地方都有日志记录的输出。通常,我们都需要显示的指定propagate的值为0,防止日志记录向上层logger传递。
 
-### 4.3 字典配置信息和dictConfig()函数配置日志
+#### 3.4.3 字典配置信息和dictConfig()函数配置日志
 
 字典设置:
 
@@ -2358,8 +2358,7 @@ logger2.addHandler(logfile)
 logger2.info("This is from Runner {0} to the new file.".format(self.default_name))
 ```
 
-
-## 五、日志配置模版
+### 3.5 日志配置模版
 
 ```python
 log_name = "test"
@@ -2382,10 +2381,6 @@ logger.addHandler(rotate_handler)
 参考链接:
 
 * [Python logging(日志)模块](https://www.cnblogs.com/love9527/p/8983965.html)
-
-
-
-
 
 
 ## 四、falsk教程
