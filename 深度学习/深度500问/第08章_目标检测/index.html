@@ -32,13 +32,13 @@
       var is_top_frame = false;
         
         var pageToc = [
-          {title: "\u7b2c\u516b\u7ae0  \u76ee\u6807\u68c0\u6d4b", url: "#_top", level:1, children: [
+          {title: "\u7b2c\u516b\u7ae0 \u76ee\u6807\u68c0\u6d4b", url: "#_top", level:1, children: [
               {title: "8.1 \u57fa\u672c\u6982\u5ff5", url: "#81", level:2, children: [
-                  {title: "8.1.1 \u4ec0\u4e48\u662f\u76ee\u6807\u68c0\u6d4b\uff1f", url: "#811", level:3, children: [
+                  {title: "8.1.1 \u4ec0\u4e48\u662f\u76ee\u6807\u68c0\u6d4b?", url: "#811", level:3, children: [
                   ]},
-                  {title: "8.1.2 \u76ee\u6807\u68c0\u6d4b\u8981\u89e3\u51b3\u7684\u6838\u5fc3\u95ee\u9898\uff1f", url: "#812", level:3, children: [
+                  {title: "8.1.2 \u76ee\u6807\u68c0\u6d4b\u8981\u89e3\u51b3\u7684\u6838\u5fc3\u95ee\u9898?", url: "#812", level:3, children: [
                   ]},
-                  {title: "8.1.3 \u76ee\u6807\u68c0\u6d4b\u7b97\u6cd5\u5206\u7c7b\uff1f", url: "#813", level:3, children: [
+                  {title: "8.1.3 \u76ee\u6807\u68c0\u6d4b\u7b97\u6cd5\u5206\u7c7b?", url: "#813", level:3, children: [
                   ]},
                   {title: "8.1.4 \u76ee\u6807\u68c0\u6d4b\u6709\u54ea\u4e9b\u5e94\u7528\uff1f", url: "#814", level:3, children: [
                   ]}, 
@@ -192,32 +192,38 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 
     
 
-    <h1 id="_1">第八章  目标检测</h1>
+    <h1 id="_1">第八章 目标检测</h1>
 <h2 id="81">8.1 基本概念</h2>
-<h3 id="811">8.1.1 什么是目标检测？</h3>
-<p>​   目标检测（Object Detection）的任务是找出图像中所有感兴趣的目标（物体），确定它们的类别和位置，是计算机视觉领域的核心问题之一。由于各类物体有不同的外观、形状和姿态，加上成像时光照、遮挡等因素的干扰，目标检测一直是计算机视觉领域最具有挑战性的问题。</p>
-<p>​   计算机视觉中关于图像识别有四大类任务：</p>
-<p><strong>分类-Classification</strong>：解决“是什么？”的问题，即给定一张图片或一段视频判断里面包含什么类别的目标。</p>
-<p><strong>定位-Location</strong>：解决“在哪里？”的问题，即定位出这个目标的的位置。</p>
-<p><strong>检测-Detection</strong>：解决“是什么？在哪里？”的问题，即定位出这个目标的的位置并且知道目标物是什么。</p>
-<p><strong>分割-Segmentation</strong>：分为实例的分割（Instance-level）和场景分割（Scene-level），解决“每一个像素属于哪个目标物或场景”的问题。</p>
-<p><img alt="图像识别四大类任务，图像来源于cs231n 2016课件Lecture 8" src="./img/ch8/8.1.1.png" /></p>
-<h3 id="812">8.1.2 目标检测要解决的核心问题？</h3>
-<p>除了图像分类之外，目标检测要解决的核心问题是：</p>
-<p>1.目标可能出现在图像的任何位置。</p>
-<p>2.目标有各种不同的大小。</p>
-<p>3.目标可能有各种不同的形状。</p>
-<h3 id="813">8.1.3 目标检测算法分类？</h3>
-<p>基于深度学习的目标检测算法主要分为两类：</p>
+<h3 id="811">8.1.1 什么是目标检测?</h3>
+<p>目标检测(Object Detection)的任务是找出图像中所有感兴趣的目标(物体),确定它们的类别和位置,是计算机视觉领域的核心问题之一。由于各类物体有不同的外观、形状和姿态,加上成像时光照、遮挡等因素的干扰,目标检测一直是计算机视觉领域最具有挑战性的问题。</p>
+<p>​计算机视觉中关于图像识别有四大类任务:</p>
+<blockquote>
+<p><strong>分类-Classification</strong>:解决"是什么?"的问题,即给定一张图片或一段视频判断里面包含什么类别的目标。
+<strong>定位-Location</strong>:解决"在哪里?"的问题,即定位出这个目标的的位置。
+<strong>检测-Detection</strong>:解决"是什么?在哪里?”的问题,即定位出这个目标的的位置并且知道目标物是什么。
+<strong>分割-Segmentation</strong>:分为实例的分割(Instance-level)和场景分割(Scene-level),解决"每一个像素属于哪个目标物或场景”的问题。</p>
+</blockquote>
+<p><img alt="图像识别四大类任务,图像来源于cs231n 2016课件Lecture 8" src="../media/chapter08/four_class_task.png" /></p>
+<h3 id="812">8.1.2 目标检测要解决的核心问题?</h3>
+<p>除了图像分类之外，目标检测要解决的核心问题是:</p>
+<blockquote>
+<ol>
+<li>目标可能出现在图像的任何位置。</li>
+<li>目标有各种不同的大小。</li>
+<li>目标可能有各种不同的形状。</li>
+</ol>
+</blockquote>
+<h3 id="813">8.1.3 目标检测算法分类?</h3>
+<p>基于深度学习的目标检测算法主要分为两类:</p>
 <p><strong>1.Two stage目标检测算法</strong></p>
-<p>​   先进行区域生成（region proposal，RP）（一个有可能包含待检物体的预选框），再通过卷积神经网络进行样本分类。</p>
-<p>​   任务：特征提取—&gt;生成RP—&gt;分类/定位回归。</p>
-<p>​   常见的two stage目标检测算法有：R-CNN、SPP-Net、Fast R-CNN、Faster R-CNN和R-FCN等。</p>
+<p>先进行区域生成(region proposal,RP)(一个有可能包含待检物体的预选框),再通过卷积神经网络进行样本分类。</p>
+<p>任务：特征提取—&gt;生成RP—&gt;分类/定位回归。</p>
+<p>常见的two stage目标检测算法有:R-CNN、SPP-Net、Fast R-CNN、Faster R-CNN和R-FCN等。</p>
 <p><strong>2.One stage目标检测算法</strong></p>
-<p>​   不用RP，直接在网络中提取特征来预测物体分类和位置。</p>
-<p>​   任务：特征提取—&gt;分类/定位回归。</p>
-<p>​   常见的one stage目标检测算法有：OverFeat、YOLOv1、YOLOv2、YOLOv3、SSD和RetinaNet等。</p>
-<p><img alt="" src="./img/ch8/8.1.2.png" /></p>
+<p>不用RP,直接在网络中提取特征来预测物体分类和位置。</p>
+<p>任务：特征提取—&gt;分类/定位回归。</p>
+<p>常见的one stage目标检测算法有:OverFeat、YOLOv1、YOLOv2、YOLOv3、SSD和RetinaNet等。</p>
+<p><img alt="" src="../media/chapter08/target_detection.png" /></p>
 <h3 id="814">8.1.4 目标检测有哪些应用？</h3>
 <p>​   目标检测具有巨大的实用价值和应用前景。应用领域包括人脸检测、行人检测、车辆检测、飞机航拍或卫星图像中道路的检测、车载摄像机图像中的障碍物检测、医学影像在的病灶检测等。还有在安防领域中，可以实现比如安全帽、安全带等动态检测，移动侦测、区域入侵检测、物品看护等功能。</p>
 <h2 id="82-two-stage">8.2 Two Stage目标检测算法</h2>
