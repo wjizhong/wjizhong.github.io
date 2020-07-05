@@ -48,9 +48,9 @@
               {title: "\u4e8c\u3001\u57fa\u672c\u6a21\u5757", url: "#_1", level:2, children: [
                   {title: "2.1 psutil\u6a21\u5757", url: "#21-psutil", level:3, children: [
                   ]},
-                  {title: "3.2 argparse\u6559\u7a0b", url: "#32-argparse", level:3, children: [
+                  {title: "2.2 argparse\u6559\u7a0b", url: "#22-argparse", level:3, children: [
                   ]},
-                  {title: "3.3 schedule\u6a21\u5757", url: "#33-schedule", level:3, children: [
+                  {title: "2.3 schedule\u6a21\u5757", url: "#23-schedule", level:3, children: [
                   ]},
                   {title: "3.4 tqdm\u6a21\u5757", url: "#34-tqdm", level:3, children: [
                   ]}, 
@@ -1227,7 +1227,7 @@ pp([(p.pid, p.info) for p in sorted(psutil.process_iter(attrs=['name', 'num_fds'
 #  (1307, {'name': 'master', 'num_fds': 91})]
 </code></pre>
 
-<h3 id="32-argparse">3.2 <code>argparse</code>教程</h3>
+<h3 id="22-argparse">2.2 <code>argparse</code>教程</h3>
 <ul>
 <li><strong>命令行与参数解析</strong></li>
 </ul>
@@ -1266,21 +1266,15 @@ optional arguments:
 </code></pre>
 
 <ul>
-<li><strong>每个步骤的参数设定</strong></li>
-</ul>
-<blockquote>
-<ul>
 <li><strong>创建解析过程参数设定</strong></li>
 </ul>
-</blockquote>
 <pre><code class="python">ArgumentParser(prog='', usage=None, description='Process some integers.', version=None,
               formatter_class=&lt;class 'argparse.HelpFormatter'&gt;, conflict_handler='error', add_help=True)
 # 例如
 parser = argparse.ArgumentParser(description='Process some integers.')
 </code></pre>
 
-<p><strong><code>prog</code>(不建议更改)</strong></p>
-<p>程序名称(默认<code>sys.argv[0]</code>,默认为函数文件名),设置<code>prog</code>则改变这一默认(仍使用上面那个实例):</p>
+<p><strong><code>prog</code>(不建议更改):</strong> 程序名称(默认<code>sys.argv[0]</code>,默认为函数文件名),设置<code>prog</code>则改变这一默认(仍使用上面那个实例):</p>
 <pre><code class="python"># 变更参数
 parser = argparse.ArgumentParser(prog='sum or max',
                                 description='Process some integers.')
@@ -1291,8 +1285,7 @@ usage: test.py [-h] [--sum] N [N ...]
 usage: sum or max [-h] [--sum] N [N ...]
 </code></pre>
 
-<p><strong><code>usage</code>(不建议更改)</strong></p>
-<p>用于描述程序的使用用法(默认为添加到解析器中的参数)。在使用python xxx.py -h之后将出现。看例子:</p>
+<p><strong><code>usage</code>(不建议更改):</strong> 用于描述程序的使用用法(默认为添加到解析器中的参数)。在使用python xxx.py -h之后将出现。看例子:</p>
 <pre><code class="python"># 变更参数
 parser = argparse.ArgumentParser(usage='python test.py arguments',
                                 description='Process some integers.')
@@ -1303,10 +1296,8 @@ usage: test.py [-h] [--sum] N [N ...]
 usage: python test.py arguments
 </code></pre>
 
-<p><strong><code>description</code></strong></p>
-<p>描述文件的作用,上面实例已体现。</p>
-<p><strong><code>epilog</code></strong></p>
-<p>参数选项帮助后的显示文本。看例子:</p>
+<p><strong><code>description</code>:</strong> 描述文件的作用,上面实例已体现。</p>
+<p><strong><code>epilog</code>:</strong> 参数选项帮助后的显示文本。看例子:</p>
 <pre><code class="python"># 变更参数
 epilog='And What can I help U?'
 # 运行结果
@@ -1316,8 +1307,7 @@ optional arguments:
 And What can I help U?
 </code></pre>
 
-<p><strong>parents</strong></p>
-<p>共享同一个父类解析器,由ArgumentParser对象组成的列表,它们的<code>arguments</code>选项会被包含到新<code>ArgumentParser</code>对象中,类似于继承。</p>
+<p><strong>parents:</strong> 共享同一个父类解析器,由ArgumentParser对象组成的列表,它们的<code>arguments</code>选项会被包含到新<code>ArgumentParser</code>对象中,类似于继承。</p>
 <p><strong><code>formatter_class</code>(没必要改变)</strong></p>
 <p><code>help</code>信息输出格式共有三种形式:</p>
 <blockquote>
@@ -1327,8 +1317,7 @@ And What can I help U?
 <li><code>argparse.ArgumentDefaultsHelpFormatter</code>:输出参数的defalut值</li>
 </ol>
 </blockquote>
-<p><strong><code>prefix_chars</code>(不建议改变)</strong></p>
-<p>参数前缀,默认为<code>'-'</code>。前缀字符,放在文件名之前。当参数过多时,可以将参数放在文件中读取。看例子:</p>
+<p><strong><code>prefix_chars</code>(不建议改变):</strong> 参数前缀,默认为<code>'-'</code>。前缀字符,放在文件名之前。当参数过多时,可以将参数放在文件中读取。看例子:</p>
 <pre><code class="python">&gt;&gt;&gt; with open('args.txt', 'w') as fp:
 ...    fp.write('-f\nbar')
 &gt;&gt;&gt; parser = argparse.ArgumentParser(fromfile_prefix_chars='@')
@@ -1338,8 +1327,7 @@ Namespace(f='bar')
 </code></pre>
 
 <p>例子中<code>parser.parse_args(['-f','foo','@args.txt'])</code>解析时会从文件<code>args.txt</code>读取,相当于<code>['-f','foo','-f','bar']</code></p>
-<p><strong><code>conflict_handler</code>(最好不要修改)</strong></p>
-<p>解决冲突的策略,默认情况下冲突会发生错误。</p>
+<p><strong><code>conflict_handler</code>(最好不要修改):</strong> 解决冲突的策略,默认情况下冲突会发生错误。</p>
 <pre><code class="python">&gt;&gt;&gt; parser = argparse.ArgumentParser(prog='PROG')
 &gt;&gt;&gt; parser.add_argument('-f', '--foo', help='old foo help')
 &gt;&gt;&gt; parser.add_argument('--foo', help='new foo help')
@@ -1348,15 +1336,11 @@ Traceback (most recent call last):
 ArgumentError: argument --foo: conflicting option string(s): --foo
 </code></pre>
 
-<p><strong><code>add_help</code>(不建议修改)</strong></p>
-<p>是否增加<code>-h/-help</code>选项(默认为<code>True</code>),一般<code>help</code>信息都是必须的。设为<code>False</code>时,<code>help</code>信息里面不再显示<code>-h –help</code>信息。</p>
-<p><strong><code>argument_default</code></strong></p>
-<p>设置一个全局的选项的缺省值,一般每个选项单独设置,基本没用。缺省为:<code>None</code>。</p>
-<blockquote>
+<p><strong><code>add_help</code>(不建议修改):</strong> 是否增加<code>-h/-help</code>选项(默认为<code>True</code>),一般<code>help</code>信息都是必须的。设为<code>False</code>时,<code>help</code>信息里面不再显示<code>-h –help</code>信息。</p>
+<p><strong><code>argument_default</code>:</strong> 设置一个全局的选项的缺省值,一般每个选项单独设置,基本没用。缺省为:<code>None</code>。</p>
 <ul>
 <li><strong>添加参数过程参数设定</strong></li>
 </ul>
-</blockquote>
 <pre><code class="python">ArgumentParser.add_argument(name or flags...[, action][, nargs][, const][, default][, type][, choices][, required][, help][, metavar][, dest])
 
 # 例如
@@ -1376,10 +1360,8 @@ parser.add_argument('--sum',dest='accumulate',action='store_const',const=sum,def
 </ol>
 </blockquote>
 <p>参数设定详细解释:</p>
-<p><strong><code>name</code> or <code>flag</code></strong></p>
-<p><code>optional arguments</code>以'<code>-</code>'(默认)为前缀的参数,其他的为<code>positional arguments</code>。上面例子已经有体现如何设定。</p>
-<p><strong><code>action</code></strong></p>
-<p>命令行参数的操作,操作的形式有以下几种:</p>
+<p><strong><code>name</code> or <code>flag</code>:</strong> <code>optional arguments</code>以'<code>-</code>'(默认)为前缀的参数,其他的为<code>positional arguments</code>。上面例子已经有体现如何设定。</p>
+<p><strong><code>action</code>:</strong> 命令行参数的操作,操作的形式有以下几种:</p>
 <blockquote>
 <ol>
 <li><code>store</code>:仅仅存储参数的值(默认)</li>
@@ -1396,24 +1378,21 @@ parser.add_argument('--sum',dest='accumulate',action='store_const',const=sum,def
 Namespace(l=None, types=[&lt;type 'str'&gt;, &lt;type 'int'&gt;, &lt;type 'str'&gt;, &lt;type 'int'&gt;])
 </code></pre>
 
-<p><strong><code>count</code></strong></p>
-<p>统计参数出现的次数</p>
+<p><strong><code>count</code>:</strong>统计参数出现的次数</p>
 <pre><code class="python">&gt;&gt;&gt; parser = argparse.ArgumentParser()
 &gt;&gt;&gt; parser.add_argument('--counte', '-c', action='count')
 &gt;&gt;&gt; parser.parse_args('-cccc'.split())
 Namespace(counte=4)
 </code></pre>
 
-<p><strong><code>version</code></strong></p>
-<p>显示<code>version</code>信息</p>
+<p><strong><code>version</code>:</strong> 显示<code>version</code>信息</p>
 <pre><code class="python">&gt;&gt;&gt; parser = argparse.ArgumentParser()
 &gt;&gt;&gt; parser.add_argument('--version', action='version', version='version 2.0')
 &gt;&gt;&gt; parser.parse_args(['--version'])
 version 2.0
 </code></pre>
 
-<p><strong><code>nrgs</code></strong></p>
-<p>参数的数量,有如下几个设定:</p>
+<p><strong><code>nrgs</code>:</strong> 参数的数量,有如下几个设定:</p>
 <blockquote>
 <ol>
 <li><code>N</code>:<code>N</code>个参数</li>
@@ -1421,14 +1400,10 @@ version 2.0
 <li><code>*/+</code>:任意多个参数</li>
 </ol>
 </blockquote>
-<p><strong><code>const</code></strong></p>
-<p>保存为一个常量,上面在讲<code>action</code>行为时已经解释用法。</p>
-<p><strong><code>default</code></strong></p>
-<p>默认值</p>
-<p><strong><code>type</code></strong></p>
-<p>参数类型,默认为<code>str</code></p>
-<p><strong><code>choices</code></strong></p>
-<p>设置参数值的范围,如果<code>choices</code>中的类型不是字符串,记得指定<code>type</code>。看例子:</p>
+<p><strong><code>const</code>:</strong> 保存为一个常量,上面在讲<code>action</code>行为时已经解释用法。</p>
+<p><strong><code>default</code>:</strong> 默认值</p>
+<p><strong><code>type</code>:</strong> 参数类型,默认为<code>str</code></p>
+<p><strong><code>choices</code>:</strong> 设置参数值的范围,如果<code>choices</code>中的类型不是字符串,记得指定<code>type</code>。看例子:</p>
 <pre><code class="python">&gt;&gt;&gt; parser = argparse.ArgumentParser()
 &gt;&gt;&gt; parser.add_argument('x', type=int, choices=range(1, 4))
 &gt;&gt;&gt; parser.parse_args(['3'])
@@ -1438,31 +1413,25 @@ usage: [-h] {1,2,3}
 : error: argument x: invalid choice: 4 (choose from 1, 2, 3)
 </code></pre>
 
-<p><strong><code>required</code></strong></p>
-<p>是否为必选参数,默认为<code>True</code></p>
-<p><strong><code>desk</code></strong></p>
-<p>参数别名,看例子:</p>
+<p><strong><code>required</code>:</strong> 是否为必选参数,默认为<code>True</code></p>
+<p><strong><code>desk</code>:</strong> 参数别名,看例子:</p>
 <pre><code class="python">&gt;&gt;&gt; parser = argparse.ArgumentParser()
 &gt;&gt;&gt; parser.add_argument('--foo', dest='f_name')
 &gt;&gt;&gt; parser.parse_args('--foo XXX'.split())
 Namespace(f_name='XXX')
 </code></pre>
 
-<p><strong><code>help</code></strong></p>
-<p>参数的帮助信息,即解释信息</p>
-<p><strong><code>metavar</code></strong></p>
-<p>帮助信息中显示的参数名称</p>
+<p><strong><code>help</code>:</strong> 参数的帮助信息,即解释信息</p>
+<p><strong><code>metavar</code>:</strong> 帮助信息中显示的参数名称</p>
 <p><strong>定义互斥参数</strong></p>
 <pre><code class="python">group = parser.add_mutually_exclusive_group()
 group.add_argument(&quot;-v&quot;, &quot;--verbose&quot;, action=&quot;store_true&quot;)
 group.add_argument(&quot;-q&quot;, &quot;--quiet&quot;, action=&quot;store_true&quot;)
 </code></pre>
 
-<blockquote>
 <ul>
 <li><strong>解析参数过程参数设定</strong></li>
 </ul>
-</blockquote>
 <pre><code class="python">&gt;&gt;&gt; parser = argparse.ArgumentParser()
 &gt;&gt;&gt; parser.add_argument('x')
 &gt;&gt;&gt; a = parser.parse_args(['1'])
@@ -1506,7 +1475,7 @@ if __name__==&quot;__main__&quot;:
     cmd()
 </code></pre>
 
-<h3 id="33-schedule">3.3 <code>schedule</code>模块</h3>
+<h3 id="23-schedule">2.3 <code>schedule</code>模块</h3>
 <p>官方文档:<a href="https://schedule.readthedocs.io/en/stable/"><code>https://schedule.readthedocs.io/en/stable/</code></a></p>
 <ul>
 <li><strong>使用示例</strong></li>
