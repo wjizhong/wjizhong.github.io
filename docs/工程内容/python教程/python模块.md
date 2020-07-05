@@ -369,25 +369,18 @@ password:xxx
 
 许多API函数都是有用的,无论你是否嵌入了原始python;此外,大多数嵌入python的应用程序也需要提供自定义扩展,因此在尝试将python嵌入到重新应用之前熟悉编写扩展可能是个好主意.
 
-### 2.1 基础使用
+#### 1.2.1 基础使用
 
 python可以非常方便地和C进行相互的调用,一般,我们不会使用C去直接编写一个python的模块。通常的情景是我们需要把C的相关模块包装一下,然后在python中可以直接调用它。或者是,把python逻辑中的某一效率要求很高的部分使用C来实现。整个过程大概是:
 
-> 引入`python.h`头文件
->
-> 编写包装函数
->
-> 函数中处理从python传入的参数
->
-> 实现功能逻辑
->
-> 处理C中的返回值,包装成python对象
->
-> 在一个PyMethodDef结构体中注册需要的函数。
->
-> 在一个初始化方法中注册模块名。
->
-> 把这个C源文件编译成链接库。
+> 1. 引入`python.h`头文件
+> 2. 编写包装函数
+> 3. 函数中处理从python传入的参数
+> 4. 实现功能逻辑
+> 5. 处理C中的返回值,包装成python对象
+> 6. 在一个PyMethodDef结构体中注册需要的函数。
+> 7. 在一个初始化方法中注册模块名。
+> 8. 把这个C源文件编译成链接库。
 
 ```c
 int add(int x, int y){
@@ -434,20 +427,14 @@ PyMODINIT_FUNC initdemo(){
 }
 ```
 
-编译和使用:
-
-```sh
-gcc demo.c -I /usr/include/python2.6 -shared -o demo.so
-```
-
-使用模块:
+编译和使用: `gcc demo.c -I /usr/include/python2.6 -shared -o demo.so`,使用模块:
 
 ```python
 import demo
 demo.add(3, 4)
 ```
 
-### 2.2 编码标准
+#### 1.2.2 编码标准
 
 如果您正在编写包含在Cpython中的C代码,那么你必须遵循[PEP 7](https://www.python.org/dev/peps/pep-0007/)。这些指南适用于您所贡献的python版本。除非你最终希望将它们贡献给python,否则你的第三方扩展模块不需要遵循这些约定.
 
@@ -464,39 +451,26 @@ demo.add(3, 4)
 
 注意:
 
-> 由于python可能会定义一些影响某些系统上标准头的预处理器定义,所以在包含任何标准头之前你must包含python.h
->
-> python.h定义的所有用户可见名称(包括标准头文件定义的除外)都有一个前缀Py或_Py。以_Py开头的名称供python实现内部使用,不应由扩展编写者使用。结构成员名称没有保留前缀.
->
-> 重要的用户代码永远不应该定义以Py或_Py开头的名称。这会使读者感到困惑,并危及用户代码对未来python版本的可移植性,这些版本可能会定义以这些前缀之一开头的其他名称.
->
-> 头文件通常与python一起安装。在Unix上,它们位于`prefix/include/pythonversion/`和`exec_prefix/include/pythonversion/`目录中,其中`prefix`和`exec_prefix`由`python`的相应参数定义配置脚本和`version`是`"%d.%d"%sys.version_info[:2]`。在Windows上,标题安装在`prefix/include`中,其中`prefix`是指定给安装程序的安装目录.
->
-> 要包含标题,请将两个目录(如果不同)放在编译器上包含的搜索路径。做not将父目录放在搜索路径上,然后使用`#include<pythonX.Y/python.h>`;这将打破多平台构建,因为`prefix`下面的平台独立头包含来自`exec_prefix`.
->
-> C++用户应该注意,尽管API完全使用C定义,但是头文件正确地将入口点声明为extern"C",因此不需要做任何特殊的事情来使用C++中的API.
+> - 由于python可能会定义一些影响某些系统上标准头的预处理器定义,所以在包含任何标准头之前你must包含python.h
+> - python.h定义的所有用户可见名称(包括标准头文件定义的除外)都有一个前缀Py或_Py。以_Py开头的名称供python实现内部使用,不应由扩展编写者使用。结构成员名称没有保留前缀.
+> - 重要的用户代码永远不应该定义以Py或_Py开头的名称。这会使读者感到困惑,并危及用户代码对未来python版本的可移植性,这些版本可能会定义以这些前缀之一开头的其他名称.
+> - 头文件通常与python一起安装。在Unix上,它们位于`prefix/include/pythonversion/`和`exec_prefix/include/pythonversion/`目录中,其中`prefix`和`exec_prefix`由`python`的相应参数定义配置脚本和`version`是`"%d.%d"%sys.version_info[:2]`。在Windows上,标题安装在`prefix/include`中,其中`prefix`是指定给安装程序的安装目录.
+> - 要包含标题,请将两个目录(如果不同)放在编译器上包含的搜索路径。做not将父目录放在搜索路径上,然后使用`#include<pythonX.Y/python.h>`;这将打破多平台构建,因为`prefix`下面的平台独立头包含来自`exec_prefix`.
+> - C++用户应该注意,尽管API完全使用C定义,但是头文件正确地将入口点声明为extern"C",因此不需要做任何特殊的事情来使用C++中的API.
 
 * **有用的宏**
 
 python头文件中定义了几个有用的宏。许多被定义为更接近它们有用的地方(例如Py_RETURN_NONE)。这里定义了更通用的其他实用程序。这不一定是完整的列表.
 
-> Py_UNREACHABLE():当你有一个你不希望达到的代码路径时使用这个。例如,在default:声明switch声明中有关可能的值的声明包含在case声明中。在你可能想要放置assert(0)或abort()来电的地方使用它
->
-> Py_ABS(x):返回x的绝对值。
->
-> Py_MIN(x,y):返回x和y之间的最小值
->
-> Py_MAX(x,y): 返回x和y之间的最大值
->
-> Py_STRINGIFY(x):将x转换为C字符串。例如Py_STRINGIFY(123)返回"123".
->
-> Py_MEMBER_SIZE(type,member):返回大小一个结构(type)member以字节为单位
->
-> Py_CHARMASK(c):参数必须是[-128,127]或[0,255]范围内的字符或整数。这个宏返回c施放到unsignedchar.
->
-> Py_GETENV(s):就像getenv(s),但是返回NULL如果-E在命令行上传递(即如果设置了Py_IgnoreEnvironmentFlag).
->
-> Py_UNUSED(arg):将此用于函数定义中未使用的参数,以使编译警告静音,例如PyObject*func(PyObject*Py_UNUSED(ignored)).
+> - `Py_UNREACHABLE()`:当你有一个你不希望达到的代码路径时使用这个。例如,在default:声明switch声明中有关可能的值的声明包含在case声明中。在你可能想要放置assert(0)或abort()来电的地方使用它
+> - `Py_ABS(x)`:返回x的绝对值。
+> - `Py_MIN(x,y)`:返回x和y之间的最小值
+> - `Py_MAX(x,y)`: 返回x和y之间的最大值
+> - `Py_STRINGIFY(x)`:将x转换为C字符串。例如`Py_STRINGIFY(123)`返回"123".
+> - `Py_MEMBER_SIZE(type,member)`:返回大小一个结构`(type) member`以字节为单位
+> - `Py_CHARMASK(c)`:参数必须是[-128,127]或[0,255]范围内的字符或整数。这个宏返回c施放到`unsigned char`.
+> - `Py_GETENV(s)`:就像getenv(s),但是返回NULL如果-E在命令行上传递(即如果设置了`Py_IgnoreEnvironmentFlag)`.
+> - `Py_UNUSED(arg)`:将此用于函数定义中未使用的参数,以使编译警告静音,例如`PyObject*func(PyObject*Py_UNUSED(ignored))`.
 
 * **类型和引用计数**
 
@@ -695,7 +669,7 @@ intincr_item(PyObject *dict, PyObject *key){
 这个例子代表了gotoC中的陈述！它说明了PyErr_ExceptionMatches()和PyErr_Clear()处理特定异常,并使用Py_XDECREF()处理可能是NULL的所有引用(注意名称中的"X";Py_DECREF()会崩溃当遇到NULL参考时)。重要的是,用于保存所有参考的变量被初始化为NULL以使其起作用;同样,建议的返回值初始化为-1(失败),并且只有在最终调用成功后才能成功.
 
 
-### 2.3 嵌入python
+#### 1.2.3 嵌入python
 
 只有嵌入器的一项重要任务(而不是扩展编写者)python解释器必须担心的是python解释器的初始化,可能还有最终化。解释器的大多数功能只能在解释器初始化后才能使用.
 
@@ -707,16 +681,16 @@ Py_Initialize()没有设置“脚本参数列表”(sys.argv)。如果以后执�
 
 例如,如果在/usr/local/bin/python,它会假设库在/usr/local/lib/pythonX.Y。(事实上,这个特殊的路径也是“后备”位置,在没有名为python发现PATH。)用户可以通过设置环境变量PYTHONHOME来覆盖此行为,或者通过设置PYTHONPATH.
 
-嵌入应用程序可以通过调用Py_SetProgramName(file)before调用Py_Initialize()来引导搜索。注意PYTHONHOME仍然覆盖了这个和PYTHONPATH仍然插在标准路径的前面。需要全面控制的应用程序必须提供自己的Py_GetPath(),Py_GetPrefix(),Py_GetExecPrefix()和Py_GetProgramFullPath()的实现(全部在Modules/getpath.c中定义.
+嵌入应用程序可以通过调用Py_SetProgramName(file) before调用Py_Initialize()来引导搜索。注意PYTHONHOME仍然覆盖了这个和PYTHONPATH仍然插在标准路径的前面。需要全面控制的应用程序必须提供自己的Py_GetPath(),Py_GetPrefix(),Py_GetExecPrefix()和Py_GetProgramFullPath()的实现(全部在Modules/getpath.c中定义.
 
 有时,需要“取消初始化”python。例如,应用程序可能要重新开始(再次调用Py_Initialize()或者应用程序只是通过使用python来完成,并希望释放python分配的内存。这可以通过调用Py_FinalizeEx()来完成。功能Py_IsInitialized()如果python当前处于初始化状态,则返回returntrue。有关这些功能的更多信息将在后面的章节中给出。注意Py_FinalizeEx()做not释放python解释器分配的所有内存,例如:目前无法释放由扩展模块分配的内存.
 
-更高的参考:https://www.itbook5.com/2019/02/10984/
+更高的参考:[`https://www.itbook5.com/2019/02/10984`/](https://www.itbook5.com/2019/02/10984/)
 
 
-## 三、基本模块
+## 二、基本模块
 
-### 3.1 `psutil`模块
+### 2.1 `psutil`模块
 
 `psutil`是个跨平台库,能够轻松实现获取系统运行的进程和系统利用率,包括CPU、内存、磁盘、网络等信息。它主要应用于信息监控，分析和限制系统资源及进程的管理。它实现了同等命令命令行工具提供的功能,如:`ps`、`top`、`lsof`、`netstat`、`ifconfig`、`who`、`df`、`kill`、`free`、`nice`、`ionice`、`iostat`、`iotop`、`uptime`、`pidof`、`tty`、`taskset`、`pmap`等。目前支持32位和64位的`linux`、`windows`、`OS X`、`FreeBSD`和`Sun Solaris`等操作系统。
 
