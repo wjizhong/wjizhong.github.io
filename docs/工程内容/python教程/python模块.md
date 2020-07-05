@@ -1033,7 +1033,7 @@ pp([(p.pid, p.info) for p in sorted(psutil.process_iter(attrs=['name', 'num_fds'
 #  (1307, {'name': 'master', 'num_fds': 91})]
 ```
 
-### 3.2 `argparse`教程
+### 2.2 `argparse`教程
 
 * **命令行与参数解析**
 
@@ -1079,9 +1079,7 @@ optional arguments:
   --sum       sum the integers
 ```
 
-* **每个步骤的参数设定**
-
-> * **创建解析过程参数设定**
+* **创建解析过程参数设定**
 
 ```python
 ArgumentParser(prog='', usage=None, description='Process some integers.', version=None,
@@ -1090,9 +1088,7 @@ ArgumentParser(prog='', usage=None, description='Process some integers.', versio
 parser = argparse.ArgumentParser(description='Process some integers.')
 ```
 
-**`prog`(不建议更改)**
-
-程序名称(默认`sys.argv[0]`,默认为函数文件名),设置`prog`则改变这一默认(仍使用上面那个实例):
+**`prog`(不建议更改):** 程序名称(默认`sys.argv[0]`,默认为函数文件名),设置`prog`则改变这一默认(仍使用上面那个实例):
 
 ```python
 # 变更参数
@@ -1105,9 +1101,7 @@ usage: test.py [-h] [--sum] N [N ...]
 usage: sum or max [-h] [--sum] N [N ...]
 ```
 
-**`usage`(不建议更改)**
-
-用于描述程序的使用用法(默认为添加到解析器中的参数)。在使用python xxx.py -h之后将出现。看例子:
+**`usage`(不建议更改):** 用于描述程序的使用用法(默认为添加到解析器中的参数)。在使用python xxx.py -h之后将出现。看例子:
 
 ```python
 # 变更参数
@@ -1120,13 +1114,9 @@ usage: test.py [-h] [--sum] N [N ...]
 usage: python test.py arguments
 ```
 
-**`description`**
+**`description`:** 描述文件的作用,上面实例已体现。
 
-描述文件的作用,上面实例已体现。
-
-**`epilog`**
-
-参数选项帮助后的显示文本。看例子:
+**`epilog`:** 参数选项帮助后的显示文本。看例子:
 
 ```python
 # 变更参数
@@ -1138,9 +1128,7 @@ optional arguments:
 And What can I help U?
 ```
 
-**parents**
-
-共享同一个父类解析器,由ArgumentParser对象组成的列表,它们的`arguments`选项会被包含到新`ArgumentParser`对象中,类似于继承。
+**parents:** 共享同一个父类解析器,由ArgumentParser对象组成的列表,它们的`arguments`选项会被包含到新`ArgumentParser`对象中,类似于继承。
 
 **`formatter_class`(没必要改变)**
 
@@ -1150,9 +1138,7 @@ And What can I help U?
 > 2. `argparse.RawTextHelpFormatter`:所有信息以输入格式输出,并不将其合并为一行
 > 3. `argparse.ArgumentDefaultsHelpFormatter`:输出参数的defalut值
 
-**`prefix_chars`(不建议改变)**
-
-参数前缀,默认为`'-'`。前缀字符,放在文件名之前。当参数过多时,可以将参数放在文件中读取。看例子:
+**`prefix_chars`(不建议改变):** 参数前缀,默认为`'-'`。前缀字符,放在文件名之前。当参数过多时,可以将参数放在文件中读取。看例子:
 
 ```python
 >>> with open('args.txt', 'w') as fp:
@@ -1164,9 +1150,7 @@ Namespace(f='bar')
 ```
 例子中`parser.parse_args(['-f','foo','@args.txt'])`解析时会从文件`args.txt`读取,相当于`['-f','foo','-f','bar']`
 
-**`conflict_handler`(最好不要修改)**
-
-解决冲突的策略,默认情况下冲突会发生错误。
+**`conflict_handler`(最好不要修改):** 解决冲突的策略,默认情况下冲突会发生错误。
 
 ```python
 >>> parser = argparse.ArgumentParser(prog='PROG')
@@ -1177,15 +1161,11 @@ Traceback (most recent call last):
 ArgumentError: argument --foo: conflicting option string(s): --foo
 ```
 
-**`add_help`(不建议修改)**
+**`add_help`(不建议修改):** 是否增加`-h/-help`选项(默认为`True`),一般`help`信息都是必须的。设为`False`时,`help`信息里面不再显示`-h –help`信息。
 
-是否增加`-h/-help`选项(默认为`True`),一般`help`信息都是必须的。设为`False`时,`help`信息里面不再显示`-h –help`信息。
+**`argument_default`:** 设置一个全局的选项的缺省值,一般每个选项单独设置,基本没用。缺省为:`None`。
 
-**`argument_default`**
-
-设置一个全局的选项的缺省值,一般每个选项单独设置,基本没用。缺省为:`None`。
-
-> * **添加参数过程参数设定**
+* **添加参数过程参数设定**
 
 ```python
 ArgumentParser.add_argument(name or flags...[, action][, nargs][, const][, default][, type][, choices][, required][, help][, metavar][, dest])
@@ -1206,13 +1186,9 @@ parser.add_argument('--sum',dest='accumulate',action='store_const',const=sum,def
 
 参数设定详细解释:
 
-**`name` or `flag`**
+**`name` or `flag`:** `optional arguments`以'`-`'(默认)为前缀的参数,其他的为`positional arguments`。上面例子已经有体现如何设定。
 
-`optional arguments`以'`-`'(默认)为前缀的参数,其他的为`positional arguments`。上面例子已经有体现如何设定。
-
-**`action`**
-
-命令行参数的操作,操作的形式有以下几种:
+**`action`:** 命令行参数的操作,操作的形式有以下几种:
 
 > 1. `store`:仅仅存储参数的值(默认)
 > 2. `storeconst`:存储`const`关键字指定的值,`parser.add_argument('-t',action='store_const',const=7)`
@@ -1228,9 +1204,7 @@ parser.add_argument('--sum',dest='accumulate',action='store_const',const=sum,def
 Namespace(l=None, types=[<type 'str'>, <type 'int'>, <type 'str'>, <type 'int'>])
 ```
 
-**`count`**
-
-统计参数出现的次数
+**`count`:**统计参数出现的次数
 
 ```python
 >>> parser = argparse.ArgumentParser()
@@ -1239,9 +1213,7 @@ Namespace(l=None, types=[<type 'str'>, <type 'int'>, <type 'str'>, <type 'int'>]
 Namespace(counte=4)
 ```
 
-**`version`**
-
-显示`version`信息
+**`version`:** 显示`version`信息
 
 ```python
 >>> parser = argparse.ArgumentParser()
@@ -1250,29 +1222,19 @@ Namespace(counte=4)
 version 2.0
 ```
 
-**`nrgs`**
-
-参数的数量,有如下几个设定:
+**`nrgs`:** 参数的数量,有如下几个设定:
 
 > 1. `N`:`N`个参数
 > 2. `?`:首先从命令行中获取,若没有则从`const`中获取,仍然没有则从`default`中获取
 > 3. `*/+`:任意多个参数
 
-**`const`**
+**`const`:** 保存为一个常量,上面在讲`action`行为时已经解释用法。
 
-保存为一个常量,上面在讲`action`行为时已经解释用法。
+**`default`:** 默认值
 
-**`default`**
+**`type`:** 参数类型,默认为`str`
 
-默认值
-
-**`type`**
-
-参数类型,默认为`str`
-
-**`choices`**
-
-设置参数值的范围,如果`choices`中的类型不是字符串,记得指定`type`。看例子:
+**`choices`:** 设置参数值的范围,如果`choices`中的类型不是字符串,记得指定`type`。看例子:
 
 ```python
 >>> parser = argparse.ArgumentParser()
@@ -1284,13 +1246,9 @@ usage: [-h] {1,2,3}
 : error: argument x: invalid choice: 4 (choose from 1, 2, 3)
 ```
 
-**`required`**
+**`required`:** 是否为必选参数,默认为`True`
 
-是否为必选参数,默认为`True`
-
-**`desk`**
-
-参数别名,看例子:
+**`desk`:** 参数别名,看例子:
 
 ```python
 >>> parser = argparse.ArgumentParser()
@@ -1299,13 +1257,9 @@ usage: [-h] {1,2,3}
 Namespace(f_name='XXX')
 ```
 
-**`help`**
+**`help`:** 参数的帮助信息,即解释信息
 
-参数的帮助信息,即解释信息
-
-**`metavar`**
-
-帮助信息中显示的参数名称
+**`metavar`:** 帮助信息中显示的参数名称
 
 
 **定义互斥参数**
@@ -1316,7 +1270,7 @@ group.add_argument("-v", "--verbose", action="store_true")
 group.add_argument("-q", "--quiet", action="store_true")
 ```
 
-> * **解析参数过程参数设定**
+* **解析参数过程参数设定**
 
 ```python
 >>> parser = argparse.ArgumentParser()
@@ -1364,7 +1318,7 @@ if __name__=="__main__":
     cmd()
 ```
 
-### 3.3 `schedule`模块
+### 2.3 `schedule`模块
 
 官方文档:[`https://schedule.readthedocs.io/en/stable/`](https://schedule.readthedocs.io/en/stable/)
 
