@@ -37,16 +37,16 @@
                   {title: "1.1 \u6a21\u5757\u6253\u5305", url: "#11", level:3, children: [
                   ]},
                   {title: "1.2 python\u4e0ec\u53c2\u8003\u624b\u518c", url: "#12-pythonc", level:3, children: [
-                  ]},
-                  {title: "2.1 \u57fa\u7840\u4f7f\u7528", url: "#21", level:3, children: [
-                  ]},
-                  {title: "2.2 \u7f16\u7801\u6807\u51c6", url: "#22", level:3, children: [
-                  ]},
-                  {title: "2.3 \u5d4c\u5165python", url: "#23-python", level:3, children: [
+                      {title: "1.2.1 \u57fa\u7840\u4f7f\u7528", url: "#121", level:4,children: [
+                      ]},
+                      {title: "1.2.2 \u7f16\u7801\u6807\u51c6", url: "#122", level:4,children: [
+                      ]},
+                      {title: "1.2.3 \u5d4c\u5165python", url: "#123-python", level:4,children: [
+                      ]},
                   ]}, 
               ]},
-              {title: "\u4e09\u3001\u57fa\u672c\u6a21\u5757", url: "#_1", level:2, children: [
-                  {title: "3.1 psutil\u6a21\u5757", url: "#31-psutil", level:3, children: [
+              {title: "\u4e8c\u3001\u57fa\u672c\u6a21\u5757", url: "#_1", level:2, children: [
+                  {title: "2.1 psutil\u6a21\u5757", url: "#21-psutil", level:3, children: [
                   ]},
                   {title: "3.2 argparse\u6559\u7a0b", url: "#32-argparse", level:3, children: [
                   ]},
@@ -633,17 +633,19 @@ password:xxx
 <p>应用程序程序员的python接口使C和C++程序员可以在各种级别访问python解释器。API可以与C++同等地使用,但为了简洁起见,它通常被称为python/C API。使用python/C API有两个根本不同的原因。第一个原因是为特定目的写扩展模块;这些是扩展python解释器的C模块。这可能是最常用的。第二个原因是使用python作为大型应用程序中的一个组件;这种技术通常被称为嵌入pythonin一个应用程序.</p>
 <p>编写扩展模块是一个相对容易理解的过程,其中"烹饪书"方法很有效。有几种工具可以在一定程度上自动化过程。虽然人们在早期存在的过程中将python嵌入到其他应用程序中,但嵌入python的过程并不比编写扩展程序简单得多.</p>
 <p>许多API函数都是有用的,无论你是否嵌入了原始python;此外,大多数嵌入python的应用程序也需要提供自定义扩展,因此在尝试将python嵌入到重新应用之前熟悉编写扩展可能是个好主意.</p>
-<h3 id="21">2.1 基础使用</h3>
+<h4 id="121">1.2.1 基础使用</h4>
 <p>python可以非常方便地和C进行相互的调用,一般,我们不会使用C去直接编写一个python的模块。通常的情景是我们需要把C的相关模块包装一下,然后在python中可以直接调用它。或者是,把python逻辑中的某一效率要求很高的部分使用C来实现。整个过程大概是:</p>
 <blockquote>
-<p>引入<code>python.h</code>头文件</p>
-<p>编写包装函数</p>
-<p>函数中处理从python传入的参数</p>
-<p>实现功能逻辑</p>
-<p>处理C中的返回值,包装成python对象</p>
-<p>在一个PyMethodDef结构体中注册需要的函数。</p>
-<p>在一个初始化方法中注册模块名。</p>
-<p>把这个C源文件编译成链接库。</p>
+<ol>
+<li>引入<code>python.h</code>头文件</li>
+<li>编写包装函数</li>
+<li>函数中处理从python传入的参数</li>
+<li>实现功能逻辑</li>
+<li>处理C中的返回值,包装成python对象</li>
+<li>在一个PyMethodDef结构体中注册需要的函数。</li>
+<li>在一个初始化方法中注册模块名。</li>
+<li>把这个C源文件编译成链接库。</li>
+</ol>
 </blockquote>
 <pre><code class="c">int add(int x, int y){
     return x + y;
@@ -689,16 +691,12 @@ PyMODINIT_FUNC initdemo(){
 }
 </code></pre>
 
-<p>编译和使用:</p>
-<pre><code class="sh">gcc demo.c -I /usr/include/python2.6 -shared -o demo.so
-</code></pre>
-
-<p>使用模块:</p>
+<p>编译和使用: <code>gcc demo.c -I /usr/include/python2.6 -shared -o demo.so</code>,使用模块:</p>
 <pre><code class="python">import demo
 demo.add(3, 4)
 </code></pre>
 
-<h3 id="22">2.2 编码标准</h3>
+<h4 id="122">1.2.2 编码标准</h4>
 <p>如果您正在编写包含在Cpython中的C代码,那么你必须遵循<a href="https://www.python.org/dev/peps/pep-0007/">PEP 7</a>。这些指南适用于您所贡献的python版本。除非你最终希望将它们贡献给python,否则你的第三方扩展模块不需要遵循这些约定.</p>
 <ul>
 <li><strong>包含文件</strong></li>
@@ -710,27 +708,31 @@ demo.add(3, 4)
 <p>这意味着包含以下标准标题:<code>&lt;stdio.h&gt;</code>,<code>&lt;string.h&gt;</code>,<code>&lt;errno.h&gt;</code>,<code>&lt;limits.h&gt;</code>,<code>&lt;assert.h&gt;</code>和<code>&lt;stdlib.h&gt;</code>(如果可用).</p>
 <p>注意:</p>
 <blockquote>
-<p>由于python可能会定义一些影响某些系统上标准头的预处理器定义,所以在包含任何标准头之前你must包含python.h</p>
-<p>python.h定义的所有用户可见名称(包括标准头文件定义的除外)都有一个前缀Py或_Py。以_Py开头的名称供python实现内部使用,不应由扩展编写者使用。结构成员名称没有保留前缀.</p>
-<p>重要的用户代码永远不应该定义以Py或_Py开头的名称。这会使读者感到困惑,并危及用户代码对未来python版本的可移植性,这些版本可能会定义以这些前缀之一开头的其他名称.</p>
-<p>头文件通常与python一起安装。在Unix上,它们位于<code>prefix/include/pythonversion/</code>和<code>exec_prefix/include/pythonversion/</code>目录中,其中<code>prefix</code>和<code>exec_prefix</code>由<code>python</code>的相应参数定义配置脚本和<code>version</code>是<code>"%d.%d"%sys.version_info[:2]</code>。在Windows上,标题安装在<code>prefix/include</code>中,其中<code>prefix</code>是指定给安装程序的安装目录.</p>
-<p>要包含标题,请将两个目录(如果不同)放在编译器上包含的搜索路径。做not将父目录放在搜索路径上,然后使用<code>#include&lt;pythonX.Y/python.h&gt;</code>;这将打破多平台构建,因为<code>prefix</code>下面的平台独立头包含来自<code>exec_prefix</code>.</p>
-<p>C++用户应该注意,尽管API完全使用C定义,但是头文件正确地将入口点声明为extern"C",因此不需要做任何特殊的事情来使用C++中的API.</p>
+<ul>
+<li>由于python可能会定义一些影响某些系统上标准头的预处理器定义,所以在包含任何标准头之前你must包含python.h</li>
+<li>python.h定义的所有用户可见名称(包括标准头文件定义的除外)都有一个前缀Py或_Py。以_Py开头的名称供python实现内部使用,不应由扩展编写者使用。结构成员名称没有保留前缀.</li>
+<li>重要的用户代码永远不应该定义以Py或_Py开头的名称。这会使读者感到困惑,并危及用户代码对未来python版本的可移植性,这些版本可能会定义以这些前缀之一开头的其他名称.</li>
+<li>头文件通常与python一起安装。在Unix上,它们位于<code>prefix/include/pythonversion/</code>和<code>exec_prefix/include/pythonversion/</code>目录中,其中<code>prefix</code>和<code>exec_prefix</code>由<code>python</code>的相应参数定义配置脚本和<code>version</code>是<code>"%d.%d"%sys.version_info[:2]</code>。在Windows上,标题安装在<code>prefix/include</code>中,其中<code>prefix</code>是指定给安装程序的安装目录.</li>
+<li>要包含标题,请将两个目录(如果不同)放在编译器上包含的搜索路径。做not将父目录放在搜索路径上,然后使用<code>#include&lt;pythonX.Y/python.h&gt;</code>;这将打破多平台构建,因为<code>prefix</code>下面的平台独立头包含来自<code>exec_prefix</code>.</li>
+<li>C++用户应该注意,尽管API完全使用C定义,但是头文件正确地将入口点声明为extern"C",因此不需要做任何特殊的事情来使用C++中的API.</li>
+</ul>
 </blockquote>
 <ul>
 <li><strong>有用的宏</strong></li>
 </ul>
 <p>python头文件中定义了几个有用的宏。许多被定义为更接近它们有用的地方(例如Py_RETURN_NONE)。这里定义了更通用的其他实用程序。这不一定是完整的列表.</p>
 <blockquote>
-<p>Py_UNREACHABLE():当你有一个你不希望达到的代码路径时使用这个。例如,在default:声明switch声明中有关可能的值的声明包含在case声明中。在你可能想要放置assert(0)或abort()来电的地方使用它</p>
-<p>Py_ABS(x):返回x的绝对值。</p>
-<p>Py_MIN(x,y):返回x和y之间的最小值</p>
-<p>Py_MAX(x,y): 返回x和y之间的最大值</p>
-<p>Py_STRINGIFY(x):将x转换为C字符串。例如Py_STRINGIFY(123)返回"123".</p>
-<p>Py_MEMBER_SIZE(type,member):返回大小一个结构(type)member以字节为单位</p>
-<p>Py_CHARMASK(c):参数必须是[-128,127]或[0,255]范围内的字符或整数。这个宏返回c施放到unsignedchar.</p>
-<p>Py_GETENV(s):就像getenv(s),但是返回NULL如果-E在命令行上传递(即如果设置了Py_IgnoreEnvironmentFlag).</p>
-<p>Py_UNUSED(arg):将此用于函数定义中未使用的参数,以使编译警告静音,例如PyObject<em>func(PyObject</em>Py_UNUSED(ignored)).</p>
+<ul>
+<li><code>Py_UNREACHABLE()</code>:当你有一个你不希望达到的代码路径时使用这个。例如,在default:声明switch声明中有关可能的值的声明包含在case声明中。在你可能想要放置assert(0)或abort()来电的地方使用它</li>
+<li><code>Py_ABS(x)</code>:返回x的绝对值。</li>
+<li><code>Py_MIN(x,y)</code>:返回x和y之间的最小值</li>
+<li><code>Py_MAX(x,y)</code>: 返回x和y之间的最大值</li>
+<li><code>Py_STRINGIFY(x)</code>:将x转换为C字符串。例如<code>Py_STRINGIFY(123)</code>返回"123".</li>
+<li><code>Py_MEMBER_SIZE(type,member)</code>:返回大小一个结构<code>(type) member</code>以字节为单位</li>
+<li><code>Py_CHARMASK(c)</code>:参数必须是[-128,127]或[0,255]范围内的字符或整数。这个宏返回c施放到<code>unsigned char</code>.</li>
+<li><code>Py_GETENV(s)</code>:就像getenv(s),但是返回NULL如果-E在命令行上传递(即如果设置了<code>Py_IgnoreEnvironmentFlag)</code>.</li>
+<li><code>Py_UNUSED(arg)</code>:将此用于函数定义中未使用的参数,以使编译警告静音,例如<code>PyObject*func(PyObject*Py_UNUSED(ignored))</code>.</li>
+</ul>
 </blockquote>
 <ul>
 <li><strong>类型和引用计数</strong></li>
@@ -891,17 +893,17 @@ longsum_sequence(PyObject *sequence){
 </code></pre>
 
 <p>这个例子代表了gotoC中的陈述！它说明了PyErr_ExceptionMatches()和PyErr_Clear()处理特定异常,并使用Py_XDECREF()处理可能是NULL的所有引用(注意名称中的"X";Py_DECREF()会崩溃当遇到NULL参考时)。重要的是,用于保存所有参考的变量被初始化为NULL以使其起作用;同样,建议的返回值初始化为-1(失败),并且只有在最终调用成功后才能成功.</p>
-<h3 id="23-python">2.3 嵌入python</h3>
+<h4 id="123-python">1.2.3 嵌入python</h4>
 <p>只有嵌入器的一项重要任务(而不是扩展编写者)python解释器必须担心的是python解释器的初始化,可能还有最终化。解释器的大多数功能只能在解释器初始化后才能使用.</p>
 <p>基本初始化函数是Py_Initialize()。这初始化了已加载模块的表,并创建了基本模块builtins,__main__和sys。它还初始化模块搜索路径(sys.path).</p>
 <p>Py_Initialize()没有设置“脚本参数列表”(sys.argv)。如果以后执行的python代码需要这个变量,那么在调用之后必须通过调用PySys_SetArgvEx(argc,argv,updatepath)显式设置它。Py_Initialize().</p>
 <p>在大多数系统上(特别是在Unix和Windows上,尽管细节略有不同),Py_Initialize()基于对标准pythoninterpreterexecutable位置的最佳猜测来计算模块搜索路径,假设python库位于与python解释器可执行文件相关的固定位置。特别是,它寻找名为lib/pythonX.Y相对于名为python在shell命令searchpath中找到(环境变量PATH).</p>
 <p>例如,如果在/usr/local/bin/python,它会假设库在/usr/local/lib/pythonX.Y。(事实上,这个特殊的路径也是“后备”位置,在没有名为python发现PATH。)用户可以通过设置环境变量PYTHONHOME来覆盖此行为,或者通过设置PYTHONPATH.</p>
-<p>嵌入应用程序可以通过调用Py_SetProgramName(file)before调用Py_Initialize()来引导搜索。注意PYTHONHOME仍然覆盖了这个和PYTHONPATH仍然插在标准路径的前面。需要全面控制的应用程序必须提供自己的Py_GetPath(),Py_GetPrefix(),Py_GetExecPrefix()和Py_GetProgramFullPath()的实现(全部在Modules/getpath.c中定义.</p>
+<p>嵌入应用程序可以通过调用Py_SetProgramName(file) before调用Py_Initialize()来引导搜索。注意PYTHONHOME仍然覆盖了这个和PYTHONPATH仍然插在标准路径的前面。需要全面控制的应用程序必须提供自己的Py_GetPath(),Py_GetPrefix(),Py_GetExecPrefix()和Py_GetProgramFullPath()的实现(全部在Modules/getpath.c中定义.</p>
 <p>有时,需要“取消初始化”python。例如,应用程序可能要重新开始(再次调用Py_Initialize()或者应用程序只是通过使用python来完成,并希望释放python分配的内存。这可以通过调用Py_FinalizeEx()来完成。功能Py_IsInitialized()如果python当前处于初始化状态,则返回returntrue。有关这些功能的更多信息将在后面的章节中给出。注意Py_FinalizeEx()做not释放python解释器分配的所有内存,例如:目前无法释放由扩展模块分配的内存.</p>
-<p>更高的参考:https://www.itbook5.com/2019/02/10984/</p>
-<h2 id="_1">三、基本模块</h2>
-<h3 id="31-psutil">3.1 <code>psutil</code>模块</h3>
+<p>更高的参考:<a href="https://www.itbook5.com/2019/02/10984/"><code>https://www.itbook5.com/2019/02/10984</code>/</a></p>
+<h2 id="_1">二、基本模块</h2>
+<h3 id="21-psutil">2.1 <code>psutil</code>模块</h3>
 <p><code>psutil</code>是个跨平台库,能够轻松实现获取系统运行的进程和系统利用率,包括CPU、内存、磁盘、网络等信息。它主要应用于信息监控，分析和限制系统资源及进程的管理。它实现了同等命令命令行工具提供的功能,如:<code>ps</code>、<code>top</code>、<code>lsof</code>、<code>netstat</code>、<code>ifconfig</code>、<code>who</code>、<code>df</code>、<code>kill</code>、<code>free</code>、<code>nice</code>、<code>ionice</code>、<code>iostat</code>、<code>iotop</code>、<code>uptime</code>、<code>pidof</code>、<code>tty</code>、<code>taskset</code>、<code>pmap</code>等。目前支持32位和64位的<code>linux</code>、<code>windows</code>、<code>OS X</code>、<code>FreeBSD</code>和<code>Sun Solaris</code>等操作系统。</p>
 <ul>
 <li><strong>获取<code>CPU</code>信息</strong></li>
