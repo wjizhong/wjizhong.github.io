@@ -42,13 +42,13 @@
                   ]},
                   {title: "7.1.4 GAN\u7684\u76ee\u6807\u51fd\u6570\u548c\u4ea4\u53c9\u71b5\u6709\u4ec0\u4e48\u533a\u522b?", url: "#714-gan", level:3, children: [
                   ]},
-                  {title: "7.1.5 GAN\u7684Loss\u4e3a\u4ec0\u4e48\u964d\u4e0d\u4e0b\u53bb\uff1f", url: "#715-ganloss", level:3, children: [
+                  {title: "7.1.5 GAN\u7684Loss\u4e3a\u4ec0\u4e48\u964d\u4e0d\u4e0b\u53bb?", url: "#715-ganloss", level:3, children: [
                   ]},
-                  {title: "7.1.6 \u751f\u6210\u5f0f\u6a21\u578b\u3001\u5224\u522b\u5f0f\u6a21\u578b\u7684\u533a\u522b\uff1f", url: "#716", level:3, children: [
+                  {title: "7.1.6 \u751f\u6210\u5f0f\u6a21\u578b\u3001\u5224\u522b\u5f0f\u6a21\u578b\u7684\u533a\u522b?", url: "#716", level:3, children: [
                   ]},
                   {title: "7.1.7 \u4ec0\u4e48\u662fmode collapsing?", url: "#717-mode-collapsing", level:3, children: [
                   ]},
-                  {title: "7.1.8 \u5982\u4f55\u89e3\u51b3mode collapsing\uff1f", url: "#718-mode-collapsing", level:3, children: [
+                  {title: "7.1.8 \u5982\u4f55\u89e3\u51b3mode collapsing?", url: "#718-mode-collapsing", level:3, children: [
                   ]}, 
               ]},
               {title: "7.2 GAN\u7684\u751f\u6210\u80fd\u529b\u8bc4\u4ef7", url: "#72-gan", level:2, children: [
@@ -172,7 +172,7 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <h3 id="712-gan">7.1.2 GAN的形式化表达</h3>
 <p>​
 上述例子只是简要介绍了一下GAN的思想,下面对于GAN做一个形式化的,更加具体的定义。通常情况下,无论是生成器还是判别器,我们都可以用神经网络来实现。那么,我们可以把通俗化的定义用下面这个模型来表示：</p>
-<p><img src="media/chapter07/gan_net.png" style="width: 65%"> </p>
+<p><img alt="" src="../media/chapter07/gan_net.png" /></p>
 <p>上述模型左边是生成器G,其输入是<span><span class="MathJax_Preview">z</span><script type="math/tex">z</script></span>,对于原始的GAN,<span><span class="MathJax_Preview">z</span><script type="math/tex">z</script></span>是由高斯分布随机采样得到的噪声。噪声<span><span class="MathJax_Preview">z</span><script type="math/tex">z</script></span>通过生成器得到了生成的假样本。</p>
 <p>生成的假样本与真实样本放到一起,被随机抽取送入到判别器D,由判别器去区分输入的样本是生成的假样本还是真实的样本。整个过程简单明了,生成对抗网络中的"生成对抗"主要体现在生成器和判别器之间的对抗。</p>
 <h3 id="713-gan">7.1.3 GAN的目标函数是什么?</h3>
@@ -198,11 +198,13 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <script type="math/tex; mode=display">V(D,G)=-\frac{1}{m}\sum_{i=1}^{i=m}logD(x^i)-\frac{1}{m}\sum_{i=1}^{i=m}log(1-D(\tilde{x}^i))</script>
 </div>
 <p>可以看出,这个目标函数和交叉熵是一致的,即<strong>判别器的目标是最小化交叉熵损失,生成器的目标是最小化生成数据分布和真实数据分布的JS散度</strong>。</p>
-<h3 id="715-ganloss">7.1.5 GAN的Loss为什么降不下去？</h3>
+<h3 id="715-ganloss">7.1.5 GAN的Loss为什么降不下去?</h3>
 <p>对于很多GAN的初学者在实践过程中可能会纳闷,为什么GAN的Loss一直降不下去。GAN到底什么时候才算收敛?其实,作为一个训练良好的GAN,其Loss就是降不下去的。衡量GAN是否训练好了,只能由人肉眼去看生成的图片质量是否好。不过,对于没有一个很好的评价是否收敛指标的问题,也有许多学者做了一些研究,后文提及的WGAN就提出了一种新的Loss设计方式,较好的解决了难以判断收敛性的问题。下面我们分析一下GAN的Loss为什么降不下去?
 ​
 对于判别器而言,GAN的Loss如下:</p>
-<p><span><span class="MathJax_Preview"><span><span class="MathJax_Preview">\mathop {\min }\limits_G \mathop {\max }\limits_D V(D,G) = {\rm E}_{x\sim{p_{data}(x)}}[\log D(x)] + {\rm E}_{z\sim{p_z}(z)}[\log (1 - D(G(z)))]</span><script type="math/tex">\mathop {\min }\limits_G \mathop {\max }\limits_D V(D,G) = {\rm E}_{x\sim{p_{data}(x)}}[\log D(x)] + {\rm E}_{z\sim{p_z}(z)}[\log (1 - D(G(z)))]</script></span></span><script type="math/tex"><span><span class="MathJax_Preview">\mathop {\min }\limits_G \mathop {\max }\limits_D V(D,G) = {\rm E}_{x\sim{p_{data}(x)}}[\log D(x)] + {\rm E}_{z\sim{p_z}(z)}[\log (1 - D(G(z)))]</span><script type="math/tex">\mathop {\min }\limits_G \mathop {\max }\limits_D V(D,G) = {\rm E}_{x\sim{p_{data}(x)}}[\log D(x)] + {\rm E}_{z\sim{p_z}(z)}[\log (1 - D(G(z)))]</script></span></script></span>
+<p>$$
+\mathop {\min }\limits_G \mathop {\max }\limits_D V(D,G) = {\rm E}<em>{x\sim{p</em>{data}(x)}}[\log D(x)] + {\rm E}_{z\sim{p_z}(z)}[\log (1 - D(G(z)))]
+$$
 ​
 从<span><span class="MathJax_Preview">\mathop {\min }\limits_G \mathop {\max }\limits_D V(D,G)​</span><script type="math/tex">\mathop {\min }\limits_G \mathop {\max }\limits_D V(D,G)​</script></span>可以看出,生成器和判别器的目的相反,也就是说两个生成器网络和判别器网络互为对抗,此消彼长。不可能Loss一直降到一个收敛的状态。</p>
 <blockquote>
@@ -217,18 +219,16 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </blockquote>
 <p>也就是说,无论是判别器,还是生成器。loss的高低不能代表生成器的好坏。一个好的GAN网络,其GAN Loss往往是不断波动的。</p>
 <p>看到这里可能有点让人绝望,似乎判断模型是否收敛就只能看生成的图像质量了。实际上,后文探讨的WGAN,提出了一种新的loss度量方式,让我们可以通过一定的手段来判断模型是否收敛。</p>
-<h3 id="716">7.1.6 生成式模型、判别式模型的区别？</h3>
-<p>​   对于机器学习模型，我们可以根据模型对数据的建模方式将模型分为两大类，生成式模型和判别式模型。如果我们要训练一个关于猫狗分类的模型，对于判别式模型，只需要学习二者差异即可。比如说猫的体型会比狗小一点。而生成式模型则不一样，需要学习猫张什么样，狗张什么样。有了二者的长相以后，再根据长相去区分。具体而言：</p>
+<h3 id="716">7.1.6 生成式模型、判别式模型的区别?</h3>
+<p>对于机器学习模型,我们可以根据模型对数据的建模方式将模型分为两大类,生成式模型和判别式模型。如果我们要训练一个关于猫狗分类的模型,对于判别式模型,只需要学习二者差异即可。比如说猫的体型会比狗小一点。而生成式模型则不一样,需要学习猫张什么样,狗张什么样。有了二者的长相以后,再根据长相去区分。具体而言:</p>
+<blockquote>
 <ul>
-<li>
-<p>生成式模型：由数据学习联合概率分布P(X,Y), 然后由P(Y|X)=P(X,Y)/P(X)求出概率分布P(Y|X)作为预测的模型。该方法表示了给定输入X与产生输出Y的生成关系</p>
-</li>
-<li>
-<p>判别式模型：由数据直接学习决策函数Y=f(X)或条件概率分布P(Y|X)作为预测模型，即判别模型。判别方法关心的是对于给定的输入X，应该预测什么样的输出Y。</p>
-</li>
+<li>生成式模型:由数据学习联合概率分布P(X,Y),然后由P(Y|X)=P(X,Y)/P(X)求出概率分布P(Y|X)作为预测的模型。该方法表示了给定输入X与产生输出Y的生成关系</li>
+<li>判别式模型:由数据直接学习决策函数Y=f(X)或条件概率分布P(Y|X)作为预测模型,即判别模型。判别方法关心的是对于给定的输入X,应该预测什么样的输出Y。</li>
 </ul>
-<p>​   对于上述两种模型，从文字上理解起来似乎不太直观。我们举个例子来阐述一下，对于性别分类问题，分别用不同的模型来做：</p>
-<p>​   1）如果用生成式模型：可以训练一个模型，学习输入人的特征X和性别Y的关系。比如现在有下面一批数据：</p>
+</blockquote>
+<p>对于上述两种模型,从文字上理解起来似乎不太直观。我们举个例子来阐述一下,对于性别分类问题,分别用不同的模型来做:</p>
+<p>1) 如果用生成式模型:可以训练一个模型,学习输入人的特征X和性别Y的关系。比如现在有下面一批数据：</p>
 <table>
 <thead>
 <tr>
@@ -253,18 +253,23 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </tr>
 </tbody>
 </table>
-<p>​   这个数据可以统计得到，即统计人的特征X=0,1….的时候，其类别为Y=0,1的概率。统计得到上述联合概率分布P(X, Y)后，可以学习一个模型，比如让二维高斯分布去拟合上述数据，这样就学习到了X，Y的联合分布。在预测时，如果我们希望给一个输入特征X，预测其类别，则需要通过贝叶斯公式得到条件概率分布才能进行推断：
-$$
+<p>这个数据可以统计得到,即统计人的特征X=0,1….的时候,其类别为Y=0,1的概率。统计得到上述联合概率分布P(X,Y)后,可以学习一个模型,比如让二维高斯分布去拟合上述数据,这样就学习到了X,Y的联合分布。在预测时,如果我们希望给一个输入特征X,预测其类别,则需要通过贝叶斯公式得到条件概率分布才能进行推断:</p>
+<div>
+<div class="MathJax_Preview">
 P(Y|X)={\frac{P(X,Y)}{P(X)}}={\frac{P(X,Y)}{P(X|Y)P(Y)}}
-$$
-​   2）如果用判别式模型：可以训练一个模型，输入人的特征X，这些特征包括人的五官，穿衣风格，发型等。输出则是对于性别的判断概率，这个概率服从一个分布，分布的取值只有两个，要么男，要么女，记这个分布为Y。这个过程学习了一个条件概率分布P(Y|X)，即输入特征X的分布已知条件下，Y的概率分布。</p>
-<p>​   显然，从上面的分析可以看出。判别式模型似乎要方便很多，因为生成式模型要学习一个X，Y的联合分布往往需要很多数据，而判别式模型需要的数据则相对少，因为判别式模型更关注输入特征的差异性。不过生成式既然使用了更多数据来生成联合分布，自然也能够提供更多的信息，现在有一个样本（X,Y）,其联合概率P（X,Y）经过计算特别小，那么可以认为这个样本是异常样本。这种模型可以用来做outlier detection。</p>
+</div>
+<script type="math/tex; mode=display">
+P(Y|X)={\frac{P(X,Y)}{P(X)}}={\frac{P(X,Y)}{P(X|Y)P(Y)}}
+</script>
+</div>
+<p>2）如果用判别式模型:可以训练一个模型,输入人的特征X,这些特征包括人的五官,穿衣风格,发型等。输出则是对于性别的判断概率,这个概率服从一个分布,分布的取值只有两个,要么男,要么女,记这个分布为Y。这个过程学习了一个条件概率分布P(Y|X),即输入特征X的分布已知条件下,Y的概率分布。</p>
+<p>显然,从上面的分析可以看出。判别式模型似乎要方便很多,因为生成式模型要学习一个X,Y的联合分布往往需要很多数据,而判别式模型需要的数据则相对少,因为判别式模型更关注输入特征的差异性。不过生成式既然使用了更多数据来生成联合分布,自然也能够提供更多的信息,现在有一个样本(X,Y),其联合概率P(X,Y)经过计算特别小,那么可以认为这个样本是异常样本。这种模型可以用来做outlier detection。</p>
 <h3 id="717-mode-collapsing">7.1.7 什么是mode collapsing?</h3>
-<p>​   某个模式(mode)出现大量重复样本，例如：
-<img alt="model collapsing" src="./img/ch7/model_collpsing.png" />
-​   上图左侧的蓝色五角星表示真实样本空间，黄色的是生成的。生成样本缺乏多样性，存在大量重复。比如上图右侧中，红框里面人物反复出现。</p>
-<h3 id="718-mode-collapsing">7.1.8 如何解决mode collapsing？</h3>
-<p>方法一：<strong>针对目标函数的改进方法</strong></p>
+<p>某个模式(mode)出现大量重复样本,例如:</p>
+<p><img alt="model collapsing" src="../media/chapter07/model_collpsing.png" /></p>
+<p>上图左侧的蓝色五角星表示真实样本空间,黄色的是生成的。生成样本缺乏多样性,存在大量重复。比如上图右侧中,红框里面人物反复出现。</p>
+<h3 id="718-mode-collapsing">7.1.8 如何解决mode collapsing?</h3>
+<p>方法一:<strong>针对目标函数的改进方法</strong></p>
 <p>​   为了避免前面提到的由于优化maxmin导致mode跳来跳去的问题，UnrolledGAN采用修改生成器loss来解决。具体而言，UnrolledGAN在更新生成器时更新k次生成器，参考的Loss不是某一次的loss，是判别器后面k次迭代的loss。注意，判别器后面k次迭代不更新自己的参数，只计算loss用于更新生成器。这种方式使得生成器考虑到了后面k次判别器的变化情况，避免在不同mode之间切换导致的模式崩溃问题。此处务必和迭代k次生成器，然后迭代1次判别器区分开[8]。DRAGAN则引入博弈论中的无后悔算法，改造其loss以解决mode collapse问题[9]。前文所述的EBGAN则是加入VAE的重构误差以解决mode collapse。</p>
 <p>方法二：<strong>针对网络结构的改进方法</strong></p>
 <p>​   Multi agent diverse GAN(MAD-GAN)采用多个生成器，一个判别器以保障样本生成的多样性。具体结构如下：</p>
