@@ -40,7 +40,7 @@
                   ]},
                   {title: "7.1.3 GAN\u7684\u76ee\u6807\u51fd\u6570\u662f\u4ec0\u4e48?", url: "#713-gan", level:3, children: [
                   ]},
-                  {title: "7.1.4 GAN\u7684\u76ee\u6807\u51fd\u6570\u548c\u4ea4\u53c9\u71b5\u6709\u4ec0\u4e48\u533a\u522b\uff1f", url: "#714-gan", level:3, children: [
+                  {title: "7.1.4 GAN\u7684\u76ee\u6807\u51fd\u6570\u548c\u4ea4\u53c9\u71b5\u6709\u4ec0\u4e48\u533a\u522b?", url: "#714-gan", level:3, children: [
                   ]},
                   {title: "7.1.5 GAN\u7684Loss\u4e3a\u4ec0\u4e48\u964d\u4e0d\u4e0b\u53bb\uff1f", url: "#715-ganloss", level:3, children: [
                   ]},
@@ -172,7 +172,7 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <h3 id="712-gan">7.1.2 GAN的形式化表达</h3>
 <p>​
 上述例子只是简要介绍了一下GAN的思想,下面对于GAN做一个形式化的,更加具体的定义。通常情况下,无论是生成器还是判别器,我们都可以用神经网络来实现。那么,我们可以把通俗化的定义用下面这个模型来表示：</p>
-<p><img alt="GAN网络结构" src="../media/chapter07/gan_net.png" /></p>
+<p><img src="media/chapter07/gan_net.png" style="width: 65%"> </p>
 <p>上述模型左边是生成器G,其输入是<span><span class="MathJax_Preview">z</span><script type="math/tex">z</script></span>,对于原始的GAN,<span><span class="MathJax_Preview">z</span><script type="math/tex">z</script></span>是由高斯分布随机采样得到的噪声。噪声<span><span class="MathJax_Preview">z</span><script type="math/tex">z</script></span>通过生成器得到了生成的假样本。</p>
 <p>生成的假样本与真实样本放到一起,被随机抽取送入到判别器D,由判别器去区分输入的样本是生成的假样本还是真实的样本。整个过程简单明了,生成对抗网络中的"生成对抗"主要体现在生成器和判别器之间的对抗。</p>
 <h3 id="713-gan">7.1.3 GAN的目标函数是什么?</h3>
@@ -188,30 +188,35 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </div>
 <p>这个目标函数可以分为两个部分来理解:</p>
 <blockquote>
-<p>第一部分:判别器的优化通过<span><span class="MathJax_Preview">\mathop {\max}\limits_D V(D,G)</span><script type="math/tex">\mathop {\max}\limits_D V(D,G)</script></span>实现,<span><span class="MathJax_Preview">V(D,G)</span><script type="math/tex">V(D,G)</script></span>为判别器的目标函数,其第一项<span><span class="MathJax_Preview">{\rm E}_{x\sim{p_{data}(x)}}[\log D(x)]</span><script type="math/tex">{\rm E}_{x\sim{p_{data}(x)}}[\log D(x)]</script></span>表示对于从真实数据分布 中采用的样本 ,其被判别器判定为真实样本概率的数学期望。对于真实数据分布 中采样的样本，其预测为正样本的概率当然是越接近1越好。因此希望最大化这一项。第二项<span><span class="MathJax_Preview">{\rm E}_{z\sim{p_z}(z)}[\log (1 - D(G(z)))]</span><script type="math/tex">{\rm E}_{z\sim{p_z}(z)}[\log (1 - D(G(z)))]</script></span>表示：对于从噪声<span><span class="MathJax_Preview">P_z(z)​</span><script type="math/tex">P_z(z)​</script></span>分布当中采样得到的样本，经过生成器生成之后得到的生成图片，然后送入判别器，其预测概率的负对数的期望，这个值自然是越大越好，这个值越大， 越接近0，也就代表判别器越好。</p>
+<p>第一部分:判别器的优化通过<span><span class="MathJax_Preview">\mathop {\max}\limits_D V(D,G)</span><script type="math/tex">\mathop {\max}\limits_D V(D,G)</script></span>实现,<span><span class="MathJax_Preview">V(D,G)</span><script type="math/tex">V(D,G)</script></span>为判别器的目标函数,其第一项<span><span class="MathJax_Preview">{\rm E}_{x\sim{p_{data}(x)}}[\log D(x)]</span><script type="math/tex">{\rm E}_{x\sim{p_{data}(x)}}[\log D(x)]</script></span>表示对于从真实数据分布中采用的样本,其被判别器判定为真实样本概率的数学期望。对于真实数据分布中采样的样本,其预测为正样本的概率当然是越接近1越好。因此希望最大化这一项。第二项<span><span class="MathJax_Preview">{\rm E}_{z\sim{p_z}(z)}[\log (1 - D(G(z)))]</span><script type="math/tex">{\rm E}_{z\sim{p_z}(z)}[\log (1 - D(G(z)))]</script></span>表示:对于从噪声<span><span class="MathJax_Preview">P_z(z)​</span><script type="math/tex">P_z(z)​</script></span>分布当中采样得到的样本,经过生成器生成之后得到的生成图片,然后送入判别器,其预测概率的负对数的期望,这个值自然是越大越好,这个值越大,越接近0,也就代表判别器越好。</p>
+<p>第二部分:生成器的优化通过<span><span class="MathJax_Preview">\mathop {\min }\limits_G({\mathop {\max }\limits_D V(D,G)})</span><script type="math/tex">\mathop {\min }\limits_G({\mathop {\max }\limits_D V(D,G)})</script></span>来实现。注意,生成器的目标不是<span><span class="MathJax_Preview">\mathop {\min }\limits_GV(D,G)</span><script type="math/tex">\mathop {\min }\limits_GV(D,G)</script></span>,即生成器不是最小化判别器的目标函数,二是最小化判别器目标函数的最大值,判别器目标函数的最大值代表的是真实数据分布与生成数据分布的JS散度(详情可以参阅附录的推导),JS散度可以度量分布的相似性,两个分布越接近,JS散度越小。</p>
 </blockquote>
-<p>​   第二部分：生成器的优化通过<span><span class="MathJax_Preview">\mathop {\min }\limits_G({\mathop {\max }\limits_D V(D,G)})</span><script type="math/tex">\mathop {\min }\limits_G({\mathop {\max }\limits_D V(D,G)})</script></span>来实现。注意，生成器的目标不是<span><span class="MathJax_Preview">\mathop {\min }\limits_GV(D,G)</span><script type="math/tex">\mathop {\min }\limits_GV(D,G)</script></span>，即生成器不是最小化判别器的目标函数，二是最小化判别器目标函数的最大值，判别器目标函数的最大值代表的是真实数据分布与生成数据分布的JS散度(详情可以参阅附录的推导)，JS散度可以度量分布的相似性，两个分布越接近，JS散度越小。</p>
-<h3 id="714-gan">7.1.4 GAN的目标函数和交叉熵有什么区别？</h3>
-<p>​   判别器目标函数写成离散形式即为:
-$$
-V(D,G)=-\frac{1}{m}\sum_{i=1}^{i=m}logD(x^i)-\frac{1}{m}\sum_{i=1}^{i=m}log(1-D(\tilde{x}^i))
-$$</p>
-<p>​   可以看出，这个目标函数和交叉熵是一致的，即<strong>判别器的目标是最小化交叉熵损失，生成器的目标是最小化生成数据分布和真实数据分布的JS散度</strong>。</p>
-<hr />
-<p>[1]: Goodfellow, Ian, et al. "Generative adversarial nets." Advances in neural information processing systems. 2014.</p>
+<h3 id="714-gan">7.1.4 GAN的目标函数和交叉熵有什么区别?</h3>
+<p>判别器目标函数写成离散形式即为:</p>
+<div>
+<div class="MathJax_Preview">V(D,G)=-\frac{1}{m}\sum_{i=1}^{i=m}logD(x^i)-\frac{1}{m}\sum_{i=1}^{i=m}log(1-D(\tilde{x}^i))</div>
+<script type="math/tex; mode=display">V(D,G)=-\frac{1}{m}\sum_{i=1}^{i=m}logD(x^i)-\frac{1}{m}\sum_{i=1}^{i=m}log(1-D(\tilde{x}^i))</script>
+</div>
+<p>可以看出,这个目标函数和交叉熵是一致的,即<strong>判别器的目标是最小化交叉熵损失,生成器的目标是最小化生成数据分布和真实数据分布的JS散度</strong>。</p>
 <h3 id="715-ganloss">7.1.5 GAN的Loss为什么降不下去？</h3>
-<p>​   对于很多GAN的初学者在实践过程中可能会纳闷，为什么GAN的Loss一直降不下去。GAN到底什么时候才算收敛？其实，作为一个训练良好的GAN，其Loss就是降不下去的。衡量GAN是否训练好了，只能由人肉眼去看生成的图片质量是否好。不过，对于没有一个很好的评价是否收敛指标的问题，也有许多学者做了一些研究，后文提及的WGAN就提出了一种新的Loss设计方式，较好的解决了难以判断收敛性的问题。下面我们分析一下GAN的Loss为什么降不下去？
-​   对于判别器而言，GAN的Loss如下：
-$$
-\mathop {\min }\limits_G \mathop {\max }\limits_D V(D,G) = {\rm E}<em>{x\sim{p</em>{data}(x)}}[\log D(x)] + {\rm E}_{z\sim{p_z}(z)}[\log (1 - D(G(z)))]
-$$
-​   从<span><span class="MathJax_Preview">\mathop {\min }\limits_G \mathop {\max }\limits_D V(D,G)​</span><script type="math/tex">\mathop {\min }\limits_G \mathop {\max }\limits_D V(D,G)​</script></span>可以看出，生成器和判别器的目的相反，也就是说两个生成器网络和判别器网络互为对抗，此消彼长。不可能Loss一直降到一个收敛的状态。</p>
+<p>对于很多GAN的初学者在实践过程中可能会纳闷,为什么GAN的Loss一直降不下去。GAN到底什么时候才算收敛?其实,作为一个训练良好的GAN,其Loss就是降不下去的。衡量GAN是否训练好了,只能由人肉眼去看生成的图片质量是否好。不过,对于没有一个很好的评价是否收敛指标的问题,也有许多学者做了一些研究,后文提及的WGAN就提出了一种新的Loss设计方式,较好的解决了难以判断收敛性的问题。下面我们分析一下GAN的Loss为什么降不下去?
+​
+对于判别器而言,GAN的Loss如下:</p>
+<p><span><span class="MathJax_Preview"><span><span class="MathJax_Preview">\mathop {\min }\limits_G \mathop {\max }\limits_D V(D,G) = {\rm E}_{x\sim{p_{data}(x)}}[\log D(x)] + {\rm E}_{z\sim{p_z}(z)}[\log (1 - D(G(z)))]</span><script type="math/tex">\mathop {\min }\limits_G \mathop {\max }\limits_D V(D,G) = {\rm E}_{x\sim{p_{data}(x)}}[\log D(x)] + {\rm E}_{z\sim{p_z}(z)}[\log (1 - D(G(z)))]</script></span></span><script type="math/tex"><span><span class="MathJax_Preview">\mathop {\min }\limits_G \mathop {\max }\limits_D V(D,G) = {\rm E}_{x\sim{p_{data}(x)}}[\log D(x)] + {\rm E}_{z\sim{p_z}(z)}[\log (1 - D(G(z)))]</span><script type="math/tex">\mathop {\min }\limits_G \mathop {\max }\limits_D V(D,G) = {\rm E}_{x\sim{p_{data}(x)}}[\log D(x)] + {\rm E}_{z\sim{p_z}(z)}[\log (1 - D(G(z)))]</script></span></script></span>
+​
+从<span><span class="MathJax_Preview">\mathop {\min }\limits_G \mathop {\max }\limits_D V(D,G)​</span><script type="math/tex">\mathop {\min }\limits_G \mathop {\max }\limits_D V(D,G)​</script></span>可以看出,生成器和判别器的目的相反,也就是说两个生成器网络和判别器网络互为对抗,此消彼长。不可能Loss一直降到一个收敛的状态。</p>
+<blockquote>
 <ul>
-<li>对于生成器，其Loss下降快，很有可能是判别器太弱，导致生成器很轻易的就"愚弄"了判别器。</li>
-<li>对于判别器，其Loss下降快，意味着判别器很强，判别器很强则说明生成器生成的图像不够逼真，才使得判别器轻易判别，导致Loss下降很快。</li>
+<li>
+<p>对于生成器,其Loss下降快,很有可能是判别器太弱,导致生成器很轻易的就"愚弄"了判别器。</p>
+</li>
+<li>
+<p>对于判别器,其Loss下降快,意味着判别器很强,判别器很强则说明生成器生成的图像不够逼真,才使得判别器轻易判别,导致Loss下降很快。</p>
+</li>
 </ul>
-<p>​   也就是说，无论是判别器，还是生成器。loss的高低不能代表生成器的好坏。一个好的GAN网络，其GAN Loss往往是不断波动的。</p>
-<p>​   看到这里可能有点让人绝望，似乎判断模型是否收敛就只能看生成的图像质量了。实际上，后文探讨的WGAN，提出了一种新的loss度量方式，让我们可以通过一定的手段来判断模型是否收敛。</p>
+</blockquote>
+<p>也就是说,无论是判别器,还是生成器。loss的高低不能代表生成器的好坏。一个好的GAN网络,其GAN Loss往往是不断波动的。</p>
+<p>看到这里可能有点让人绝望,似乎判断模型是否收敛就只能看生成的图像质量了。实际上,后文探讨的WGAN,提出了一种新的loss度量方式,让我们可以通过一定的手段来判断模型是否收敛。</p>
 <h3 id="716">7.1.6 生成式模型、判别式模型的区别？</h3>
 <p>​   对于机器学习模型，我们可以根据模型对数据的建模方式将模型分为两大类，生成式模型和判别式模型。如果我们要训练一个关于猫狗分类的模型，对于判别式模型，只需要学习二者差异即可。比如说猫的体型会比狗小一点。而生成式模型则不一样，需要学习猫张什么样，狗张什么样。有了二者的长相以后，再根据长相去区分。具体而言：</p>
 <ul>
