@@ -69,7 +69,7 @@
                   {title: "7.2.8 \u5176\u4ed6\u8bc4\u4ef7\u65b9\u6cd5", url: "#728", level:3, children: [
                   ]}, 
               ]},
-              {title: "7.3 \u5176\u4ed6\u5e38\u89c1\u7684\u751f\u6210\u5f0f\u6a21\u578b\u6709\u54ea\u4e9b\uff1f", url: "#73", level:2, children: [
+              {title: "7.3 \u5176\u4ed6\u5e38\u89c1\u7684\u751f\u6210\u5f0f\u6a21\u578b\u6709\u54ea\u4e9b?", url: "#73", level:2, children: [
                   {title: "7.3.1 \u4ec0\u4e48\u662f\u81ea\u56de\u5f52\u6a21\u578b\uff1apixelRNN\u4e0epixelCNN\uff1f", url: "#731-pixelrnnpixelcnn", level:3, children: [
                   ]},
                   {title: "7.3.2 \u4ec0\u4e48\u662fVAE\uff1f", url: "#732-vae", level:3, children: [
@@ -282,48 +282,62 @@ P(Y|X)={\frac{P(X,Y)}{P(X)}}={\frac{P(X,Y)}{P(X|Y)P(Y)}}
 <p>Mini-batch discrimination在判别器的中间层建立一个mini-batch layer用于计算基于L1距离的样本统计量,通过建立该统计量,实现了一个batch内某个样本与其他样本有多接近。这个信息可以被判别器利用到,从而甄别出哪些缺乏多样性的样本。对生成器而言,则要试图生成具有多样性的样本。</p>
 <h2 id="72-gan">7.2 GAN的生成能力评价</h2>
 <h3 id="721-gan">7.2.1 如何客观评价GAN的生成能力？</h3>
-<p>​   最常见评价GAN的方法就是主观评价。主观评价需要花费大量人力物力，且存在以下问题：</p>
+<p>最常见评价GAN的方法就是主观评价。主观评价需要花费大量人力物力,且存在以下问题:</p>
+<blockquote>
 <ul>
-<li>
-<p>评价带有主管色彩，有些bad case没看到很容易造成误判</p>
-</li>
-<li>
-<p>如果一个GAN过拟合了，那么生成的样本会非常真实，人类主观评价得分会非常高，可是这并不是一个好的GAN。</p>
-</li>
+<li>评价带有主管色彩,有些bad case没看到很容易造成误判</li>
+<li>如果一个GAN过拟合了,那么生成的样本会非常真实,人类主观评价得分会非常高,可是这并不是一个好的GAN。</li>
 </ul>
-<p>因此，就有许多学者提出了GAN的客观评价方法。</p>
+</blockquote>
+<p>因此,就有许多学者提出了GAN的客观评价方法。</p>
 <h3 id="722-inception-score">7.2.2 Inception Score</h3>
-<p>​   对于一个在ImageNet训练良好的GAN，其生成的样本丢给Inception网络进行测试的时候，得到的判别概率应该具有如下特性：
-- 对于同一个类别的图片，其输出的概率分布应该趋向于一个脉冲分布。可以保证生成样本的准确性。
-- 对于所有类别，其输出的概率分布应该趋向于一个均匀分布，这样才不会出现mode dropping等，可以保证生成样本的多样性。</p>
-<p>​   因此，可以设计如下指标：
-$$
-IS(P_g)=e^{E_{x\sim P_g}[KL(p_M(y|x)\Vert{p_M(y)})]}
-根据前面分析，如果是一个训练良好的GAN，<span><span class="MathJax_Preview">p_M(y|x)​</span><script type="math/tex">p_M(y|x)​</script></span>趋近于脉冲分布，<span><span class="MathJax_Preview">p_M(y)​</span><script type="math/tex">p_M(y)​</script></span>趋近于均匀分布。二者KL散度会很大。Inception Score自然就高。实际实验表明，Inception Score和人的主观判别趋向一致。IS的计算没有用到真实数据，具体值取决于模型M的选择
-$$
-​   根据前面分析，如果是一个训练良好的GAN，<span><span class="MathJax_Preview">p_M(y|x)</span><script type="math/tex">p_M(y|x)</script></span>趋近于脉冲分布，<span><span class="MathJax_Preview">p_M(y)</span><script type="math/tex">p_M(y)</script></span>趋近于均匀分布。二者KL散度会很大。Inception Score自然就高。实际实验表明，Inception Score和人的主观判别趋向一致。IS的计算没有用到真实数据，具体值取决于模型M的选择。</p>
-<p>​   <strong>特点：可以一定程度上衡量生成样本的多样性和准确性，但是无法检测过拟合。Mode Score也是如此。不推荐在和ImageNet数据集差别比较大的数据上使用。</strong></p>
+<p>对于一个在ImageNet训练良好的GAN,其生成的样本丢给Inception网络进行测试的时候,得到的判别概率应该具有如下特性:</p>
+<blockquote>
+<ul>
+<li>对于同一个类别的图片,其输出的概率分布应该趋向于一个脉冲分布。可以保证生成样本的准确性。</li>
+<li>对于所有类别,其输出的概率分布应该趋向于一个均匀分布,这样才不会出现mode dropping等,可以保证生成样本的多样性。</li>
+</ul>
+</blockquote>
+<p>因此，可以设计如下指标：</p>
+<div>
+<div class="MathJax_Preview">IS(P_g)=e^{E_{x\sim P_g}[KL(p_M(y|x)\Vert{p_M(y)})]}</div>
+<script type="math/tex; mode=display">IS(P_g)=e^{E_{x\sim P_g}[KL(p_M(y|x)\Vert{p_M(y)})]}</script>
+</div>
+<p>根据前面分析,如果是一个训练良好的GAN,<span><span class="MathJax_Preview">p_M(y|x)​</span><script type="math/tex">p_M(y|x)​</script></span>趋近于脉冲分布,<span><span class="MathJax_Preview">p_M(y)​</span><script type="math/tex">p_M(y)​</script></span>趋近于均匀分布。二者KL散度会很大。Inception Score自然就高。实际实验表明,Inception Score和人的主观判别趋向一致。IS的计算没有用到真实数据,具体值取决于模型M的选择</p>
+<p><strong>特点：可以一定程度上衡量生成样本的多样性和准确性,但是无法检测过拟合。Mode Score也是如此。不推荐在和ImageNet数据集差别比较大的数据上使用。</strong></p>
 <h3 id="723-mode-score">7.2.3 Mode Score</h3>
-<p>​   Mode Score作为Inception Score的改进版本，添加了关于生成样本和真实样本预测的概率分布相似性度量一项。具体公式如下：
-$$
-MS(P_g)=e^{E_{x\sim P_g}[KL(p_M(y|x)\Vert{p_M(y)})-KL(p_M(y)\Vert p_M(y^*))]}
-$$</p>
+<p>Mode Score作为Inception Score的改进版本,添加了关于生成样本和真实样本预测的概率分布相似性度量一项。具体公式如下:</p>
+<div>
+<div class="MathJax_Preview">MS(P_g)=e^{E_{x\sim P_g}[KL(p_M(y|x)\Vert{p_M(y)})-KL(p_M(y)\Vert p_M(y^*))]}</div>
+<script type="math/tex; mode=display">MS(P_g)=e^{E_{x\sim P_g}[KL(p_M(y|x)\Vert{p_M(y)})-KL(p_M(y)\Vert p_M(y^*))]}</script>
+</div>
 <h3 id="724-kernel-mmd-maximum-mean-discrepancy">7.2.4 Kernel MMD (Maximum Mean Discrepancy)</h3>
-<p>计算公式如下：
-$$
+<p>计算公式如下:</p>
+<p>$$
 MMD^2(P_r,P_g)=E_{x_r\sim{P_r},x_g\sim{P_g}}[\lVert\Sigma_{i=1}^{n1}k(x_r)-\Sigma_{i=1}^{n2}k(x_g)\rVert]
 $$
-​   对于Kernel MMD值的计算，首先需要选择一个核函数<span><span class="MathJax_Preview">k</span><script type="math/tex">k</script></span>，这个核函数把样本映射到再生希尔伯特空间(Reproducing Kernel Hilbert Space, RKHS) ，RKHS相比于欧几里得空间有许多优点，对于函数内积的计算是完备的。将上述公式展开即可得到下面的计算公式：
-$$
+​
+对于Kernel MMD值的计算,首先需要选择一个核函数<span><span class="MathJax_Preview">k</span><script type="math/tex">k</script></span>,这个核函数把样本映射到再生希尔伯特空间(Reproducing Kernel Hilbert Space, RKHS),RKHS相比于欧几里得空间有许多优点,对于函数内积的计算是完备的。将上述公式展开即可得到下面的计算公式:</p>
+<div>
+<div class="MathJax_Preview">
 MMD^2(P_r,P_g)=E_{x_r,x_r{'}\sim{P_r},x_g,x_g{'}\sim{P_g}}[k(x_r,x_r{'})-2k(x_r,x_g)+k(x_g,x_g{'})]
-$$
-MMD值越小，两个分布越接近。</p>
-<p><strong>特点：可以一定程度上衡量模型生成图像的优劣性，计算代价小。推荐使用。</strong></p>
+</div>
+<script type="math/tex; mode=display">
+MMD^2(P_r,P_g)=E_{x_r,x_r{'}\sim{P_r},x_g,x_g{'}\sim{P_g}}[k(x_r,x_r{'})-2k(x_r,x_g)+k(x_g,x_g{'})]
+</script>
+</div>
+<p>MMD值越小,两个分布越接近。</p>
+<p><strong>特点:可以一定程度上衡量模型生成图像的优劣性,计算代价小。推荐使用。</strong></p>
 <h3 id="725-wasserstein-distance">7.2.5 Wasserstein distance</h3>
-<p>​   Wasserstein distance在最优传输问题中通常也叫做推土机距离。这个距离的介绍在WGAN中有详细讨论。公式如下：
-$$
+<p>Wasserstein distance在最优传输问题中通常也叫做推土机距离。这个距离的介绍在WGAN中有详细讨论。公式如下:</p>
+<div>
+<div class="MathJax_Preview">
 WD(P_r,P_g)=min_{\omega\in\mathbb{R}^{m\times n}}\Sigma_{i=1}^n\Sigma_{i=1}^m\omega_{ij}d(x_i^r,x_j^g)
-$$</p>
+</div>
+<script type="math/tex; mode=display">
+WD(P_r,P_g)=min_{\omega\in\mathbb{R}^{m\times n}}\Sigma_{i=1}^n\Sigma_{i=1}^m\omega_{ij}d(x_i^r,x_j^g)
+</script>
+</div>
 <div>
 <div class="MathJax_Preview">
 s.t. \Sigma_{i=1}^mw_{i,j}=p_r(x_i^r),  \forall i;\Sigma_{j=1}^nw_{i,j}=p_g(x_j^g),  \forall j
@@ -332,24 +346,28 @@ s.t. \Sigma_{i=1}^mw_{i,j}=p_r(x_i^r),  \forall i;\Sigma_{j=1}^nw_{i,j}=p_g(x_j^
 s.t. \Sigma_{i=1}^mw_{i,j}=p_r(x_i^r),  \forall i;\Sigma_{j=1}^nw_{i,j}=p_g(x_j^g),  \forall j
 </script>
 </div>
-<p>​   Wasserstein distance可以衡量两个分布之间的相似性。距离越小，分布越相似。</p>
-<p><strong>特点：如果特征空间选择合适，会有一定的效果。但是计算复杂度为<span><span class="MathJax_Preview">O(n^3)​</span><script type="math/tex">O(n^3)​</script></span>太高</strong></p>
+<p>Wasserstein distance可以衡量两个分布之间的相似性。距离越小,分布越相似。</p>
+<p><strong>特点:如果特征空间选择合适,会有一定的效果。但是计算复杂度为<span><span class="MathJax_Preview">O(n^3)​</span><script type="math/tex">O(n^3)​</script></span>太高</strong></p>
 <h3 id="726-frechet-inception-distance-fid">7.2.6 Fréchet Inception Distance (FID)</h3>
-<p>​   FID距离计算真实样本，生成样本在特征空间之间的距离。首先利用Inception网络来提取特征，然后使用高斯模型对特征空间进行建模。根据高斯模型的均值和协方差来进行距离计算。具体公式如下：
-$$
-FID(\mathbb P_r,\mathbb P_g)=\lVert\mu_r-\mu_g\rVert+Tr(C_r+C_g-2(C_rC_g)^{1/2})
-<span><span class="MathJax_Preview">\mu,C</span><script type="math/tex">\mu,C</script></span>分别代表协方差和均值。
-$$
-<span><span class="MathJax_Preview">\mu,C​</span><script type="math/tex">\mu,C​</script></span>分别代表协方差和均值。</p>
-<p>​   <strong>特点：尽管只计算了特征空间的前两阶矩，但是鲁棒，且计算高效。</strong></p>
+<p>FID距离计算真实样本，生成样本在特征空间之间的距离。首先利用Inception网络来提取特征，然后使用高斯模型对特征空间进行建模。根据高斯模型的均值和协方差来进行距离计算。具体公式如下：</p>
+<div>
+<div class="MathJax_Preview">FID(\mathbb P_r,\mathbb P_g)=\lVert\mu_r-\mu_g\rVert+Tr(C_r+C_g-2(C_rC_g)^{1/2})</div>
+<script type="math/tex; mode=display">FID(\mathbb P_r,\mathbb P_g)=\lVert\mu_r-\mu_g\rVert+Tr(C_r+C_g-2(C_rC_g)^{1/2})</script>
+</div>
+<p><span><span class="MathJax_Preview">\mu,C</span><script type="math/tex">\mu,C</script></span>分别代表协方差和均值。</p>
+<p><strong>特点:尽管只计算了特征空间的前两阶矩,但是鲁棒,且计算高效。</strong></p>
 <h3 id="727-1-nearest-neighbor-classifier">7.2.7 1-Nearest Neighbor classifier</h3>
-<p>​   使用留一法，结合1-NN分类器（别的也行）计算真实图片，生成图像的精度。如果二者接近，则精度接近50%，否则接近0%。对于GAN的评价问题，作者分别用正样本的分类精度，生成样本的分类精度去衡量生成样本的真实性，多样性。
-- 对于真实样本<span><span class="MathJax_Preview">x_r</span><script type="math/tex">x_r</script></span>，进行1-NN分类的时候，如果生成的样本越真实。则真实样本空间<span><span class="MathJax_Preview">\mathbb R</span><script type="math/tex">\mathbb R</script></span>将被生成的样本<span><span class="MathJax_Preview">x_g</span><script type="math/tex">x_g</script></span>包围。那么<span><span class="MathJax_Preview">x_r</span><script type="math/tex">x_r</script></span>的精度会很低。
-- 对于生成的样本<span><span class="MathJax_Preview">x_g​</span><script type="math/tex">x_g​</script></span>，进行1-NN分类的时候，如果生成的样本多样性不足。由于生成的样本聚在几个mode，则<span><span class="MathJax_Preview">x_g​</span><script type="math/tex">x_g​</script></span>很容易就和<span><span class="MathJax_Preview">x_r​</span><script type="math/tex">x_r​</script></span>区分，导致精度会很高。</p>
-<p><strong>特点：理想的度量指标，且可以检测过拟合。</strong></p>
+<p>使用留一法,结合1-NN分类器(别的也行)计算真实图片,生成图像的精度。如果二者接近,则精度接近50%,否则接近0%。对于GAN的评价问题,作者分别用正样本的分类精度,生成样本的分类精度去衡量生成样本的真实性,多样性。</p>
+<blockquote>
+<ul>
+<li>对于真实样本<span><span class="MathJax_Preview">x_r</span><script type="math/tex">x_r</script></span>,进行1-NN分类的时候,如果生成的样本越真实。则真实样本空间<span><span class="MathJax_Preview">\mathbb R</span><script type="math/tex">\mathbb R</script></span>将被生成的样本<span><span class="MathJax_Preview">x_g</span><script type="math/tex">x_g</script></span>包围。那么<span><span class="MathJax_Preview">x_r</span><script type="math/tex">x_r</script></span>的精度会很低。</li>
+<li>对于生成的样本<span><span class="MathJax_Preview">x_g​</span><script type="math/tex">x_g​</script></span>,进行1-NN分类的时候,如果生成的样本多样性不足。由于生成的样本聚在几个mode,则<span><span class="MathJax_Preview">x_g​</span><script type="math/tex">x_g​</script></span>很容易就和<span><span class="MathJax_Preview">x_r​</span><script type="math/tex">x_r​</script></span>区分,导致精度会很高。</li>
+</ul>
+</blockquote>
+<p><strong>特点:理想的度量指标,且可以检测过拟合。</strong></p>
 <h3 id="728">7.2.8 其他评价方法</h3>
-<p>​   AIS，KDE方法也可以用于评价GAN，但这些方法不是model agnostic metrics。也就是说，这些评价指标的计算无法只利用：生成的样本，真实样本来计算。</p>
-<h2 id="73">7.3 其他常见的生成式模型有哪些？</h2>
+<p>AIS,KDE方法也可以用于评价GAN,但这些方法不是model agnostic metrics。也就是说,这些评价指标的计算无法只利用:生成的样本,真实样本来计算。</p>
+<h2 id="73">7.3 其他常见的生成式模型有哪些?</h2>
 <h3 id="731-pixelrnnpixelcnn">7.3.1 什么是自回归模型：pixelRNN与pixelCNN？</h3>
 <p>​   自回归模型通过对图像数据的概率分布<span><span class="MathJax_Preview">p_{data}(x)</span><script type="math/tex">p_{data}(x)</script></span>进行显式建模，并利用极大似然估计优化模型。具体如下：
 $$
