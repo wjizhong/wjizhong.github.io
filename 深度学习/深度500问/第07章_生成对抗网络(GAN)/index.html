@@ -70,9 +70,9 @@
                   ]}, 
               ]},
               {title: "7.3 \u5176\u4ed6\u5e38\u89c1\u7684\u751f\u6210\u5f0f\u6a21\u578b\u6709\u54ea\u4e9b?", url: "#73", level:2, children: [
-                  {title: "7.3.1 \u4ec0\u4e48\u662f\u81ea\u56de\u5f52\u6a21\u578b\uff1apixelRNN\u4e0epixelCNN\uff1f", url: "#731-pixelrnnpixelcnn", level:3, children: [
+                  {title: "7.3.1 \u4ec0\u4e48\u662f\u81ea\u56de\u5f52\u6a21\u578b:pixelRNN\u4e0epixelCNN?", url: "#731-pixelrnnpixelcnn", level:3, children: [
                   ]},
-                  {title: "7.3.2 \u4ec0\u4e48\u662fVAE\uff1f", url: "#732-vae", level:3, children: [
+                  {title: "7.3.2 \u4ec0\u4e48\u662fVAE?", url: "#732-vae", level:3, children: [
                   ]}, 
               ]},
               {title: "7.4 GAN\u7684\u6539\u8fdb\u4e0e\u4f18\u5316", url: "#74-gan", level:2, children: [
@@ -368,29 +368,34 @@ s.t. \Sigma_{i=1}^mw_{i,j}=p_r(x_i^r),  \forall i;\Sigma_{j=1}^nw_{i,j}=p_g(x_j^
 <h3 id="728">7.2.8 其他评价方法</h3>
 <p>AIS,KDE方法也可以用于评价GAN,但这些方法不是model agnostic metrics。也就是说,这些评价指标的计算无法只利用:生成的样本,真实样本来计算。</p>
 <h2 id="73">7.3 其他常见的生成式模型有哪些?</h2>
-<h3 id="731-pixelrnnpixelcnn">7.3.1 什么是自回归模型：pixelRNN与pixelCNN？</h3>
-<p>​   自回归模型通过对图像数据的概率分布<span><span class="MathJax_Preview">p_{data}(x)</span><script type="math/tex">p_{data}(x)</script></span>进行显式建模，并利用极大似然估计优化模型。具体如下：
-$$
-p_{data}(x)=\prod_{i=1}^np(x_i|x_1,x_2,...,x_{i-1})
-$$
-​   上述公式很好理解，给定<span><span class="MathJax_Preview">x_1,x_2,...,x_{i-1}</span><script type="math/tex">x_1,x_2,...,x_{i-1}</script></span>条件下，所有<span><span class="MathJax_Preview">p(x_i)</span><script type="math/tex">p(x_i)</script></span>的概率乘起来就是图像数据的分布。如果使用RNN对上述依然关系建模，就是pixelRNN。如果使用CNN，则是pixelCNN。具体如下[5]：</p>
-<p><img alt="" src="./img/ch7/pixRNN.png" /></p>
-<p><img alt="" src="./img/ch7/pixCNN.png" /></p>
-<p>​   显然，不论是对于pixelCNN还是pixelRNN，由于其像素值是一个个生成的，速度会很慢。语音领域大火的WaveNet就是一个典型的自回归模型。</p>
-<h3 id="732-vae">7.3.2 什么是VAE？</h3>
-<p>​   PixelCNN/RNN定义了一个易于处理的密度函数，我们可以直接优化训练数据的似然；对于变分自编码器我们将定义一个不易处理的密度函数，通过附加的隐变量<span><span class="MathJax_Preview">z</span><script type="math/tex">z</script></span>对密度函数进行建模。 VAE原理图如下[6]：</p>
-<p><img alt="" src="./img/ch7/VAE.png" /></p>
-<p>​   在VAE中，真实样本<span><span class="MathJax_Preview">X</span><script type="math/tex">X</script></span>通过神经网络计算出均值方差（假设隐变量服从正太分布），然后通过采样得到采样变量<span><span class="MathJax_Preview">Z</span><script type="math/tex">Z</script></span>并进行重构。VAE和GAN均是学习了隐变量<span><span class="MathJax_Preview">z</span><script type="math/tex">z</script></span>到真实数据分布的映射。但是和GAN不同的是：</p>
+<h3 id="731-pixelrnnpixelcnn">7.3.1 什么是自回归模型:pixelRNN与pixelCNN?</h3>
+<p>自回归模型通过对图像数据的概率分布<span><span class="MathJax_Preview">p_{data}(x)</span><script type="math/tex">p_{data}(x)</script></span>进行显式建模，并利用极大似然估计优化模型。具体如下：</p>
+<div>
+<div class="MathJax_Preview">p_{data}(x)=\prod_{i=1}^np(x_i|x_1,x_2,...,x_{i-1})</div>
+<script type="math/tex; mode=display">p_{data}(x)=\prod_{i=1}^np(x_i|x_1,x_2,...,x_{i-1})</script>
+</div>
+<p>上述公式很好理解,给定<span><span class="MathJax_Preview">x_1,x_2,...,x_{i-1}</span><script type="math/tex">x_1,x_2,...,x_{i-1}</script></span>条件下,所有<span><span class="MathJax_Preview">p(x_i)</span><script type="math/tex">p(x_i)</script></span>的概率乘起来就是图像数据的分布。如果使用RNN对上述依然关系建模,就是pixelRNN。如果使用CNN,则是pixelCNN。具体如下:</p>
+<p><img alt="" src="../media/chapter07/pixRNN.png" /></p>
+<p><img alt="" src="../media/chapter07/pixCNN.png" /></p>
+<p>显然,不论是对于pixelCNN还是pixelRNN,由于其像素值是一个个生成的,速度会很慢。语音领域大火的WaveNet就是一个典型的自回归模型。</p>
+<h3 id="732-vae">7.3.2 什么是VAE?</h3>
+<p>PixelCNN/RNN定义了一个易于处理的密度函数,我们可以直接优化训练数据的似然;对于变分自编码器我们将定义一个不易处理的密度函数,通过附加的隐变量<span><span class="MathJax_Preview">z</span><script type="math/tex">z</script></span>对密度函数进行建模。 VAE原理图如下:</p>
+<p><img alt="" src="../media/chapter07/VAE.png" /></p>
+<p>在VAE中,真实样本<span><span class="MathJax_Preview">X</span><script type="math/tex">X</script></span>通过神经网络计算出均值方差(假设隐变量服从正太分布),然后通过采样得到采样变量<span><span class="MathJax_Preview">Z</span><script type="math/tex">Z</script></span>并进行重构。VAE和GAN均是学习了隐变量<span><span class="MathJax_Preview">z</span><script type="math/tex">z</script></span>到真实数据分布的映射。但是和GAN不同的是:</p>
+<blockquote>
 <ul>
-<li>GAN的思路比较粗暴，使用一个判别器去度量分布转换模块（即生成器）生成分布与真实数据分布的距离。</li>
-<li>VAE则没有那么直观，VAE通过约束隐变量<span><span class="MathJax_Preview">z</span><script type="math/tex">z</script></span>服从标准正太分布以及重构数据实现了分布转换映射<span><span class="MathJax_Preview">X=G(z)</span><script type="math/tex">X=G(z)</script></span></li>
+<li>GAN的思路比较粗暴,使用一个判别器去度量分布转换模块(即生成器)生成分布与真实数据分布的距离。</li>
+<li>VAE则没有那么直观,VAE通过约束隐变量<span><span class="MathJax_Preview">z</span><script type="math/tex">z</script></span>服从标准正太分布以及重构数据实现了分布转换映射<span><span class="MathJax_Preview">X=G(z)</span><script type="math/tex">X=G(z)</script></span></li>
 </ul>
+</blockquote>
 <p><strong>生成式模型对比</strong></p>
+<blockquote>
 <ul>
 <li>自回归模型通过对概率分布显式建模来生成数据</li>
-<li>VAE和GAN均是：假设隐变量<span><span class="MathJax_Preview">z</span><script type="math/tex">z</script></span>服从某种分布，并学习一个映射<span><span class="MathJax_Preview">X=G(z)</span><script type="math/tex">X=G(z)</script></span>，实现隐变量分布<span><span class="MathJax_Preview">z</span><script type="math/tex">z</script></span>与真实数据分布<span><span class="MathJax_Preview">p_{data}(x)</span><script type="math/tex">p_{data}(x)</script></span>的转换。</li>
-<li>GAN使用判别器去度量映射<span><span class="MathJax_Preview">X=G(z)</span><script type="math/tex">X=G(z)</script></span>的优劣，而VAE通过隐变量<span><span class="MathJax_Preview">z</span><script type="math/tex">z</script></span>与标准正太分布的KL散度和重构误差去度量。</li>
+<li>VAE和GAN均是:假设隐变量<span><span class="MathJax_Preview">z</span><script type="math/tex">z</script></span>服从某种分布,并学习一个映射<span><span class="MathJax_Preview">X=G(z)</span><script type="math/tex">X=G(z)</script></span>,实现隐变量分布<span><span class="MathJax_Preview">z</span><script type="math/tex">z</script></span>与真实数据分布<span><span class="MathJax_Preview">p_{data}(x)</span><script type="math/tex">p_{data}(x)</script></span>的转换。</li>
+<li>GAN使用判别器去度量映射<span><span class="MathJax_Preview">X=G(z)</span><script type="math/tex">X=G(z)</script></span>的优劣,而VAE通过隐变量<span><span class="MathJax_Preview">z</span><script type="math/tex">z</script></span>与标准正太分布的KL散度和重构误差去度量。</li>
 </ul>
+</blockquote>
 <h2 id="74-gan">7.4 GAN的改进与优化</h2>
 <h3 id="741-gan">7.4.1 如何生成指定类型的图像——条件GAN</h3>
 <p>​   条件生成对抗网络（CGAN, Conditional Generative Adversarial Networks）作为一个GAN的改进，其一定程度上解决了GAN生成结果的不确定性。如果在Mnist数据集上训练原始GAN，GAN生成的图像是完全不确定的，具体生成的是数字1，还是2，还是几，根本不可控。为了让生成的数字可控，我们可以把数据集做一个切分，把数字0~9的数据集分别拆分开训练9个模型，不过这样太麻烦了，也不现实。因为数据集拆分不仅仅是分类麻烦，更主要在于，每一个类别的样本少，拿去训练GAN很有可能导致欠拟合。因此，CGAN就应运而生了。我们先看一下CGAN的网络结构：
