@@ -99,25 +99,25 @@ $$
 
 方法一:**针对目标函数的改进方法**
 
-​   为了避免前面提到的由于优化maxmin导致mode跳来跳去的问题，UnrolledGAN采用修改生成器loss来解决。具体而言，UnrolledGAN在更新生成器时更新k次生成器，参考的Loss不是某一次的loss，是判别器后面k次迭代的loss。注意，判别器后面k次迭代不更新自己的参数，只计算loss用于更新生成器。这种方式使得生成器考虑到了后面k次判别器的变化情况，避免在不同mode之间切换导致的模式崩溃问题。此处务必和迭代k次生成器，然后迭代1次判别器区分开[8]。DRAGAN则引入博弈论中的无后悔算法，改造其loss以解决mode collapse问题[9]。前文所述的EBGAN则是加入VAE的重构误差以解决mode collapse。
+为了避免前面提到的由于优化maxmin导致mode跳来跳去的问题,UnrolledGAN采用修改生成器loss来解决。具体而言,UnrolledGAN在更新生成器时更新k次生成器,参考的Loss不是某一次的loss,是判别器后面k次迭代的loss。注意,判别器后面k次迭代不更新自己的参数,只计算loss用于更新生成器。这种方式使得生成器考虑到了后面k次判别器的变化情况,避免在不同mode之间切换导致的模式崩溃问题。此处务必和迭代k次生成器,然后迭代1次判别器区分开。DRAGAN则引入博弈论中的无后悔算法,改造其loss以解决mode collapse问题。前文所述的EBGAN则是加入VAE的重构误差以解决mode collapse。
 
-方法二：**针对网络结构的改进方法**
+方法二:**针对网络结构的改进方法**
 
-​   Multi agent diverse GAN(MAD-GAN)采用多个生成器，一个判别器以保障样本生成的多样性。具体结构如下：
+Multi agent diverse GAN(MAD-GAN)采用多个生成器,一个判别器以保障样本生成的多样性。具体结构如下:
 
-![](./img/ch7/MAD_GAN.png)
+![](media/chapter07/mad_gan.png)
 
-​   相比于普通GAN，多了几个生成器，且在loss设计的时候，加入一个正则项。正则项使用余弦距离惩罚三个生成器生成样本的一致性。
+相比于普通GAN,多了几个生成器,且在loss设计的时候,加入一个正则项。正则项使用余弦距离惩罚三个生成器生成样本的一致性。
 
-​   MRGAN则添加了一个判别器来惩罚生成样本的mode collapse问题。具体结构如下：
+MRGAN则添加了一个判别器来惩罚生成样本的mode collapse问题。具体结构如下:
 
-![](./img/ch7/MRGAN.png)
+![](media/chapter07/mrgan.png)
 
-​   输入样本$x​$通过一个Encoder编码为隐变量$E(x)​$，然后隐变量被Generator重构，训练时，Loss有三个。$D_M​$和$R​$（重构误差）用于指导生成real-like的样本。而$D_D​$则对$E(x)​$和$z​$生成的样本进行判别，显然二者生成样本都是fake samples，所以这个判别器主要用于判断生成的样本是否具有多样性，即是否出现mode collapse。
+输入样本$x​$通过一个Encoder编码为隐变量$E(x)​$,然后隐变量被Generator重构,训练时,Loss有三个。$D_M​$和$R​$(重构误差)用于指导生成real-like的样本。而$D_D​$则对$E(x)​$和$z​$生成的样本进行判别,显然二者生成样本都是fake samples,所以这个判别器主要用于判断生成的样本是否具有多样性,即是否出现mode collapse。
 
-方法三：**Mini-batch Discrimination**
+方法三:**Mini-batch Discrimination**
 
-​   Mini-batch discrimination在判别器的中间层建立一个mini-batch layer用于计算基于L1距离的样本统计量，通过建立该统计量，实现了一个batch内某个样本与其他样本有多接近。这个信息可以被判别器利用到，从而甄别出哪些缺乏多样性的样本。对生成器而言，则要试图生成具有多样性的样本。
+Mini-batch discrimination在判别器的中间层建立一个mini-batch layer用于计算基于L1距离的样本统计量,通过建立该统计量,实现了一个batch内某个样本与其他样本有多接近。这个信息可以被判别器利用到,从而甄别出哪些缺乏多样性的样本。对生成器而言,则要试图生成具有多样性的样本。
 
 ## 7.2 GAN的生成能力评价
 
