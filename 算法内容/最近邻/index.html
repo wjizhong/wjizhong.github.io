@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E7%AE%97%E6%B3%95%E5%86%85%E5%AE%B9/%E6%9C%80%E8%BF%91%E9%82%BB/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>最近邻 - 图像/视频算法</title>
+    <link href="../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "\u6700\u8fd1\u90bb", url: "#_top", level:1, children: [
+              {title: "\u6700\u8fd1\u90bb\u5206\u7c7b", url: "#_2", level:2, children: [ 
+              ]},
+              {title: "\u6700\u8fd1\u90bb\u56de\u5f52", url: "#_3", level:2, children: [ 
+              ]},
+              {title: "\u6700\u8fd1\u90bb", url: "#_4", level:2, children: [ 
+              ]},
+          ]},
+        ];
+    </script>
+    <script src="../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    
+
+    <h1 id="_1">最近邻</h1>
+<p>无监督的最近邻是许多其它学习方法的基础,尤其是manifold learning(流形学习)和spectral clustering(谱聚类)。 neighbors-based(基于邻居的)监督学习分为两种:classification(分类)针对的是具有离散标签的数据,regression(回归)针对的是具有连续标签的数据。</p>
+<p>最近邻方法背后的原理是从训练样本中找到与新点在距离上最近的预定数量的几个点,然后从这些点中预测标签。 这些点的数量可以是用户自定义的常量(K-最近邻学习), 也可以根据不同的点的局部密度(基于半径的最近邻学习)确定。距离通常可以通过任何度量来衡量:standard Euclidean distance(标准欧式距离)是最常见的选择。Neighbors-based(基于邻居的)方法被称为非泛化机器学习方法,因为它们只是简单地"记住"了其所有的训练数据(可能转换为一个快速索引结构,如Ball Tree或KD Tree)。</p>
+<p>尽管它简单,但最近邻算法已经成功地适用于很多的分类和回归问题,例如手写数字或卫星图像的场景。作为一个 non-parametric(非参数化)方法,它经常成功地应用于决策边界非常不规则的分类情景下。</p>
+<h2 id="_2">最近邻分类</h2>
+<p>最近邻分类属于基于实例的学习或非泛化学习:它不会去构造一个泛化的内部模型,而是简单地存储训练数据的实例。分类是由每个点的最近邻的简单多数投票中计算得到的:一个查询点的数据类型是由它最近邻点中最具代表性的数据类型来决定的。</p>
+<p>scikit-learn实现了两种不同的最近邻分类器:基于每个查询点的k个最近邻实现,其中k是用户指定的整数值。RadiusNeighborsClassifier基于每个查询点的固定半径r内的邻居数量实现,其中r是用户指定的浮点数值。</p>
+<p>k-邻居分类是KNeighborsClassifie的技术中比较常用的一种。 值的最佳选择是高度依赖数据的:通常较大的k是会抑制噪声的影响,但是使得分类界限不明显。</p>
+<p>如果数据是不均匀采样的,那么RadiusNeighborsClassifier中的基于半径的近邻分类可能是更好的选择。用户指定一个固定半径,使得稀疏邻居中的点使用较少的最近邻来分类。对于高维参数空间,这个方法会由于所谓的"维度灾难"而变得不那么有效。</p>
+<p>基本的最近邻分类使用统一的权重:分配给查询点的值是从最近邻的简单多数投票中计算出来的。 在某些环境下,最好对邻居进行加权,使得更近邻更有利于拟合。可以通过weights关键字来实现。默认值weights='uniform'为每个近邻分配统一的权重。而weights='distance'分配权重与查询点的距离成反比。 或者,用户可以自定义一个距离函数用来计算权重。</p>
+<p><img alt="" src="http://sklearn.apachecn.org/docs/master/img/1a91bab921cf39f58a522ed15f475235.jpg" /></p>
+<p><img alt="" src="http://sklearn.apachecn.org/docs/master/img/ae484baf10384efcf4d993631f4641e7.jpg" /></p>
+<pre><code class="python">import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.colors import ListedColormap
+from sklearn import neighbors, datasets
+
+n_neighbors = 15
+
+# import some data to play with
+iris = datasets.load_iris()
+
+# we only take the first two features. We could avoid this ugly
+# slicing by using a two-dim dataset
+X = iris.data[:, :2]
+y = iris.target
+
+h = .02  # step size in the mesh
+
+# Create color maps
+cmap_light = ListedColormap(['orange', 'cyan', 'cornflowerblue'])
+cmap_bold = ListedColormap(['darkorange', 'c', 'darkblue'])
+
+for weights in ['uniform', 'distance']:
+    # we create an instance of Neighbours Classifier and fit the data.
+    clf = neighbors.KNeighborsClassifier(n_neighbors, weights=weights)
+    clf.fit(X, y)
+
+    # Plot the decision boundary. For that, we will assign a color to each
+    # point in the mesh [x_min, x_max]x[y_min, y_max].
+    x_min, x_max = X[:, 0].min() - 1, X[:, 0].max() + 1
+    y_min, y_max = X[:, 1].min() - 1, X[:, 1].max() + 1
+    xx, yy = np.meshgrid(np.arange(x_min, x_max, h), np.arange(y_min, y_max, h))
+    Z = clf.predict(np.c_[xx.ravel(), yy.ravel()])
+
+    # Put the result into a color plot
+    Z = Z.reshape(xx.shape)
+    plt.figure()
+    plt.pcolormesh(xx, yy, Z, cmap=cmap_light)
+
+    # Plot also the training points
+    plt.scatter(X[:, 0], X[:, 1], c=y, cmap=cmap_bold,
+                edgecolor='k', s=20)
+    plt.xlim(xx.min(), xx.max())
+    plt.ylim(yy.min(), yy.max())
+    plt.title(&quot;3-Class classification (k = %i, weights = '%s')&quot;
+              % (n_neighbors, weights))
+
+plt.show()
+</code></pre>
+
+<h2 id="_3">最近邻回归</h2>
+<p>最近邻回归是用在数据标签为连续变量，而不是离散变量的情况下。分配给查询点的标签是由它的最近邻标签的均值计算而来的。</p>
+<p>scikit-learn 实现了两种不同的最近邻回归：KNeighborsRegressor 基于每个查询点的 k 个最近邻实现， 其中 k 是用户指定的整数值。RadiusNeighborsRegressor 基于每个查询点的固定半径 r 内的邻点数量实现， 其中 r 是用户指定的浮点数值。</p>
+<p>基本的最近邻回归使用统一的权重：即，本地邻域内的每个邻点对查询点的分类贡献一致。 在某些环境下，对邻点加权可能是有利的，使得附近点对于回归所作出的贡献多于远处点。 这可以通过 weights 关键字来实现。默认值 weights = 'uniform' 为所有点分配同等权重。 而 weights = 'distance' 分配的权重与查询点距离呈反比。 或者，用户可以自定义一个距离函数用来计算权重。</p>
+<p>http://sklearn.apachecn.org/cn/0.19.0/_images/sphx_glr_plot_regression_0011.png</p>
+<p>使用多输出的最近邻进行回归分析 Face completion with a multi-output estimators。 |</p>
+<p>利用多输出估计器，演示了多输出最近邻回归方法在人脸补全中的应用。在这个示例中，输入 X 是脸上半部分像素，输出 Y 是脸下半部分像素。</p>
+<p>http://sklearn.apachecn.org/cn/0.19.0/_images/sphx_glr_plot_multioutput_face_completion_0011.png</p>
+<p>示例:</p>
+<p>Nearest Neighbors regression: 使用最近邻进行回归的示例。
+Face completion with a multi-output estimators: 使用最近邻进行多输出回归的示例。</p>
+<h2 id="_4">最近邻</h2>
+<p>首先最直观的想法(暴力法),是线性扫描法。将待预测样本和候选样本逐一比对,最终挑选出距离最接近的k个样本即可,时间复杂度O(n)。对于样本数量较少的情况,这种方法简单稳定,已经能有不错的效果。但是数据规模较大时,时间开销严重无法接受。</p>
+<p>所以实际应用中,往往会寻找其他类型的数据结构来保存特征,以降低搜索的时间复杂度。常用的存储结构可以分为树和图两大类。树结构的代表是KDTree,以及改进版BallTree和Annoy等;基于图结构的搜索算法有HNSW等。</p>
+<ul>
+<li><strong>KDTree</strong></li>
+</ul>
+<p>kd树是一种对k维特征空间中的实例点进行存储以便对其快速检索的树形数据结构。</p>
+<p>kd树是二叉树,核心思想是对k维特征空间不断切分(假设特征维度是768,对于(0,1,2,...,767)中的每一个维度,以中值递归切分)构造的树,每一个节点是一个超矩形,小于结点的样本划分到左子树,大于结点的样本划分到右子树。</p>
+<p>树构造完毕后,最终检索时:</p>
+<blockquote>
+<ol>
+<li>从根结点出发,递归地向下访问kd树。若目标点<span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span>当前维的坐标小于切分点的坐标,移动到左子树,否则移动到右子树,直至到达叶结点;</li>
+<li>以此叶结点为"最近点",递归地向上回退,查找该结点的兄弟结点中是否存在更近的点,若存在则更新"最近点",否则回退;未到达根结点时继续执行2;</li>
+<li>回退到根结点时,搜索结束。</li>
+</ol>
+</blockquote>
+<p>参考链接: https://juejin.im/post/5ce6c94ae51d4556d86c7a2a</p>
+<ul>
+<li><strong>BallTree</strong></li>
+</ul>
+<p>为了解决kd树在样本特征维度很高时效率低下的问题,研究人员提出了"球树"BallTree。KD树沿坐标轴分割数据,BallTree将在一系列嵌套的超球面上分割数据,即使用超球面而不是超矩形划分区域。</p>
+<p>具体而言,BallTree将数据递归地划分到由质心C和 半径r定义的节点上,以使得节点内的每个点都位于由质心C和半径r定义的超球面内。通过使用三角不等式<span><span class="MathJax_Preview">|X|+|Y| &lt;= |X| + |Y|</span><script type="math/tex">|X|+|Y| <= |X| + |Y|</script></span>减少近邻搜索的候选点数。</p>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    <br>
+</div>
+
+</body>
+</html>
