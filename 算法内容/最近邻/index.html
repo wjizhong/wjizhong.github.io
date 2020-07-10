@@ -39,6 +39,14 @@
               ]},
               {title: "\u6700\u8fd1\u90bb\u7b97\u6cd5", url: "#_4", level:2, children: [ 
               ]},
+              {title: "\u90bb\u57df\u6210\u5206\u5206\u6790", url: "#_5", level:2, children: [ 
+              ]},
+              {title: "ANN", url: "#ann", level:2, children: [
+                  {title: "HNSW\u7b97\u6cd5", url: "#hnsw", level:3, children: [
+                  ]},
+                  {title: "PQ", url: "#pq", level:3, children: [
+                  ]}, 
+              ]},
           ]},
         ];
     </script>
@@ -263,8 +271,188 @@ plt.show()
 &gt;&gt;&gt; kdt.query(X, k=2, return_distance=False)          
 </code></pre>
 
-<p>https://www.ryanligod.com/2018/11/27/2018-11-27%20HNSW%20%E4%BB%8B%E7%BB%8D/</p>
-<p>https://sklearn.apachecn.org/docs/master/7.html?q=ANN</p>
+<h2 id="_5">邻域成分分析</h2>
+<p>参考论文: <a href="https://cs.nyu.edu/~roweis/papers/ncanips.pdf">Neighbourhood Components Analysis</a></p>
+<p>邻域成分分析(NCA,Neighborhood Components Analysis)是一种距离度量学习算法,其目的是提高最近邻分类相对于标准欧氏距离的准确性。该算法直接最大化训练集上k近邻(KNN)得分的随机变量,还可以拟合数据的低维线性投影,用于数据可视化和快速分类。</p>
+<p><img alt="" src="http://sklearn.apachecn.org/docs/master/img/1_6_1.png" /></p>
+<p><img alt="" src="http://sklearn.apachecn.org/docs/master/img/1_6_2.png" /></p>
+<p>在上图中,我们考虑随机生成的数据集中的一些点。重点研究了３号样本点的随机KNN分类问题.样本3和另一个点之间的链路厚度与它们之间的距离成正比，可以看作是随机最近邻预测规则分配给该点的相对权重(或概率)。在原始空间中，样本3有许多来自不同类的随机邻居，因此正确的分类不太可能。然而，在NCA学习的投影空间中，唯一权重不可忽略的随机邻域与样本3属于同一类，保证了样本3的分类良好。</p>
+<p>NCA的目标是拟合一个尺寸为(n_components,n_features)的最优线性变换矩阵,使所有被正确分类的概率样本的和最大,即:</p>
+<div>
+<div class="MathJax_Preview">\underset{L}{\arg\max} \sum\limits_{i=0}^{N - 1} p_{i}</div>
+<script type="math/tex; mode=display">\underset{L}{\arg\max} \sum\limits_{i=0}^{N - 1} p_{i}</script>
+</div>
+<p>其中N是样本数,<span><span class="MathJax_Preview">p_i</span><script type="math/tex">p_i</script></span>是第i个样本在学习的嵌入空间中,根据随机近邻规则正确分类的可能性:</p>
+<div>
+<div class="MathJax_Preview">p_{i}=\sum\limits_{j \in C_i}{p_{ij}}</div>
+<script type="math/tex; mode=display">p_{i}=\sum\limits_{j \in C_i}{p_{ij}}</script>
+</div>
+<p>其中<span><span class="MathJax_Preview">C_i</span><script type="math/tex">C_i</script></span>是第i个样本被分类到的点集,<span><span class="MathJax_Preview">P_{ij}</span><script type="math/tex">P_{ij}</script></span>为嵌入空间中欧氏距离上的归一化指数(softmax)值:</p>
+<div>
+<div class="MathJax_Preview">p_{i j} = \frac{\exp(-||L x_i - L x_j||^2)}{\sum\limits_{k \ne i} {\exp{-(||L x_i - L x_k||^2)}}} , \quad p_{i i} = 0</div>
+<script type="math/tex; mode=display">p_{i j} = \frac{\exp(-||L x_i - L x_j||^2)}{\sum\limits_{k \ne i} {\exp{-(||L x_i - L x_k||^2)}}} , \quad p_{i i} = 0</script>
+</div>
+<p>其中<span><span class="MathJax_Preview">|| L(x_i - x_j)||^2 = (x_i - x_j)^TM(x_i - x_j)</span><script type="math/tex">|| L(x_i - x_j)||^2 = (x_i - x_j)^TM(x_i - x_j)</script></span>,<span><span class="MathJax_Preview">M = L^T L</span><script type="math/tex">M = L^T L</script></span>是大小为(特征数，特征数)对称正半定矩阵。</p>
+<ul>
+<li><strong>分类</strong></li>
+</ul>
+<p>与最近邻分类器(KNeighborsClassifier)相结合，NCA是一种有效的分类算法，因为它可以自然地处理多类问题，而不需要增加模型的大小，并且不引入需要用户进行微调的额外参数。</p>
+<p>NCA分类在不同规模和难度的数据集的实际应用中显示出良好的效果。与线性判别分析等相关方法相比，NCA没有对类的分布做任何假设。而最近邻分类自然会产生高度不规则的决策边界。</p>
+<pre><code class="python">import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.colors import ListedColormap
+from sklearn import datasets
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.neighbors import (KNeighborsClassifier,
+                               NeighborhoodComponentsAnalysis)
+from sklearn.pipeline import Pipeline
+
+
+print(__doc__)
+
+n_neighbors = 1
+
+dataset = datasets.load_iris()
+X, y = dataset.data, dataset.target
+
+# we only take two features. We could avoid this ugly
+# slicing by using a two-dim dataset
+X = X[:, [0, 2]]
+
+X_train, X_test, y_train, y_test = \
+    train_test_split(X, y, stratify=y, test_size=0.7, random_state=42)
+
+h = .01  # step size in the mesh
+
+# Create color maps
+cmap_light = ListedColormap(['#FFAAAA', '#AAFFAA', '#AAAAFF'])
+cmap_bold = ListedColormap(['#FF0000', '#00FF00', '#0000FF'])
+
+names = ['KNN', 'NCA, KNN']
+
+classifiers = [Pipeline([('scaler', StandardScaler()),
+                         ('knn', KNeighborsClassifier(n_neighbors=n_neighbors))
+                         ]),
+               Pipeline([('scaler', StandardScaler()),
+                         ('nca', NeighborhoodComponentsAnalysis()),
+                         ('knn', KNeighborsClassifier(n_neighbors=n_neighbors))
+                         ])
+               ]
+
+x_min, x_max = X[:, 0].min() - 1, X[:, 0].max() + 1
+y_min, y_max = X[:, 1].min() - 1, X[:, 1].max() + 1
+xx, yy = np.meshgrid(np.arange(x_min, x_max, h),
+                     np.arange(y_min, y_max, h))
+
+for name, clf in zip(names, classifiers):
+
+    clf.fit(X_train, y_train)
+    score = clf.score(X_test, y_test)
+
+    # Plot the decision boundary. For that, we will assign a color to each
+    # point in the mesh [x_min, x_max]x[y_min, y_max].
+    Z = clf.predict(np.c_[xx.ravel(), yy.ravel()])
+
+    # Put the result into a color plot
+    Z = Z.reshape(xx.shape)
+    plt.figure()
+    plt.pcolormesh(xx, yy, Z, cmap=cmap_light, alpha=.8)
+
+    # Plot also the training and testing points
+    plt.scatter(X[:, 0], X[:, 1], c=y, cmap=cmap_bold, edgecolor='k', s=20)
+    plt.xlim(xx.min(), xx.max())
+    plt.ylim(yy.min(), yy.max())
+    plt.title(&quot;{} (k = {})&quot;.format(name, n_neighbors))
+    plt.text(0.9, 0.1, '{:.2f}'.format(score), size=15,ha='center', va='center', transform=plt.gca().transAxes)
+plt.show()
+</code></pre>
+
+<p><img alt="" src="http://sklearn.apachecn.org/docs/master/img/sphx_glr_plot_nca_classification_0011.png" /></p>
+<p><img alt="" src="http://sklearn.apachecn.org/docs/master/img/sphx_glr_plot_nca_classification_0021.png" /></p>
+<ul>
+<li><strong>降维</strong></li>
+</ul>
+<p>NCA可用于进行监督降维。输入数据被投影到一个由最小化NCA目标的方向组成的线性子空间上。可以使用参数n_components设置所需的维数。例如,下图显示了主成分分析的降维(sklearn.decomposition.PCA),线性判别分析(sklearn.discriminant_analysis.LinearDiscriminantAnalysis)和邻域成分分析(NeighborhoodComponentsAnalysis)在一个64个特征,1797个样本的数字数据集的降维结果。数据集被划分为大小相同的训练集和测试集，然后进行标准化。为了评价该方法的分类精度，对每种方法找到的二维投影点进行了3-最近邻分类精度的计算。每个数据样本属于10个类中的一个。</p>
+<pre><code class="python">import numpy as np
+import matplotlib.pyplot as plt
+from sklearn import datasets
+from sklearn.model_selection import train_test_split
+from sklearn.decomposition import PCA
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+from sklearn.neighbors import (KNeighborsClassifier,
+                               NeighborhoodComponentsAnalysis)
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
+
+print(__doc__)
+
+n_neighbors = 3
+random_state = 0
+
+# Load Digits dataset
+X, y = datasets.load_digits(return_X_y=True)
+
+# Split into train/test
+X_train, X_test, y_train, y_test = \
+    train_test_split(X, y, test_size=0.5, stratify=y,
+                     random_state=random_state)
+
+dim = len(X[0])
+n_classes = len(np.unique(y))
+
+# Reduce dimension to 2 with PCA
+pca = make_pipeline(StandardScaler(),
+                    PCA(n_components=2, random_state=random_state))
+
+# Reduce dimension to 2 with LinearDiscriminantAnalysis
+lda = make_pipeline(StandardScaler(),
+                    LinearDiscriminantAnalysis(n_components=2))
+
+# Reduce dimension to 2 with NeighborhoodComponentAnalysis
+nca = make_pipeline(StandardScaler(),
+                    NeighborhoodComponentsAnalysis(n_components=2,
+                                                   random_state=random_state))
+
+# Use a nearest neighbor classifier to evaluate the methods
+knn = KNeighborsClassifier(n_neighbors=n_neighbors)
+
+# Make a list of the methods to be compared
+dim_reduction_methods = [('PCA', pca), ('LDA', lda), ('NCA', nca)]
+
+# plt.figure()
+for i, (name, model) in enumerate(dim_reduction_methods):
+    plt.figure()
+    # plt.subplot(1, 3, i + 1, aspect=1)
+
+    # Fit the method's model
+    model.fit(X_train, y_train)
+
+    # Fit a nearest neighbor classifier on the embedded training set
+    knn.fit(model.transform(X_train), y_train)
+
+    # Compute the nearest neighbor accuracy on the embedded test set
+    acc_knn = knn.score(model.transform(X_test), y_test)
+
+    # Embed the data set in 2 dimensions using the fitted model
+    X_embedded = model.transform(X)
+
+    # Plot the projected points and show the evaluation score
+    plt.scatter(X_embedded[:, 0], X_embedded[:, 1], c=y, s=30, cmap='Set1')
+    plt.title(&quot;{}, KNN (k={})\nTest accuracy = {:.2f}&quot;.format(name,
+                                                              n_neighbors,
+                                                              acc_knn))
+plt.show()
+</code></pre>
+
+<p><img alt="" src="http://sklearn.apachecn.org/docs/master/img/sphx_glr_plot_nca_dim_reduction_0011.png" /></p>
+<p><img alt="" src="http://sklearn.apachecn.org/docs/master/img/sphx_glr_plot_nca_dim_reduction_0021.png" /></p>
+<p><img alt="" src="http://sklearn.apachecn.org/docs/master/img/sphx_glr_plot_nca_dim_reduction_0031.png" /></p>
+<h2 id="ann">ANN</h2>
+<h3 id="hnsw">HNSW算法</h3>
+<p>参考链接: https://zhuanlan.zhihu.com/p/80552211</p>
+<h3 id="pq">PQ</h3>
+<p>参考链接: https://zhuanlan.zhihu.com/p/80552211</p>
 
   <br>
     <style>
