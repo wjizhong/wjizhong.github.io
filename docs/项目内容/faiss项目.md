@@ -786,14 +786,12 @@ class DistanceTable(object):
 ```
 
 ## 三、源码介绍
-
-### 4.1 utils目录
-
-#### 4.1.1 random.h和random.cpp文件
+### 3.1 utils目录
+#### 3.1.1 random.h和random.cpp文件
 
 此文件描述生成随机数相关代码:`float_rand`,`float_randn`(Marsaglia's method),`int64_rand`,`byte_rand`,`int64_rand_max`,`rand_perm`。
 
-* **random.h文件**
+##### 3.1.1.1 random.h文件
 
 ```c++
 /* Random generators. Implemented here for speed and to make sequences reproducible. */
@@ -841,7 +839,7 @@ namespace faiss {
 } // namespace faiss
 ```
 
-* **random.cpp文件**
+##### 3.1.1.2 random.cpp文件
 
 ```c++
 #include <faiss/utils/random.h>
@@ -1000,11 +998,52 @@ namespace faiss {
 } // namespace faiss
 ```
 
-#### 4.1.2 Heap.h和Heap.cpp文件
+##### 3.1.1.3 test_random.cpp文件
+
+```c++
+#include<utils/random.h>
+#include <cstdlib>
+#include <cstdio>
+
+int main(){
+    int num=10;
+    float* x =new float[num];
+    faiss::float_rand(x, num, 0);
+    printf("rand float: ");
+    for(int i=0;i<num;i++){ printf("%f ",x[i]); }
+    printf("\n");
+    delete [] x;
+
+    float* y =new float[num];
+    faiss::float_randn(y, num, 0);
+    printf("randn float: ");
+    for(int i=0;i<num;i++){ printf("%f ",y[i]); }
+    printf("\n");
+    delete [] y;
+
+    int64_t* z =new int64_t[num];
+    faiss::int64_rand_max(z, num, 10, 0);
+    printf("rand int64(max=10): ");
+    for(int i=0;i<num;i++){ printf("%ld ",z[i]); }
+    printf("\n");
+    delete [] z;
+
+    int* w = new int[num];
+    faiss::rand_perm(w,num,0);
+    printf("rand perm: ");
+    for(int i=0;i<num;i++){ printf("%d ",w[i]);}
+    printf("\n");
+    delete [] w;
+
+    return 0;
+}
+```
+
+#### 2.1.2 Heap.h和Heap.cpp文件
 
 此文件定义了`heap_pop`, `heap_push`,`heap_heapify`(建堆),`heap_addn`,`heap_reorder`以及`HeapArray`。
 
-* **Heap.h文件**
+##### 2.1.2.1 Heap.h文件
 
 ```c++
 /*
@@ -4110,8 +4149,6 @@ static void init_hypercube_pca (int d, int nbits,
 
 #### 4.3.1 MetricType.h文件
 
-* **`MetricType.h`文件**
-
 ```c++
 #ifndef FAISS_METRIC_TYPE_H
 #define FAISS_METRIC_TYPE_H
@@ -4140,16 +4177,24 @@ namespace faiss {
 #endif
 ```
 
-
-#### 4.3.2 `VectorTransform.h`和`VectorTransform.cpp`文件
-
+#### 4.3.2 VectorTransform.h和VectorTransform.cpp文件
 
 
-* **`VectorTransform.h`文件
+##### 4.3.2.1 VectorTransform.h文件
 
 
 ```c
 
+```
+
+##### 4.3.2.2 VectorTransform.cpp文件
+
+```c
+```
+
+##### 4.3.2.3 test_VectorTransform.cpp文件
+
+```c
 ```
 
 
