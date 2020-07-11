@@ -33,6 +33,14 @@
         
         var pageToc = [
           {title: "\u56fe\u50cf\u7b97\u6cd5", url: "#_top", level:1, children: [
+          ]},
+          {title: "image_name = input(\"Enter the name of the picture:\")", url: "#image_name-inputenter-the-name-of-the-picture", level:1, children: [
+          ]},
+          {title: "-- coding: utf-8 --", url: "#-coding-utf-8-", level:1, children: [
+          ]},
+          {title: "\u5207\u6362\u5230\u6d4b\u8bd5\u56fe\u7247\u6587\u4ef6\u5939", url: "#_2", level:1, children: [
+          ]},
+          {title: "\u627e\u5230\u6240\u6709\u7684\u6d4b\u8bd5\u56fe\u7247\u6587\u4ef6\u540d", url: "#_3", level:1, children: [
               {title: "\u4e00\u3001opencv\u57fa\u7840\u77e5\u8bc6", url: "#opencv", level:2, children: [ 
               ]},
               {title: "\u4e8c\u3001opencv\u57fa\u7840\u8fd0\u7b97", url: "#opencv_1", level:2, children: [ 
@@ -83,6 +91,74 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
     
 
     <h1 id="_1">图像算法</h1>
+<p>import cv2
+import numpy as np</p>
+<h1 id="image_name-inputenter-the-name-of-the-picture">image_name = input("Enter the name of the picture:")</h1>
+<p>def detect(image_name):
+    print("正在识别"+image_name+'...')
+    # Load the image and convert it to grayscale
+    image = cv2.imread(image_name)
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)</p>
+<pre><code># compute the Scharr gradient magnitude representation of the iamges
+# in both the x and y direction
+# 原来代码下面是cv2.cv.CV_32F会报错-&gt;AttributeError: module 'cv2' has no attribute 'cv'
+# 在新版本变为cv2.CV_32F
+gradX = cv2.Sobel(gray, ddepth = cv2.CV_32F, dx = 1, dy = 0, ksize = -1)
+gradY = cv2.Sobel(gray, ddepth = cv2.CV_32F, dx = 0, dy = 1, ksize = -1)
+
+# substract the y-gradient from the x-gradient
+gradient = cv2.subtract(gradX, gradY)
+gradient = cv2.convertScaleAbs(gradient)
+
+# blur and threhold the image
+# 这里(13,13)是kernel matrix size，自己可以改变看看识别效果
+blurred = cv2.blur(gradient, (13, 13))
+# 这里的阀值200,255也可以根据图片自定义
+(_, thresh) = cv2.threshold(blurred, 200, 255, cv2.THRESH_BINARY)
+
+# construct a closing kernel and apply it to the thresholded image
+# (20, 15)也是一个参数，用来获取需要的kernel
+kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (20, 15))
+closed = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, kernel)
+
+# perform a series of erosions and dilations
+closed = cv2.erode(closed, None, iterations = 4)
+closed = cv2.dilate(closed, None, iterations = 4)
+
+# Find the contours in the thresholded image, then sort the contours
+# by their area, keeping only the largest one
+# ValueError: too many values to unpack (expected 2)
+(img,cnts, _) = cv2.findContours(closed.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+c = sorted(cnts, key = cv2.contourArea, reverse = True)[0]
+# compute the rotated bounding box of the largest contour
+rect = cv2.minAreaRect(c)
+# 原文这里使用cv2.cv.BoxPoints，新版本已经移除，换为cv2.boxPoints
+box = np.int0(cv2.boxPoints(rect))
+
+# draw a bounding box around the detected barcode
+# and display the image
+cv2.drawContours(image, [box], -1, (0,255,0), 3)
+
+
+cv2.imshow(image_name, image)
+cv2.waitKey(0)
+print("Done...\n##################################")
+</code></pre>
+<p>imgs_pro.py</p>
+<h1 id="-coding-utf-8-">-<em>- coding: utf-8 -</em>-</h1>
+<p>"""
+Created on Mon Dec 26 23:22:01 2016</p>
+<p>@author: Administrator
+"""
+import os
+from bar_code import detect</p>
+<h1 id="_2">切换到测试图片文件夹</h1>
+<p>os.chdir('test-imgs')</p>
+<h1 id="_3">找到所有的测试图片文件名</h1>
+<p>image_names = os.listdir()</p>
+<p>if <strong>name</strong>=='<strong>main</strong>':
+    for image_name in image_names:
+        detect(image_name)</p>
 <p>https://blog.csdn.net/zmdsjtu/article/details/80736258</p>
 <h2 id="opencv">一、opencv基础知识</h2>
 <h2 id="opencv_1">二、opencv基础运算</h2>
