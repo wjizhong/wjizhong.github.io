@@ -40,7 +40,7 @@ if (version == 3) {
 }
 ```
 
-如果非常明确的格式化协议,会使新协议变得非常复杂。因为开发人员必须确保请求发起者与处理请求的实际服务器之间的所有服务器都能理解新协议,然后才能切换开关以开始使用新协议。这也就是每个服务器开发人员都遇到过的低版本兼容、新旧协议兼容相关的问题。protocol buffers为了解决这些问题,于是就诞生了。protocol buffers被寄予一下2 个特点:
+如果非常明确的格式化协议,会使新协议变得非常复杂。因为开发人员必须确保请求发起者与处理请求的实际服务器之间的所有服务器都能理解新协议,然后才能切换开关以开始使用新协议。这也就是每个服务器开发人员都遇到过的低版本兼容、新旧协议兼容相关的问题。protocol buffers为了解决这些问题,于是就诞生了。protocol buffers被寄予一下2个特点:
 
 > * 可以很容易地引入新的字段,并且不需要检查数据的中间服务器可以简单地解析并传递数据,而无需了解所有字段。
 > * 数据格式更加具有自我描述性,可以用各种语言来处理(C++,Java等各种语言)
@@ -53,11 +53,11 @@ if (version == 3) {
 > * 服务器的RPC接口可以先声明为协议的一部分,然后用protocol compiler生成基类,用户可以使用服务器接口的实际实现来覆盖它们。
 > * protocol buffers现在是Google用于数据的通用语言。在撰写本文时,谷歌代码树中定义了48162种不同的消息类型,包括12183个 .proto文件。它们既用于RPC系统,也用于在各种存储系统中持久存储数据。
 
-## proto3定义message
+### 1.2 proto3定义message
 
 proto2和proto3的名字看起来有点扑朔迷离,那是因为当我们最初开源的protocol buffers时,它实际上是Google的第二个版本了,所以被称为proto2,这也是我们的开源版本号从v2开始的原因。初始版名为proto1,从2001年初开始在谷歌开发的。在proto中,所有结构化的数据都被称为message。
 
-```
+```c
 message helloworld {
     required int32     id = 1;  // ID
     required string    str = 2;  // str
@@ -67,7 +67,7 @@ message helloworld {
 
 上面这几行语句,定义了一个消息helloworld,该消息有三个成员,类型为int32的 id,另一个为类型为string的成员str。opt是一个可选的成员,即消息中可以不包含该成员。接下来说明一些proto3中需要注意的地方。
 
-```
+```c
 syntax = "proto3";
 
 message SearchRequest {
@@ -83,16 +83,17 @@ message SearchRequest {
 > * optional:字段可以设置也可以不设置。如果可选的字段值没有设置,则将使用默认值。对于简单的类型,你可以指定你自己的默认值,如我们在例子中为电话号码类型做的那样。否则,将使用系统默认值:数字类型为0,字符串类型为空字符串,bools值为false。对于内嵌的消息,默认值总是消息的"默认实例(defaultinstance)"或 "原型(prototype)",它们没有自己的字段集。调用accessor获取还没有显式地设置的optional (或required)字段的值总是返回字段的默认值。
 > * repeated:字段可以重复任意多次(包括0)。在protocol buffer中,重复值的顺序将被保留。将重复字段想象为动态大小的数组。
 
-### 分配字段编号
+* **分配字段编号**
 
 每个消息定义中的每个字段都有唯一的编号。这些字段编号用于标识消息二进制格式中的字段,并且在使用消息类型后不应更改。请注意,范围1到15中的字段编号需要一个字节进行编码,包括字段编号和字段类型。范围16至2047中的字段编号需要两个字节。所以你应该保留数字1到15作为非常频繁出现的消息元素。请记住为将来可能添加的频繁出现的元素留出一些空间。
 
 可以指定的最小字段编号为1,最大字段编号为$2^{29}-1$或536,870,911。也不能使用数字19000到19999(FieldDescriptor::kFirstReservedNumber到FieldDescriptor::kLastReservedNumber),因为它们是为Protocol Buffers实现保留的。如果在.proto中使用这些保留数字中的一个,Protocol Buffers编译的时候会报错。同样,您不能使用任何以前Protocol Buffers保留的一些字段号码。
 
-### 保留字段
+* **保留字段**
+
 如果您通过完全删除某个字段或将其注释掉来更新消息类型,那么未来的用户可以在对该类型进行自己的更新时重新使用该字段号。如果稍后加载到了的旧版本.proto文件,则会导致服务器出现严重问题,例如数据混乱,隐私错误等等。确保这种情况不会发生的一种方法是指定删除字段的字段编号(或名称,这也可能会导致JSON序列化问题)为reserved。如果将来的任何用户试图使用这些字段标识符,Protocol Buffers编译器将会报错。
 
-```
+```c
 message Foo {
     reserved 2, 15, 9 to 11;
     reserved "foo", "bar";
@@ -102,19 +103,19 @@ message Foo {
 注意,不能在同一个reserved语句中混合字段名称和字段编号。如有需要需要像上面这个例子这样写。
 
 
-### 默认字段规则
+* **默认字段规则**
 
 字段名不能重复,必须唯一。repeated字段:可以在一个message中重复任何数字多次(包括0),不过这些重复值的顺序被保留。在proto3中,纯数字类型的repeated字段编码时候默认采用packed编码。
 
-### 各个语言标量类型对应关系
+* **各个语言标量类型对应关系**
 
-![](https://img.halfrost.com/Blog/ArticleImage/84_3.png)
+<img src="https://img.halfrost.com/Blog/ArticleImage/84_3.png" style="width: 75%">
 
-### 枚举
+* **枚举**
 
 在message中可以嵌入枚举类型。
 
-```
+```c
 message SearchRequest {
     string query = 1;
     int32 page_number = 2;
@@ -136,10 +137,11 @@ message SearchRequest {
 
 另外在反序列化的过程中,无法被识别的枚举值,将会被保留在messaage中。因为消息反序列化时如何表示是依赖于语言的。在支持指定符号范围之外的值的开放枚举类型的语言中,例如C++和 Go,未知的枚举值只是存储为其基础整数表示。在诸如Java之类的封闭枚举类型的语言中,枚举值会被用来标识未识别的值,并且特殊的访问器可以访问到底层整数。在其他情况下,如果消息被序列化,则无法识别的值仍将与消息一起序列化。
 
-### 枚举中的保留值
+* **枚举中的保留值**
+
 如果您通过完全删除枚举条目或将其注释掉来更新枚举类型,未来的用户可以在对该类型进行自己的更新时重新使用数值。如果稍后加载到了的旧版本.proto文件,则会导致服务器出现严重问题,例如数据混乱,隐私错误等等。确保这种情况不会发生的一种方法是指定已删除条目的数字值(或名称,这也可能会导致JSON序列化问题)为reserved。如果将来的任何用户试图使用这些字段标识符,Protocol Buffers编译器将会报错。您可以使用max关键字指定您的保留数值范围上升到最大可能值。
 
-```
+```c
 enum Foo {
     reserved 2, 15, 9 to 11, 40 to max;
     reserved "FOO", "BAR";
@@ -148,11 +150,11 @@ enum Foo {
 
 注意,不能在同一个reserved语句中混合字段名称和字段编号。如有需要需要像上面这个例子这样写。
 
-### 允许嵌套
+* **允许嵌套**
 
 Protocol Buffers定义message允许嵌套组合成更加复杂的消息。
 
-```
+```c
 message SearchResponse {
     repeated Result results = 1;
 }
@@ -166,7 +168,7 @@ message Result {
 
 上面的例子中,SearchResponse中嵌套使用了Result。更多的例子:
 
-```
+```c
 message SearchResponse {
     message Result {
             string url = 1;
@@ -195,11 +197,11 @@ message Outer {                  // Level 0
 }
 ```
 
-### 枚举不兼容性
+* **枚举不兼容性**
 
 可以导入proto2消息类型并在proto3消息中使用它们,反之亦然。然而,proto2枚举不能直接用在proto3语法中(但是如果导入的proto2消息使用它们,这是可以的)。
 
-### 更新message
+* **更新message**
 
 如果后面发现之前定义message需要增加字段了,这个时候就体现出Protocol Buffer的优势了,不需要改动之前的代码。不过需要满足以下10条规则:
 
@@ -214,20 +216,21 @@ message Outer {                  // Level 0
 > * enum就数组而言,是可以与int32,uint32,int64和uint64兼容(请注意,如果它们不适合,值将被截断)。但是请注意,当消息反序列化时,客户端代码可能会以不同的方式对待它们:例如,未识别的proto3枚举类型将保留在消息中,但消息反序列化时如何表示是与语言相关的。(这点和语言相关,上面提到过了)Int域始终只保留它们的值。
 > * 将单个值更改为新的成员是安全和二进制兼容的。如果您确定一次没有代码设置多个字段,则将多个字段移至新的字段可能是安全的。将任何字段移到现有字段中都是不安全的。(注意字段和值的区别,字段是field,值是value)
 
-### 未知字段
+* **未知字段**
 
 未知数字段是protocol buffers序列化的数据,表示解析器无法识别的字段。例如,当一个旧的二进制文件解析由新的二进制文件发送的新数据的数据时,这些新的字段将成为旧的二进制文件中的未知字段。
 
 Proto3实现可以成功解析未知字段的消息,但是,实现可能会或可能不会支持保留这些未知字段。你不应该依赖保存或删除未知域。对于大多数Googleprotocol buffers实现,未知字段在proto3中无法通过相应的proto运行时访问,并且在反序列化时被丢弃和遗忘。这是与proto2的不同行为,其中未知字段总是与消息一起保存并序列化。
 
-### Map类型
+* **Map类型**
 
 repeated类型可以用来表示数组,Map类型则可以用来表示字典。
 
-```
+```c
 map<key_type, value_type> map_field = N;
 map<string, Project> projects = 3;
 ```
+
 key_type可以是任何int或者string类型(任何的标量类型,具体可以见上面标量类型对应表格,但是要除去float、double和 bytes),枚举值也不能作为key。key_type可以是除去map以外的任何类型。
 
 需要特别注意的是:
@@ -239,7 +242,7 @@ key_type可以是任何int或者string类型(任何的标量类型,具体可以�
 
 Protocol Buffer虽然不支持map类型的数组,但是可以转换一下,用以下思路实现maps数组:
 
-```
+```c
 message MapFieldEntry {
     key_type key = 1;
     value_type value = 2;
@@ -249,7 +252,8 @@ repeated MapFieldEntry map_field = N;
 
 上述写法和map数组是完全等价的,所以用repeated巧妙的实现了maps数组的需求。
 
-### JSON Mapping
+* **JSON Mapping**
+
 Proto3支持JSON中的规范编码,使系统之间共享数据变得更加容易。编码在下表中按类型逐个描述。
 
 如果JSON编码数据中缺少值或其值为空,则在解析为protocol buffer时,它将被解释为适当的默认值。如果一个字段在协议缓冲区中具有默认值,默认情况下它将在JSON编码数据中省略以节省空间。具体Mapping的实现可以提供选项决定是否在JSON编码的输出中发送具有默认值的字段。
@@ -263,11 +267,11 @@ proto3的JSON实现中提供了以下4中options:
 > * 使用proto字段名称而不是lowerCamelCase名称:默认情况下,proto3 JSON的printer将字段名称转换为lowerCamelCase并将其用作JSON名称。实现可能会提供一个选项,将原始字段名称用作JSON名称。Proto3 JSON解析器需要接受转换后的lowerCamelCase名称和原始字段名称。
 > * 发送枚举形式的枚举值而不是字符串:在JSON输出中默认使用枚举值的名称。可以提供一个选项来使用枚举值的数值。
 
-## proto3定义Services
+* **proto3定义Services**
 
 如果要使用RPC(远程过程调用)系统的消息类型,可以在.proto文件中定义RPC服务接口,protocol buffer编译器将使用所选语言生成服务接口代码和stubs。所以,例如,如果你定义一个RPC服务,入参是SearchRequest返回值是SearchResponse,你可以在你的.proto文件中定义它,如下所示:
 
-```
+```c
 service SearchService {
     rpc Search (SearchRequest) returns (SearchResponse);
 }
@@ -279,11 +283,11 @@ service SearchService {
 
 还有一些正在进行的第三方项目为Protocol Buffers开发RPC实现。
 
-## Protocol Buffer命名规范
+* **Protocol Buffer命名规范**
 
 message采用驼峰命名法。message首字母大写开头。字段名采用下划线分隔法命名。
 
-```
+```c
 message SongServerRequest {
     required string song_name = 1;
 }
@@ -306,11 +310,11 @@ service FooService {
 }
 ```
 
-## Protocol Buffer编码原理
+### 1.3 Protocol Buffer编码原理
 
 在讨论Protocol Buffer编码原理之前,必须先谈谈Varints编码。
 
-* Base 128 Varints编码
+* **Base 128 Varints编码**
 
 Varint是一种紧凑的表示数字的方法。它用一个或多个字节来表示一个数字,值越小的数字使用越少的字节数。这能减少用来表示数字的字节数。
 
@@ -318,13 +322,13 @@ Varint中的每个字节(最后一个字节除外)都设置了最高有效位(ms
 
 如果用不到1个字节,那么最高有效位设为0,如下面这个例子,1用一个字节就可以表示,所以msb为0.
 
-```C
+```c
 0000 0001
 ```
 
 如果需要多个字节表示,msb就应该设置为1。例如300,如果用Varint表示的话:
 
-```C
+```c
 1010 1100 0000 0010
 ```
 
@@ -332,7 +336,7 @@ Varint中的每个字节(最后一个字节除外)都设置了最高有效位(ms
 
 那Varint是怎么编码的呢?下面代码是Varint int32的编码计算方法。
 
-```C
+```c
 char* EncodeVarint32(char* dst, uint32_t v) {
   // Operate on characters as unsigneds
   unsigned char* ptr = reinterpret_cast<unsigned char*>(dst);
@@ -367,7 +371,7 @@ char* EncodeVarint32(char* dst, uint32_t v) {
 
 Varint的编码,以300举例:
 
-```C
+```c
 if (v < (1<<14)) {
     *(ptr++) = v | B;
     *(ptr++) = v>>7;
@@ -386,7 +390,7 @@ Varint的解码算法应该是这样的:(实际就是编码的逆过程)
 
 解码过程调用GetVarint32Ptr函数,如果是大于一个字节的情况,会调用GetVarint32PtrFallback来处理。
 
-```C
+```c
 inline const char* GetVarint32Ptr(const char* p,
                                   const char* limit,
                                   uint32_t* value) {
@@ -424,7 +428,7 @@ const char* GetVarint32PtrFallback(const char* p,
 
 64位Varint编码实现:
 
-```C
+```c
 char* EncodeVarint64(char* dst, uint64_t v) {
   static const int B = 128;
   unsigned char* ptr = reinterpret_cast<unsigned char*>(dst);
@@ -441,7 +445,7 @@ char* EncodeVarint64(char* dst, uint64_t v) {
 
 64位Varint解码实现:
 
-```C
+```c
 const char* GetVarint64Ptr(const char* p, const char* limit, uint64_t* value) {
   uint64_t result = 0;
   for (uint32_t shift = 0; shift <= 63 && p < limit; shift += 7) {
@@ -466,7 +470,7 @@ Varint确实是一种紧凑的表示数字的方法。它用一个或多个字�
 
 300如果用int32表示,需要4 个字节,现在用Varint表示,只需要2 个字节了。缩小了一半！
 
-### Message Structure编码
+* **Message Structure编码**
 
 protocol buffer中message是一系列键值对。message的二进制版本只是使用字段号(field'snumber和wire_type)作为key。每个字段的名称和声明类型只能在解码端通过引用消息类型的定义(即.proto文件)来确定。这一点也是人们常常说的protocol buffer比JSON,XML安全一点的原因,如果没有数据结构描述.proto文件,拿到数据以后是无法解释成正常的数据的。
 
@@ -486,12 +490,12 @@ key的计算方法是(field_number<<3)|wire_type,换句话说,key的最后3位�
 
 举例,一般message的字段号都是1 开始的,所以对应的tag可能是这样的:
 
-```C
+```c
 000 1000
 ```
 末尾3 位表示的是value的类型,这里是000,即0 ,代表的是varint值。右移3 位,即0001,这代表的就是字段号(fieldnumber)。tag的例子就举这么多,接下来举一个value的例子,还是用varint来举例:
 
-```C
+```c
 96 01 = 1001 0110  0000 0001
        → 000 0001  ++  001 0110 (drop the msb and reverse the groups of 7 bits)
        → 10010110
@@ -500,7 +504,7 @@ key的计算方法是(field_number<<3)|wire_type,换句话说,key的最后3位�
 
 可以96 01代表的数据就是150 。
 
-```
+```c
 message Test1 {
     required int32 a = 1;
 }
@@ -510,7 +514,7 @@ message Test1 {
 
 额外说一句,type需要注意的是type= 2的情况,tag里面除了包含fieldnumber和 wire_type,还需要再包含一个length,决定value从那一段取出来。
 
-### Signed Integers编码
+* **Signed Integers编码**
 
 从上面的表格里面可以看到wire_type= 0中包含了无符号的varints,但是如果是一个无符号数呢?
 
@@ -518,7 +522,7 @@ message Test1 {
 
 为何32位和64位的负数都需要10个byte长度呢?
 
-```C
+```c
 inline void CodedOutputStream::WriteVarint32SignExtended(int32 value) {
     WriteVarint64(static_cast<uint64>(value));
 }
@@ -529,7 +533,7 @@ inline void CodedOutputStream::WriteVarint32SignExtended(int32 value) {
 
 Zigzag映射函数为:
 
-```C
+```c
 Zigzag(n) = (n << 1) ^ (n >> 31), n 为 sint32 时
 Zigzag(n) = (n << 1) ^ (n >> 63), n 为 sint64 时
 ```
@@ -541,13 +545,13 @@ Zigzag(n) = (n << 1) ^ (n >> 63), n 为 sint64 时
 
 当sint32或 sint64被解析时,它的值被解码回原始的带符号的版本。
 
-### Non-varint Numbers
+* **Non-varint Numbers**
 
 Non-varint数字比较简单,double、fixed64的wire_type为1,在解析时告诉解析器,该类型的数据需要一个64位大小的数据块即可。同理,float和fixed32的wire_type为5,给其32位数据块即可。两种情况下,都是高位在后,低位在前。
 
 说Protocol Buffer压缩数据没有到极限,原因就在这里,因为并没有压缩float、double这些浮点类型。
 
-### 字符串
+* **字符串**
 
 ![](https://img.halfrost.com/Blog/ArticleImage/84_9.png)
 
@@ -555,14 +559,14 @@ wire_type类型为2 的数据,是一种指定长度的编码方式:key+length+co
 
 举例,假设定义如下的message格式:
 
-```
+```c
 message Test2 {
     optional string b = 2;
 }
 ```
 设置该值为"testing",二进制格式查看:
 
-```C
+```c
 12 07 74 65 73 74 69 6e 67
 ```
 
@@ -577,10 +581,11 @@ length此处为7,后边跟着7 个bytes,即我们的字符串"testing"。
 
 **所以wire_type类型为2 的数据,编码的时候会默认转换为T-L-V(Tag- Length- Value)的形式。**
 
-### 嵌入式message
+* **嵌入式message**
+
 假设,定义如下嵌套消息:
 
-```
+```c
 message Test3 {
     optional Test1 c = 3;
 }
@@ -588,7 +593,7 @@ message Test3 {
 
 设置字段为整数150,编码后的字节为:
 
-```C
+```c
 1a 03 08 96 01
 ```
 
@@ -600,7 +605,7 @@ length为3,代表后面有3个字节,即08 96 01。
 
 需要转变为T-L-V形式的还有string, bytes,embedded messages,packed repeated fields(即wire_type为2的形式都会转变成T-L-V形式)
 
-### Optional 和Repeated的编码
+* **Optional和Repeated的编码**
 
 在proto2中定义成repeated的字段,(没有加上[packed=true]option),编码后的message有一个或者多个包含相同tag数字的key-value对。这些重复的value不需要连续的出现;他们可能与其他的字段间隔的出现。尽管他们是无序的,但是在解析时,他们是需要有序的。在proto3中repeated字段默认采用packed编码。
 
@@ -608,14 +613,14 @@ length为3,代表后面有3个字节,即08 96 01。
 
 通常,编码后的message,其required字段和optional 字段最多只有一个实例。但是解析器却需要处理多对一的情况。对于数字类型和string类型,如果同一值出现多次,解析器接受最后一个它收到的值。对于内嵌字段,解析器合并(merge)它接收到的同一字段的多个实例。就如MergeFrom方法一样,所有单数的字段,后来的会替换先前的,所有单数的内嵌message都会被合并(merge),所有的repeated字段,都会串联起来。这样的规则的结果是,解析两个串联的编码后的message,与分别解析两个message然后merge,结果是一样的。例如:
 
-```C
+```c
 MyMessage message;
 message.ParseFromString(str1 + str2);
 ```
 
 等价于
 
-```C
+```c
 MyMessage message, message2;
 message.ParseFromString(str1);
 message2.ParseFromString(str2);
@@ -624,11 +629,11 @@ message.MergeFrom(message2);
 
 这种方法有时是非常有用的。比如,即使不知道message的类型,也能够将其合并。
 
-### Packed Repeated Fields
+* **Packed Repeated Fields**
 
 在2.1.0版本以后,protocol buffers引入了该种类型,其与repeated字段一样,只是在末尾声明了[packed=true]。类似repeated字段却又不同。在proto3中 Repeated字段默认就是以这种方式处理。对于packedrepeated字段,如果message中没有赋值,则不会出现在编码后的数据中。否则的话,该字段所有的元素会被打包到单一一个key-value对中,且它的wire_type=2,长度确定。每个元素正常编码,只不过其前没有标签tag。例如有如下message类型:
 
-```
+```c
 message Test4 {
     repeated int32 d = 4 [packed=true];
 }
@@ -636,7 +641,7 @@ message Test4 {
 
 构造一个Test4字段,并且设置repeated字段d 3个值:3,270和86942,编码后:
 
-```C
+```c
 22 // tag 0010 0010(field number 010 0 = 4, wire type 010 = 2)
 06 // payload size (设置的length = 6 bytes)
 03 // first element (varint 3)
@@ -651,13 +656,13 @@ message Test4 {
 
 Protocol Buffer解析器必须能够解析被重新编译为packed的字段,就像它们未被packed一样,反之亦然。这允许以正向和反向兼容的方式将[packed= true]添加到现有字段。
 
-### Field Order
+* **Field Order**
 
 编码/解码与字段顺序无关,这一点由key-value机制保证。
 
 如果消息具有未知字段,则当前的Java和C++实现在按顺序排序的已知字段之后以任意顺序写入它们。当前的Python实现不会跟踪未知字段。
 
-## protocol buffers的优缺点
+### 1.3 protocol buffers的优缺点
 
 protocol buffers 在序列化方面,与 XML 相比,有诸多优点:
 
@@ -670,7 +675,7 @@ protocol buffers 在序列化方面,与 XML 相比,有诸多优点:
 
 如果要编码一个用户的名字和email信息,用XML的方式如下:
 
-```Xml
+```xml
   <person>
     <name>John Doe</name>
     <email>jdoe@example.com</email>
@@ -679,7 +684,7 @@ protocol buffers 在序列化方面,与 XML 相比,有诸多优点:
 
 相同需求,如果换成protocol buffers来实现,定义文件如下:
 
-```C
+```c
 # Textual representation of a protocol buffer.
 # This is *not* the binary format used on the wire.
 person {
@@ -694,14 +699,14 @@ protocol buffers通过编码以后,以二进制的方式进行数据传输,最�
 
 protocol buffers自带代码生成工具,可以生成友好的数据访问存储接口。从而开发人员使用它来编码更加方便。例如上面的例子,如果用C++的方式去读取用户的名字和email,直接调用对应的get方法即可(所有属性的get和 set方法的代码都自动生成好了,只需要调用即可)
 
-```C
+```c
   cout << "Name: " << person.name() << endl;
   cout << "E-mail: " << person.email() << endl;
 ```
 
 而XML读取数据会麻烦一些:
 
-```Xml
+```xml
   cout << "Name: "
        << person.getElementsByTagName("name")->item(0)->innerText()
        << endl;
@@ -720,7 +725,7 @@ protocol buffers最后一个非常棒的特性是,即“向后”兼容性好,�
 
 由于文本并不适合用来描述数据结构,所以Protobuf也不适合用来对基于文本的标记文档(如HTML)建模。另外,由于XML具有某种程度上的自解释性,它可以被人直接读取编辑,在这一点上Protobuf不行,它以二进制的方式存储,除非你有.proto定义,否则你没法直接读出Protobuf的任何内容。
 
-## Python使用Protobuf
+### 1.4 Python使用Protobuf
 
 用一个例子说明使用Python操作PB的方法:
 
@@ -730,7 +735,7 @@ protocol buffers最后一个非常棒的特性是,即“向后”兼容性好,�
 
 该例子完成一个地址簿程序,能够对地址簿信息进行读写,地址簿中每个人的信息包括姓名、ID、email、联系电话。
 
-```
+```c
 // 定义addressbook.proto:
 syntax = "proto3";
 package tutorial;
@@ -760,11 +765,11 @@ message AddressBook {
 
 编译Protocol buffer: `protoc --python_out=. addressbook.proto`和生成addressbook_pb2.py
 
-### 使用Python的Protobuf API
+* **使用Python的Protobuf API**
 
 在Python脚本中使用addressbook_pb2.py:
 
-```
+```python
 import addressbook_pb2 as addressbook
 
 person = addressbook.Person()
@@ -781,11 +786,11 @@ person.new_value = 10
 
 如果访问.proto文件中未定义的域,抛出AttributeError,如果为某个域赋予了错误类型的值,抛出TypeError。在某个域未赋值前访问该域,返回这个域的默认值。
 
-### 枚举
+* **枚举**
 
 有整型值的符号常量,比如addressbook.Person.WORK的值是2。
 
-### 标准message方法
+* **标准message方法**
 
 每个Message类含有一些检查或操作整个message的方法,比如:
 
@@ -802,7 +807,7 @@ person.new_value = 10
 
 比如test.proto中内容如下:
 
-```
+```c
 message Test {
     required string a = 1;
     optional float b = 2;
@@ -816,7 +821,7 @@ message Test {
 
 调用WhichOneof的代码如下:
 
-```
+```python
 import test_pb2 as test
 t1 = test.Test()
 
@@ -828,7 +833,7 @@ print t1.WhichOneof('l')
 
 运行输出:c
 
-### 序列化和解析
+* **序列化和解析**
 
 每个Message类都有序列化和解析方法:
 
@@ -840,7 +845,7 @@ print t1.WhichOneof('l')
 
 将message写入文件
 
-```
+```python
 import addressbook_pb2
 import sys
 
@@ -892,9 +897,9 @@ f.write(address_book.SerializeToString())
 f.close()
 ```
 
-### 从文件读取message对象
+* **从文件读取message对象**
 
-```
+```python
 import addressbook_pb2
 import sys
 
@@ -928,12 +933,12 @@ ListPeople(address_book)
 
 如果Message.HasField(field_name)的参数对应的域规则是optional,且该域没有设置值,返回False,如果对应的域规则是repeated,且该域没有设置值,抛出ValueError异常。
 
-### message的赋值
+* **message的赋值**
 
 message中,标量类型和枚举类型的域,必须通过message.field_name=value的格式赋值,message类型的域,可以使用tmp=message.field_name赋值给tmp后,通过操作tmp赋值。当然,message类型的域也可以使用同标量赋值一样的格式赋值。
 比如test.proto内容为:
 
-```
+```c
 syntax = "proto3";
 package test;
 message Test {
@@ -953,7 +958,7 @@ message Test {
 
 赋值的代码为:
 
-```
+```python
 import test_pb2
 
 t1 = test_pb2.Test()
@@ -968,13 +973,13 @@ t1.b = test_pb2.Test.RED
 print("t1:\n", t1)
 ```
 
-## C使用Protobuf
+### 1.5 C使用Protobuf
 
-### 定义你的协议格式
+* **定义你的协议格式**
 
 为了创建你的地址簿应用,你需要先创建一个.proto文件。.proto文件中的定义很简单:为每个你想要序列化的数据结构添加一个消息(message),然后为消息中的每个字段指定一个名字和类型。这里是定义你的消息的.proto文件:addressbook.proto。
 
-```
+```c
 syntax = "proto3";
 package tutorial;
 
@@ -1000,7 +1005,7 @@ message AddressBook {
     repeated Person people = 1;
 }
 
-## 编译你的Protocol Buffers: protoc -I=$SRC_DIR --cpp_out=$DST_DIR $SRC_DIR/addressbook.proto
+// 编译你的Protocol Buffers: protoc -I=$SRC_DIR --cpp_out=$DST_DIR $SRC_DIR/addressbook.proto
 ```
 
 这将在你指定的目的目录下生成下面的文件:
@@ -1008,11 +1013,11 @@ message AddressBook {
 > * addressbook.pb.h,声明你的生成类的头文件。
 > * addressbook.pb.cc,包含了你的类的实现。
 
-### Protocol Buffer API
+* **Protocol Buffer API**
 
 让我们看一下生成的代码,并看一下编译器都为你创建了什么类和函数。如果查看tutorial.pb.h,你可以看到你在tutorial.proto中描述的每个消息都有一个类。进一步看Person类的话,你可以看到编译器已经为每个字段生成了accessors。比如,name,id,email,和phone字段,你具有这些方法:
 
-```
+```c
 // name
 inline bool has_name() const;
 inline void clear_name();
@@ -1056,11 +1061,12 @@ inline ::tutorial::Person_PhoneNumber* add_phone();
 > * 更新特定位置处的已有电话号码。
 > * 给消息添加另一个后面你可以编辑的电话号码 (重复的标量类型具有一个add_ 以使你可以传入新值)。
 
-### 枚举和嵌套类
+* **枚举和嵌套类**
 
 生成的代码包含一个PhoneType枚举,它对应于你的.proto枚举。你可以以Person::PhoneType引用这个类型,它的值包括 Person::MOBILE,Person::HOME,和Person::WORK。编译器还为你生成了称为Person::PhoneNumber的嵌套类。
 
-### 标准的消息方法
+* **标准的消息方法**
+
 每个消息类还包含大量的其它方法,来让你检查或管理整个消息,包括:
 
 > * bool IsInitialized() const;: 检查是否所有的required字段都已经被设置了。
@@ -1076,11 +1082,11 @@ inline ::tutorial::Person_PhoneNumber* add_phone();
 > * bool SerializeToOstream(ostream* output) const;: 将消息写入给定的C++ ostream。
 > * bool ParseFromIstream(istream* input);: 从给定的C++ istream解析消息。
 
-### 写消息
+* **写消息**
 
 现在让我们试着使用protocol buffer类。你想要你的地址簿应用能够做的第一件事情是将个人详情写入地址簿文件。要做到这一点,你需要创建并防止你的protocol buffer类的实例,然后将它们写入一个输出流。这里是一个程序,它从一个文件读取一个AddressBook,基于用户输入给它添加一个新Person,并再次将新的AddressBook写回文件。直接调用或引用由protocol编译器生成的代码的部分都被高亮了。
 
-```
+```c
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -1172,11 +1178,11 @@ int main(int argc, char* argv[]) {
 }
 ```
 
-### 读消息
+* **读消息**
 
 当然,如果你不能从地址簿中获取信息的话,那它就每什么用了。这个例子读取上面例子创建的文件并打印它的所有信息。
 
-```
+```c
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -1246,11 +1252,7 @@ int main(int argc, char* argv[]) {
 ```
 
 
-
-
-
-gflag文档.md
-# `GFlags`使用文档
+## 二、GFlags使用文档
 
 参考链接: [`http://www.yeolar.com/note/2014/12/14/gflags/`](http://www.yeolar.com/note/2014/12/14/gflags/)
 
