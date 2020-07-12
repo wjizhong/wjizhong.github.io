@@ -66,6 +66,9 @@
                       {title: "4.1.3 WorkerThread.h\u548cWorkerThread.cpp\u6587\u4ef6", url: "#413-workerthreadhworkerthreadcpp", level:4,children: [
                       ]},
                       {title: "4.1.4 distances.h\u3001distances_simd.cpp\u548cdistances.cpp\u6587\u4ef6", url: "#414-distanceshdistances_simdcppdistancescpp", level:4,children: [
+                          {title: "4.1.4.1 distances.h\u6587\u4ef6", url: "#4141-distancesh",level:5},
+                          {title: "4.1.4.2 distances_simd.cpp\u6587\u4ef6", url: "#4142-distances_simdcpp",level:5},
+                          {title: "4.1.4.1 distances.cpp\u6587\u4ef6", url: "#4141-distancescpp",level:5},
                       ]},
                   ]},
                   {title: "4.2 impl\u76ee\u5f55", url: "#42-impl", level:3, children: [
@@ -75,7 +78,9 @@
                           {title: "4.2.1.3 FaissAssert.h\u6587\u4ef6", url: "#4213-faissasserth",level:5},
                           {title: "4.2.1.4 test_assert_exception.cpp\u6587\u4ef6", url: "#4214-test_assert_exceptioncpp",level:5},
                       ]},
-                      {title: "4.2.3 AuxIndexStructures.h\u548cAuxIndexStructures.cpp\u6587\u4ef6", url: "#423-auxindexstructureshauxindexstructurescpp", level:4,children: [
+                      {title: "4.2.2 AuxIndexStructures.h\u548cAuxIndexStructures.cpp\u6587\u4ef6", url: "#422-auxindexstructureshauxindexstructurescpp", level:4,children: [
+                          {title: "4.2.2.1 AuxIndexStructures.h\u6587\u4ef6", url: "#4221-auxindexstructuresh",level:5},
+                          {title: "4.2.2.2 AuxIndexStructures.cpp\u6587\u4ef6", url: "#4222-auxindexstructurescpp",level:5},
                       ]},
                       {title: "4.2.4 ProductQuantizer.h,ProductQuantizer-inl.h\u548cProductQuantizer.cpp\u6587\u4ef6", url: "#424-productquantizerhproductquantizer-inlhproductquantizercpp", level:4,children: [
                       ]},
@@ -1800,10 +1805,9 @@ namespace faiss {
 </code></pre>
 
 <h4 id="414-distanceshdistances_simdcppdistancescpp">4.1.4 distances.h、distances_simd.cpp和distances.cpp文件</h4>
+<p>此文件定义了相关距离</p>
 <p><code>h、distances_simd.cpp</code>文件定义了<code>fvec_L2sqr</code>(s-s向量L2距离),<code>fvec_inner_product</code>(s-s),<code>fvec_L1</code>,<code>fvec_Linf</code>,<code>fvec_norm_L2sqr</code>,<code>fvec_L2sqr_ny</code>(s-mL2距离)。</p>
-<ul>
-<li><strong>distances.h文件</strong></li>
-</ul>
+<h5 id="4141-distancesh">4.1.4.1 distances.h文件</h5>
 <pre><code class="c++">/* All distance functions for L2 and IP distances.
  * The actual functions are implemented in distances.cpp and distances_simd.cpp */
 
@@ -1961,9 +1965,7 @@ namespace faiss {
 } // namespace faiss
 </code></pre>
 
-<ul>
-<li><strong>distances_simd.cpp文件</strong></li>
-</ul>
+<h5 id="4142-distances_simdcpp">4.1.4.2 distances_simd.cpp文件</h5>
 <pre><code class="c++">#include &lt;faiss/utils/distances.h&gt;
 
 #include &lt;cstdio&gt;
@@ -2627,9 +2629,7 @@ namespace faiss {
 } // namespace faiss
 </code></pre>
 
-<ul>
-<li><strong>distances.cpp文件</strong></li>
-</ul>
+<h5 id="4141-distancescpp">4.1.4.1 distances.cpp文件</h5>
 <pre><code class="c++"></code></pre>
 
 <h3 id="42-impl">4.2 impl目录</h3>
@@ -2843,11 +2843,9 @@ int main(){
 }
 </code></pre>
 
-<h4 id="423-auxindexstructureshauxindexstructurescpp">4.2.3 AuxIndexStructures.h和AuxIndexStructures.cpp文件</h4>
+<h4 id="422-auxindexstructureshauxindexstructurescpp">4.2.2 AuxIndexStructures.h和AuxIndexStructures.cpp文件</h4>
 <p>此文件定义了ID选择器:<code>IDSelector</code>,<code>IDSelectorRange</code>,<code>IDSelectorArray</code>,<code>IDSelectorBatch</code> 和检索结果<code>RangeSearchResult</code>,<code>RangeSearchPartialResult</code>以及相关的<code>BufferList</code>,<code>DistanceComputer</code>。</p>
-<ul>
-<li><strong>AuxIndexStructures.h文件</strong></li>
-</ul>
+<h5 id="4221-auxindexstructuresh">4.2.2.1 AuxIndexStructures.h文件</h5>
 <pre><code class="c++">// Auxiliary index structures, that are used in indexes but that can be forward-declared
 
 #ifndef FAISS_AUX_INDEX_STRUCTURES_H
@@ -2976,8 +2974,7 @@ namespace faiss {
 
         /// copy elemnts ofs:ofs+n-1 seen as linear data in the buffers to
         /// tables dest_ids, dest_dis
-        void copy_range (size_t ofs, size_t n,
-                         idx_t * dest_ids, float *dest_dis);
+        void copy_range (size_t ofs, size_t n,idx_t * dest_ids, float *dest_dis);
 
     };
 
@@ -3020,8 +3017,7 @@ namespace faiss {
 
         /// merge a set of PartialResult's into one RangeSearchResult
         /// on ouptut the partialresults are empty!
-        static void merge (std::vector &lt;RangeSearchPartialResult *&gt; &amp;
-                           partial_results, bool do_delete=true);
+        static void merge (std::vector &lt;RangeSearchPartialResult *&gt; &amp;partial_results, bool do_delete=true);
 
     };
 
@@ -3086,9 +3082,7 @@ namespace faiss {
 #endif
 </code></pre>
 
-<ul>
-<li><strong>AuxIndexStructures.cpp文件</strong></li>
-</ul>
+<h5 id="4222-auxindexstructurescpp">4.2.2.2 AuxIndexStructures.cpp文件</h5>
 <pre><code class="c++">#include &lt;cstring&gt;
 
 #include &lt;faiss/impl/AuxIndexStructures.h&gt;
