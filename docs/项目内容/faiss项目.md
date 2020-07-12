@@ -1767,11 +1767,11 @@ namespace faiss {
 
 #### 4.1.4 distances.h、distances_simd.cpp和distances.cpp文件
 
+此文件定义了相关距离
+
 `h、distances_simd.cpp`文件定义了`fvec_L2sqr`(s-s向量L2距离),`fvec_inner_product`(s-s),`fvec_L1`,`fvec_Linf`,`fvec_norm_L2sqr`,`fvec_L2sqr_ny`(s-mL2距离)。
 
-
-
-* **distances.h文件**
+##### 4.1.4.1 distances.h文件
 
 ```c++
 /* All distance functions for L2 and IP distances.
@@ -1931,7 +1931,7 @@ namespace faiss {
 } // namespace faiss
 ```
 
-* **distances_simd.cpp文件**
+##### 4.1.4.2 distances_simd.cpp文件
 
 ```c++
 #include <faiss/utils/distances.h>
@@ -2597,7 +2597,7 @@ namespace faiss {
 } // namespace faiss
 ```
 
-* **distances.cpp文件**
+##### 4.1.4.1 distances.cpp文件
 
 ```c++
 ```
@@ -2824,11 +2824,11 @@ int main(){
 }
 ```
 
-#### 4.2.3 AuxIndexStructures.h和AuxIndexStructures.cpp文件
+#### 4.2.2 AuxIndexStructures.h和AuxIndexStructures.cpp文件
 
 此文件定义了ID选择器:`IDSelector`,`IDSelectorRange`,`IDSelectorArray`,`IDSelectorBatch` 和检索结果`RangeSearchResult`,`RangeSearchPartialResult`以及相关的`BufferList`,`DistanceComputer`。
 
-* **AuxIndexStructures.h文件**
+##### 4.2.2.1 AuxIndexStructures.h文件
 
 ```c++
 // Auxiliary index structures, that are used in indexes but that can be forward-declared
@@ -2959,8 +2959,7 @@ namespace faiss {
 
         /// copy elemnts ofs:ofs+n-1 seen as linear data in the buffers to
         /// tables dest_ids, dest_dis
-        void copy_range (size_t ofs, size_t n,
-                         idx_t * dest_ids, float *dest_dis);
+        void copy_range (size_t ofs, size_t n,idx_t * dest_ids, float *dest_dis);
 
     };
 
@@ -3003,8 +3002,7 @@ namespace faiss {
 
         /// merge a set of PartialResult's into one RangeSearchResult
         /// on ouptut the partialresults are empty!
-        static void merge (std::vector <RangeSearchPartialResult *> &
-                           partial_results, bool do_delete=true);
+        static void merge (std::vector <RangeSearchPartialResult *> &partial_results, bool do_delete=true);
 
     };
 
@@ -3069,7 +3067,7 @@ namespace faiss {
 #endif
 ```
 
-* **AuxIndexStructures.cpp文件**
+##### 4.2.2.2 AuxIndexStructures.cpp文件
 
 ```c++
 #include <cstring>

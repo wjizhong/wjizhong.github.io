@@ -1258,11 +1258,11 @@ int main(int argc, char* argv[]) {
 
 GFlags是Google开源的一个命令行flag(区别于参数)库。和getopt()之类的库不同,flag的定义可以散布在各个源码中,而不用放在一起。一个源码文件可以定义一些它自己的flag,链接了该文件的应用都能使用这些flag。这样就能非常方便地复用代码。如果不同的文件定义了相同的flag,链接时会报错。GFlags是一个C++库,同时也有一个Python移植,使用完全相同的接口。
 
-## DEFINE:在程序中定义flag
+### 2.1 DEFINE:在程序中定义flag
 
 定义flag只需使用你想要的类型的对应的宏即可,这些宏定义在gflags/gflags.h的最后。比如:
 
-```
+```c
 // foo.cc
 #include <gflags/gflags.h>
 
@@ -1290,11 +1290,11 @@ DEFINE 宏有三个参数:flag名、默认值、描述使用方法的帮助。�
 
 注意:DEFINE_foo和DECLARE_foo是全局命名空间的。
 
-## 使用flag
+### 2.2 使用flag
 
 定义的flag可以像正常的变量一样使用,只需在前面加上FLAGS_前缀。如前面例子中定义了FLAGS_big_menu和FLAGS_languages两个变量。可以像其他变量一样读写:
 
-```
+```c
 if (FLAGS_consider_made_up_languages)
     FLAGS_languages += ",klingon";   // implied by --consider_made_up_languages
 if (FLAGS_languages.find("finnish") != string::npos)
@@ -1303,7 +1303,7 @@ if (FLAGS_languages.find("finnish") != string::npos)
 
 也可以使用gflags.h中的特殊函数读写flag,不过不太常用。
 
-## DECLARE:在不同文件中使用flag
+### 2.3 DECLARE:在不同文件中使用flag
 
 上面的方法只能在同一文件中前面定义了flag的情况下使用flag,否则会报“unknown variable”错误。
 
@@ -1317,13 +1317,13 @@ DECLARE_bool(big_menu);
 
 问题是这会在两个文件间加上依赖关系,对于较大的项目这会导致管理困难。所以这里有个原则:如果在foo.cc中DEFINE了一个flag,那么或者不DECLARE它,或者只在对应的测试中DECLARE,或者只在foo.h中DECLARE。
 
-## RegisterFlagValidator: 验证flag值
+### 2.4 RegisterFlagValidator:验证flag值
 
 你可能想给定义的flag注册一个验证函数。这样当flag从命令行解析,或者值被修改(通过调用SetCommandLineOption()),验证函数都会被调用。验证函数应该在flag值有效时返回true,否则返回false。如果对新设置的值返回false,flag保持当前值:如果对默认值返回false,ParseCommandLineFlags会失败。
 
 举个例子:
 
-```
+```c
 static bool ValidatePort(const char* flagname, int32 value) {
     if (value > 0 && value < 32768)   // value is ok
         return true;
@@ -1341,11 +1341,11 @@ static const bool port_dummy = RegisterFlagValidator(&FLAGS_port, &ValidatePort)
 > * a) 第一个参数不是命令行flag
 > * b) 已经注册了另一个验证器。
 
-## 生成flag
+### 2.5 生成flag
 
 最后,还需要解析命令行。和getopt()类似,但是简单得多;
 
-```
+```c
 google::ParseCommandLineFlags(&argc, &argv, true);
 ```
 
@@ -1355,11 +1355,11 @@ google::ParseCommandLineFlags(&argc, &argv, true);
 
 根据命令行的解析,修改 FLAGS_* 变量。
 
-## 设置命令行flag
+### 2.6 设置命令行flag
 
 一般使用flag的原因是为了能在命令行指定一个非默认值。以foo.cc为例,可能的用法是:
 
-```
+```c
 app_containing_foo --nobig_menu -languages="chinese,japanese,korean" ...
 ```
 
@@ -1367,7 +1367,7 @@ app_containing_foo --nobig_menu -languages="chinese,japanese,korean" ...
 
 设置"languages" flag的方法有:
 
-```
+```c
 app_containing_foo --languages="chinese,japanese,korean"
 app_containing_foo -languages="chinese,japanese,korean"
 app_containing_foo --languages "chinese,japanese,korean"
@@ -1376,7 +1376,7 @@ app_containing_foo -languages "chinese,japanese,korean"
 
 布尔flag稍有不同:
 
-```
+```c
 app_containing_foo --big_menu
 app_containing_foo --nobig_menu
 app_containing_foo --big_menu=true
@@ -1387,11 +1387,11 @@ app_containing_foo --big_menu=false
 
 在命令行使用未定义的flag会在执行时失败。如果需要允许未定义的flag,可以使用--undefok来去掉报错。和getopt()一样,--可以用于结束flag。重复指定flag使用最后的一个。不支持单字母的形式的flag,也不支持单短线后的flag合并,像ls -la那样。
 
-## 更改默认的flag值
+### 2.7 更改默认的flag值
 
 对于定义在库中的flag,有时我们想要在单独一个应用中改变它的默认值。很简单,只要在ParseCommandLineFlags()前面设定一个新的值即可:
 
-```
+```c
 DECLARE_bool(lib_verbose);   // mylib has a lib_verbose flag, default is false
 int main(int argc, char** argv) {
     FLAGS_lib_verbose = true;  // in my app, I want a verbose lib by default
@@ -1401,11 +1401,11 @@ int main(int argc, char** argv) {
 
 对于上面的应用中,flag的默认值被改为true。
 
-## 特殊flag
+### 2.8 特殊flag
 
 GFlags中默认定义了一些flag。有三类,第一类是“报告”flag,用于打印一些信息然后退出。
 
-```
+```sh
 --help  显示所有文件的所有flag,按文件、名称排序,显示flag名、默认值和帮助
 --helpfull  和 --help 相同,显示全部flag
 --helpshort 只显示执行文件中包含的flag,通常是 main() 所在文件
@@ -1418,13 +1418,13 @@ GFlags中默认定义了一些flag。有三类,第一类是“报告”flag,用�
 
 第二类是可以影响其他flag的。
 
-```
+```sh
 --undefok=flagname,flagname,...  --undefok 后面列出的flag名,可以在无定义的情况下忽略而不报错
 ```
 
 第三类是“递归”flag,可以用来设置其他flag:--fromenv,--tryfromenv,--flagfile。
 
-```
+```sh
 --fromenv
 --fromenv=foo,bar表示从环境变量中读取foo和bar flag。需要在环境中预先设置对应的值:
 
@@ -1436,16 +1436,15 @@ setenv FLAGS_foo xxx; setenv FLAGS_bar yyy   # tcsh
 
 如果在应用中没有定义foo,或者环境变量中没有定义FLAGS_foo,使用--fromenv=foo会导致失败。
 
+```sh
 --tryfromenv
---tryfromenv 和 --fromenv 类似,区别是在环境变量中没有定义 FLAGS_foo 时, --tryfromenv=foo 不会导致失败,这时会使用定义时指定的默认值。但是应用中没有定义 foo 仍会导致失败。
-
---flagfile
---flagfile=f 表示从文件 f 中读取flag。
 ```
 
-对于简单形式,文件f中每行一个flag。在flagfile文件中flag需要使用等号。如:
+--tryfromenv和--fromenv 类似,区别是在环境变量中没有定义 FLAGS_foo 时, --tryfromenv=foo 不会导致失败,这时会使用定义时指定的默认值。但是应用中没有定义 foo 仍会导致失败。
 
-```
+`--flagfile`: --flagfile=f 表示从文件 f 中读取flag。对于简单形式,文件f中每行一个flag。在flagfile文件中flag需要使用等号。如:
+
+```sh
 # /tmp/myflags
 --nobig_menus
 --languages=english,french
@@ -1453,7 +1452,7 @@ setenv FLAGS_foo xxx; setenv FLAGS_bar yyy   # tcsh
 
 以下两种方式是等价的:
 
-```
+```sh
 ./myapp --foo --nobig_menus --languages=english,french --bar
 ./myapp --foo --flagfile=/tmp/myflags --bar
 ```
@@ -1464,23 +1463,22 @@ setenv FLAGS_foo xxx; setenv FLAGS_bar yyy   # tcsh
 
 以#开头的行作为注释被忽略,前导空白和空行也都会被忽略。flagfile中还可以使用--flagfile flag来包含另一个flagfile。flag会按顺序执行。从命令行开始,遇到flagfile时,执行文件,执行完再继续命令行中后面的flag。
 
-## 其他一些细节
+### 2.9 其他一些细节
 
 除以上的方法,还可以直接通过API来读取flag,以及它的默认值和帮助等信息。FlagSaver可以用来修改flag和自动撤销修改。还有一些读取argv的方法,SetUsageMessage()和SetVersionString等等。可以参考gflags.h。
 
 如果加上:
 
-```
+```c
 #define STRIP_FLAG_HELP 1    // this must go before the #include!
 #include <gflags/gflags.h>
 ```
 
-
-# Glog使用文档
+## 三、Glog使用文档
 
 来自Google的Glog是一个应用程序的日志库。它提供基于C++风格的流的日志API,以及各种辅助的宏。打印日志只需以流的形式传给LOG(level),例如:
 
-```
+```c++
 #include <glog/logging.h>
 int main(int argc, char* argv[]) {
     // Initialize Google's logging library.
@@ -1496,23 +1494,23 @@ int main(int argc, char* argv[]) {
 
 Glog定义了一系列的宏来简化记录日志的工作。你可以按级别打印日志,通过命令行控制日志行为,按条件打印日志,不满足条件时终止程序,引入自定义的日志级别,等等。
 
-## 日志级别
+### 3.1 日志级别
 
 可以指定下面这些级别(按严重性递增排序):INFO,WARNING,ERROR和FATAL。打印FATAL消息会在打印完成后终止程序。和其他日志库类似,级别更高的日志会在同级别和所有低级别的日志文件中打印。DFATAL级别会在调试模式(没有定义NDEBUG宏)中打印FATAL日志,但是会自动降级为ERROR级别,而不终止程序。
 
 如果不指定的话,Glog输出到文件`/tmp/<programname>.<hostname>.<username>.log.<severitylevel>.<date>-<time>.<pid>`(比如/tmp/hello_world.example.com.hamaji.log.INFO.20080709-222411.10474)。默认情况下,Glog对于ERROR和FATAL级别的日志会同时输出到stderr。
 
-## 设置flag
+### 3.2 设置flag
 
 一些flag会影响Glog的输出行为。如果安装了GFlags库,编译时会默认使用它,这样就可以在命令行传递flag(别忘了调用ParseCommandLineFlags初始化)。比如你想打开--logtostderrflag,可以这么用:
 
-```
+```c
 ./your_application --logtostderr=1
 ```
 
 如果没有安装GFlags,那可以通过环境变量来设置,在flag名前面加上前缀GLOG_。比如:
 
-```
+```c
 GLOG_logtostderr=1 ./your_application
 ```
 
@@ -1528,7 +1526,7 @@ GLOG_logtostderr=1 ./your_application
 
 logging.cc中还定义了其他一些flag。grep一下DEFINE_可以看到全部。也可以通过修改FLAGS_*全局变量来改变flag的值。
 
-```
+```c
 LOG(INFO) << "file";
 // Most flags work immediately after updating values.
 FLAGS_logtostderr = 1;
@@ -1539,17 +1537,17 @@ FLAGS_logtostderr = 0;
 FLAGS_log_dir = "/some/log/directory";
 LOG(INFO) << "the same file";
 ```
-## 按条件/次数打印日志
+### 3.3 按条件/次数打印日志
 
 有时你可能只想在满足一定条件的时候打印日志。可以使用下面的宏来按条件打印日志:
 
-```
+```c
 LOG_IF(INFO, num_cookies > 10) << "Got lots of cookies";
 ```
 
 上面的日志只有在满足num_cookies>10时才会打印。另一种情况,如果代码被执行多次,可能只想对其中某几次打印日志。
 
-```
+```c
 LOG_EVERY_N(INFO, 10) << "Got the " << google::COUNTER << "th cookie";
 ```
 
@@ -1557,7 +1555,7 @@ LOG_EVERY_N(INFO, 10) << "Got the " << google::COUNTER << "th cookie";
 
 可以将这两种日志用下面的宏合并起来。
 
-```
+```c
 LOG_IF_EVERY_N(INFO, (size > 1024), 10) << "Got the " << google::COUNTER << "th big cookie";
 ```
 
@@ -1569,21 +1567,21 @@ LOG_FIRST_N(INFO, 20) << "Got the " << google::COUNTER << "th cookie";
 
 上面会在执行的前20次打印日志。
 
-## 调试模式
+### 3.4 调试模式
 
 调试模式的日志宏只在调试模式下有效,在非调试模式会被清除。可以避免生产环境的程序由于大量的日志而变慢。
 
-```
+```c
 DLOG(INFO) << "Found cookies";
 DLOG_IF(INFO, num_cookies > 10) << "Got lots of cookies";
 DLOG_EVERY_N(INFO, 10) << "Got the " << google::COUNTER << "th cookie";
 ```
 
-## CHECK宏
+### 3.5 CHECK宏
 
 常做状态检查以尽早发现错误是一个很好的编程习惯。CHECK宏和标准库中的assert宏类似,可以在给定的条件不满足时终止程序。CHECK和assert不同的是,它不由NDEBUG控制,所以一直有效。因此下面的fp->Write(x)会一直执行:
 
-```
+```c
 CHECK(fp->Write(x) == 4) << "Write failed!";
 ```
 
@@ -1591,32 +1589,32 @@ CHECK(fp->Write(x) == 4) << "Write failed!";
 
 比如:
 
-```
+```c
 CHECK_NE(1, 2) << ": The world must be ending!";
 ```
 
 每个参数都可以保证只用一次,所以任何可以做为函数参数的都可以传给它。参数也可以是临时的表达式,比如:
 
-```
+```c
 CHECK_EQ(string("abc")[1], 'b');
 ```
 
 如果一个参数是指针,另一个是NULL,编译器会报错。可以给NULL加上对应类型的static_cast来绕过。
 
-```
+```c
 CHECK_EQ(some_ptr, static_cast<SomeType*>(NULL));
 ```
 
 更好的办法是用CHECK_NOTNULL宏:
 
-```
+```c
 CHECK_NOTNULL(some_ptr);
 some_ptr->DoSomething();
 ```
 
 该宏会返回传入的指针,因此在构造函数的初始化列表中非常有用。
 
-```
+```c
 struct S {
     S(Something* ptr) : ptr_(CHECK_NOTNULL(ptr)) {}
     Something* ptr_;
@@ -1629,11 +1627,11 @@ struct S {
 
 CHECK_DOUBLE_EQ宏可以用来检查两个浮点值是否等价,允许一点误差。CHECK_NEAR还可以传入第三个浮点参数,指定误差。
 
-## 细节日志
+### 3.6 细节日志
 
 当你在追比较复杂的bug的时候,详细的日志信息非常有用。但同时,在通常开发中需要忽略太详细的信息。对这种细节日志的需求,Glog提供了VLOG宏,使你可以自定义一些日志级别。通过--v可以控制输出的细节日志:
 
-```
+```c
 VLOG(1) << "I'm printed when you run the program with --v=1 or higher";
 VLOG(2) << "I'm printed when you run the program with --v=2 or higher";
 ```
@@ -1642,7 +1640,7 @@ VLOG(2) << "I'm printed when you run the program with --v=2 or higher";
 
 细节日志可以控制按模块输出:
 
-```
+```c
 --vmodule=mapreduce=2,file=1,gfs*=3 --v=0
 ```
 
@@ -1656,7 +1654,7 @@ VLOG(2) << "I'm printed when you run the program with --v=2 or higher";
 
 细节级别的条件判断宏VLOG_IS_ON(n)当--v大于等于n时返回true。比如:
 
-```
+```c
 if (VLOG_IS_ON(2)) {
     // do some logging preparation and logging
     // that can't be accomplished with just VLOG(2) << ...;
@@ -1665,7 +1663,7 @@ if (VLOG_IS_ON(2)) {
 
 此外还有VLOG_IF,VLOG_EVERY_N,VLOG_IF_EVERY_N和LOG_IF,LOG_EVERY_N,LOF_IF_EVERY类似,但是它们传入的是一个数字的细节级别。
 
-```
+```c
 VLOG_IF(1, (size > 1024)) << "I'm printed when size is more than 1024 and when you run the program with --v=1 or more";
 VLOG_EVERY_N(1, 10) << "I'm printed every 10th occurrence, and when you run the program with --v=1 or more. Present occurence is " << google::COUNTER;
 VLOG_IF_EVERY_N(1, (size > 1024), 10)
@@ -1674,7 +1672,7 @@ VLOG_IF_EVERY_N(1, (size > 1024), 10)
       "Present occurence is " << google::COUNTER;
 ```
 
-## 失败信号处理
+### 3.7 失败信号处理
 
 Glog库还提供了一个信号处理器,能够在SIGSEGV之类的信号导致的程序崩溃时导出有用的信息。使用google::InstallFailureSignalHandler()加载信号处理器。下面是它输出的一个例子。
 
@@ -1701,31 +1699,32 @@ PC: @           0x412eb1 TestWaitingLogSink::send()
 
 默认情况,信号处理器把失败信息导出到stderr。可以用InstallFailureWriter()定制输出位置。
 
-## 其他
-### 支持CMake
+### 3.8 其他
+
+* **支持CMake**
 
 Glog并不自带CMake支持,如果想在CMake脚本中使用它,可以把FindGlog.cmake添加到CMake的模块目录下。然后像下面这样使用:
 
-```
+```c
 find_package (Glog REQUIRED)
 include_directories (${GLOG_INCLUDE_DIR})
 add_executable (foo main.cc)
 target_link_libraries (foo glog)
 ```
 
-### 性能
+* **性能**
 
 Glog提供的条件日志宏(比如CHECK,LOG_IF,VLOG,...)在条件判断失败时,不会执行右边表达式。因此像下面这样的检查不会牺牲程序的性能。
 
-```
+```c
 CHECK(obj.ok) << obj.CreatePrettyFormattedStringButVerySlow();
 ```
 
-## 自定义失败处理函数
+* **自定义失败处理函数**
 
 FATAL级别的日志和CHECK条件失败时会终止程序。可以用InstallFailureFunction改变该行为。
 
-```
+```c
 void YourFailureFunction() {
     // Reports something...
     exit(1);
@@ -1738,28 +1737,28 @@ int main(int argc, char* argv[]) {
 
 默认地,Glog会导出stacktrace,程序以状态1退出。stacktrace只在Glog支持栈跟踪的系统架构(x86和x86_64)上导出。
 
-### 原始日志
+* **原始日志**
 
-<glog/raw_logging.h>可用于要求线程安全的日志,它不分配任何内存,也不加锁。因此,该头文件中定义的宏可用于底层的内存分配和同步的代码。
+`<glog/raw_logging.h>`可用于要求线程安全的日志,它不分配任何内存,也不加锁。因此,该头文件中定义的宏可用于底层的内存分配和同步的代码。
 
-### 谷歌风格的perror()
+* **谷歌风格的perror()**
 
 PLOG(),PLOG_IF(),PCHECK()和对应的LOG*和CHECK类似,但它们会同时在输出中加上当前errno的描述。如:
 
-```
+```c
 PCHECK(write(1, NULL, 2) >= 0) << "Write NULL failed";
 ```
 
 下面是它的输出:
 
-```
+```c
 F0825 185142 test.cc:22] Check failed: write(1, NULL, 2) >= 0 Write NULL failed: Bad address [14]
 Syslog
 ```
 
 SYSLOG,SYSLOG_IF,SYSLOG_EVERY_N宏会在正常日志输出的同时输出到syslog。注意输出日志到syslog会大幅影响性能,特别是如果syslog配置为远程日志输出。所以在用它们之前一定要确定影响,一般来说很少使用。
 
-### 跳过日志
+* **跳过日志**
 
 打印日志的代码中的字符串会增加可执行文件的大小,而且也会带来泄密的风险。可以通过使用GOOGLE_STRIP_LOG宏来删除所有低于特定级别的日志:
 
@@ -1772,7 +1771,7 @@ SYSLOG,SYSLOG_IF,SYSLOG_EVERY_N宏会在正常日志输出的同时输出到sysl
 
 编译器会删除所有级别低于该值的日志。因为VLOG的日志级别是INFO(等于0),设置GOOGLE\_STRIP\_LOG大于等于1会删除所有VLOG和INFO日志。
 
-## 修改输出格式
+* **修改输出格式**
 
 修改src/logging.cc文件:
 
@@ -1795,8 +1794,7 @@ SYSLOG,SYSLOG_IF,SYSLOG_EVERY_N宏会在正常日志输出的同时输出到sysl
 ```
 
 
-
-# caffe源码
+## 四、caffe源码
 
 caffe源码介绍:
 
