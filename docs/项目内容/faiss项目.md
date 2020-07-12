@@ -1039,11 +1039,11 @@ int main(){
 }
 ```
 
-#### 2.1.2 Heap.h和Heap.cpp文件
+#### 3.1.2 Heap.h,Heap.cpp文件
 
 此文件定义了`heap_pop`, `heap_push`,`heap_heapify`(建堆),`heap_addn`,`heap_reorder`以及`HeapArray`。
 
-##### 2.1.2.1 Heap.h文件
+##### 3.1.2.1 Heap.h文件
 
 ```c++
 /*
@@ -1431,7 +1431,7 @@ namespace faiss {
 #endif  /* FAISS_Heap_h */
 ```
 
-* **Heap.cpp文件**
+##### 3.1.2.2 Heap.cpp文件
 
 ```c++
 /* Function for soft heap */
@@ -1531,6 +1531,72 @@ namespace faiss {
     template struct HeapArray<CMax <int, int64_t> >;
 
 }  // END namespace fasis
+```
+
+
+##### 3.1.2.3 test_heap.cpp文件
+
+```c++
+#include<cstdio>
+#include<utils/Heap.h>
+#include<utils/random.h>
+
+
+void print_dis(float* array, int num){
+    printf("\t\tdis array is: ");
+    for(int i=0;i<num;i++){
+        printf("%f ", array[i]);
+    }
+    printf("\n");
+}
+
+
+void print_ids(int64_t* array, int num){
+    printf("\t\tids array is: ");
+    for(int i=0;i<num;i++){
+        printf("%ld ", array[i]);
+    }
+    printf("\n");
+}
+
+int main(){
+    int num=10;
+    float* dis =new float[num-1];
+    int64_t* ids = new int64_t[num-1];
+
+    float* new_dis =new float[num];
+    int64_t* new_ids = new int64_t[num];
+    for(int i=0;i<num-1;i++){
+        ids[i] =i;
+        faiss::float_rand(dis+i, 1, i+1);
+    }
+
+    print_dis(dis, num-1);
+    print_ids(ids, num-1);
+
+    printf("min heap: \n\tminheap_heapify:\n");
+    // 最小堆操作
+    faiss::minheap_heapify<float>(num, new_dis, new_ids, dis,ids,num-1);
+    print_dis(new_dis, num);
+    print_ids(new_ids, num);
+
+    printf("\tminheap_pop:\n");
+    faiss::minheap_pop<float>(num, new_dis, new_ids);
+    print_dis(new_dis, num);
+    print_ids(new_ids, num);
+
+    printf("\tminheap_push:\n");
+    faiss::minheap_push<float>(num, new_dis, new_ids, 0.1, 9);
+    print_dis(new_dis, num);
+    print_ids(new_ids, num);
+
+    delete [] dis;
+    delete [] ids;
+    delete [] new_dis;
+    delete [] new_ids;
+
+    return 0;
+}
 ```
 
 #### 4.1.3 WorkerThread.h和WorkerThread.cpp文件
@@ -2740,8 +2806,6 @@ namespace faiss {
 
 #endif
 ```
-
-
 
 ##### 4.2.1.4 test_assert_exception.cpp文件
 
