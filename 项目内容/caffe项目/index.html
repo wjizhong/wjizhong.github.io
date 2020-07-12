@@ -33,11 +33,9 @@
         
         var pageToc = [
           {title: "caffe\u9879\u76ee", url: "#_top", level:1, children: [
-              {title: "\u4e00\u3001protobuf\u6559\u7a0b", url: "#protobuf", level:2, children: [ 
-              ]},
-              {title: "\u4e00\u3001protocol buffers\u662f\u4ec0\u4e48", url: "#protocol-buffers", level:2, children: [ 
-              ]},
-              {title: "\u4e3a\u4ec0\u4e48\u8981\u53d1\u660eprotocol buffers?", url: "#protocol-buffers_1", level:2, children: [ 
+              {title: "\u4e00\u3001protobuf\u6559\u7a0b", url: "#protobuf", level:2, children: [
+                  {title: "1.1 protocol buffers\u662f\u4ec0\u4e48", url: "#11-protocol-buffers", level:3, children: [
+                  ]}, 
               ]},
               {title: "proto3\u5b9a\u4e49message", url: "#proto3message", level:2, children: [
                   {title: "\u5206\u914d\u5b57\u6bb5\u7f16\u53f7", url: "#_1", level:3, children: [
@@ -87,7 +85,7 @@
                   {title: "Field Order", url: "#field-order", level:3, children: [
                   ]}, 
               ]},
-              {title: "protocol buffers\u7684\u4f18\u7f3a\u70b9", url: "#protocol-buffers_2", level:2, children: [ 
+              {title: "protocol buffers\u7684\u4f18\u7f3a\u70b9", url: "#protocol-buffers", level:2, children: [ 
               ]},
               {title: "Python\u4f7f\u7528Protobuf", url: "#pythonprotobuf", level:2, children: [
                   {title: "\u4f7f\u7528Python\u7684Protobuf API", url: "#pythonprotobuf-api", level:3, children: [
@@ -266,13 +264,15 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>https://www.zhihu.com/question/27982282</p>
 <p>https://blog.csdn.net/langb2014/article/details/50988275?locationNum=5&amp;fps=1</p>
 <h2 id="protobuf">一、protobuf教程</h2>
-<h2 id="protocol-buffers">一、<code>protocol buffers</code>是什么</h2>
+<h3 id="11-protocol-buffers">1.1 protocol buffers是什么</h3>
 <p>Protocol buffers是一种语言中立,平台无关,可扩展的序列化数据的格式,可用于通信协议,数据存储等。</p>
 <p>Protocol buffers在序列化数据方面,它是灵活的,高效的。相比于XML来说,Protocol buffers更加小巧,更加快速,更加简单。一旦定义了要处理的数据的数据结构之后,就可以利用Protocol buffers的代码生成工具生成相关的代码。甚至可以在无需重新部署程序的情况下更新数据结构。只需使用Protobuf对数据结构进行一次描述,即可利用各种不同语言或从各种不同数据流中对你的结构化数据轻松读写。</p>
 <p>Protocol buffers很适合做数据存储或RPC数据交换格式。可用于通讯协议、数据存储等领域的语言无关、平台无关、可扩展的序列化结构数据格式。</p>
-<h2 id="protocol-buffers_1">为什么要发明protocol buffers?</h2>
+<ul>
+<li><strong>为什么要发明protocol buffers?</strong></li>
+</ul>
 <p>大家可能会觉得Google发明protocol buffers是为了解决序列化速度的,其实真实的原因并不是这样的。protocol buffers最先开始是google用来解决索引服务器request/response协议的。没有protocol buffers之前,google已经存在了一种request/response格式,用于手动处理request/response的编组和反编组。它也能支持多版本协议,不过代码比较丑陋:</p>
-<pre><code>if (version == 3) {
+<pre><code class="c++">if (version == 3) {
     ...
 } else if (version &gt; 4) {
     if (version == 5) {
@@ -763,7 +763,7 @@ message.MergeFrom(message2);
 <h3 id="field-order">Field Order</h3>
 <p>编码/解码与字段顺序无关,这一点由key-value机制保证。</p>
 <p>如果消息具有未知字段,则当前的Java和C++实现在按顺序排序的已知字段之后以任意顺序写入它们。当前的Python实现不会跟踪未知字段。</p>
-<h2 id="protocol-buffers_2">protocol buffers的优缺点</h2>
+<h2 id="protocol-buffers">protocol buffers的优缺点</h2>
 <p>protocol buffers 在序列化方面,与 XML 相比,有诸多优点:</p>
 <blockquote>
 <ul>
