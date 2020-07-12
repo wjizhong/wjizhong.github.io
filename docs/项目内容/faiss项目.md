@@ -2538,11 +2538,11 @@ namespace faiss {
 
 ### 4.2 impl目录
 
-#### 4.2.1 FaissException.h和FaissException.cpp文件
+#### 4.2.1 FaissException.h,FaissException.cpp和FaissException.cpp文件
 
-此文件主要描述异常的处理方式:`FaissException`,`handleExceptions`以及`ScopeDeleter`,`ScopeDeleter1`。
+此文件主要描述异常的处理方式:`FaissException`,`handleExceptions`以及`ScopeDeleter`,`ScopeDeleter1`。定义某些宏: `FAISS_ASSERT`,`FAISS_ASSERT_MSG`,`FAISS_ASSERT_FMT`; `FAISS_THROW_MSG`,`FAISS_THROW_FMT`; `FAISS_THROW_IF_NOT_FMT`,`FAISS_THROW_IF_NOT_MSG`,`FAISS_THROW_IF_NOT_FMT`。
 
-* **FaissException.h文件**
+##### 4.2.1.1 FaissException.h文件
 
 ```c++
 #ifndef FAISS_EXCEPTION_INCLUDED
@@ -2559,10 +2559,12 @@ namespace faiss {
     class FaissException : public std::exception {
         public:
             explicit FaissException(const std::string& msg);
-            FaissException(const std::string& msg,const char* funcName, const char* file,int line);
+
+            FaissException(const std::string& msg, const char* funcName,const char* file, int line);
 
             /// from std::exception
             const char* what() const noexcept override;
+
             std::string msg;
     };
 
@@ -2571,7 +2573,7 @@ namespace faiss {
     /// The pair int is the thread that generated the exception
     void handleExceptions(std::vector<std::pair<int, std::exception_ptr>>& exceptions);
 
-    /// bare-bones unique_ptr this one deletes with delete []
+    /** bare-bones unique_ptr this one deletes with delete [] */
     template<class T>
     struct ScopeDeleter {
         const T * ptr;
@@ -2579,10 +2581,12 @@ namespace faiss {
         void release () {ptr = nullptr; }
         void set (const T * ptr_in) { ptr = ptr_in; }
         void swap (ScopeDeleter<T> &other) {std::swap (ptr, other.ptr); }
-        ~ScopeDeleter () { delete [] ptr; }
+        ~ScopeDeleter () {
+            delete [] ptr;
+        }
     };
 
-    /// same but deletes with the simple delete (least common case)
+    /** same but deletes with the simple delete (least common case) */
     template<class T>
     struct ScopeDeleter1 {
         const T * ptr;
@@ -2590,22 +2594,26 @@ namespace faiss {
         void release () {ptr = nullptr; }
         void set (const T * ptr_in) { ptr = ptr_in; }
         void swap (ScopeDeleter1<T> &other) {std::swap (ptr, other.ptr); }
-        ~ScopeDeleter1 () { delete ptr; }
+        ~ScopeDeleter1 () {
+            delete ptr;
+        }
     };
 }
 #endif
 ```
 
-* **FaissException.cpp文件**
+##### 4.2.1.2 FaissException.cpp文件
 
 ```c++
-#include <faiss/impl/FaissException.h>
+#include <impl/FaissException.h>
 #include <sstream>
 
 namespace faiss {
+
     FaissException::FaissException(const std::string& m) : msg(m) { }
-    FaissException::FaissException(const std::string& m, const char* funcName, const char* file, int line) {
-        int size = snprintf(nullptr, 0, "Error in %s at %s:%d: %s",funcName, file, line, m.c_str());
+
+    FaissException::FaissException(const std::string& m,const char* funcName, const char* file,int line) {
+        int size = snprintf(nullptr, 0, "Error in %s at %s:%d: %s", funcName, file, line, m.c_str());
         msg.resize(size + 1);
         snprintf(&msg[0], msg.size(), "Error in %s at %s:%d: %s", funcName, file, line, m.c_str());
     }
@@ -2613,6 +2621,7 @@ namespace faiss {
     const char* FaissException::what() const noexcept {
         return msg.c_str();
     }
+
 
     void handleExceptions(std::vector<std::pair<int, std::exception_ptr>>& exceptions) {
         if (exceptions.size() == 1) {
@@ -2639,23 +2648,23 @@ namespace faiss {
             throw FaissException(ss.str());
         }
     }
+
 }
 ```
 
-#### 4.2.2 FaissAssert.h文件
-
-此文件主要定义某些宏: `FAISS_ASSERT`,`FAISS_ASSERT_MSG`,`FAISS_ASSERT_FMT`; `FAISS_THROW_MSG`,`FAISS_THROW_FMT`; `FAISS_THROW_IF_NOT_FMT`,`FAISS_THROW_IF_NOT_MSG`,`FAISS_THROW_IF_NOT_FMT`。
+##### 4.2.1.3 FaissAssert.h文件
 
 ```c++
 #ifndef FAISS_ASSERT_INCLUDED
 #define FAISS_ASSERT_INCLUDED
 
-#include <faiss/impl/FaissException.h>
+#include <impl/FaissException.h>
 #include <cstdlib>
 #include <cstdio>
 #include <string>
 
 /// Assertions
+
 #define FAISS_ASSERT(X)                                                 \
   do {                                                                  \
     if (! (X)) {                                                        \
@@ -2686,8 +2695,9 @@ namespace faiss {
     }                                                                   \
   } while (false)
 
-
+///
 /// Exceptions for returning user errors
+///
 
 #define FAISS_THROW_MSG(MSG)                                            \
   do {                                                                  \
@@ -2703,8 +2713,9 @@ namespace faiss {
     throw faiss::FaissException(__s, __PRETTY_FUNCTION__, __FILE__, __LINE__); \
   } while (false)
 
-
+///
 /// Exceptions thrown upon a conditional failure
+///
 
 #define FAISS_THROW_IF_NOT(X)                           \
   do {                                                  \
@@ -2728,6 +2739,25 @@ namespace faiss {
   } while (false)
 
 #endif
+```
+
+
+
+##### 4.2.1.4 test_assert_exception.cpp文件
+
+```c++
+#include<cstdio>
+#include<impl/FaissAssert.h>
+
+int main(){
+    int* x=0;
+    try{
+        FAISS_ASSERT(x);
+    }catch (...) {
+        FAISS_ASSERT_MSG(x,"test");
+    }
+    return 0;
+}
 ```
 
 #### 4.2.3 AuxIndexStructures.h和AuxIndexStructures.cpp文件

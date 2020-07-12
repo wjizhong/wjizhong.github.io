@@ -17,7 +17,7 @@ https://www.zhihu.com/question/27982282
 https://blog.csdn.net/langb2014/article/details/50988275?locationNum=5&fps=1
 
 ## 一、protobuf教程
-## 一、`protocol buffers`是什么
+### 1.1 protocol buffers是什么
 
 Protocol buffers是一种语言中立,平台无关,可扩展的序列化数据的格式,可用于通信协议,数据存储等。
 
@@ -25,11 +25,11 @@ Protocol buffers在序列化数据方面,它是灵活的,高效的。相比于XM
 
 Protocol buffers很适合做数据存储或RPC数据交换格式。可用于通讯协议、数据存储等领域的语言无关、平台无关、可扩展的序列化结构数据格式。
 
-## 为什么要发明protocol buffers?
+* **为什么要发明protocol buffers?**
 
 大家可能会觉得Google发明protocol buffers是为了解决序列化速度的,其实真实的原因并不是这样的。protocol buffers最先开始是google用来解决索引服务器request/response协议的。没有protocol buffers之前,google已经存在了一种request/response格式,用于手动处理request/response的编组和反编组。它也能支持多版本协议,不过代码比较丑陋:
 
-```
+```c++
 if (version == 3) {
     ...
 } else if (version > 4) {
