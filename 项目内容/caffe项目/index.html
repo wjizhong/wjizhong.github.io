@@ -85,15 +85,30 @@
                   {title: "3.8 \u5176\u4ed6", url: "#38", level:3, children: [
                   ]}, 
               ]},
-              {title: "\u56db\u3001caffe\u6e90\u7801", url: "#caffe_1", level:2, children: [ 
-              ]},
-              {title: "1. \u524d\u8a00", url: "#1", level:2, children: [ 
-              ]},
-          ]},
-          {title: "2. Caffe\u4ee3\u7801\u7ed3\u6784", url: "#2-caffe", level:1, children: [
-              {title: "2.1 \u603b\u4f53\u6982\u8ff0", url: "#21", level:2, children: [ 
+              {title: "\u56db\u3001caffe\u6e90\u7801", url: "#caffe_1", level:2, children: [
+                  {title: "1. \u524d\u8a00", url: "#1", level:3, children: [
+                  ]},
+                  {title: "2. Caffe\u4ee3\u7801\u7ed3\u6784", url: "#2-caffe", level:3, children: [
+                      {title: "2.1 \u603b\u4f53\u6982\u8ff0", url: "#21", level:4,children: [
+                      ]},
+                  ]}, 
               ]},
               {title: "2.2 \u6e90\u7801\u4e3b\u7ebf\u7ed3\u6784\u56fe", url: "#22", level:2, children: [ 
+              ]},
+              {title: "\u4e94\u3001caffe\u9879\u76ee", url: "#caffe_2", level:2, children: [
+                  {title: "5.1 utils", url: "#51-utils", level:3, children: [
+                  ]},
+                  {title: "5.2 blob", url: "#52-blob", level:3, children: [
+                  ]},
+                  {title: "5.3 Net\u7c7b", url: "#53-net", level:3, children: [
+                  ]},
+                  {title: "5.4 layers", url: "#54-layers", level:3, children: [
+                      {title: "5.4.1 \u57fa\u672c\u53c2\u6570", url: "#541", level:4,children: [
+                      ]},
+                      {title: "5.4.4 batch_norm_layer\u76f8\u5173\u6587\u4ef6", url: "#544-batch_norm_layer", level:4,children: [
+                          {title: "5.4.4.1 proto\u53c2\u6570", url: "#5441-proto",level:5},
+                      ]},
+                  ]}, 
               ]},
               {title: "2.4 \u4ee3\u7801\u7ec6\u8282", url: "#24", level:2, children: [
                   {title: "2.4.2 Blob\u7c7b", url: "#242-blob", level:3, children: [
@@ -1675,13 +1690,13 @@ Syslog
 <h2 id="caffe_1">四、caffe源码</h2>
 <p>caffe源码介绍:</p>
 <p>https://zhuanlan.zhihu.com/p/22252270</p>
-<h2 id="1">1. 前言</h2>
+<h3 id="1">1. 前言</h3>
 <p>目前的图像和自然语言处理很多地方用到了神经网络/深度学习相关的知识,神奇的效果让广大身处IT一线的程序猿们跃跃欲试,不过看到深度学习相关一大串公式之后头皮发麻,又大有放弃的想法。</p>
 <p>从工业使用的角度来说,不打算做最前沿的研究,只是用已有的方法或者成型的框架来完成一些任务,也不用一上来就死啃理论,倒不如先把神经网络看得简单一点,视作一个搭积木的过程,所谓的卷积神经网络(CNN)或者循环神经网络(RNN)等无非是积木块不一样(层次和功能不同)以及搭建的方式不一样,再者会有一套完整的理论帮助我们把搭建的积木模型最好地和需要完成的任务匹配上。</p>
 <p>大量的数学背景知识可能大家都忘了,但是每天敲代码的习惯并没有落下,所以说不定以优秀的深度学习开源框架代码学习入手,也是一个很好的神经网络学习切入点。</p>
 <p>这里给大家整理和分享的是使用非常广泛的深度学习框架caffe,这是一套最早起源于Berkeley的深度学习框架,广泛应用于神经网络的任务当中,大量paper的实验都是用它完成的,而国内电商等互联网公司的大量计算机视觉应用也是基于它完成的。代码结构清晰,适合学习。</p>
-<h1 id="2-caffe">2. Caffe代码结构</h1>
-<h2 id="21">2.1 总体概述</h2>
+<h3 id="2-caffe">2. Caffe代码结构</h3>
+<h4 id="21">2.1 总体概述</h4>
 <p>典型的神经网络是层次结构,每一层会完成不同的运算(可以简单理解为有不同的功能),运算的层叠完成前向传播运算,"比对标准答案"之后得到“差距(loss)”,还需要通过反向传播来求得修正“积木块结构(参数)”所需的组件,继而完成参数调整。</p>
 <p>所以caffe也定义了环环相扣的类,来更好地完成上述的过程。我们看到这里一定涉及数据,网络层,网络结构,最优化网络几个部分,在caffe中同样是这样一个想法,caffe的源码目录结构如下。</p>
 <p><img width="700px" src="https://ymgd.github.io/codereader/deeplearning/caffe/caffe_sourcecode_analysis/resources/caffe_menu.png" /></p>
@@ -1696,6 +1711,36 @@ Syslog
 <h2 id="22">2.2 源码主线结构图</h2>
 <p>caffe代码的一个精简源码主线结构图如下:</p>
 <p><img width="600px" src="https://ymgd.github.io/codereader/deeplearning/caffe/caffe_sourcecode_analysis/resources/caffe.png" /></p>
+<h2 id="caffe_2">五、caffe项目</h2>
+<h3 id="51-utils">5.1 utils</h3>
+<h3 id="52-blob">5.2 blob</h3>
+<h3 id="53-net">5.3 Net类</h3>
+<h3 id="54-layers">5.4 layers</h3>
+<h4 id="541">5.4.1 基本参数</h4>
+<h4 id="544-batch_norm_layer">5.4.4 batch_norm_layer相关文件</h4>
+<h5 id="5441-proto">5.4.4.1 proto参数</h5>
+<pre><code class="c">message BatchNormParameter {
+    // If false, normalization is performed over the current mini-batch
+    // and global statistics are accumulated (but not yet used) by a moving
+    // average.
+    // If true, those accumulated mean and variance values are used for the
+    // normalization.
+    // By default, it is set to false when the network is in the training
+    // phase and true when the network is in the testing phase.
+    optional bool use_global_stats = 1;
+    // What fraction of the moving average remains each iteration?
+    // Smaller values make the moving average decay faster, giving more
+    // weight to the recent values.
+    // Each iteration updates the moving average @f$S_{t-1}@f$ with the
+    // current mean @f$ Y_t @f$ by
+    // @f$ S_t = (1-\beta)Y_t + \beta \cdot S_{t-1} @f$, where @f$ \beta @f$
+    // is the moving_average_fraction parameter.
+    optional float moving_average_fraction = 2 [default = .999];
+    // Small value to add to the variance estimate so that we don't divide by zero.
+  optional float eps = 3 [default = 1e-5];
+}
+</code></pre>
+
 <h2 id="24">2.4 代码细节</h2>
 <h3 id="242-blob">2.4.2 Blob类</h3>
 <p>前面说到了Blob是最基础的数据结构,用来保存网络传输 过程中产生的数据和学习到的一些参数。比如它的上一层Layer中会用下面的形式表示学习到的参数:<code>vector&lt;shared_ptr&lt;Blob&lt;Dtype&gt; &gt; &gt; blobs_</code>;里面的blob就是这里定义的类。 部分代码如下:</p>
