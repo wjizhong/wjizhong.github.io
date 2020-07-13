@@ -1801,7 +1801,7 @@ caffe源码介绍:
 
 https://zhuanlan.zhihu.com/p/22252270
 
-## 1. 前言
+### 1. 前言
 目前的图像和自然语言处理很多地方用到了神经网络/深度学习相关的知识,神奇的效果让广大身处IT一线的程序猿们跃跃欲试,不过看到深度学习相关一大串公式之后头皮发麻,又大有放弃的想法。
 
 从工业使用的角度来说,不打算做最前沿的研究,只是用已有的方法或者成型的框架来完成一些任务,也不用一上来就死啃理论,倒不如先把神经网络看得简单一点,视作一个搭积木的过程,所谓的卷积神经网络(CNN)或者循环神经网络(RNN)等无非是积木块不一样(层次和功能不同)以及搭建的方式不一样,再者会有一套完整的理论帮助我们把搭建的积木模型最好地和需要完成的任务匹配上。
@@ -1810,8 +1810,8 @@ https://zhuanlan.zhihu.com/p/22252270
 
 这里给大家整理和分享的是使用非常广泛的深度学习框架caffe,这是一套最早起源于Berkeley的深度学习框架,广泛应用于神经网络的任务当中,大量paper的实验都是用它完成的,而国内电商等互联网公司的大量计算机视觉应用也是基于它完成的。代码结构清晰,适合学习。
 
-# 2. Caffe代码结构
-## 2.1 总体概述
+### 2. Caffe代码结构
+#### 2.1 总体概述
 典型的神经网络是层次结构,每一层会完成不同的运算(可以简单理解为有不同的功能),运算的层叠完成前向传播运算,"比对标准答案"之后得到“差距(loss)”,还需要通过反向传播来求得修正“积木块结构(参数)”所需的组件,继而完成参数调整。
 
 所以caffe也定义了环环相扣的类,来更好地完成上述的过程。我们看到这里一定涉及数据,网络层,网络结构,最优化网络几个部分,在caffe中同样是这样一个想法,caffe的源码目录结构如下。
@@ -1832,6 +1832,52 @@ https://zhuanlan.zhihu.com/p/22252270
 caffe代码的一个精简源码主线结构图如下:
 
 <img width="600px" src="https://ymgd.github.io/codereader/deeplearning/caffe/caffe_sourcecode_analysis/resources/caffe.png" />
+
+
+
+## 五、caffe项目
+
+### 5.1 utils
+
+
+### 5.2 blob
+
+
+### 5.3 Net类
+
+
+### 5.4 layers
+
+#### 5.4.1 基本参数
+
+#### 5.4.4 batch_norm_layer相关文件
+
+##### 5.4.4.1 proto参数
+
+```c
+message BatchNormParameter {
+    // If false, normalization is performed over the current mini-batch
+    // and global statistics are accumulated (but not yet used) by a moving
+    // average.
+    // If true, those accumulated mean and variance values are used for the
+    // normalization.
+    // By default, it is set to false when the network is in the training
+    // phase and true when the network is in the testing phase.
+    optional bool use_global_stats = 1;
+    // What fraction of the moving average remains each iteration?
+    // Smaller values make the moving average decay faster, giving more
+    // weight to the recent values.
+    // Each iteration updates the moving average @f$S_{t-1}@f$ with the
+    // current mean @f$ Y_t @f$ by
+    // @f$ S_t = (1-\beta)Y_t + \beta \cdot S_{t-1} @f$, where @f$ \beta @f$
+    // is the moving_average_fraction parameter.
+    optional float moving_average_fraction = 2 [default = .999];
+    // Small value to add to the variance estimate so that we don't divide by zero.
+  optional float eps = 3 [default = 1e-5];
+}
+```
+
+
 
 ## 2.4 代码细节
 
@@ -2579,3 +2625,8 @@ class Solver {
 
   DISABLE_COPY_AND_ASSIGN(Solver);
 };
+
+
+
+
+
