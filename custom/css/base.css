@@ -156,7 +156,7 @@ img {
 }
 
 .wm-toc-hidden > .wm-toc-pane {
-  margin-left: -300px;
+  margin-left: -100px;
 }
 
 .wm-toc-hidden > .wm-content-pane {
