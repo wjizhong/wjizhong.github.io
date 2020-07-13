@@ -4237,7 +4237,7 @@ static void init_hypercube_pca (int d, int nbits,
 }  // namespace faiss
 ```
 
-### 4.3 Index相关文件
+### 4.3 Index其他文件
 
 #### 4.3.1 MetricType.h文件
 
@@ -4835,357 +4835,6 @@ namespace faiss {
 } // namespace faiss
 ```
 
-#### 4.3.3 Index.h和Index.cpp文件
-
-* **Index.h文件**
-
-```c++
-#ifndef FAISS_INDEX_H
-#define FAISS_INDEX_H
-
-#include <faiss/MetricType.h>
-#include <cstdio>
-#include <typeinfo>
-#include <string>
-#include <sstream>
-
-#define FAISS_VERSION_MAJOR 1
-#define FAISS_VERSION_MINOR 6
-#define FAISS_VERSION_PATCH 3
-
-/**
- * @namespace faiss
- *
- * Throughout the library, vectors are provided as float * pointers.
- * Most algorithms can be optimized when several vectors are processed
- * (added/searched) together in a batch. In this case, they are passed
- * in as a matrix. When n vectors of size d are provided as float * x,
- * component j of vector i is
- *      x[ i * d + j ]
- * where 0 <= i < n and 0 <= j < d. In other words, matrices are
- * always compact. When specifying the size of the matrix, we call it
- * an n*d matrix, which implies a row-major storage.
- */
-
-namespace faiss {
-
-    /// Forward declarations see AuxIndexStructures.h
-    struct IDSelector;
-    struct RangeSearchResult;
-    struct DistanceComputer;
-
-    /** Abstract structure for an index, supports adding vectors and searching them.
-     *
-     * All vectors provided at add or search time are 32-bit float arrays,
-     * although the internal representation may vary.
-     */
-    struct Index {
-        using idx_t = int64_t;  ///< all indices are this type
-        using component_t = float;
-        using distance_t = float;
-
-        int d;                 ///< vector dimension
-        idx_t ntotal;          ///< total nb of indexed vectors
-        bool verbose;          ///< verbosity level
-
-        /// set if the Index does not require training, or if training is done already
-        bool is_trained;
-
-        /// type of metric this index uses for search
-        MetricType metric_type;
-        float metric_arg;     ///< argument of the metric type
-
-        explicit Index (idx_t d = 0, MetricType metric = METRIC_L2): d(d),
-                    ntotal(0), verbose(false), is_trained(true), metric_type (metric), metric_arg(0) {}
-        virtual ~Index ();
-
-        /** Perform training on a representative set of vectors
-         *
-         * @param n      nb of training vectors
-         * @param x      training vecors, size n * d
-         */
-        virtual void train(idx_t n, const float* x);
-
-        /** Add n vectors of dimension d to the index.
-         *
-         * Vectors are implicitly assigned labels ntotal .. ntotal + n - 1
-         * This function slices the input vectors in chuncks smaller than
-         * blocksize_add and calls add_core.
-         * @param x      input matrix, size n * d
-         */
-        virtual void add (idx_t n, const float *x) = 0;
-
-        /** Same as add, but stores xids instead of sequential ids.
-         *
-         * The default implementation fails with an assertion, as it is
-         * not supported by all indexes.
-         *
-         * @param xids if non-null, ids to store for the vectors (size n)
-         */
-        virtual void add_with_ids (idx_t n, const float * x, const idx_t *xids);
-
-        /** query n vectors of dimension d to the index.
-         *
-         * return at most k vectors. If there are not enough results for a
-         * query, the result array is padded with -1s.
-         *
-         * @param x           input vectors to search, size n * d
-         * @param labels      output labels of the NNs, size n*k
-         * @param distances   output pairwise distances, size n*k
-         */
-        virtual void search (idx_t n, const float *x, idx_t k, float *distances, idx_t *labels) const = 0;
-
-        /** query n vectors of dimension d to the index.
-         *
-         * return all vectors with distance < radius. Note that many
-         * indexes do not implement the range_search (only the k-NN search
-         * is mandatory).
-         *
-         * @param x           input vectors to search, size n * d
-         * @param radius      search radius
-         * @param result      result table
-         */
-        virtual void range_search (idx_t n, const float *x, float radius, RangeSearchResult *result) const;
-
-        /** return the indexes of the k vectors closest to the query x.
-         *
-         * This function is identical as search but only return labels of neighbors.
-         * @param x           input vectors to search, size n * d
-         * @param labels      output labels of the NNs, size n*k
-         */
-        void assign (idx_t n, const float * x, idx_t * labels, idx_t k = 1);
-
-        /// removes all elements from the database.
-        virtual void reset() = 0;
-
-        /// removes IDs from the index. Not supported by all indexes. Returns the number of elements removed.
-
-        virtual size_t remove_ids (const IDSelector & sel);
-
-        /** Reconstruct a stored vector (or an approximation if lossy coding)
-         *
-         * this function may not be defined for some indexes
-         * @param key         id of the vector to reconstruct
-         * @param recons      reconstucted vector (size d)
-         */
-        virtual void reconstruct (idx_t key, float * recons) const;
-
-        /** Reconstruct vectors i0 to i0 + ni - 1
-         *
-         * this function may not be defined for some indexes
-         * @param recons      reconstucted vector (size ni * d)
-         */
-        virtual void reconstruct_n (idx_t i0, idx_t ni, float *recons) const;
-
-        /** Similar to search, but also reconstructs the stored vectors (or an
-         * approximation in the case of lossy coding) for the search results.
-         *
-         * If there are not enough results for a query, the resulting arrays
-         * is padded with -1s.
-         *
-         * @param recons      reconstructed vectors size (n, k, d)
-         **/
-        virtual void search_and_reconstruct (idx_t n, const float *x, idx_t k,
-                                             float *distances, idx_t *labels, float *recons) const;
-
-        /** Computes a residual vector after indexing encoding.
-         *
-         * The residual vector is the difference between a vector and the
-         * reconstruction that can be decoded from its representation in
-         * the index. The residual can be used for multiple-stage indexing
-         * methods, like IndexIVF's methods.
-         *
-         * @param x           input vector, size d
-         * @param residual    output residual vector, size d
-         * @param key         encoded index, as returned by search and assign
-         */
-        virtual void compute_residual (const float * x, float * residual, idx_t key) const;
-
-        /** Computes a residual vector after indexing encoding (batch form).
-         * Equivalent to calling compute_residual for each vector.
-         *
-         * The residual vector is the difference between a vector and the
-         * reconstruction that can be decoded from its representation in
-         * the index. The residual can be used for multiple-stage indexing
-         * methods, like IndexIVF's methods.
-         *
-         * @param n           number of vectors
-         * @param xs          input vectors, size (n x d)
-         * @param residuals   output residual vectors, size (n x d)
-         * @param keys        encoded index, as returned by search and assign
-         */
-        virtual void compute_residual_n (idx_t n, const float* xs,
-                                         float* residuals, const idx_t* keys) const;
-
-        /** Get a DistanceComputer (defined in AuxIndexStructures) object
-         * for this kind of index.
-         *
-         * DistanceComputer is implemented for indexes that support random
-         * access of their vectors.
-         */
-        virtual DistanceComputer * get_distance_computer() const;
-
-        /* The standalone codec interface */
-
-        /** size of the produced codes in bytes */
-        virtual size_t sa_code_size () const;
-
-        /** encode a set of vectors
-         *
-         * @param n       number of vectors
-         * @param x       input vectors, size n * d
-         * @param bytes   output encoded vectors, size n * sa_code_size()
-         */
-        virtual void sa_encode (idx_t n, const float *x,uint8_t *bytes) const;
-
-        /** encode a set of vectors
-         *
-         * @param n       number of vectors
-         * @param bytes   input encoded vectors, size n * sa_code_size()
-         * @param x       output vectors, size n * d
-         */
-        virtual void sa_decode (idx_t n, const uint8_t *bytes,float *x) const;
-    };
-}
-#endif
-```
-
-* **Index.cpp文件**
-
-```c++
-#include <faiss/Index.h>
-
-#include <faiss/impl/AuxIndexStructures.h>
-#include <faiss/impl/FaissAssert.h>
-#include <faiss/utils/distances.h>
-
-#include <cstring>
-
-
-namespace faiss {
-
-    Index::~Index () { }
-
-    void Index::train(idx_t /*n*/, const float* /*x*/) {
-        // does nothing by default
-    }
-
-    void Index::range_search (idx_t , const float *, float, RangeSearchResult *) const {
-        FAISS_THROW_MSG ("range search not implemented");
-    }
-
-    void Index::assign (idx_t n, const float * x, idx_t * labels, idx_t k) {
-        float * distances = new float[n * k];
-        ScopeDeleter<float> del(distances);
-        search (n, x, k, distances, labels);
-    }
-
-    void Index::add_with_ids( idx_t /*n*/, const float* /*x*/, const idx_t* /*xids*/) {
-        FAISS_THROW_MSG ("add_with_ids not implemented for this type of index");
-    }
-
-    size_t Index::remove_ids(const IDSelector& /*sel*/) {
-        FAISS_THROW_MSG ("remove_ids not implemented for this type of index");
-        return -1;
-    }
-
-    void Index::reconstruct (idx_t, float * ) const {
-        FAISS_THROW_MSG ("reconstruct not implemented for this type of index");
-    }
-
-    void Index::reconstruct_n (idx_t i0, idx_t ni, float *recons) const {
-        for (idx_t i = 0; i < ni; i++) {
-            reconstruct (i0 + i, recons + i * d);
-        }
-    }
-
-
-    void Index::search_and_reconstruct (idx_t n, const float *x, idx_t k,
-            float *distances, idx_t *labels, float *recons) const {
-        search (n, x, k, distances, labels);
-        for (idx_t i = 0; i < n; ++i) {
-            for (idx_t j = 0; j < k; ++j) {
-                idx_t ij = i * k + j;
-                idx_t key = labels[ij];
-                float* reconstructed = recons + ij * d;
-                if (key < 0) {
-                    // Fill with NaNs
-                    memset(reconstructed, -1, sizeof(*reconstructed) * d);
-                } else {
-                    reconstruct (key, reconstructed);
-                }
-            }
-        }
-    }
-
-    void Index::compute_residual (const float * x, float * residual, idx_t key) const {
-        reconstruct (key, residual);
-        for (size_t i = 0; i < d; i++) {
-            residual[i] = x[i] - residual[i];
-        }
-    }
-
-    void Index::compute_residual_n (idx_t n, const float* xs, float* residuals, const idx_t* keys) const {
-        #pragma omp parallel for
-            for (idx_t i = 0; i < n; ++i) {
-                compute_residual(&xs[i * d], &residuals[i * d], keys[i]);
-            }
-    }
-
-    size_t Index::sa_code_size () const {
-        FAISS_THROW_MSG ("standalone codec not implemented for this type of index");
-    }
-
-    void Index::sa_encode (idx_t, const float *,uint8_t *) const {
-        FAISS_THROW_MSG ("standalone codec not implemented for this type of index");
-    }
-
-    void Index::sa_decode (idx_t, const uint8_t *, float *) const {
-        FAISS_THROW_MSG ("standalone codec not implemented for this type of index");
-    }
-
-
-    namespace {
-
-        // storage that explicitly reconstructs vectors before computing distances
-        struct GenericDistanceComputer : DistanceComputer {
-            size_t d;
-            const Index& storage;
-            std::vector<float> buf;
-            const float *q;
-
-            explicit GenericDistanceComputer(const Index& storage) : storage(storage) {
-                d = storage.d;
-                buf.resize(d * 2);
-            }
-
-            float operator () (idx_t i) override {
-                storage.reconstruct(i, buf.data());
-                return fvec_L2sqr(q, buf.data(), d);
-            }
-
-            float symmetric_dis(idx_t i, idx_t j) override {
-                storage.reconstruct(i, buf.data());
-                storage.reconstruct(j, buf.data() + d);
-                return fvec_L2sqr(buf.data() + d, buf.data(), d);
-            }
-
-            void set_query(const float *x) override {
-                q = x;
-            }
-        };
-    }  // namespace
-
-
-    DistanceComputer * Index::get_distance_computer() const {
-        if (metric_type == METRIC_L2) {
-            return new GenericDistanceComputer(*this);
-        } else {
-            FAISS_THROW_MSG ("get_distance_computer() not implemented");
-        }
-    }
-}
-```
 
 #### 4.3.3 IndexFlat.h和IndexFlat.cpp文件
 
@@ -6532,6 +6181,911 @@ namespace faiss {
 } // namespace faiss
 ```
 
+### 4.4 Index文件
+
+#### 4.4.1 Index.h和Index.cpp文件
+
+定义了Index的基础变量:
+
+> d: 向量维度
+> 
+> ntotal:向量的数量
+> 
+> is_trained: 是否已训练
+>
+> metric_type: 距离的类型
+> 
+> metric_arg: 距离指标的参数
+
+
+Index的基础函数:
+
+> Index(idx_t d = 0, MetricType metric = METRIC_L2): d(d),ntotal(0), verbose(false), is_trained(true), metric_type (metric), metric_arg(0): 构造函数
+> 
+> ~Index (): 析构函数
+> 
+> add (idx_t n, const float *x) = 0: 添加数据
+> 
+> virtual void add_with_ids (idx_t n, const float * x, const idx_t *xids): 带有ID添加数据
+> 
+> search (idx_t n, const float *x, idx_t k, float *distances, idx_t *labels) const = 0: 搜索数据
+> 
+> range_search (idx_t n, const float *x, float radius, RangeSearchResult *result) const: 区域搜索数据
+
+##### 4.4.1.1 Index.h文件
+
+```c++
+#ifndef FAISS_INDEX_H
+#define FAISS_INDEX_H
+
+#include <MetricType.h>
+#include <cstdio>
+#include <typeinfo>
+#include <string>
+#include <sstream>
+
+#define FAISS_VERSION_MAJOR 1
+#define FAISS_VERSION_MINOR 6
+#define FAISS_VERSION_PATCH 3
+
+/**
+ * @namespace faiss
+ *
+ * Throughout the library, vectors are provided as float * pointers.
+ * Most algorithms can be optimized when several vectors are processed
+ * (added/searched) together in a batch. In this case, they are passed
+ * in as a matrix. When n vectors of size d are provided as float * x,
+ * component j of vector i is
+ *      x[ i * d + j ]
+ * where 0 <= i < n and 0 <= j < d. In other words, matrices are
+ * always compact. When specifying the size of the matrix, we call it
+ * an n*d matrix, which implies a row-major storage.
+ */
+
+namespace faiss {
+
+    /// Forward declarations see AuxIndexStructures.h
+    struct IDSelector;
+    struct RangeSearchResult;
+    struct DistanceComputer;
+
+    /** Abstract structure for an index, supports adding vectors and searching them.
+     *
+     * All vectors provided at add or search time are 32-bit float arrays,
+     * although the internal representation may vary.
+     */
+    struct Index {
+        using idx_t = int64_t;  ///< all indices are this type
+        using component_t = float;
+        using distance_t = float;
+
+        int d;                 ///< vector dimension
+        idx_t ntotal;          ///< total nb of indexed vectors
+        bool verbose;          ///< verbosity level
+
+        /// set if the Index does not require training, or if training is done already
+        bool is_trained;
+
+        /// type of metric this index uses for search
+        MetricType metric_type;
+        float metric_arg;     ///< argument of the metric type
+
+        explicit Index (idx_t d = 0, MetricType metric = METRIC_L2): d(d),
+                    ntotal(0), verbose(false), is_trained(true), metric_type (metric), metric_arg(0) {}
+        virtual ~Index ();
+
+        /** Perform training on a representative set of vectors
+         *
+         * @param n      nb of training vectors
+         * @param x      training vecors, size n * d
+         */
+        virtual void train(idx_t n, const float* x);
+
+        /** Add n vectors of dimension d to the index.
+         *
+         * Vectors are implicitly assigned labels ntotal .. ntotal + n - 1
+         * This function slices the input vectors in chuncks smaller than
+         * blocksize_add and calls add_core.
+         * @param x      input matrix, size n * d
+         */
+        virtual void add (idx_t n, const float *x) = 0;
+
+        /** Same as add, but stores xids instead of sequential ids.
+         *
+         * The default implementation fails with an assertion, as it is
+         * not supported by all indexes.
+         *
+         * @param xids if non-null, ids to store for the vectors (size n)
+         */
+        virtual void add_with_ids (idx_t n, const float * x, const idx_t *xids);
+
+        /** query n vectors of dimension d to the index.
+         *
+         * return at most k vectors. If there are not enough results for a
+         * query, the result array is padded with -1s.
+         *
+         * @param x           input vectors to search, size n * d
+         * @param labels      output labels of the NNs, size n*k
+         * @param distances   output pairwise distances, size n*k
+         */
+        virtual void search (idx_t n, const float *x, idx_t k, float *distances, idx_t *labels) const = 0;
+
+        /** query n vectors of dimension d to the index.
+         *
+         * return all vectors with distance < radius. Note that many
+         * indexes do not implement the range_search (only the k-NN search
+         * is mandatory).
+         *
+         * @param x           input vectors to search, size n * d
+         * @param radius      search radius
+         * @param result      result table
+         */
+        virtual void range_search (idx_t n, const float *x, float radius, RangeSearchResult *result) const;
+
+        /** return the indexes of the k vectors closest to the query x.
+         *
+         * This function is identical as search but only return labels of neighbors.
+         * @param x           input vectors to search, size n * d
+         * @param labels      output labels of the NNs, size n*k
+         */
+        void assign (idx_t n, const float * x, idx_t * labels, idx_t k = 1);
+
+        /// removes all elements from the database.
+        virtual void reset() = 0;
+
+        /// removes IDs from the index. Not supported by all indexes. Returns the number of elements removed.
+
+        virtual size_t remove_ids (const IDSelector & sel);
+
+        /** Reconstruct a stored vector (or an approximation if lossy coding)
+         *
+         * this function may not be defined for some indexes
+         * @param key         id of the vector to reconstruct
+         * @param recons      reconstucted vector (size d)
+         */
+        virtual void reconstruct (idx_t key, float * recons) const;
+
+        /** Reconstruct vectors i0 to i0 + ni - 1
+         *
+         * this function may not be defined for some indexes
+         * @param recons      reconstucted vector (size ni * d)
+         */
+        virtual void reconstruct_n (idx_t i0, idx_t ni, float *recons) const;
+
+        /** Similar to search, but also reconstructs the stored vectors (or an
+         * approximation in the case of lossy coding) for the search results.
+         *
+         * If there are not enough results for a query, the resulting arrays
+         * is padded with -1s.
+         *
+         * @param recons      reconstructed vectors size (n, k, d)
+         **/
+        virtual void search_and_reconstruct (idx_t n, const float *x, idx_t k, float *distances, idx_t *labels, float *recons) const;
+
+        /** Computes a residual vector after indexing encoding.
+         *
+         * The residual vector is the difference between a vector and the
+         * reconstruction that can be decoded from its representation in
+         * the index. The residual can be used for multiple-stage indexing
+         * methods, like IndexIVF's methods.
+         *
+         * @param x           input vector, size d
+         * @param residual    output residual vector, size d
+         * @param key         encoded index, as returned by search and assign
+         */
+        virtual void compute_residual (const float * x, float * residual, idx_t key) const;
+
+        /** Computes a residual vector after indexing encoding (batch form).
+         * Equivalent to calling compute_residual for each vector.
+         *
+         * The residual vector is the difference between a vector and the
+         * reconstruction that can be decoded from its representation in
+         * the index. The residual can be used for multiple-stage indexing
+         * methods, like IndexIVF's methods.
+         *
+         * @param n           number of vectors
+         * @param xs          input vectors, size (n x d)
+         * @param residuals   output residual vectors, size (n x d)
+         * @param keys        encoded index, as returned by search and assign
+         */
+        virtual void compute_residual_n (idx_t n, const float* xs, float* residuals, const idx_t* keys) const;
+
+        /** Get a DistanceComputer (defined in AuxIndexStructures) object
+         * for this kind of index.
+         *
+         * DistanceComputer is implemented for indexes that support random
+         * access of their vectors.
+         */
+        virtual DistanceComputer * get_distance_computer() const;
+
+        /* The standalone codec interface */
+
+        /** size of the produced codes in bytes */
+        virtual size_t sa_code_size () const;
+
+        /** encode a set of vectors
+         *
+         * @param n       number of vectors
+         * @param x       input vectors, size n * d
+         * @param bytes   output encoded vectors, size n * sa_code_size()
+         */
+        virtual void sa_encode (idx_t n, const float *x,uint8_t *bytes) const;
+
+        /** encode a set of vectors
+         *
+         * @param n       number of vectors
+         * @param bytes   input encoded vectors, size n * sa_code_size()
+         * @param x       output vectors, size n * d
+         */
+        virtual void sa_decode (idx_t n, const uint8_t *bytes,float *x) const;
+    };
+}
+#endif
+```
+
+##### 4.4.1.2 Index.cpp文件
+
+```c++
+#include <faiss/Index.h>
+
+#include <faiss/impl/AuxIndexStructures.h>
+#include <faiss/impl/FaissAssert.h>
+#include <faiss/utils/distances.h>
+
+#include <cstring>
+
+
+namespace faiss {
+
+    Index::~Index () { }
+
+    void Index::train(idx_t /*n*/, const float* /*x*/) {
+        // does nothing by default
+    }
+
+    void Index::range_search (idx_t , const float *, float, RangeSearchResult *) const {
+        FAISS_THROW_MSG ("range search not implemented");
+    }
+
+    void Index::assign (idx_t n, const float * x, idx_t * labels, idx_t k) {
+        float * distances = new float[n * k];
+        ScopeDeleter<float> del(distances);
+        search (n, x, k, distances, labels);
+    }
+
+    void Index::add_with_ids( idx_t /*n*/, const float* /*x*/, const idx_t* /*xids*/) {
+        FAISS_THROW_MSG ("add_with_ids not implemented for this type of index");
+    }
+
+    size_t Index::remove_ids(const IDSelector& /*sel*/) {
+        FAISS_THROW_MSG ("remove_ids not implemented for this type of index");
+        return -1;
+    }
+
+    void Index::reconstruct (idx_t, float * ) const {
+        FAISS_THROW_MSG ("reconstruct not implemented for this type of index");
+    }
+
+    void Index::reconstruct_n (idx_t i0, idx_t ni, float *recons) const {
+        for (idx_t i = 0; i < ni; i++) {
+            reconstruct (i0 + i, recons + i * d);
+        }
+    }
+
+
+    void Index::search_and_reconstruct (idx_t n, const float *x, idx_t k, float *distances, idx_t *labels, float *recons) const {
+        search (n, x, k, distances, labels);
+        for (idx_t i = 0; i < n; ++i) {
+            for (idx_t j = 0; j < k; ++j) {
+                idx_t ij = i * k + j;
+                idx_t key = labels[ij];
+                float* reconstructed = recons + ij * d;
+                if (key < 0) {
+                    // Fill with NaNs
+                    memset(reconstructed, -1, sizeof(*reconstructed) * d);
+                } else {
+                    reconstruct (key, reconstructed);
+                }
+            }
+        }
+    }
+
+    void Index::compute_residual (const float * x, float * residual, idx_t key) const {
+        reconstruct (key, residual);
+        for (size_t i = 0; i < d; i++) {
+            residual[i] = x[i] - residual[i];
+        }
+    }
+
+    void Index::compute_residual_n (idx_t n, const float* xs, float* residuals, const idx_t* keys) const {
+        #pragma omp parallel for
+            for (idx_t i = 0; i < n; ++i) {
+                compute_residual(&xs[i * d], &residuals[i * d], keys[i]);
+            }
+    }
+
+    size_t Index::sa_code_size () const {
+        FAISS_THROW_MSG ("standalone codec not implemented for this type of index");
+    }
+
+    void Index::sa_encode (idx_t, const float *,uint8_t *) const {
+        FAISS_THROW_MSG ("standalone codec not implemented for this type of index");
+    }
+
+    void Index::sa_decode (idx_t, const uint8_t *, float *) const {
+        FAISS_THROW_MSG ("standalone codec not implemented for this type of index");
+    }
+
+
+    namespace {
+
+        // storage that explicitly reconstructs vectors before computing distances
+        struct GenericDistanceComputer : DistanceComputer {
+            size_t d;
+            const Index& storage;
+            std::vector<float> buf;
+            const float *q;
+
+            explicit GenericDistanceComputer(const Index& storage) : storage(storage) {
+                d = storage.d;
+                buf.resize(d * 2);
+            }
+
+            float operator () (idx_t i) override {
+                storage.reconstruct(i, buf.data());
+                return fvec_L2sqr(q, buf.data(), d);
+            }
+
+            float symmetric_dis(idx_t i, idx_t j) override {
+                storage.reconstruct(i, buf.data());
+                storage.reconstruct(j, buf.data() + d);
+                return fvec_L2sqr(buf.data() + d, buf.data(), d);
+            }
+
+            void set_query(const float *x) override {
+                q = x;
+            }
+        };
+    }  // namespace
+
+
+    DistanceComputer * Index::get_distance_computer() const {
+        if (metric_type == METRIC_L2) {
+            return new GenericDistanceComputer(*this);
+        } else {
+            FAISS_THROW_MSG ("get_distance_computer() not implemented");
+        }
+    }
+}
+```
+
+#### 4.4.2 IndexFlat.h和IndexFlat.cpp文件
+
+##### 4.4.2.1 IndexFlat.h文件
+
+```c++
+#ifndef INDEX_FLAT_H
+#define INDEX_FLAT_H
+
+#include <vector>
+
+#include <faiss/Index.h>
+
+namespace faiss {
+
+    /// Index that stores the full vectors and performs exhaustive search
+    struct IndexFlat: Index {
+
+        /// database vectors, size ntotal * d
+        std::vector<float> xb;
+
+        explicit IndexFlat (idx_t d, MetricType metric = METRIC_L2);
+
+        void add(idx_t n, const float* x) override;
+
+        void reset() override;
+
+        void search( idx_t n, const float* x, idx_t k, float* distances, idx_t* labels) const override;
+
+        void range_search( idx_t n, const float* x, float radius, RangeSearchResult* result) const override;
+
+        void reconstruct(idx_t key, float* recons) const override;
+
+        /** compute distance with a subset of vectors
+         *
+         * @param x       query vectors, size n * d
+         * @param labels  indices of the vectors that should be compared
+         *                for each query vector, size n * k
+         * @param distances
+         *                corresponding output distances, size n * k
+         */
+        void compute_distance_subset (idx_t n, const float *x, idx_t k, float *distances,const idx_t *labels) const;
+
+        /** remove some ids. NB that Because of the structure of the
+         * indexing structure, the semantics of this operation are
+         * different from the usual ones: the new ids are shifted */
+        size_t remove_ids(const IDSelector& sel) override;
+
+        IndexFlat () {}
+
+        DistanceComputer * get_distance_computer() const override;
+
+        /* The stanadlone codec interface (just memcopies in this case) */
+        size_t sa_code_size () const override;
+
+        void sa_encode (idx_t n, const float *x, uint8_t *bytes) const override;
+
+        void sa_decode (idx_t n, const uint8_t *bytes, float *x) const override;
+    };
+
+
+    struct IndexFlatIP:IndexFlat {
+        explicit IndexFlatIP (idx_t d): IndexFlat (d, METRIC_INNER_PRODUCT) {}
+        IndexFlatIP () {}
+    };
+
+    struct IndexFlatL2:IndexFlat {
+        explicit IndexFlatL2 (idx_t d): IndexFlat (d, METRIC_L2) {}
+        IndexFlatL2 () {}
+    };
+
+    // same as an IndexFlatL2 but a value is subtracted from each distance
+    struct IndexFlatL2BaseShift: IndexFlatL2 {
+        std::vector<float> shift;
+
+        IndexFlatL2BaseShift (idx_t d, size_t nshift, const float *shift);
+
+        void search(idx_t n, const float* x, idx_t k, float* distances, idx_t* labels) const override;
+    };
+
+    /** Index that queries in a base_index (a fast one) and refines the
+     *  results with an exact search, hopefully improving the results.
+     */
+    struct IndexRefineFlat: Index {
+
+        /// storage for full vectors
+        IndexFlat refine_index;
+
+        /// faster index to pre-select the vectors that should be filtered
+        Index *base_index;
+        bool own_fields;  ///< should the base index be deallocated?
+
+        /// factor between k requested in search and the k requested from
+        /// the base_index (should be >= 1)
+        float k_factor;
+
+        explicit IndexRefineFlat (Index *base_index);
+
+        IndexRefineFlat ();
+
+        void train(idx_t n, const float* x) override;
+
+        void add(idx_t n, const float* x) override;
+
+        void reset() override;
+
+        void search(idx_t n, const float* x, idx_t k, float* distances, idx_t* labels) const override;
+
+        ~IndexRefineFlat() override;
+    };
+
+    /// optimized version for 1D "vectors".
+    struct IndexFlat1D:IndexFlatL2 {
+        bool continuous_update; ///< is the permutation updated continuously?
+
+        std::vector<idx_t> perm; ///< sorted database indices
+
+        explicit IndexFlat1D (bool continuous_update=true);
+
+        /// if not continuous_update, call this between the last add and
+        /// the first search
+        void update_permutation ();
+
+        void add(idx_t n, const float* x) override;
+
+        void reset() override;
+
+        /// Warn: the distances returned are L1 not L2
+        void search( idx_t n, const float* x, idx_t k, float* distances, idx_t* labels) const override;
+    };
+}
+
+#endif
+```
+
+##### 4.4.2.2 IndexFlat.cpp文件
+
+```c++
+#include <faiss/IndexFlat.h>
+
+#include <cstring>
+#include <faiss/utils/distances.h>
+#include <faiss/utils/extra_distances.h>
+#include <faiss/utils/utils.h>
+#include <faiss/utils/Heap.h>
+#include <faiss/impl/FaissAssert.h>
+#include <faiss/impl/AuxIndexStructures.h>
+
+
+namespace faiss {
+
+    IndexFlat::IndexFlat (idx_t d, MetricType metric): Index(d, metric) { }
+
+    void IndexFlat::add (idx_t n, const float *x) {
+        xb.insert(xb.end(), x, x + n * d);
+        ntotal += n;
+    }
+
+    void IndexFlat::reset() {
+        xb.clear();
+        ntotal = 0;
+    }
+
+    void IndexFlat::search (idx_t n, const float *x, idx_t k, float *distances, idx_t *labels) const {
+        // we see the distances and labels as heaps
+        if (metric_type == METRIC_INNER_PRODUCT) {
+            float_minheap_array_t res = {size_t(n), size_t(k), labels, distances};
+            knn_inner_product (x, xb.data(), d, n, ntotal, &res);
+        } else if (metric_type == METRIC_L2) {
+            float_maxheap_array_t res = {size_t(n), size_t(k), labels, distances};
+            knn_L2sqr (x, xb.data(), d, n, ntotal, &res);
+        } else {
+            float_maxheap_array_t res = { size_t(n), size_t(k), labels, distances};
+            knn_extra_metrics (x, xb.data(), d, n, ntotal, metric_type, metric_arg, &res);
+        }
+    }
+
+    void IndexFlat::range_search (idx_t n, const float *x, float radius, RangeSearchResult *result) const {
+        switch (metric_type) {
+            case METRIC_INNER_PRODUCT:
+                range_search_inner_product (x, xb.data(), d, n, ntotal, radius, result);
+                break;
+            case METRIC_L2:
+                range_search_L2sqr (x, xb.data(), d, n, ntotal, radius, result);
+                break;
+            default:
+                FAISS_THROW_MSG("metric type not supported");
+        }
+    }
+
+    void IndexFlat::compute_distance_subset (idx_t n, const float *x, idx_t k, float *distances, const idx_t *labels) const {
+        switch (metric_type) {
+            case METRIC_INNER_PRODUCT:
+                fvec_inner_products_by_idx (distances, x, xb.data(), labels, d, n, k);
+                break;
+            case METRIC_L2:
+                fvec_L2sqr_by_idx (distances, x, xb.data(), labels, d, n, k);
+                break;
+            default:
+                FAISS_THROW_MSG("metric type not supported");
+        }
+    }
+
+    size_t IndexFlat::remove_ids (const IDSelector & sel) {
+        idx_t j = 0;
+        for (idx_t i = 0; i < ntotal; i++) {
+            if (sel.is_member (i)) {
+                // should be removed
+            } else {
+                if (i > j) {
+                    memmove (&xb[d * j], &xb[d * i], sizeof(xb[0]) * d);
+                }
+                j++;
+            }
+        }
+        size_t nremove = ntotal - j;
+        if (nremove > 0) {
+            ntotal = j;
+            xb.resize (ntotal * d);
+        }
+        return nremove;
+    }
+
+    namespace {
+
+        struct FlatL2Dis : DistanceComputer {
+            size_t d;
+            Index::idx_t nb;
+            const float *q;
+            const float *b;
+            size_t ndis;
+
+            float operator () (idx_t i) override {
+                ndis++;
+                return fvec_L2sqr(q, b + i * d, d);
+            }
+
+            float symmetric_dis(idx_t i, idx_t j) override {
+                return fvec_L2sqr(b + j * d, b + i * d, d);
+            }
+
+            explicit FlatL2Dis(const IndexFlat& storage, const float *q = nullptr)
+                : d(storage.d), nb(storage.ntotal), q(q), b(storage.xb.data()), ndis(0) {}
+
+            void set_query(const float *x) override {
+                q = x;
+            }
+        };
+
+        struct FlatIPDis : DistanceComputer {
+            size_t d;
+            Index::idx_t nb;
+            const float *q;
+            const float *b;
+            size_t ndis;
+
+            float operator () (idx_t i) override {
+                ndis++;
+                return fvec_inner_product (q, b + i * d, d);
+            }
+
+            float symmetric_dis(idx_t i, idx_t j) override {
+                return fvec_inner_product (b + j * d, b + i * d, d);
+            }
+
+            explicit FlatIPDis(const IndexFlat& storage, const float *q = nullptr)
+                : d(storage.d), nb(storage.ntotal), q(q), b(storage.xb.data()), ndis(0) {}
+
+            void set_query(const float *x) override {
+                q = x;
+            }
+        };
+    }  // namespace
+
+    DistanceComputer * IndexFlat::get_distance_computer() const {
+        if (metric_type == METRIC_L2) {
+            return new FlatL2Dis(*this);
+        } else if (metric_type == METRIC_INNER_PRODUCT) {
+            return new FlatIPDis(*this);
+        } else {
+            return get_extra_distance_computer (d, metric_type, metric_arg, ntotal, xb.data());
+        }
+    }
+
+    void IndexFlat::reconstruct (idx_t key, float * recons) const {
+        memcpy (recons, &(xb[key * d]), sizeof(*recons) * d);
+    }
+
+    /* The standalone codec interface */
+    size_t IndexFlat::sa_code_size () const {
+        return sizeof(float) * d;
+    }
+
+    void IndexFlat::sa_encode (idx_t n, const float *x, uint8_t *bytes) const {
+        memcpy (bytes, x, sizeof(float) * d * n);
+    }
+
+    void IndexFlat::sa_decode (idx_t n, const uint8_t *bytes, float *x) const {
+        memcpy (x, bytes, sizeof(float) * d * n);
+    }
+
+
+    /***************************************************
+     * IndexFlatL2BaseShift
+     ***************************************************/
+
+    IndexFlatL2BaseShift::IndexFlatL2BaseShift (idx_t d, size_t nshift, const float *shift): IndexFlatL2 (d), shift (nshift) {
+        memcpy (this->shift.data(), shift, sizeof(float) * nshift);
+    }
+
+    void IndexFlatL2BaseShift::search ( idx_t n, const float *x, idx_t k, float *distances, idx_t *labels) const {
+        FAISS_THROW_IF_NOT (shift.size() == ntotal);
+
+        float_maxheap_array_t res = {size_t(n), size_t(k), labels, distances};
+        knn_L2sqr_base_shift (x, xb.data(), d, n, ntotal, &res, shift.data());
+    }
+
+    /***************************************************
+     * IndexRefineFlat
+     ***************************************************/
+
+    IndexRefineFlat::IndexRefineFlat (Index *base_index): Index (base_index->d, base_index->metric_type),
+            refine_index (base_index->d, base_index->metric_type), base_index (base_index), own_fields (false), k_factor (1) {
+        is_trained = base_index->is_trained;
+        FAISS_THROW_IF_NOT_MSG (base_index->ntotal == 0, "base_index should be empty in the beginning");
+    }
+
+    IndexRefineFlat::IndexRefineFlat () {
+        base_index = nullptr;
+        own_fields = false;
+        k_factor = 1;
+    }
+
+    void IndexRefineFlat::train (idx_t n, const float *x) {
+        base_index->train (n, x);
+        is_trained = true;
+    }
+
+    void IndexRefineFlat::add (idx_t n, const float *x) {
+        FAISS_THROW_IF_NOT (is_trained);
+        base_index->add (n, x);
+        refine_index.add (n, x);
+        ntotal = refine_index.ntotal;
+    }
+
+    void IndexRefineFlat::reset () {
+        base_index->reset ();
+        refine_index.reset ();
+        ntotal = 0;
+    }
+
+    namespace {
+        typedef faiss::Index::idx_t idx_t;
+
+        template<class C>
+        static void reorder_2_heaps ( idx_t n, idx_t k, idx_t *labels, float *distances,
+                idx_t k_base, const idx_t *base_labels, const float *base_distances) {
+            #pragma omp parallel for
+            for (idx_t i = 0; i < n; i++) {
+                idx_t *idxo = labels + i * k;
+                float *diso = distances + i * k;
+                const idx_t *idxi = base_labels + i * k_base;
+                const float *disi = base_distances + i * k_base;
+
+                heap_heapify<C> (k, diso, idxo, disi, idxi, k);
+                if (k_base != k) { // add remaining elements
+                    heap_addn<C> (k, diso, idxo, disi + k, idxi + k, k_base - k);
+                }
+                heap_reorder<C> (k, diso, idxo);
+            }
+        }
+    }
+
+    void IndexRefineFlat::search (idx_t n, const float *x, idx_t k, float *distances, idx_t *labels) const {
+        FAISS_THROW_IF_NOT (is_trained);
+        idx_t k_base = idx_t (k * k_factor);
+        idx_t * base_labels = labels;
+        float * base_distances = distances;
+        ScopeDeleter<idx_t> del1;
+        ScopeDeleter<float> del2;
+
+
+        if (k != k_base) {
+            base_labels = new idx_t [n * k_base];
+            del1.set (base_labels);
+            base_distances = new float [n * k_base];
+            del2.set (base_distances);
+        }
+
+        base_index->search (n, x, k_base, base_distances, base_labels);
+
+        for (int i = 0; i < n * k_base; i++)
+            assert (base_labels[i] >= -1 && base_labels[i] < ntotal);
+
+        // compute refined distances
+        refine_index.compute_distance_subset (n, x, k_base, base_distances, base_labels);
+
+        // sort and store result
+        if (metric_type == METRIC_L2) {
+            typedef CMax <float, idx_t> C;
+            reorder_2_heaps<C> (n, k, labels, distances, k_base, base_labels, base_distances);
+
+        } else if (metric_type == METRIC_INNER_PRODUCT) {
+            typedef CMin <float, idx_t> C;
+            reorder_2_heaps<C> (n, k, labels, distances, k_base, base_labels, base_distances);
+        } else {
+            FAISS_THROW_MSG("Metric type not supported");
+        }
+    }
+
+    IndexRefineFlat::~IndexRefineFlat () {
+        if (own_fields) delete base_index;
+    }
+
+    /***************************************************
+     * IndexFlat1D
+     ***************************************************/
+
+    IndexFlat1D::IndexFlat1D (bool continuous_update): IndexFlatL2 (1), continuous_update (continuous_update) { }
+
+    /// if not continuous_update, call this between the last add and the first search
+    void IndexFlat1D::update_permutation () {
+        perm.resize (ntotal);
+        if (ntotal < 1000000) {
+            fvec_argsort (ntotal, xb.data(), (size_t*)perm.data());
+        } else {
+            fvec_argsort_parallel (ntotal, xb.data(), (size_t*)perm.data());
+        }
+    }
+
+    void IndexFlat1D::add (idx_t n, const float *x) {
+        IndexFlatL2::add (n, x);
+        if (continuous_update)
+            update_permutation();
+    }
+
+    void IndexFlat1D::reset() {
+        IndexFlatL2::reset();
+        perm.clear();
+    }
+
+    void IndexFlat1D::search (idx_t n, const float *x, idx_t k,float *distances, idx_t *labels) const {
+        FAISS_THROW_IF_NOT_MSG (perm.size() == ntotal, "Call update_permutation before search");
+
+        #pragma omp parallel for
+            for (idx_t i = 0; i < n; i++) {
+
+                float q = x[i]; // query
+                float *D = distances + i * k;
+                idx_t *I = labels + i * k;
+
+                // binary search
+                idx_t i0 = 0, i1 = ntotal;
+                idx_t wp = 0;
+
+                if (xb[perm[i0]] > q) {
+                    i1 = 0;
+                    goto finish_right;
+                }
+
+                if (xb[perm[i1 - 1]] <= q) {
+                    i0 = i1 - 1;
+                    goto finish_left;
+                }
+
+                while (i0 + 1 < i1) {
+                    idx_t imed = (i0 + i1) / 2;
+                    if (xb[perm[imed]] <= q) i0 = imed;
+                    else                    i1 = imed;
+                }
+
+                // query is between xb[perm[i0]] and xb[perm[i1]] expand to nearest neighs
+
+                while (wp < k) {
+                    float xleft = xb[perm[i0]];
+                    float xright = xb[perm[i1]];
+
+                    if (q - xleft < xright - q) {
+                        D[wp] = q - xleft;
+                        I[wp] = perm[i0];
+                        i0--; wp++;
+                        if (i0 < 0) { goto finish_right; }
+                    } else {
+                        D[wp] = xright - q;
+                        I[wp] = perm[i1];
+                        i1++; wp++;
+                        if (i1 >= ntotal) { goto finish_left; }
+                    }
+                }
+                goto done;
+
+                finish_right:
+                    // grow to the right from i1
+                    while (wp < k) {
+                        if (i1 < ntotal) {
+                            D[wp] = xb[perm[i1]] - q;
+                            I[wp] = perm[i1];
+                            i1++;
+                        } else {
+                            D[wp] = std::numeric_limits<float>::infinity();
+                            I[wp] = -1;
+                        }
+                        wp++;
+                    }
+                    goto done;
+
+                finish_left:
+                    // grow to the left from i0
+                    while (wp < k) {
+                        if (i0 >= 0) {
+                            D[wp] = q - xb[perm[i0]];
+                            I[wp] = perm[i0];
+                            i0--;
+                        } else {
+                            D[wp] = std::numeric_limits<float>::infinity();
+                            I[wp] = -1;
+                        }
+                        wp++;
+                    }
+                done:  ;
+            }
+    }
+
+} // namespace faiss
+```
+
+
+##### 4.4.2.3 test_indexflat.cpp文件
 
 参考链接:
 
