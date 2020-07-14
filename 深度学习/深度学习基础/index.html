@@ -48,11 +48,13 @@
                   ]}, 
               ]},
               {title: "\u4e8c\u3001\u57fa\u672c\u7ed3\u6784", url: "#_3", level:2, children: [
-                  {title: "2.1 \u5377\u79ef\u7c7b\u578b", url: "#21", level:3, children: [
+                  {title: "2.1 \u5377\u79ef\u6982\u5ff5", url: "#21", level:3, children: [
+                  ]},
+                  {title: "2.1 \u5377\u79ef\u7c7b\u578b", url: "#21_1", level:3, children: [
                   ]}, 
               ]},
               {title: "\u4e03\u3001\u5377\u79ef", url: "#_4", level:2, children: [
-                  {title: "6.1 \u5377\u79ef\u7684\u89e3\u91ca", url: "#61", level:3, children: [
+                  {title: "6.1", url: "#61", level:3, children: [
                   ]},
                   {title: "6.2 \u5377\u79ef\u7c7b\u578b", url: "#62", level:3, children: [
                   ]},
@@ -1783,23 +1785,13 @@ text_region = cv2.bitwise_and(img, img, mask=mask)
 </code></pre>
 
 <h2 id="_3">二、基本结构</h2>
-<h3 id="21">2.1 卷积类型</h3>
-<p>https://zhuanlan.zhihu.com/p/28749411</p>
-<p>https://zhuanlan.zhihu.com/p/28186857</p>
-<p>https://zhuanlan.zhihu.com/p/58095683</p>
-<p>https://www.zhihu.com/question/312556066/answer/600228264</p>
-<p>https://www.leiphone.com/news/201709/AzBc9Sg44fs57hyY.html</p>
-<p>https://www.zhihu.com/question/312556066</p>
-<p>BatchNorm</p>
-<p>http://www.voidcn.com/article/p-hodbfvbe-bbk.html</p>
-<h2 id="_4">七、卷积</h2>
-<h3 id="61">6.1 卷积的解释</h3>
+<h3 id="21">2.1 卷积概念</h3>
 <p>从数学上讲,卷积就是一种运算。某种运算,能被定义出来,至少有以下特征:</p>
 <blockquote>
 <p>首先是抽象的、符号化的</p>
 <p>其次,在生活、科研中,有着广泛的作用</p>
 </blockquote>
-<p>比如加法:<code>a+b</code>,是抽象的,本身只是一个数学符号。在现实中,有非常多的意义,比如增加、合成、旋转等等。</p>
+<p>比如加法:a+b是抽象的,本身只是一个数学符号。在现实中,有非常多的意义,比如增加、合成、旋转等等。</p>
 <ul>
 <li><strong>卷积的定义</strong></li>
 </ul>
@@ -1814,27 +1806,27 @@ text_region = cv2.bitwise_and(img, img, mask=mask)
 <script type="math/tex; mode=display">(f*g)(n)=\sum _{\tau=-\infty }^{\infty}{f(\tau)g(n-\tau)}</script>
 </div>
 <p>这两个式子有一个共同的特征:</p>
-<p><img alt="" src="http://pic1.zhimg.com/v2-d3df01f12b869d431c65f97ad307508f_r.jpg" /></p>
+<p><img src="http://pic1.zhimg.com/v2-d3df01f12b869d431c65f97ad307508f_r.jpg" style="width: 25%"></p>
 <p>这个特征有什么意义?我们令<span><span class="MathJax_Preview">x=\tau,y=n-\tau</span><script type="math/tex">x=\tau,y=n-\tau</script></span>,那么<span><span class="MathJax_Preview">x+y=n</span><script type="math/tex">x+y=n</script></span>就是下面这些直线:</p>
-<p><img alt="" src="http://pic3.zhimg.com/50/v2-8be52f6bada3f7a21cebfc210d2e7ea0_hd.gif" /></p>
+<p><img src="http://pic3.zhimg.com/50/v2-8be52f6bada3f7a21cebfc210d2e7ea0_hd.gif" style="width: 30%"></p>
 <p>如果遍历这些直线,就好比,把毛巾沿着角卷起来:</p>
-<p><img alt="" src="http://pic1.zhimg.com/50/v2-1d0c819fc7ca6f8da25435da070a2715_hd.gif" /></p>
-<p>或许,这就是“卷”积名字的来源吧。</p>
+<p><img src="http://pic1.zhimg.com/50/v2-1d0c819fc7ca6f8da25435da070a2715_hd.gif" style="width: 30%"></p>
+<p>或许,这就是"卷积"名字的来源吧。</p>
 <ul>
 <li><strong>离散卷积的例子:丢骰子</strong></li>
 </ul>
 <p>我有两枚骰子:</p>
-<p><img alt="" src="http://pic4.zhimg.com/80/v2-e279045403bb2b0d8de72262f37562cd_hd.jpg" /></p>
+<p><img src="http://pic4.zhimg.com/80/v2-e279045403bb2b0d8de72262f37562cd_hd.jpg" style="width: 30%"></p>
 <p>把这两枚骰子都抛出去:</p>
-<p><img alt="" src="http://pic1.zhimg.com/80/v2-53f1a57bc5e9ee0eb6b6f18ab7654337_hd.jpg" /></p>
+<p><img src="http://pic1.zhimg.com/80/v2-53f1a57bc5e9ee0eb6b6f18ab7654337_hd.jpg" style="width: 30%"></p>
 <p>求:</p>
-<p><img alt="" src="http://pic1.zhimg.com/80/v2-e8826b4dfaf68b5af638b0c126cb67a7_hd.jpg" /></p>
+<p><img src="http://pic1.zhimg.com/80/v2-e8826b4dfaf68b5af638b0c126cb67a7_hd.jpg" style="width: 30%"></p>
 <p>这里问题的关键是,两个骰子加起来要等于4,这正是卷积的应用场景。我们把骰子各个点数出现的概率表示出来:</p>
-<p><img alt="" src="http://pic2.zhimg.com/80/v2-4763fd548536b21640d01d3f8a59c546_hd.jpg" /></p>
+<p><img src="http://pic2.zhimg.com/80/v2-4763fd548536b21640d01d3f8a59c546_hd.jpg" style="width: 30%"></p>
 <p>那么,两枚骰子点数加起来为4的情况有:</p>
-<p><img alt="" src="http://pic1.zhimg.com/80/v2-a67a711702ce48cd7632e783ae0a1f42_hd.jpg" /></p>
-<p><img alt="" src="http://pic2.zhimg.com/80/v2-d6ff10bf39c46397ab2bebb971d4b58c_hd.jpg" /></p>
-<p><img alt="" src="http://pic2.zhimg.com/80/v2-d6ff10bf39c46397ab2bebb971d4b58c_hd.jpg" /></p>
+<p><img src="http://pic1.zhimg.com/80/v2-a67a711702ce48cd7632e783ae0a1f42_hd.jpg" style="width: 30%"></p>
+<p><img src="http://pic2.zhimg.com/80/v2-d6ff10bf39c46397ab2bebb971d4b58c_hd.jpg" style="width: 30%"></p>
+<p><img src="http://pic2.zhimg.com/80/v2-d6ff10bf39c46397ab2bebb971d4b58c_hd.jpg" style="width: 30%"></p>
 <p>因此,两枚骰子点数加起来为4的概率为:<span><span class="MathJax_Preview">f(1)g(3)+f(2)g(2)+f(3)g(1)</span><script type="math/tex">f(1)g(3)+f(2)g(2)+f(3)g(1)</script></span></p>
 <p>符合卷积的定义,把它写成标准的形式就是:</p>
 <div>
@@ -1850,35 +1842,27 @@ text_region = cv2.bitwise_and(img, img, mask=mask)
 </ul>
 <p>楼下早点铺子生意太好了,供不应求,就买了一台机器,不断的生产馒头。假设馒头的生产速度是<span><span class="MathJax_Preview">f(t)</span><script type="math/tex">f(t)</script></span>,那么一天后生产出来的馒头总量为:</p>
 <div>
-<div class="MathJax_Preview">
-\int_{0}^{24}f(t)dt
-</div>
-<script type="math/tex; mode=display">
-\int_{0}^{24}f(t)dt
-</script>
+<div class="MathJax_Preview">\int_{0}^{24}f(t)dt</div>
+<script type="math/tex; mode=display">\int_{0}^{24}f(t)dt</script>
 </div>
 <p>馒头生产出来之后,就会慢慢腐败,假设腐败函数为<span><span class="MathJax_Preview">g(t)</span><script type="math/tex">g(t)</script></span>,比如,10个馒头,24小时会腐败:<span><span class="MathJax_Preview">10*g(t)</span><script type="math/tex">10*g(t)</script></span></p>
 <p>想想就知道,第一个小时生产出来的馒头,一天后会经历24小时的腐败,第二个小时生产出来的馒头,一天后会经历23小时的腐败。如此,我们可以知道,一天后,馒头总共腐败了:</p>
 <div>
-<div class="MathJax_Preview">
-\int_{0}^{24}f(t)g(24-t)dt
-</div>
-<script type="math/tex; mode=display">
-\int_{0}^{24}f(t)g(24-t)dt
-</script>
+<div class="MathJax_Preview">\int_{0}^{24}f(t)g(24-t)dt</div>
+<script type="math/tex; mode=display">\int_{0}^{24}f(t)g(24-t)dt</script>
 </div>
 <p>这就是连续的卷积。</p>
 <ul>
 <li><strong>图像处理中的应用</strong></li>
 </ul>
 <p><strong>原理</strong>:有这么一副图像,可以看到,图像上有很多噪点:</p>
-<p><img alt="" src="http://pic3.zhimg.com/v2-8d161328acd72d035e461c0b89b753e5_r.jpg" /></p>
+<p><img src="http://pic3.zhimg.com/v2-8d161328acd72d035e461c0b89b753e5_r.jpg" style="width: 30%"></p>
 <p>高频信号,就好像平地耸立的山峰:</p>
-<p><img alt="" src="http://pic1.zhimg.com/80/v2-294698966c5a833cd750df70c0a00c21_hd.jpg" /></p>
+<p>&lt;img src="http://pic1.zhimg.com/80/v2-294698966c5a833cd750df70c0a00c21_hd.jpg)</p>
 <p>看起来很显眼。平滑这座山峰的办法之一就是,把山峰刨掉一些土,填到山峰周围去。用数学的话来说,就是把山峰周围的高度平均一下。平滑后得到:</p>
-<p><img alt="" src="http://pic1.zhimg.com/80/v2-83b24e8ed70f17df6bc3b921ebe6276c_hd.jpg" /></p>
+<p><img src="http://pic1.zhimg.com/80/v2-83b24e8ed70f17df6bc3b921ebe6276c_hd.jpg" style="width: 30%"></p>
 <p><strong>计算</strong>:卷积可以帮助实现这个平滑算法。有噪点的原图,可以把它转为一个矩阵:</p>
-<p><img alt="" src="http://pic3.zhimg.com/80/v2-8dd14775ab8c91a09507f52e44f347f3_hd.jpg" /></p>
+<p><img src="http://pic3.zhimg.com/80/v2-8dd14775ab8c91a09507f52e44f347f3_hd.jpg" style="width: 30%"></p>
 <p>然后用下面这个平均矩阵(说明下,原图的处理实际上用的是正态分布矩阵,这里为了简单,就用了算术平均矩阵)来平滑图像:</p>
 <div>
 <div class="MathJax_Preview">
@@ -1897,22 +1881,29 @@ g=\begin{bmatrix}
 </script>
 </div>
 <p>记得刚才说过的算法,把高频信号与周围的数值平均一下就可以平滑山峰。比如我要平滑<span><span class="MathJax_Preview">a_{1,1}</span><script type="math/tex">a_{1,1}</script></span>4点,就在矩阵中,取出<span><span class="MathJax_Preview">a_{1,1}</span><script type="math/tex">a_{1,1}</script></span>点附近的点组成矩阵<span><span class="MathJax_Preview">f</span><script type="math/tex">f</script></span>和<span><span class="MathJax_Preview">g</span><script type="math/tex">g</script></span>进行卷积计算后,再填回去:</p>
-<p><img alt="" src="http://pic2.zhimg.com/80/v2-5ee9a99988137a42d1067deab36c4e51_hd.jpg" /></p>
+<p><img src="http://pic2.zhimg.com/80/v2-5ee9a99988137a42d1067deab36c4e51_hd.jpg" style="width: 30%"></p>
 <p>要注意一点,为了运用卷积,<span><span class="MathJax_Preview">g</span><script type="math/tex">g</script></span>虽然和4f$同维度,但下标有点不一样:</p>
-<p><img alt="" src="http://pic1.zhimg.com/80/v2-779d4e972dc557be55e6131edbb8db9f_hd.jpg" /></p>
+<p><img src="http://pic1.zhimg.com/80/v2-779d4e972dc557be55e6131edbb8db9f_hd.jpg" style="width: 30%"></p>
 <p>我用一个动图来说明下计算过程:</p>
-<p><img alt="" src="http://pic3.zhimg.com/50/v2-c658110eafe027eded16864fb6a28f46_hd.gif" /></p>
+<p><img src="http://pic3.zhimg.com/50/v2-c658110eafe027eded16864fb6a28f46_hd.gif" style="width: 30%"></p>
 <p>写成卷积公式就是:</p>
 <div>
-<div class="MathJax_Preview">
-\displaystyle(f*g)(1,1)=\sum_{k=0}^{2}\sum_{h=0}^{2}f(h,k)g(1-h,1-k)
-</div>
-<script type="math/tex; mode=display">
-\displaystyle(f*g)(1,1)=\sum_{k=0}^{2}\sum_{h=0}^{2}f(h,k)g(1-h,1-k)
-</script>
+<div class="MathJax_Preview">\displaystyle(f*g)(1,1)=\sum_{k=0}^{2}\sum_{h=0}^{2}f(h,k)g(1-h,1-k)</div>
+<script type="math/tex; mode=display">\displaystyle(f*g)(1,1)=\sum_{k=0}^{2}\sum_{h=0}^{2}f(h,k)g(1-h,1-k)</script>
 </div>
 <p>要求<span><span class="MathJax_Preview">c_{4,5}</span><script type="math/tex">c_{4,5}</script></span>,一样可以套用上面的卷积公式。这样相当于实现了<span><span class="MathJax_Preview">g</span><script type="math/tex">g</script></span>这个矩阵在原来图像上的划动(准确来说,下面这幅图把g矩阵旋转了<span><span class="MathJax_Preview">180^\circ</span><script type="math/tex">180^\circ</script></span>):</p>
-<p><img alt="" src="http://pic1.zhimg.com/50/v2-15fea61b768f7561648dbea164fcb75f_hd.gif" /></p>
+<p><img src="http://pic1.zhimg.com/50/v2-15fea61b768f7561648dbea164fcb75f_hd.gif" style="width: 30%"></p>
+<h3 id="21_1">2.1 卷积类型</h3>
+<p>https://zhuanlan.zhihu.com/p/28749411</p>
+<p>https://zhuanlan.zhihu.com/p/28186857</p>
+<p>https://zhuanlan.zhihu.com/p/58095683</p>
+<p>https://www.zhihu.com/question/312556066/answer/600228264</p>
+<p>https://www.leiphone.com/news/201709/AzBc9Sg44fs57hyY.html</p>
+<p>https://www.zhihu.com/question/312556066</p>
+<p>BatchNorm</p>
+<p>http://www.voidcn.com/article/p-hodbfvbe-bbk.html</p>
+<h2 id="_4">七、卷积</h2>
+<h3 id="61">6.1</h3>
 <h3 id="62">6.2 卷积类型</h3>
 <ul>
 <li><strong>卷积</strong></li>
