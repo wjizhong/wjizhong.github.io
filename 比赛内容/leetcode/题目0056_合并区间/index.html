@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/leetcode/%E9%A2%98%E7%9B%AE0056_%E5%90%88%E5%B9%B6%E5%8C%BA%E9%97%B4/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>题目0056:合并区间 - 图像/视频算法</title>
+    <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "\u9898\u76ee0056:\u5408\u5e76\u533a\u95f4", url: "#_top", level:1, children: [
+              {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1", level:2, children: [ 
+              ]},
+              {title: "\u89e3\u9898\u6280\u5de7", url: "#_2", level:2, children: [ 
+              ]},
+          ]},
+        ];
+    </script>
+    <script src="../../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+    <h1 id="0056">题目0056:合并区间</h1>
+<h2 id="_1">题目描述</h2>
+<p>给出一个区间的集合,请合并所有重叠的区间。</p>
+<p>示例1:</p>
+<pre><code>输入: [[1,3],[2,6],[8,10],[15,18]]
+输出: [[1,6],[8,10],[15,18]]
+解释: 区间 [1,3] 和 [2,6] 重叠, 将它们合并为 [1,6].
+</code></pre>
+
+<p>示例 2:</p>
+<pre><code>输入: [[1,4],[4,5]]
+输出: [[1,5]]
+解释: 区间 [1,4] 和 [4,5] 可被视为重叠区间。
+</code></pre>
+
+<h2 id="_2">解题技巧</h2>
+<ul>
+<li><strong>方法一:排序</strong></li>
+</ul>
+<p>如果我们按照区间的左端点排序,那么在排完序的列表中,可以合并的区间一定是连续的。如下图所示,标记为蓝色、黄色和绿色的区间分别可以合并成一个大区间,它们在排完序的列表中是连续的:</p>
+<p><img alt="" src="http://pic.leetcode-cn.com/50417462969bd13230276c0847726c0909873d22135775ef4022e806475d763e-56-2.png" /></p>
+<p>算法:我们用数组 merged 存储最终的答案。</p>
+<blockquote>
+<p>首先,我们将列表中的区间按照左端点升序排序。然后我们将第一个区间加入merged数组中,并按顺序依次考虑之后的每个区间:</p>
+<p>如果当前区间的左端点在数组merged中最后一个区间的右端点之后,那么它们不会重合,我们可以直接将这个区间加入数组merged的末尾;</p>
+<p>否则,它们重合,我们需要用当前区间的右端点更新数组merged中最后一个区间的右端点,将其置为二者的较大值。</p>
+</blockquote>
+<p>正确性证明</p>
+<p>上述算法的正确性可以用反证法来证明:在排完序后的数组中,两个本应合并的区间没能被合并,那么说明存在这样的三元组(i, j, k)以及数组中的三个区间a[i], a[j], a[k]满足i&lt; j &lt; k并且(a[i], a[k])可以合并,但(a[i], a[j])和(a[j], a[k])不能合并。这说明它们满足下面的不等式:</p>
+<pre><code>a[i].end&lt;a[j].start(a[i]和 a[j] 不能合并)
+a[j].end&lt;a[k].start(a[j]和 a[k] 不能合并)
+a[i].end≥a[k].start(a[i]和 a[k] 可以合并)
+</code></pre>
+
+<p>我们联立这些不等式(注意还有一个显然的不等式<span><span class="MathJax_Preview">a[j].start \leq a[j].end</span><script type="math/tex">a[j].start \leq a[j].end</script></span>,可以得到:</p>
+<div>
+<div class="MathJax_Preview">a[i].end &lt; a[j].start \leq a[j].end &lt; a[k].start</div>
+<script type="math/tex; mode=display">a[i].end < a[j].start \leq a[j].end < a[k].start</script>
+</div>
+<p>产生了矛盾!这说明假设是不成立的。因此,所有能够合并的区间都必然是连续的。</p>
+<pre><code class="python">class Solution:
+    def merge(self, intervals: List[List[int]]) -&gt; List[List[int]]:
+        intervals.sort(key=lambda x: x[0])
+
+        merged = []
+        for interval in intervals:
+            # 如果列表为空，或者当前区间与上一区间不重合，直接添加
+            if not merged or merged[-1][1] &lt; interval[0]:
+                merged.append(interval)
+            else:
+                # 否则的话，我们就可以与上一区间进行合并
+                merged[-1][1] = max(merged[-1][1], interval[1])
+        return merged
+</code></pre>
+
+<p>复杂度分析</p>
+<blockquote>
+<p>时间复杂度:<span><span class="MathJax_Preview">O(n\log n)</span><script type="math/tex">O(n\log n)</script></span>,其中n为区间的数量。除去排序的开销,我们只需要一次线性扫描,所以主要的时间开销是排序的<span><span class="MathJax_Preview">O(n\log n)</span><script type="math/tex">O(n\log n)</script></span>。</p>
+<p>空间复杂度:<span><span class="MathJax_Preview">O(\log n)</span><script type="math/tex">O(\log n)</script></span>,其中n为区间的数量。这里计算的是存储答案之外,使用的额外空间。<span><span class="MathJax_Preview">O(\log n)</span><script type="math/tex">O(\log n)</script></span>即为排序所需要的空间复杂度。</p>
+</blockquote>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    <br>
+</div>
+
+</body>
+</html>

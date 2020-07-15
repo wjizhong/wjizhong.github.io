@@ -79,7 +79,9 @@
                       ]},
                   ]}, 
               ]},
-              {title: "\u56db\u3001\u68c0\u6d4b\u7f51\u7edc", url: "#_5", level:2, children: [ 
+              {title: "\u56db\u3001\u68c0\u6d4b\u7f51\u7edc", url: "#_5", level:2, children: [
+                  {title: "4.1 Selective Search", url: "#41-selective-search", level:3, children: [
+                  ]}, 
               ]},
               {title: "faster RCNN", url: "#faster-rcnn", level:2, children: [ 
               ]},
@@ -4285,10 +4287,535 @@ inception_v4_arg_scope = inception_utils.inception_arg_scope
 
 <p>https://zhuanlan.zhihu.com/p/66215918</p>
 <h2 id="_5">四、检测网络</h2>
-<p>https://zhuanlan.zhihu.com/p/156112318</p>
-<p>https://zhuanlan.zhihu.com/p/39927488</p>
-<p>https://www.learnopencv.com/selective-search-for-object-detection-cpp-python/</p>
+<h3 id="41-selective-search">4.1 Selective Search</h3>
+<ul>
+<li><strong>Felzenszwalb算法</strong></li>
+</ul>
+<p>参考文章:<a href="http://cs.brown.edu/people/pfelzens/papers/seg-ijcv.pdf">Efficient Graph-Based Image Segmentation</a></p>
+<p>参考代码: http://cs.brown.edu/people/pfelzens/segment/</p>
+<p>Felzenszwalb算法是经典的图像分割算法,是基于图的贪心聚类算法,实现简单,速度比较快,精度也还行。</p>
+<p>因为该算法是将图像用加权图抽象化表示，所以补充图的一些基本概念。</p>
+<blockquote>
+<p>图:是由顶点集V(vertices)和边集E(edges)组成,表示为G=(V, E),顶点v∈V,在论文即为单个的像素点,连接一对顶点的边(vi,vj)具有权重w(vi,vj),本文中的意义为顶点之间的不相似度(dissimilarity),所用的是无向图。</p>
+<p><strong>树</strong> :特殊的图,图中任意两个顶点,都有路径相连接,但是没有回路。如下图中加粗的边所连接而成的图。如果看成一团乱连的珠子,只保留树中的珠子和连线,那么随便选个珠子,都能把这棵树中所有的珠子都提起来。如果顶点i和h这条边也保留下来，那么顶点h,i,c,f,g就构成了一个回路。</p>
+<p><img alt="" src="http://img-blog.csdn.net/20171206104959304" /></p>
+<p><strong>最小生成树(minimum spanning tree)</strong> :特殊的树,给定需要连接的顶点,选择边权之和最小的树。</p>
+</blockquote>
+<p>论文中,初始化时每一个像素点都是一个顶点,然后逐渐合并得到一个区域,确切地说是连接这个区域中的像素点的一个MST。如下图,棕色圆圈为顶点,线段为边,合并棕色顶点所生成的MST,对应的就是一个分割区域。分割后的结果其实就是森林。</p>
+<p><img alt="" src="http://img-blog.csdn.net/20171206105413116" /></p>
+<p>既然是聚类算法，那应该依据何种规则判定何时该合二为一,何时该继续划清界限呢?对于孤立的两个像素点,所不同的是灰度值,自然就用灰度的距离来衡量两点的相似性,文章中是使用RGB的距离,即</p>
+<div>
+<div class="MathJax_Preview">\sqrt{(r_1-r_2)^2+(g_1-g_2)^2+(b_1-b_2)^2}</div>
+<script type="math/tex; mode=display">\sqrt{(r_1-r_2)^2+(g_1-g_2)^2+(b_1-b_2)^2}</script>
+</div>
+<p>当然也可以用perceptually uniform的Luv或者Lab色彩空间,对于灰度图像就只能使用亮度值了,此外,还可以先使用纹理特征滤波,再计算距离,比如先做Census Transform再计算Hamming distance距离。</p>
+<p>对于两个区域(子图)或者一个区域和一个像素点的相似性,最简单的方法即只考虑连接二者的边的不相似度。如下图,已经形成了棕色和绿色两个区域,现在通过紫色边来判断这两个区域是否合并。那么我们就可以设定一个阈值,当两个像素之间的差异(即不相似度)小于该值时,合二为一。迭代合并,最终就会合并成一个个区域,效果类似于区域生长。</p>
+<p><img alt="" src="http://img-blog.csdn.net/20171206111022215" /></p>
+<p>对于上右图,显然应该聚成上左图所示的3类:高频区h,斜坡区s,平坦区p。如果我们设置一个全局阈值,那么如果h区要合并成一块的话,那么该阈值要选很大,但是那样就会把p和s区域也包含进来,分割结果太粗。如果以p为参考,那么阈值应该选特别小的值,那样的话p区是会合并成一块,但是h区就会合并成特别特别多的小块,如同一面支离破碎的镜子,分割结果太细。显然,全局阈值并不合适,那么自然就得用自适应阈值。对于p区该阈值要特别小,s区稍大,h区巨大。</p>
+<p>先来两个定义,原文依据这两个附加信息来得到自适应阈值。</p>
+<blockquote>
+<p>一个区域内的类内差异Int(C):<span><span class="MathJax_Preview">Int(C)=\max_{e\in(MST,E)}(e)</span><script type="math/tex">Int(C)=\max_{e\in(MST,E)}(e)</script></span>,可以近似理解为一个区域内部最大的亮度差异值,定义是MST中不相似度最大的一条边。</p>
+<p>两个区域的类间差异Diff(C1, C2):<span><span class="MathJax_Preview">Diff(C_1,C_2)=\min_{v_1\in C_1,v_2\in C_2, (v_1,v_2)\in E}w(v_i,v_j)</span><script type="math/tex">Diff(C_1,C_2)=\min_{v_1\in C_1,v_2\in C_2, (v_1,v_2)\in E}w(v_i,v_j)</script></span>,即连接两个区域所有边中,不相似度最小的边的不相似度,也就是两个区域最相似的地方的不相似度。</p>
+</blockquote>
+<p>直观的判断,当:<span><span class="MathJax_Preview">Diff(C_1,C_2)&lt;min(Int(C_1),Int(C_2))</span><script type="math/tex">Diff(C_1,C_2)<min(Int(C_1),Int(C_2))</script></span>时,两个区域应当合并!</p>
+<p>算法步骤:</p>
+<blockquote>
+<p>1 计算每一个像素点与其8邻域或4邻域的不相似度。</p>
+<p><img alt="" src="http://img-blog.csdn.net/20171206112900548" /></p>
+<p>如上图,实线为只计算4领域,加上虚线就是计算8邻域,由于是无向图,按照从左到右,从上到下的顺序计算的话,只需要计算右图中灰色的线即可。</p>
+<p>2 将边按照不相似度non-decreasing排列(从小到大)排序得到e1,e2, ...,en。</p>
+<p>3 选择ei</p>
+<p>4 对当前选择的边ej(vi和vj不属于一个区域)进行合并判断。设其所连接的顶点为(vi, vj)，</p>
+<p>if 不相似度小于二者内部不相似度: 更新阈值以及类标号;
+else: 如果i &lt; n,则按照排好的顺序,选择下一条边转到Step 4,否则结束。</p>
+</blockquote>
+<pre><code class="python">import cv2
+import numpy as np
+from skimage import io as sio
+from skimage.segmentation import felzenszwalb
+import matplotlib.pyplot as plt
+from _felzenszwalb_cy import _felzenszwalb_cython # skimage felzenszwalb算法
+
+
+def felzenszwalb_test(img,sigma,kernel,k, min_size):
+    # 先使用纹理特征滤波，再计算距离
+    img = np.asanyarray(img, dtype=np.float) / 255
+
+    # rescale scale to behave like in reference implementation
+    k = float(k) / 255.
+    img = cv2.GaussianBlur(img, (kernel, kernel), sigma)
+    height, width = img.shape[:2]
+    num = height * width
+    edges = np.zeros(((height - 1) * width * 2 + height * (width - 1) * 2, 3))
+
+    # 使用RGB距离，计算四邻域
+    index = np.array([i for i in range(height * width)])
+    index = index.reshape((height, width))
+    to_left = np.sqrt(((img[:, 1:] - img[:, :-1]) ** 2).sum(axis=2))
+    to_right = to_left
+    to_up = np.sqrt(((img[1:] - img[:-1]) ** 2).sum(axis=2))
+    to_down = to_up
+
+
+    last, cur = 0, 0
+    last, cur = cur, cur + (width - 1) * height
+    edges[last: cur, 0] = index[:, 1:].reshape(-1)
+    edges[last: cur, 1] = index[:, :-1].reshape(-1)
+    edges[last: cur, 2] = to_left.reshape(-1)
+
+    last, cur = cur, cur + (width - 1) * height
+    edges[last: cur, 0] = index[:, :-1].reshape(-1)
+    edges[last: cur, 1] = index[:, 1:].reshape(-1)
+    edges[last: cur, 2] = to_right.reshape(-1)
+
+    last, cur = cur, cur + (height - 1) * width
+    edges[last: cur, 0] = index[1:].reshape(-1)
+    edges[last: cur, 1] = index[:-1].reshape(-1)
+    edges[last: cur, 2] = to_up.reshape(-1)
+
+    last, cur = cur, cur + (height - 1) * width
+    edges[last: cur, 0] = index[:-1].reshape(-1)
+    edges[last: cur, 1] = index[1:].reshape(-1)
+    edges[last: cur, 2] = to_down.reshape(-1)
+
+    # 将边按照不相似度从小到大排序
+    edges = [edges[i] for i in range(edges.shape[0])]
+    edges.sort(key=lambda x: x[2])
+
+    # 构建无向图（树）
+    class universe(object):
+        def __init__(self, n, k):
+            self.f = np.array([i for i in range(n)])  # 树
+            self.r = np.zeros_like(self.f)   # root
+            self.s = np.ones((n))  # 存储像素点的个数
+            self.t = np.ones((n)) * k  # 存储不相似度
+            self.k = k
+
+        def find(self, x):    # Find root of node x
+            if x == self.f[x]:
+                return x
+            return self.find(self.f[x])
+
+        def join(self, a, b):  # Join two trees containing nodes n and m
+            if self.r[a] &gt; self.r[b]:
+                self.f[b] = a
+                self.s[a] += self.s[b]
+            else:
+                self.f[a] = b
+                self.s[b] += self.s[a]
+                if self.r[a] == self.r[b]:
+                    self.r[b] += 1
+
+    u = universe(num, k)
+    for edge in edges:
+        a, b = u.find(int(edge[0])), u.find(int(edge[1]))
+        if ((a != b) and (edge[2] &lt;= min(u.t[a], u.t[b]))):
+            # 更新类标号：将的类a,b标号统一为的标号a。更新该类的不相似度阈值为：k / (u.s[a]+u.s[b])
+            u.join(a, b)
+            a = u.find(a)
+            u.t[a] = edge[2] + k / u.s[a]
+
+    for edge in edges:
+        a, b = u.find(int(edge[0])), u.find(int(edge[1]))
+        if ((a != b) and ((u.s[a] &lt; min_size) or u.s[b] &lt; min_size)):
+            # 分割后会有很多小区域，当区域像素点的个数小于min_size时，选择与其差异最小的区域合并
+            u.join(a, b)
+
+    dst = np.zeros_like(img)
+
+    def locate(index):
+        return index // width, index % width
+
+    avg_color = np.zeros((num, 3))
+
+    for i in range(num):
+        f = u.find(i)
+        x, y = locate(i)
+        avg_color[f, :] += img[x, y, :] / u.s[f]
+
+    for i in range(height):
+        for j in range(width):
+            f = u.find(i * width + j)
+            dst[i, j, :] = avg_color[f, :]
+    return dst
+
+
+if __name__ == '__main__':
+    sigma = 0.5
+    kernel = 3
+    K, min_size = 500, 50
+    image = sio.imread(&quot;test_data/0010.jpg&quot;)
+    # skimage自带的felzenszwalb算法
+    seg1 = felzenszwalb(image, scale=K, sigma=sigma, min_size=min_size)
+    # skimage自带的felzenszwalb算法cython版转Python代码,更改了高斯模糊
+    seg2 = _felzenszwalb_cython(image, scale=K, sigma=sigma, kernel=kernel,min_size=min_size)
+    # felzenszwalb算法的实现，相比于上一种，区别主要在四邻域和颜色还原
+    seg3=felzenszwalb_test(image, sigma, kernel,K, min_size)
+
+    fig = plt.figure()
+    a = fig.add_subplot(221)
+    plt.imshow(image)
+    a.set_title(&quot;image&quot;)
+
+    a = fig.add_subplot(222)
+    plt.imshow(seg1)
+    a.set_title(&quot;seg1&quot;)
+
+    a = fig.add_subplot(223)
+    plt.imshow(seg2)
+    a.set_title(&quot;seg2&quot;)
+
+    a = fig.add_subplot(224)
+    plt.imshow(seg3)
+    a.set_title(&quot;seg3&quot;)
+    plt.show()
+</code></pre>
+
+<ul>
+<li><strong>Selective Search</strong></li>
+</ul>
+<p><img alt="" src="http://pic3.zhimg.com/v2-59a946e53af73256d539832715cb7270_r.jpg" /></p>
+<p>Diversification Strategies:这个部分讲述作者提到的多样性的一些策略,使得抽样多样化,主要有下面三个不同方面:</p>
+<blockquote>
+<p>利用各种不同不变性的色彩空间;</p>
+<p>采用不同的相似性度量;</p>
+<p>通过改变起始区域。此部分比较简单,不详细介绍,作者对比了一些初始化区域的方法,发现上面效果最好。</p>
+</blockquote>
+<p>Colour Spaces:考虑到场景、光照条件的不同,作者提出使用八种不变性属性的各种颜色空间应用在Hierarchical Grouping Algorithm。如下表:</p>
+<p><img alt="" src="http://pic4.zhimg.com/v2-ae9e64e28edb33d6eb6dee24f2f7a4b1_r.jpg" /></p>
+<p>+/-表示部分不变性;1/3表示三个颜色通道中有一个是不变性</p>
+<p>Similarity Measures</p>
+<blockquote>
+<p>颜色相似度衡量:<span><span class="MathJax_Preview">C_{i}=\left\{c_{i}^{1}....c_{i}^{n} \right\}</span><script type="math/tex">C_{i}=\left\{c_{i}^{1}....c_{i}^{n} \right\}</script></span>表示每一个区域用三通道的颜色直方图表示,每个颜色通道的25 bins的直方图,这样每个区域都可以得到一个n=75维的向量。使用L1-norm标准化后，用下式计算区域间的相似度。</p>
+<p><img alt="" src="http://pic3.zhimg.com/v2-5c90d18eb5e5b2a49770bcbabd88de25_b.jpg" /></p>
+<p>合并区域的颜色直方图计算如下:</p>
+<p><img alt="" src="http://picb.zhimg.com/v2-a7ba97c666760e14999559c468493d81_b.jpg" /></p>
+<p><img alt="" src="http://pic1.zhimg.com/v2-0538757fd74b18fe0b09989be9c08c8c_b.jpg" /></p>
+<p>纹理相似度衡量: 论文采用SIFT-Like特征,具体操作:采用方差为1的高斯分布对每个颜色通道的8个不同方向做梯度统计,然后将统计结果(尺寸与区域大小一致)以bins=10计算直方图。直方图区间数为8<em>3</em>10=240。</p>
+<p><img alt="" src="http://pic4.zhimg.com/v2-1763310124be08c02d738057700264ba_b.jpg" /></p>
+<p><span><span class="MathJax_Preview">T_{i}=\left\{t_{i}^{1}....t_{i}^{n} \right\}</span><script type="math/tex">T_{i}=\left\{t_{i}^{1}....t_{i}^{n} \right\}</script></span>表示每一个区域的纹理直方图,有240维。</p>
+<p>尺度相似度衡量: 为了保证区域合并操作的尺度较为均匀,使用如下公式,使用尺寸相似度,目的是尽量让小的区域先合并。</p>
+<p><img alt="" src="http://pic4.zhimg.com/v2-7fff103ae7c911238f53a51a940de191_b.jpg" /></p>
+<p>size(im)是指区域中的尺寸(以像素为单位)</p>
+<p>形状重合度衡量:为了衡量两个区域是否更加重合,合并后区域的Bounding Box越小,其重合度越高,公式如下。</p>
+<p><img alt="" src="http://pic1.zhimg.com/v2-fb90449b98b8a35eb36409a46ddd2965_b.jpg" /></p>
+<p>最终的相似度衡量:</p>
+<p><img alt="" src="http://pic3.zhimg.com/v2-daf7edc09c59b6cb36d8cbf7e0afed00_b.jpg" /></p>
+</blockquote>
+<p><img alt="" src="http://pic4.zhimg.com/v2-2985adf17a83a2f3f7e77926f2cf7628_r.jpg" /></p>
+<pre><code class="python">import skimage.io
+import skimage.feature
+import skimage.color
+import skimage.transform
+import skimage.util
+import skimage.segmentation
+import numpy
+
+
+# &quot;Selective Search for Object Recognition&quot; by J.R.R. Uijlings et al.
+#
+#  - Modified version with LBP extractor for texture vectorization
+
+
+def _generate_segments(im_orig, scale, sigma, min_size):
+    &quot;&quot;&quot;
+        segment smallest regions by the algorithm of Felzenswalb and
+        Huttenlocher
+    &quot;&quot;&quot;
+
+    # open the Image
+    im_mask = skimage.segmentation.felzenszwalb(
+        skimage.util.img_as_float(im_orig), scale=scale, sigma=sigma,
+        min_size=min_size)
+
+    # merge mask channel to the image as a 4th channel
+    im_orig = numpy.append(
+        im_orig, numpy.zeros(im_orig.shape[:2])[:, :, numpy.newaxis], axis=2)
+    im_orig[:, :, 3] = im_mask
+
+    return im_orig
+
+
+def _sim_colour(r1, r2):
+    &quot;&quot;&quot;
+        calculate the sum of histogram intersection of colour
+    &quot;&quot;&quot;
+    return sum([min(a, b) for a, b in zip(r1[&quot;hist_c&quot;], r2[&quot;hist_c&quot;])])
+
+
+def _sim_texture(r1, r2):
+    &quot;&quot;&quot;
+        calculate the sum of histogram intersection of texture
+    &quot;&quot;&quot;
+    return sum([min(a, b) for a, b in zip(r1[&quot;hist_t&quot;], r2[&quot;hist_t&quot;])])
+
+
+def _sim_size(r1, r2, imsize):
+    &quot;&quot;&quot;
+        calculate the size similarity over the image
+    &quot;&quot;&quot;
+    return 1.0 - (r1[&quot;size&quot;] + r2[&quot;size&quot;]) / imsize
+
+
+def _sim_fill(r1, r2, imsize):
+    &quot;&quot;&quot;
+        calculate the fill similarity over the image
+    &quot;&quot;&quot;
+    bbsize = (
+        (max(r1[&quot;max_x&quot;], r2[&quot;max_x&quot;]) - min(r1[&quot;min_x&quot;], r2[&quot;min_x&quot;]))
+        * (max(r1[&quot;max_y&quot;], r2[&quot;max_y&quot;]) - min(r1[&quot;min_y&quot;], r2[&quot;min_y&quot;]))
+    )
+    return 1.0 - (bbsize - r1[&quot;size&quot;] - r2[&quot;size&quot;]) / imsize
+
+
+def _calc_sim(r1, r2, imsize):
+    return (_sim_colour(r1, r2) + _sim_texture(r1, r2)
+            + _sim_size(r1, r2, imsize) + _sim_fill(r1, r2, imsize))
+
+
+def _calc_colour_hist(img):
+    &quot;&quot;&quot;
+        calculate colour histogram for each region
+        the size of output histogram will be BINS * COLOUR_CHANNELS(3)
+        number of bins is 25 as same as [uijlings_ijcv2013_draft.pdf]
+        extract HSV
+    &quot;&quot;&quot;
+
+    BINS = 25
+    hist = numpy.array([])
+
+    for colour_channel in (0, 1, 2):
+
+        # extracting one colour channel
+        c = img[:, colour_channel]
+
+        # calculate histogram for each colour and join to the result
+        hist = numpy.concatenate(
+            [hist] + [numpy.histogram(c, BINS, (0.0, 255.0))[0]])
+
+    # L1 normalize
+    hist = hist / len(img)
+
+    return hist
+
+
+def _calc_texture_gradient(img):
+    &quot;&quot;&quot;
+        calculate texture gradient for entire image
+        The original SelectiveSearch algorithm proposed Gaussian derivative
+        for 8 orientations, but we use LBP instead.
+        output will be [height(*)][width(*)]
+    &quot;&quot;&quot;
+    ret = numpy.zeros((img.shape[0], img.shape[1], img.shape[2]))
+
+    for colour_channel in (0, 1, 2):
+        ret[:, :, colour_channel] = skimage.feature.local_binary_pattern(
+            img[:, :, colour_channel], 8, 1.0)
+
+    return ret
+
+
+def _calc_texture_hist(img):
+    &quot;&quot;&quot;
+        calculate texture histogram for each region
+        calculate the histogram of gradient for each colours
+        the size of output histogram will be
+            BINS * ORIENTATIONS * COLOUR_CHANNELS(3)
+    &quot;&quot;&quot;
+    BINS = 10
+
+    hist = numpy.array([])
+
+    for colour_channel in (0, 1, 2):
+
+        # mask by the colour channel
+        fd = img[:, colour_channel]
+
+        # calculate histogram for each orientation and concatenate them all
+        # and join to the result
+        hist = numpy.concatenate(
+            [hist] + [numpy.histogram(fd, BINS, (0.0, 1.0))[0]])
+
+    # L1 Normalize
+    hist = hist / len(img)
+
+    return hist
+
+
+def _extract_regions(img):
+
+    R = {}
+
+    # get hsv image
+    hsv = skimage.color.rgb2hsv(img[:, :, :3])
+
+    # pass 1: count pixel positions
+    for y, i in enumerate(img):
+
+        for x, (r, g, b, l) in enumerate(i):
+
+            # initialize a new region
+            if l not in R:
+                R[l] = {
+                    &quot;min_x&quot;: 0xffff, &quot;min_y&quot;: 0xffff,
+                    &quot;max_x&quot;: 0, &quot;max_y&quot;: 0, &quot;labels&quot;: [l]}
+
+            # bounding box
+            if R[l][&quot;min_x&quot;] &gt; x:
+                R[l][&quot;min_x&quot;] = x
+            if R[l][&quot;min_y&quot;] &gt; y:
+                R[l][&quot;min_y&quot;] = y
+            if R[l][&quot;max_x&quot;] &lt; x:
+                R[l][&quot;max_x&quot;] = x
+            if R[l][&quot;max_y&quot;] &lt; y:
+                R[l][&quot;max_y&quot;] = y
+
+    # pass 2: calculate texture gradient
+    tex_grad = _calc_texture_gradient(img)
+
+    # pass 3: calculate colour histogram of each region
+    for k, v in list(R.items()):
+
+        # colour histogram
+        masked_pixels = hsv[:, :, :][img[:, :, 3] == k]
+        R[k][&quot;size&quot;] = len(masked_pixels / 4)
+        R[k][&quot;hist_c&quot;] = _calc_colour_hist(masked_pixels)
+
+        # texture histogram
+        R[k][&quot;hist_t&quot;] = _calc_texture_hist(tex_grad[:, :][img[:, :, 3] == k])
+
+    return R
+
+
+def _extract_neighbours(regions):
+
+    def intersect(a, b):
+        if (a[&quot;min_x&quot;] &lt; b[&quot;min_x&quot;] &lt; a[&quot;max_x&quot;]
+                and a[&quot;min_y&quot;] &lt; b[&quot;min_y&quot;] &lt; a[&quot;max_y&quot;]) or (
+            a[&quot;min_x&quot;] &lt; b[&quot;max_x&quot;] &lt; a[&quot;max_x&quot;]
+                and a[&quot;min_y&quot;] &lt; b[&quot;max_y&quot;] &lt; a[&quot;max_y&quot;]) or (
+            a[&quot;min_x&quot;] &lt; b[&quot;min_x&quot;] &lt; a[&quot;max_x&quot;]
+                and a[&quot;min_y&quot;] &lt; b[&quot;max_y&quot;] &lt; a[&quot;max_y&quot;]) or (
+            a[&quot;min_x&quot;] &lt; b[&quot;max_x&quot;] &lt; a[&quot;max_x&quot;]
+                and a[&quot;min_y&quot;] &lt; b[&quot;min_y&quot;] &lt; a[&quot;max_y&quot;]):
+            return True
+        return False
+
+    R = list(regions.items())
+    neighbours = []
+    for cur, a in enumerate(R[:-1]):
+        for b in R[cur + 1:]:
+            if intersect(a[1], b[1]):
+                neighbours.append((a, b))
+
+    return neighbours
+
+
+def _merge_regions(r1, r2):
+    new_size = r1[&quot;size&quot;] + r2[&quot;size&quot;]
+    rt = {
+        &quot;min_x&quot;: min(r1[&quot;min_x&quot;], r2[&quot;min_x&quot;]),
+        &quot;min_y&quot;: min(r1[&quot;min_y&quot;], r2[&quot;min_y&quot;]),
+        &quot;max_x&quot;: max(r1[&quot;max_x&quot;], r2[&quot;max_x&quot;]),
+        &quot;max_y&quot;: max(r1[&quot;max_y&quot;], r2[&quot;max_y&quot;]),
+        &quot;size&quot;: new_size,
+        &quot;hist_c&quot;: (
+            r1[&quot;hist_c&quot;] * r1[&quot;size&quot;] + r2[&quot;hist_c&quot;] * r2[&quot;size&quot;]) / new_size,
+        &quot;hist_t&quot;: (
+            r1[&quot;hist_t&quot;] * r1[&quot;size&quot;] + r2[&quot;hist_t&quot;] * r2[&quot;size&quot;]) / new_size,
+        &quot;labels&quot;: r1[&quot;labels&quot;] + r2[&quot;labels&quot;]
+    }
+    return rt
+
+
+def selective_search(
+        im_orig, scale=1.0, sigma=0.8, min_size=50):
+    '''Selective Search
+    Parameters
+    ----------
+        im_orig : ndarray
+            Input image
+        scale : int
+            Free parameter. Higher means larger clusters in felzenszwalb segmentation.
+        sigma : float
+            Width of Gaussian kernel for felzenszwalb segmentation.
+        min_size : int
+            Minimum component size for felzenszwalb segmentation.
+    Returns
+    -------
+        img : ndarray
+            image with region label
+            region label is stored in the 4th value of each pixel [r,g,b,(region)]
+        regions : array of dict
+            [
+                {
+                    'rect': (left, top, width, height),
+                    'labels': [...],
+                    'size': component_size
+                },
+                ...
+            ]
+    '''
+    assert im_orig.shape[2] == 3, &quot;3ch image is expected&quot;
+
+    # load image and get smallest regions
+    # region label is stored in the 4th value of each pixel [r,g,b,(region)]
+    img = _generate_segments(im_orig, scale, sigma, min_size)
+
+    if img is None:
+        return None, {}
+
+    imsize = img.shape[0] * img.shape[1]
+    R = _extract_regions(img)
+
+    # extract neighbouring information
+    neighbours = _extract_neighbours(R)
+
+    # calculate initial similarities
+    S = {}
+    for (ai, ar), (bi, br) in neighbours:
+        S[(ai, bi)] = _calc_sim(ar, br, imsize)
+
+    # hierarchal search
+    while S != {}:
+
+        # get highest similarity
+        i, j = sorted(S.items(), key=lambda i: i[1])[-1][0]
+
+        # merge corresponding regions
+        t = max(R.keys()) + 1.0
+        R[t] = _merge_regions(R[i], R[j])
+
+        # mark similarities for regions to be removed
+        key_to_delete = []
+        for k, v in list(S.items()):
+            if (i in k) or (j in k):
+                key_to_delete.append(k)
+
+        # remove old similarities of related regions
+        for k in key_to_delete:
+            del S[k]
+
+        # calculate similarity set with the new region
+        for k in [a for a in key_to_delete if a != (i, j)]:
+            n = k[1] if k[0] in (i, j) else k[0]
+            S[(t, n)] = _calc_sim(R[t], R[n], imsize)
+
+    regions = []
+    for k, r in list(R.items()):
+        regions.append({
+            'rect': (
+                r['min_x'], r['min_y'],
+                r['max_x'] - r['min_x'], r['max_y'] - r['min_y']),
+            'size': r['size'],
+            'labels': r['labels']
+        })
+
+    return img, regions
+</code></pre>
+
 <h2 id="faster-rcnn">faster RCNN</h2>
+<p>https://zhuanlan.zhihu.com/p/156112318</p>
 <p>https://zhuanlan.zhihu.com/p/31426458</p>
 <p>https://zhuanlan.zhihu.com/p/32404424</p>
 <p>https://zhuanlan.zhihu.com/p/112574936</p>
