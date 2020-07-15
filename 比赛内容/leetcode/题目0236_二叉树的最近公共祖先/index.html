@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/leetcode/%E9%A2%98%E7%9B%AE0236_%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>题目0236:二叉树的最近公共祖先 - 图像/视频算法</title>
+    <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "\u9898\u76ee0236:\u4e8c\u53c9\u6811\u7684\u6700\u8fd1\u516c\u5171\u7956\u5148", url: "#_top", level:1, children: [
+              {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1", level:2, children: [ 
+              ]},
+              {title: "\u89e3\u9898\u6280\u5de7", url: "#_2", level:2, children: [ 
+              ]},
+          ]},
+        ];
+    </script>
+    <script src="../../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+    <h1 id="0236">题目0236:二叉树的最近公共祖先</h1>
+<h2 id="_1">题目描述</h2>
+<p>给定一个二叉树,,找到该树中两个指定节点的最近公共祖先。</p>
+<p>百度百科中最近公共祖先的定义为:"对于有根树T的两个结点p、q,最近公共祖先表示为一个结点x,满足x是p、q的祖先且x的深度尽可能大(一个节点也可以是它自己的祖先)。""</p>
+<p>例如,给定如下二叉树: root = [3,5,1,6,2,0,8,null,null,7,4]</p>
+<p><img alt="" src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/15/binarytree.png" /></p>
+<p>示例1:</p>
+<pre><code>输入: root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 1
+输出: 3
+解释: 节点 5 和节点 1 的最近公共祖先是节点 3。
+</code></pre>
+
+<p>示例2:</p>
+<pre><code>输入: root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 4
+输出: 5
+解释: 节点 5 和节点 4 的最近公共祖先是节点 5。因为根据定义最近公共祖先节点可以为节点本身。
+</code></pre>
+
+<p>说明:</p>
+<blockquote>
+<p>所有节点的值都是唯一的。</p>
+<p>p、q 为不同节点且均存在于给定的二叉树中。</p>
+</blockquote>
+<h2 id="_2">解题技巧</h2>
+<video src="images/d1bebd2259204338817078f5ebee5776ec9425ecfa859dd396f50bee6dfa3c34.mp4" controls />
+
+* **方法一:递归**
+
+思路和算法:我们递归遍历整棵二叉树,定义$f_x$表示x节点的子树中是否包含p节点或q节点,如果包含为true,否则为false。那么符合条件的最近公共祖先x一定满足如下条件:
+
+$$(f_{\text{lson}}\ \&\&\ f_{\text{rson}})\ ||\ ((x\ =\ p\ ||\ x\ =\ q)\ \&\&\ (f_{\text{lson}}\ ||\ f_{\text{rson}}))$$
+
+其中lson和rson分别代表x节点的左孩子和右孩子。初看可能会感觉条件判断有点复杂,我们来一条条看,$f_{\text{lson}}\ \&\&\ f_{\text{rson}}$说明左子树和右子树均包含p节点或q节点,如果左子树包含的是p节点,那么右子树只能包含q节点,反之亦然,因为p节点和q节点都是不同且唯一的节点，因此如果满足这个判断条件即可说明x就是我们要找的最近公共祖先。再来看第二条判断条件,这个判断条件即是考虑了x恰好是p节点或q节点且它的左子树或右子树有一个包含了另一个节点的情况,因此如果满足这个判断条件亦可说明x就是我们要找的最近公共祖先。
+
+你可能会疑惑这样找出来的公共祖先深度是否是最大的。其实是最大的,因为我们是自底向上从叶子节点开始更新的,所以在所有满足条件的公共祖先中一定是深度最大的祖先先被访问到,且由于$f_x$本身的定义很巧妙,在找到最近公共祖先x以后,$f_x$按定义被设置为true,即假定了这个子树中只有一个p节点或q节点,因此其他公共祖先不会再被判断为符合条件。
+
+下图展示了一个示例,搜索树中两个节点9和11的最近公共祖先。
+
+![](images/lowest_common_ancestor_of_a_binary_tree.gif)
+
+
+<pre><code class="c++">/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* ans;
+    bool dfs(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if (root == nullptr) return false;
+        bool lson = dfs(root-&gt;left, p, q);
+        bool rson = dfs(root-&gt;right, p, q);
+        if ((lson &amp;&amp; rson) || ((root-&gt;val == p-&gt;val || root-&gt;val == q-&gt;val) &amp;&amp; (lson || rson))) {
+            ans = root;
+        } 
+        return lson || rson || (root-&gt;val == p-&gt;val || root-&gt;val == q-&gt;val);
+    }
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        dfs(root, p, q);
+        return ans;
+    }
+};
+</code></pre>
+
+复杂度分析
+
+> 时间复杂度:O(N),其中N是二叉树的节点数。二叉树的所有节点有且只会被访问一次,因此时间复杂度为O(N)。
+> 
+> 空间复杂度:O(N),其中N是二叉树的节点数。递归调用的栈深度取决于二叉树的高度,二叉树最坏情况下为一条链,此时高度为N因此空间复杂度为O(N)。
+
+* **方法二:存储父节点**
+
+思路:我们可以用哈希表存储所有节点的父节点,然后我们就可以利用节点的父节点信息从p结点开始不断往上跳,并记录已经访问过的节点,再从q节点开始不断往上跳,如果碰到已经访问过的节点,那么这个节点就是我们要找的最近公共祖先。
+
+算法
+
+> 从根节点开始遍历整棵二叉树,用哈希表记录每个节点的父节点指针。
+> 
+> 从p节点开始不断往它的祖先移动,并用数据结构记录已经访问过的祖先节点。
+> 
+> 同样,我们再从q节点开始不断往它的祖先移动,如果有祖先已经被访问过,即意味着这是p和q的深度最深的公共祖先,即LCA节点。
+
+
+<pre><code class="c++">/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    unordered_map&lt;int, TreeNode*&gt; fa;
+    unordered_map&lt;int, bool&gt; vis;
+    void dfs(TreeNode* root){
+        if (root-&gt;left != nullptr) {
+            fa[root-&gt;left-&gt;val] = root;
+            dfs(root-&gt;left);
+        }
+        if (root-&gt;right != nullptr) {
+            fa[root-&gt;right-&gt;val] = root;
+            dfs(root-&gt;right);
+        }
+    }
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        fa[root-&gt;val] = nullptr;
+        dfs(root);
+        while (p != nullptr) {
+            vis[p-&gt;val] = true;
+            p = fa[p-&gt;val];
+        }
+        while (q != nullptr) {
+            if (vis[q-&gt;val]) return q;
+            q = fa[q-&gt;val];
+        }
+        return nullptr;
+    }
+};
+</code></pre>
+
+
+复杂度分析
+
+> 时间复杂度:O(N),其中N是二叉树的节点数。二叉树的所有节点有且只会被访问一次,从p和q节点往上跳经过的祖先节点个数不会超过 N,因此总的时间复杂度为O(N)。
+> 
+> 空间复杂度:O(N),其中N是二叉树的节点数。递归调用的栈深度取决于二叉树的高度,二叉树最坏情况下为一条链,此时高度为N因此空间复杂度为O(N),哈希表存储每个节点的父节点也需要O(N)的空间复杂度,因此最后总的空间复杂度为O(N)。
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    <br>
+</div>
+
+</body>
+</html>
