@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/leetcode/%E9%A2%98%E7%9B%AE0124_%E4%BA%8C%E5%8F%89%E6%A0%91%E4%B8%AD%E7%9A%84%E6%9C%80%E5%A4%A7%E8%B7%AF%E5%BE%84%E5%92%8C/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>题目124:二叉树中的最大路径和 - 图像/视频算法</title>
+    <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "\u9898\u76ee124:\u4e8c\u53c9\u6811\u4e2d\u7684\u6700\u5927\u8def\u5f84\u548c", url: "#_top", level:1, children: [
+              {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1", level:2, children: [ 
+              ]},
+              {title: "\u89e3\u9898\u6280\u5de7", url: "#_2", level:2, children: [ 
+              ]},
+          ]},
+        ];
+    </script>
+    <script src="../../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+    <h1 id="124">题目124:二叉树中的最大路径和</h1>
+<h2 id="_1">题目描述</h2>
+<p>给定一个非空二叉树,返回其最大路径和。</p>
+<p>本题中,路径被定义为一条从树中任意节点出发,达到任意节点的序列。该路径至少包含一个节点,且不一定经过根节点。</p>
+<p>示例1:</p>
+<pre><code>输入: [1,2,3]
+
+       1
+      / \
+     2   3
+
+输出: 6
+</code></pre>
+
+<p>示例 2:</p>
+<pre><code>输入: [-10,9,20,null,null,15,7]
+
+   -10
+   / \
+  9  20
+    /  \
+   15   7
+
+输出: 42
+</code></pre>
+
+<h2 id="_2">解题技巧</h2>
+<video src="
+../images/a34df54b4455410eb0a6c4c4f566d240579b0375dc3740624245c453b2799e53.mp4
+" controls />
+
+* **方法一:递归**
+
+首先,考虑实现一个简化的函数maxGain(node),该函数计算二叉树中的一个节点的最大贡献值,具体而言,就是在以该节点为根节点的子树中寻找以该节点为起点的一条路径,使得该路径上的节点值之和最大。
+
+具体而言,该函数的计算如下。
+
+> 空节点的最大贡献值等于0。
+> 
+> 非空节点的最大贡献值等于节点值与其子节点中的最大贡献值之和(对于叶节点而言,最大贡献值等于节点值)。
+
+例如,考虑如下二叉树。
+
+
+<pre><code>   -10
+   / \
+  9  20
+    /  \
+   15   7
+</code></pre>
+
+
+叶节点9、15、7的最大贡献值分别为9、15、7。
+
+得到叶节点的最大贡献值之后,再计算非叶节点的最大贡献值。节点20的最大贡献值等于20+\max(15,7)=35,节点−10的最大贡献值等于-10+\max(9,35)=25。
+
+上述计算过程是递归的过程,因此,对根节点调用函数maxGain,即可得到每个节点的最大贡献值。
+
+根据函数maxGain得到每个节点的最大贡献值之后,如何得到二叉树的最大路径和?对于二叉树中的一个节点,该节点的最大路径和取决于该节点的值与该节点的左右子节点的最大贡献值,如果子节点的最大贡献值为正,则计入该节点的最大路径和,否则不计入该节点的最大路径和。维护一个全局变量maxSum存储最大路径和，在递归过程中更新maxSum的值,最后得到的maxSum的值即为二叉树中的最大路径和。
+
+![](images/binary_tree_maximum_path_sum.gif)
+
+
+<pre><code class="python"># Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    def __init__(self):
+        self.maxSum = float(&quot;-inf&quot;)
+
+    def maxPathSum(self, root: TreeNode) -&gt; int:
+        def maxGain(node):
+            if not node:
+                return 0
+
+            # 递归计算左右子节点的最大贡献值
+            # 只有在最大贡献值大于0时,才会选取对应子节点
+            leftGain = max(maxGain(node.left), 0)
+            rightGain = max(maxGain(node.right), 0)
+
+            # 节点的最大路径和取决于该节点的值与该节点的左右子节点的最大贡献值
+            priceNewpath = node.val + leftGain + rightGain
+
+            # 更新答案
+            self.maxSum = max(self.maxSum, priceNewpath)
+
+            # 返回节点的最大贡献值
+            return node.val + max(leftGain, rightGain)
+
+        maxGain(root)
+        return self.maxSum
+</code></pre>
+
+
+复杂度分析
+
+> 时间复杂度:O(N),其中N是二叉树中的节点个数。对每个节点访问不超过2次。
+> 
+> 空间复杂度:O(N),其中N是二叉树中的节点个数。空间复杂度主要取决于递归调用层数,最大层数等于二叉树的高度,最坏情况下,二叉树的高度等于二叉树中的节点个数。
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    <br>
+</div>
+
+</body>
+</html>

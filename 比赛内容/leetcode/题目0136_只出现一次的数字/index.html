@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/leetcode/%E9%A2%98%E7%9B%AE0136_%E5%8F%AA%E5%87%BA%E7%8E%B0%E4%B8%80%E6%AC%A1%E7%9A%84%E6%95%B0%E5%AD%97/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>题目0136:只出现一次的数字 - 图像/视频算法</title>
+    <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "\u9898\u76ee0136:\u53ea\u51fa\u73b0\u4e00\u6b21\u7684\u6570\u5b57", url: "#_top", level:1, children: [
+              {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1", level:2, children: [ 
+              ]},
+              {title: "\u89e3\u9898\u6280\u5de7", url: "#_2", level:2, children: [ 
+              ]},
+          ]},
+        ];
+    </script>
+    <script src="../../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+    <h1 id="0136">题目0136:只出现一次的数字</h1>
+<h2 id="_1">题目描述</h2>
+<p>给定一个非空整数数组,除了某个元素只出现一次以外,其余每个元素均出现两次。找出那个只出现了一次的元素。</p>
+<p>说明:你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗?</p>
+<p>示例 1:</p>
+<pre><code>输入: [2,2,1]
+输出: 1
+</code></pre>
+
+<p>示例2:</p>
+<pre><code>输入: [4,1,2,1,2]
+输出: 4
+</code></pre>
+
+<h2 id="_2">解题技巧</h2>
+<video src="../images/b247ad41bdcb425990d482e06eb23e6935be2f5b68b96dbcd9dc4609c8203976.mp4" controls />
+
+* **方法一:位运算**
+
+如果没有时间复杂度和空间复杂度的限制,这道题有很多种解法,可能的解法有如下几种。
+
+> * 使用集合存储数字。遍历数组中的每个数字,如果集合中没有该数字,则将该数字加入集合,如果集合中已经有该数字,则将该数字从集合中删除,最后剩下的数字就是只出现一次的数字。
+> * 使用哈希表存储每个数字和该数字出现的次数。遍历数组即可得到每个数字出现的次数,并更新哈希表,最后遍历哈希表,得到只出现一次的数字。
+> * 使用集合存储数组中出现的所有数字,并计算数组中的元素之和。由于集合保证元素无重复,因此计算集合中的所有元素之和的两倍,即为每个元素出现两次的情况下的元素之和。由于数组中只有一个元素出现一次,其余元素都出现两次,因此用集合中的元素之和的两倍减去数组中的元素之和,剩下的数就是数组中只出现一次的数字。
+
+上述三种解法都需要额外使用O(n)的空间,其中n是数组长度。如果要求使用线性时间复杂度和常数空间复杂度,上述三种解法显然都不满足要求。那么,如何才能做到线性时间复杂度和常数空间复杂度呢?
+
+答案是使用位运算。对于这道题,可使用异或运算$\oplus$。异或运算有以下三个性质。
+
+> 任何数和0做异或运算,结果仍然是原来的数,即$a \oplus 0=a$。
+> 
+> 任何数和其自身做异或运算,结果是0,即$a \oplus a=0$。
+> 
+> 异或运算满足交换律和结合律,即$a \oplus b \oplus a=b \oplus a \oplus a=b \oplus (a \oplus a)=b \oplus 0=b$。
+
+![](images/zhi_chu_xian_yi_ci_de_shu_zi.gif)
+
+假设数组中有2m+1个数,其中有m个数各出现两次,一个数出现一次。令$a_{1}、a_{2}、\ldots…、a_{m}$为出现两次的m个数,$a_{m+1}$为出现一次的数。根据性质3,数组中的全部元素的异或运算结果总是可以写成如下形式:
+
+$$(a_{1} \oplus a_{1}) \oplus (a_{2} \oplus a_{2}) \oplus \cdots \oplus (a_{m} \oplus a_{m}) \oplus a_{m+1}$$
+
+根据性质2和性质1,上式可化简和计算得到如下结果:
+
+$$0 \oplus 0 \oplus \cdots \oplus 0 \oplus a_{m+1}=a_{m+1}$$
+
+因此,数组中的全部元素的异或运算结果即为数组中只出现一次的数字。
+
+
+<pre><code class="python">class Solution:
+    def singleNumber(self, nums: List[int]) -&gt; int:
+        return reduce(lambda x, y: x ^ y, nums)
+</code></pre>
+
+
+复杂度分析
+
+> 时间复杂度:O(n),其中n是数组长度。只需要对数组遍历一次。
+> 
+> 空间复杂度:O(1)。
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    <br>
+</div>
+
+</body>
+</html>
