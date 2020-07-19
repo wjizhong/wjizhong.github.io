@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/leetcode/%E9%A2%98%E7%9B%AE0647_%E5%9B%9E%E6%96%87%E5%AD%90%E4%B8%B2/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>题目0647:回文子串 - 图像/视频算法</title>
+    <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "\u9898\u76ee0647:\u56de\u6587\u5b50\u4e32", url: "#_top", level:1, children: [
+              {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1", level:2, children: [ 
+              ]},
+              {title: "\u89e3\u9898\u6280\u5de7", url: "#_2", level:2, children: [ 
+              ]},
+          ]},
+        ];
+    </script>
+    <script src="../../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    
+
+    <h1 id="0647">题目0647:回文子串</h1>
+<h2 id="_1">题目描述</h2>
+<p>给定一个字符串,你的任务是计算这个字符串中有多少个回文子串。</p>
+<p>具有不同开始位置或结束位置的子串,即使是由相同的字符组成,也会被计为是不同的子串。</p>
+<p>示例1:</p>
+<pre><code>输入: &quot;abc&quot;
+输出: 3
+解释: 三个回文子串: &quot;a&quot;, &quot;b&quot;, &quot;c&quot;.
+</code></pre>
+
+<p>示例2:</p>
+<pre><code>输入: &quot;aaa&quot;
+输出: 6
+说明: 6个回文子串: &quot;a&quot;, &quot;a&quot;, &quot;a&quot;, &quot;aa&quot;, &quot;aa&quot;, &quot;aaa&quot;.
+</code></pre>
+
+<p>注意:输入的字符串长度不会超过1000。</p>
+<h2 id="_2">解题技巧</h2>
+<ul>
+<li><strong>方法一:从中心往两侧延伸</strong></li>
+</ul>
+<p>在长度为N的字符串中,可能的回文串中心位置有2N-1个:字母或两个字母中间。</p>
+<p>从每一个回文串中心开始统计回文串数量。回文区间[a, b]表示 S[a], S[a+1], ..., S[b]是回文串,根据回文串定义可知[a+1, b-1]也是回文区间。</p>
+<p>算法:对于每个可能的回文串中心位置,尽可能扩大它的回文区间[left, right]。当left &gt;= 0 and right &lt; N and S[left] == S[right]时,扩大区间。此时回文区间表示的回文串为S[left], S[left+1], ..., S[right]。</p>
+<pre><code class="python">
+class Solution(object):
+    def countSubstrings(self, S):
+        N = len(S)
+        ans = 0
+        for center in xrange(2*N - 1):
+            left = center / 2
+            right = left + center % 2
+            while left &gt;= 0 and right &lt; N and S[left] == S[right]:
+                ans += 1
+                left -= 1
+                right += 1
+        return ans
+</code></pre>
+
+<p>复杂度分析</p>
+<blockquote>
+<p>时间复杂度:<span><span class="MathJax_Preview">O(N^2)</span><script type="math/tex">O(N^2)</script></span>,其中N表示字符串S的长度,每次扩大回文区间的需要时间O(N)。</p>
+<p>空间复杂度:O(1)。</p>
+</blockquote>
+<ul>
+<li><strong>方法二:马拉车算法</strong></li>
+</ul>
+<p>马拉车算法可以在线性时间内找出以任何位置为中心的最大回文串。</p>
+<p><strong>算法</strong></p>
+<p>假设一个回文串中心为center,该中心对应的最大回文串右边界为right。存在一个i为当前回文串中心,满足i &gt; center,那么也存在一个j与i关于center对称,可以根据Z[i]快速计算出Z[j]。</p>
+<p>当i &lt; right时,找出i关于center的对称点j = 2 * center - i。此时以i为中心,半径为right - i的区间内存在的最大回文串的半径Z[i]等于 Z[j]。</p>
+<p>例如,对于字符串A = '@#A#B#A#A#B#A#＄',当center = 7, right = 13, i = 10时,center为两个字母A中间的#,最大回文串右边界为最后一个#,i是最后一个B,j是第一个 B。</p>
+<p>在[center - (right - center), right]中,区间中心为center,右边界为right,i和j关于center对称,且Z[j] = 3,可以快速计算出 Z[i] = min(right - i, Z[j]) = 3。</p>
+<p>在while循环中,只有当Z[i]超过right - i时,才需要逐个比较字符。这种情况下,Z[i]每增加1,right也会增加1,且最多能够增加2*N+2次。因此这个过程是线性的。</p>
+<p>最后,对Z中每一项v计算(v+1) / 2,然后求和。假设给定最大回文串中心为C,半径为R,那么以C为中心,半径为R-1, R-2, ..., 0的子串也都是回文串。例如abcdedcba是以e为中心,半径为4的回文串,那么e，ded，cdedc，bcdedcb和abcdedcba也都是回文串。</p>
+<p>除以2是因为实际回文串的半径为v的一半。例如回文串a#b#c#d#e#d#c#b#a的半径为实际原回文串半径的 2 倍。</p>
+<pre><code class="python">def countSubstrings(self, S):
+    def manachers(S):
+        A = '@#' + '#'.join(S) + '#$'
+        Z = [0] * len(A)
+        center = right = 0
+        for i in xrange(1, len(A) - 1):
+            if i &lt; right:
+                Z[i] = min(right - i, Z[2 * center - i])
+            while A[i + Z[i] + 1] == A[i - Z[i] - 1]:
+                Z[i] += 1
+            if i + Z[i] &gt; right:
+                center, right = i, i + Z[i]
+        return Z
+
+    return sum((v+1)/2 for v in manachers(S))
+</code></pre>
+
+<p>复杂度分析</p>
+<blockquote>
+<p>时间复杂度:O(N),其中N是S的长度。根据上面分析,复杂度是线性的。</p>
+<p>空间复杂度:O(N),数组A和Z的大小。</p>
+</blockquote>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    <br>
+</div>
+
+</body>
+</html>

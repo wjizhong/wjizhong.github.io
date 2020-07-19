@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/leetcode/%E9%A2%98%E7%9B%AE0543_%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E7%9B%B4%E5%BE%84/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>题目0543:二叉树的直径 - 图像/视频算法</title>
+    <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "\u9898\u76ee0543:\u4e8c\u53c9\u6811\u7684\u76f4\u5f84", url: "#_top", level:1, children: [
+              {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1", level:2, children: [ 
+              ]},
+              {title: "\u89e3\u9898\u6280\u5de7", url: "#_2", level:2, children: [ 
+              ]},
+          ]},
+        ];
+    </script>
+    <script src="../../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    
+
+    <h1 id="0543">题目0543:二叉树的直径</h1>
+<h2 id="_1">题目描述</h2>
+<p>给定一棵二叉树,你需要计算它的直径长度。一棵二叉树的直径长度是任意两个结点路径长度中的最大值。这条路径可能穿过也可能不穿过根结点。</p>
+<p>示例:给定二叉树</p>
+<pre><code>          1
+         / \
+        2   3
+       / \     
+      4   5    
+返回3, 它的长度是路径 [4,2,1,3] 或者 [5,2,1,3]。
+</code></pre>
+
+<p>注意:两结点之间的路径长度是以它们之间边的数目表示。</p>
+<h2 id="_2">解题技巧</h2>
+<video src="../images/98d7a93114b941988283c44e8fd7cb71fa041d16b831fe3ae2382838e0c9ecca.mp4" controls />
+
+* **方法1:深度优先搜索**
+
+首先我们知道一条路径的长度为该路径经过的节点数减一,所以求直径(即求路径长度的最大值)等效于求路径经过节点数的最大值减一。
+
+而任意一条路径均可以被看作由某个节点为起点,从其左儿子和右儿子向下遍历的路径拼接得到。
+
+![](http://pic.leetcode-cn.com/baf2f6ea1ae76ba383eb1753254340f089dac9f03664f93990d6ae54f8560970-image.png)
+
+如图我们可以知道路径[9, 4, 2, 5, 7, 8]可以被看作以2为起点,从其左儿子向下遍历的路径[2, 4, 9]和从其右儿子向下遍历的路径[2, 5, 7, 8]拼接得到。
+
+假设我们知道对于该节点的左儿子向下遍历经过最多的节点数L(即以左儿子为根的子树的深度)和其右儿子向下遍历经过最多的节点数R(即以右儿子为根的子树的深度),那么以该节点为起点的路径经过节点数的最大值即为L+R+1。
+
+我们记节点$\textit{node}$为起点的路径经过节点数的最大值为$d_{\textit{node}}$,那么二叉树的直径就是所有节点$d_{\textit{node}}$的最大值减一。
+
+最后的算法流程为:我们定义一个递归函数depth(node)计算$d_{\textit{node}}d$函数返回该节点为根的子树的深度。先递归调用左儿子和右儿子求得它们为根的子树的深度L和R,则该节点为根的子树的深度即为$max(L,R)+1$。该节点的$d_{\textit{node}}$值为L+R+1
+
+递归搜索每个节点并设一个全局变量ansans记录$d_\textit{node}$的最大值,最后返回ans-1即为树的直径。
+
+
+<pre><code class="python"># Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object):
+    def diameterOfBinaryTree(self, root):
+        self.ans = 1
+        def depth(node):
+            # 访问到空节点了，返回0
+            if not node: return 0
+            # 左儿子为根的子树的深度
+            L = depth(node.left)
+            # 右儿子为根的子树的深度
+            R = depth(node.right)
+            # 计算d_node即L+R+1 并更新ans
+            self.ans = max(self.ans, L+R+1)
+            # 返回该节点为根的子树的深度
+            return max(L, R) + 1
+
+        depth(root)
+        return self.ans - 1
+</code></pre>
+
+
+复杂度分析
+
+> 时间复杂度:O(N),其中N为二叉树的节点数,即遍历一棵二叉树的时间复杂度,每个结点只被访问一次。
+> 
+> 空间复杂度:O(Height),其中Height为二叉树的高度。由于递归函数在递归过程中需要为每一层递归函数分配栈空间,所以这里需要额外的空间且该空间取决于递归的深度,而递归的深度显然为二叉树的高度,并且每次递归调用的函数里又只用了常数个变量,所以所需空间复杂度为O(Height)。
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    <br>
+</div>
+
+</body>
+</html>

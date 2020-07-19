@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/leetcode/%E9%A2%98%E7%9B%AE0048_%E6%97%8B%E8%BD%AC%E5%9B%BE%E5%83%8F/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>题目0048:旋转图像 - 图像/视频算法</title>
+    <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "\u9898\u76ee0048:\u65cb\u8f6c\u56fe\u50cf", url: "#_top", level:1, children: [
+              {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1", level:2, children: [ 
+              ]},
+              {title: "\u89e3\u9898\u6280\u5de7", url: "#_2", level:2, children: [ 
+              ]},
+          ]},
+        ];
+    </script>
+    <script src="../../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    
+
+    <h1 id="0048">题目0048:旋转图像</h1>
+<h2 id="_1">题目描述</h2>
+<p>给定一个n×n的二维矩阵表示一个图像。将图像顺时针旋转90度。</p>
+<p>说明:你必须在原地旋转图像,这意味着你需要直接修改输入的二维矩阵。请不要使用另一个矩阵来旋转图像。</p>
+<p>示例1:</p>
+<pre><code>给定 matrix = 
+[
+  [1,2,3],
+  [4,5,6],
+  [7,8,9]
+],
+
+原地旋转输入矩阵，使其变为:
+[
+  [7,4,1],
+  [8,5,2],
+  [9,6,3]
+]
+</code></pre>
+
+<p>示例2:</p>
+<pre><code>给定 matrix =
+[
+  [ 5, 1, 9,11],
+  [ 2, 4, 8,10],
+  [13, 3, 6, 7],
+  [15,14,12,16]
+], 
+
+原地旋转输入矩阵，使其变为:
+[
+  [15,13, 2, 5],
+  [14, 3, 4, 1],
+  [12, 6, 8, 9],
+  [16, 7,10,11]
+]
+</code></pre>
+
+<h2 id="_2">解题技巧</h2>
+<ul>
+<li><strong>方法1:转置加翻转</strong></li>
+</ul>
+<p>最直接的想法是先转置矩阵,然后翻转每一行。这个简单的方法已经能达到最优的时间复杂度<span><span class="MathJax_Preview">O(N^2)</span><script type="math/tex">O(N^2)</script></span>。</p>
+<pre><code class="python">class Solution:
+    def rotate(self, matrix):
+        &quot;&quot;&quot;
+        :type matrix: List[List[int]]
+        :rtype: void Do not return anything, modify matrix in-place instead.
+        &quot;&quot;&quot;
+        n = len(matrix[0])        
+        # transpose matrix
+        for i in range(n):
+            for j in range(i, n):
+                matrix[j][i], matrix[i][j] = matrix[i][j], matrix[j][i] 
+
+        # reverse each row
+        for i in range(n):
+            matrix[i].reverse()
+</code></pre>
+
+<p>算法复杂度:</p>
+<blockquote>
+<p>时间复杂度:<span><span class="MathJax_Preview">O(N^2)</span><script type="math/tex">O(N^2)</script></span>.</p>
+<p>空间复杂度:O(1),由于旋转操作是就地完成的。</p>
+</blockquote>
+<ul>
+<li><strong>方法2:旋转四个矩形</strong></li>
+</ul>
+<p>直观想法:方法1使用了两次矩阵操作,但是有只使用一次操作的方法完成旋转。</p>
+<p>为了实现这一点,我们来研究每个元素在旋转的过程中如何移动。</p>
+<p><img alt="" src="http://pic.leetcode-cn.com/12605efb60d2efc64e6ecfcf6562a98a49acb3ce696b0c1ad3da46ab8977fa16-48_angles.png" /></p>
+<p>这提供给我们了一个思路,将给定的矩阵分成四个矩形并且将原问题划归为旋转这些矩形的问题。</p>
+<p><img alt="" src="http://pic.leetcode-cn.com/7a684b207a95188ff6450e4724d6ee8bdf425fc483775a8e30082ed25060dac1-48_rectangles.png" /></p>
+<p>现在的解法很直接-可以在第一个矩形中移动元素并且在长度为4个元素的临时列表中移动它们。</p>
+<p><img alt="" src="../images/rotate_image.gif" /></p>
+<pre><code class="python">class Solution:
+    def rotate(self, matrix):
+        &quot;&quot;&quot;
+        :type matrix: List[List[int]]
+        :rtype: void Do not return anything, modify matrix in-place instead.
+        &quot;&quot;&quot;
+        n = len(matrix[0])
+        for i in range(n // 2 + n % 2):
+            for j in range(n // 2):
+                tmp = [0] * 4
+                row, col = i, j
+                # store 4 elements in tmp
+                for k in range(4):
+                    tmp[k] = matrix[row][col]
+                    row, col = col, n - 1 - row
+                # rotate 4 elements   
+                for k in range(4):
+                    matrix[row][col] = tmp[(k - 1) % 4]
+                    row, col = col, n - 1 - row
+</code></pre>
+
+<p>复杂度分析</p>
+<blockquote>
+<p>时间复杂度:<span><span class="MathJax_Preview">O(N^2)</span><script type="math/tex">O(N^2)</script></span>是两重循环的复杂度。</p>
+<p>空间复杂度:O(1),由于我们在一次循环中的操作是就地完成的,并且我们只用了长度为4的临时列表做辅助。</p>
+</blockquote>
+<ul>
+<li><strong>方法3:在单次循环中旋转4个矩形</strong></li>
+</ul>
+<p>该想法和方法2相同,但是所有的操作可以在单次循环内完成并且这是更精简的方法。</p>
+<pre><code class="python">class Solution:
+    def rotate(self, matrix):
+        &quot;&quot;&quot;
+        :type matrix: List[List[int]]
+        :rtype: void Do not return anything, modify matrix in-place instead.
+        &quot;&quot;&quot;
+        n = len(matrix[0])        
+        for i in range(n // 2 + n % 2):
+            for j in range(n // 2):
+                tmp = matrix[n - 1 - j][i]
+                matrix[n - 1 - j][i] = matrix[n - 1 - i][n - j - 1]
+                matrix[n - 1 - i][n - j - 1] = matrix[j][n - 1 -i]
+                matrix[j][n - 1 - i] = matrix[i][j]
+                matrix[i][j] = tmp
+</code></pre>
+
+<p>复杂度分析:</p>
+<blockquote>
+<p>时间复杂度:<span><span class="MathJax_Preview">O(N^2)</span><script type="math/tex">O(N^2)</script></span>是两重循环的复杂度。</p>
+<p>空间复杂度:<span><span class="MathJax_Preview">O(1)</span><script type="math/tex">O(1)</script></span>由于旋转操作是就地完成的。</p>
+</blockquote>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    <br>
+</div>
+
+</body>
+</html>

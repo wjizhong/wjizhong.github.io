@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/leetcode/%E9%A2%98%E7%9B%AE0617_%E5%90%88%E5%B9%B6%E4%BA%8C%E5%8F%89%E6%A0%91/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>题目0617:合并二叉树 - 图像/视频算法</title>
+    <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "\u9898\u76ee0617:\u5408\u5e76\u4e8c\u53c9\u6811", url: "#_top", level:1, children: [
+              {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1", level:2, children: [ 
+              ]},
+              {title: "\u89e3\u9898\u6280\u5de7", url: "#_2", level:2, children: [ 
+              ]},
+          ]},
+        ];
+    </script>
+    <script src="../../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    
+
+    <h1 id="0617">题目0617:合并二叉树</h1>
+<h2 id="_1">题目描述</h2>
+<p>给定两个二叉树,想象当你将它们中的一个覆盖到另一个上时,两个二叉树的一些节点便会重叠。</p>
+<p>你需要将他们合并为一个新的二叉树。合并的规则是如果两个节点重叠,那么将他们的值相加作为节点合并后的新值,否则不为NULL的节点将直接作为新二叉树的节点。</p>
+<p>示例1:</p>
+<pre><code>输入: 
+    Tree 1                     Tree 2                  
+          1                         2                             
+         / \                       / \                            
+        3   2                     1   3                        
+       /                           \   \                      
+      5                             4   7                  
+输出: 
+合并后的树:
+         3
+        / \
+       4   5
+      / \   \ 
+     5   4   7
+注意: 合并必须从两个树的根节点开始。
+</code></pre>
+
+<h2 id="_2">解题技巧</h2>
+<ul>
+<li><strong>方法一:递归</strong></li>
+</ul>
+<p>我们可以对这两棵树同时进行前序遍历,并将对应的节点进行合并。在遍历时,如果两棵树的当前节点均不为空,我们就将它们的值进行相加,并对它们的左孩子和右孩子进行递归合并;如果其中有一棵树为空,那么我们返回另一颗树作为结果;如果两棵树均为空,此时返回任意一棵树均可(因为都是空)。</p>
+<p><img alt="" src="../images/merge_two_binary_trees_v1.gif" /></p>
+<pre><code class="java">/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public TreeNode mergeTrees(TreeNode t1, TreeNode t2) {
+        if (t1 == null)
+            return t2;
+        if (t2 == null)
+            return t1;
+        t1.val += t2.val;
+        t1.left = mergeTrees(t1.left, t2.left);
+        t1.right = mergeTrees(t1.right, t2.right);
+        return t1;
+    }
+}
+</code></pre>
+
+<p>复杂度分析</p>
+<blockquote>
+<p>时间复杂度:O(N),其中N是两棵树中节点个数的较小值。</p>
+<p>空间复杂度:O(N),在最坏情况下,会递归N层,需要O(N)的栈空间。</p>
+</blockquote>
+<ul>
+<li><strong>方法二:迭代</strong></li>
+</ul>
+<p>我们也可以用迭代的方法解决这个问题。</p>
+<p>我们首先把两棵树的根节点入栈,栈中的每个元素都会存放两个根节点,并且栈顶的元素表示当前需要处理的节点。在迭代的每一步中,我们取出栈顶的元素并把它移出栈,并将它们的值相加。随后我们分别考虑这两个节点的左孩子和右孩子,如果两个节点都有左孩子,那么就将左孩子入栈;如果只有一个节点有左孩子,那么将其作为第一个节点的左孩子;如果都没有左孩子,那么不用做任何事情。对于右孩子同理。</p>
+<p>最后我们返回第一棵树的根节点作为答案。</p>
+<p><img alt="" src="../images/merge_two_binary_trees_v2.gif" /></p>
+<pre><code class="java">/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public TreeNode mergeTrees(TreeNode t1, TreeNode t2) {
+        if (t1 == null)
+            return t2;
+        Stack &lt; TreeNode[] &gt; stack = new Stack &lt; &gt; ();
+        stack.push(new TreeNode[] {t1, t2});
+        while (!stack.isEmpty()) {
+            TreeNode[] t = stack.pop();
+            if (t[0] == null || t[1] == null) {
+                continue;
+            }
+            t[0].val += t[1].val;
+            if (t[0].left == null) {
+                t[0].left = t[1].left;
+            } else {
+                stack.push(new TreeNode[] {t[0].left, t[1].left});
+            }
+            if (t[0].right == null) {
+                t[0].right = t[1].right;
+            } else {
+                stack.push(new TreeNode[] {t[0].right, t[1].right});
+            }
+        }
+        return t1;
+    }
+}
+</code></pre>
+
+<p>复杂度分析</p>
+<blockquote>
+<p>时间复杂度:O(N),其中N是两棵树中节点个数的较小值。</p>
+<p>空间复杂度:O(N),在最坏情况下,栈中会存放N个节点。</p>
+</blockquote>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    <br>
+</div>
+
+</body>
+</html>

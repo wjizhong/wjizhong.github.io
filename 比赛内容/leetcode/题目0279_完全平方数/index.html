@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/leetcode/%E9%A2%98%E7%9B%AE0279_%E5%AE%8C%E5%85%A8%E5%B9%B3%E6%96%B9%E6%95%B0/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>题目0279:完全平方数 - 图像/视频算法</title>
+    <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "\u9898\u76ee0279:\u5b8c\u5168\u5e73\u65b9\u6570", url: "#_top", level:1, children: [
+              {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1", level:2, children: [ 
+              ]},
+              {title: "\u89e3\u9898\u6280\u5de7", url: "#_2", level:2, children: [ 
+              ]},
+          ]},
+        ];
+    </script>
+    <script src="../../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    
+
+    <h1 id="0279">题目0279:完全平方数</h1>
+<h2 id="_1">题目描述</h2>
+<p>给定正整数n,找到若干个完全平方数(比如1,4,9,16,...)使得它们的和等于n。你需要让组成和的完全平方数的个数最少。</p>
+<p>示例1:</p>
+<pre><code>输入: n = 12
+输出: 3 
+解释: 12 = 4 + 4 + 4.
+</code></pre>
+
+<p>示例2:</p>
+<pre><code>输入: n = 13
+输出: 2
+解释: 13 = 4 + 9.
+</code></pre>
+
+<h2 id="_2">解题技巧</h2>
+<ul>
+<li><strong>方法一:暴力枚举法</strong></li>
+</ul>
+<p>这个问题要求我们找出由完全平方数组合成给定数字的最小个数。我们将问题重新表述成:</p>
+<p>给定一个完全平方数列表和正整数n,求出完全平方数组合成n的组合,要求组合中的解拥有完全平方数的最小个数。</p>
+<p>注:可以重复使用列表中的完全平方数。</p>
+<p>从上面对这个问题的叙述来看,它似乎是一个组合问题,对于这个问题,一个直观的解决方案是使用暴力枚举法,我们枚举所有可能的组合,并找到完全平方数的个数最小的一个。</p>
+<p>我们可以用下面的公式来表述这个问题：</p>
+<div>
+<div class="MathJax_Preview">\text{numSquares}(n) = \min \Big(\text{numSquares(n-k) + 1}\Big) \qquad \forall k \in {\text{square numbers}}</div>
+<script type="math/tex; mode=display">\text{numSquares}(n) = \min \Big(\text{numSquares(n-k) + 1}\Big) \qquad \forall k \in {\text{square numbers}}</script>
+</div>
+<p>从上面的公式中,我们可以将其转换为递归解决方案。这里有一个例子。</p>
+<p>算法:</p>
+<pre><code class="python">class Solution(object):
+    def numSquares(self, n):
+        square_nums = [i**2 for i in range(1, int(math.sqrt(n))+1)]
+
+        def minNumSquares(k):
+            &quot;&quot;&quot; recursive solution &quot;&quot;&quot;
+            # bottom cases: find a square number
+            if k in square_nums:
+                return 1
+            min_num = float('inf')
+
+            # Find the minimal value among all possible solutions
+            for square in square_nums:
+                if k &lt; square:
+                    break
+                new_num = minNumSquares(k-square) + 1
+                min_num = min(min_num, new_num)
+            return min_num
+
+        return minNumSquares(n)
+</code></pre>
+
+<p>上面的解决方案可以适用于较小的正整数n。然而,会发现对于中等大小的数字(例如55),我们也会很快遇到超出时间限制的问题。</p>
+<p>简单的说,可能会由于过度递归,产生堆栈溢出。</p>
+<ul>
+<li><strong>方法二:动态规划</strong></li>
+</ul>
+<p>使用暴力枚举法会超出时间限制的原因很简单,因为我们重复的计算了中间解。我们以前的公式仍然是有效的。我们只需要一个更好的方法实现这个公式。</p>
+<div>
+<div class="MathJax_Preview">\text{numSquares}(n) = \min \Big(\text{numSquares(n-k) + 1}\Big) \qquad \forall k \in {\text{square numbers}}</div>
+<script type="math/tex; mode=display">\text{numSquares}(n) = \min \Big(\text{numSquares(n-k) + 1}\Big) \qquad \forall k \in {\text{square numbers}}</script>
+</div>
+<p>你可能注意到从公式看来,这个问题和斐波那契数问题类似。和斐波那契数一样,我们由几种更有效的方法来计算解,而不是简单的递归。</p>
+<p>解决递归中堆栈溢出的问题的一个思路就是使用动态规划(DP)技术,该技术建立在重用中间解的结果来计算终解的思想之上。</p>
+<p>要计算<span><span class="MathJax_Preview">\text{numSquares}(n)</span><script type="math/tex">\text{numSquares}(n)</script></span>的值,首先要计算n之前的所有值,即<span><span class="MathJax_Preview">\text{numSquares}(n-k) \qquad \forall{k} \in{\text{square numbers}}</span><script type="math/tex">\text{numSquares}(n-k) \qquad \forall{k} \in{\text{square numbers}}</script></span>。如果我们已经在某个地方保留了数字n−k的解,那么就不需要使用递归计算。</p>
+<p>算法:基于上述所说,我么可以在以下步骤实现DP解决方案。</p>
+<blockquote>
+<p>几乎所有的动态规划解决方案,首先会创建一个一维或多维数组DP来保存中间子解的值,以及通常数组最后一个值代表最终解。注意,我们创建了一个虚构的元素dp[0]=0来简化逻辑,这有助于在在余数(n-k)恰好是一个完全平方数的情况下。</p>
+<p>我们还需要预计算小于给定数字n的完全平方数列表(即square_nums)。</p>
+<p>在主要步骤中,我们从数字1循环到n,计算每个数字i的解(即numSquares(i))。每次迭代中,我们将numSquares(i)的结果保存在dp[i]中。</p>
+<p>在循环结束时,我们返回数组中的最后一个元素作为解决方案的结果。</p>
+</blockquote>
+<p>在下图中,我们演示了如何计算与dp[4]和dp[5]相对应的numSquares(4)和numSquares(5)的结果。</p>
+<p><img alt="" src="http://imgconvert.csdnimg.cn/aHR0cHM6Ly9waWMubGVldGNvZGUtY24uY29tL0ZpZ3VyZXMvMjc5LzI3OV9kcC5wbmc?x-oss-process=image/format,png" /></p>
+<p>下面是示例实现,其中Python解决方案花费了约3500ms,这比当时50%的提交要快。</p>
+<p>注意:以下Python解决方案仅适用于Python2。出于某种未知的原因,Python3运行相同的代码需要更长的时间。</p>
+<pre><code class="python">class Solution(object):
+    def numSquares(self, n):
+        &quot;&quot;&quot;
+        :type n: int
+        :rtype: int
+        &quot;&quot;&quot;
+        square_nums = [i**2 for i in range(0, int(math.sqrt(n))+1)]
+
+        dp = [float('inf')] * (n+1)
+        # bottom case
+        dp[0] = 0
+
+        for i in range(1, n+1):
+            for square in square_nums:
+                if i &lt; square:
+                    break
+                dp[i] = min(dp[i], dp[i-square] + 1)
+
+        return dp[-1]
+</code></pre>
+
+<p>复杂度分析</p>
+<blockquote>
+<p>时间复杂度:<span><span class="MathJax_Preview">\mathcal{O}(n\cdot\sqrt{n})</span><script type="math/tex">\mathcal{O}(n\cdot\sqrt{n})</script></span>,在主步骤中,我们有一个嵌套循环,其中外部循环是n次迭代,而内部循环最多需要<span><span class="MathJax_Preview">\sqrt{n}</span><script type="math/tex">\sqrt{n}</script></span>迭代。</p>
+<p>空间复杂度:<span><span class="MathJax_Preview">\mathcal{O}(n)</span><script type="math/tex">\mathcal{O}(n)</script></span>,使用了一个一维数组dp。</p>
+</blockquote>
+<p>https://leetcode-cn.com/problems/perfect-squares/solution/wan-quan-ping-fang-shu-by-leetcode/</p>
+<ul>
+<li><strong>方法三:贪心枚举</strong></li>
+</ul>
+<p>递归解决方法为我们理解问题提供了简洁直观的方法。我们仍然可以用递归解决这个问题。为了改进上述暴力枚举解决方案,我们可以在递归中加入贪心。我们可以将枚举重新格式化如下:</p>
+<p>从一个数字到多个数字的组合开始,一旦我们找到一个可以组合成给定数字n的组合,那么我们可以说我们找到了最小的组合,因为我们贪心的从小到大的枚举组合。</p>
+<p>为了更好的解释,我们首先定义一个名为is_divided_by(n, count)的函数,该函数返回一个布尔值,表示数字n是否可以被一个数字count组合,而不是像前面函数numSquares(n)返回组合的确切大小。</p>
+<div>
+<div class="MathJax_Preview">\text{numSquares}(n) = \argmin_{\text{count} \in [1, 2, ...n]} \Big(\text{is\_divided\_by}(n,\text{count}) \Big)</div>
+<script type="math/tex; mode=display">\text{numSquares}(n) = \argmin_{\text{count} \in [1, 2, ...n]} \Big(\text{is\_divided\_by}(n,\text{count}) \Big)</script>
+</div>
+<p>与递归函数numSquare(n)不同,is_divided_by(n, count)的递归过程可以归结为底部情况(即count==1)更快。</p>
+<p>下面是一个关于函数is_divided_by(n, count)的例子,它对输入n=5和count=2进行了分解。</p>
+<p><img alt="" src="http://imgconvert.csdnimg.cn/aHR0cHM6Ly9waWMubGVldGNvZGUtY24uY29tL0ZpZ3VyZXMvMjc5LzI3OV9ncmVlZHkucG5n?x-oss-process=image/format,png" /></p>
+<p>通过这种重新构造的技巧,我们可以显著降低堆栈溢出的风险。</p>
+<p>算法:</p>
+<blockquote>
+<p>首先,我们准备一个小于给定数字n的完全平方数列表(称为square_nums)。</p>
+<p>在主循环中,将组合的大小(称为count)从1迭代到n,我们检查数字n是否可以除以组合的和,即is_divided_by(n,count)。</p>
+<p>函数is_divided_by(n, count)可以用递归的形式实现,汝上面所说。</p>
+<p>在最下面的例子中,我们有count==1,我们只需检查数字n是否本身是一个完全平方数。可以在square_nums中检查,即<span><span class="MathJax_Preview">n \in \text{square\_nums}</span><script type="math/tex">n \in \text{square\_nums}</script></span>。如果square_nums使用的是集合数据结构,我们可以获得比<span><span class="MathJax_Preview">n == int(sqrt(n))^2</span><script type="math/tex">n == int(sqrt(n))^2</script></span>更快的运行时间。</p>
+</blockquote>
+<p>关于算法的正确性,通常情况下,我们可以用反证法来证明贪心算法。这也不例外,假设我们发现count=m可以除以n,并且假设在以后的迭代中存在另一个count=p也可以除以n,并且这个数的组合小于找到的数,即p &lt; m。如果给定迭代的顺序,count=p会在count=m之前被发现,因此,该算法总是能够找到组合的最小大小。</p>
+<p>下面是一些示例实现。Python解决方案需要大约70ms,这比当时大约90%的提交要快。</p>
+<pre><code class="python">class Solution:
+    def numSquares(self, n):
+
+        def is_divided_by(n, count):
+            &quot;&quot;&quot;
+                return: true if &quot;n&quot; can be decomposed into &quot;count&quot; number of perfect square numbers.
+                e.g. n=12, count=3:  true.
+                     n=12, count=2:  false
+            &quot;&quot;&quot;
+            if count == 1:
+                return n in square_nums
+
+            for k in square_nums:
+                if is_divided_by(n - k, count - 1):
+                    return True
+            return False
+
+        square_nums = set([i * i for i in range(1, int(n**0.5)+1)])
+
+        for count in range(1, n+1):
+            if is_divided_by(n, count):
+                return count
+</code></pre>
+
+<p>复杂度分析</p>
+<blockquote>
+<p>时间复杂度:<span><span class="MathJax_Preview">\mathcal{O}( \frac{\sqrt{n}^{h+1} - 1}{\sqrt{n} - 1} ) = \mathcal{O}(n^{\frac{h}{2}})</span><script type="math/tex">\mathcal{O}( \frac{\sqrt{n}^{h+1} - 1}{\sqrt{n} - 1} ) = \mathcal{O}(n^{\frac{h}{2}})</script></span>,其中h是可能发生的最大递归次数。你可能会注意到,上面的公式实际上类似于计算完整N元数种结点数的公式。事实上,算法种的递归调用轨迹形成一个N元树,其中N是square_nums种的完全平方数个数。即在最坏的情况下,我们可能要遍历整棵树才能找到最终解。</p>
+<p>空间复杂度:<span><span class="MathJax_Preview">\mathcal{O}(\sqrt{n})</span><script type="math/tex">\mathcal{O}(\sqrt{n})</script></span>,我们存储了一个列表square_nums,我们还需要额外的空间用于递归调用堆栈。但正如我们所了解的那样,调用轨迹的大小不会超过4。</p>
+</blockquote>
+<ul>
+<li><strong>方法四:贪心+BFS(广度优先搜索)</strong></li>
+</ul>
+<p>正如上述贪心算法的复杂性分析种提到的,调用堆栈的轨迹形成一颗N元树,其中每个结点代表is_divided_by(n, count)函数的调用。基于上述想法,我们可以把原来的问题重新表述如下:</p>
+<p>给定一个N元树,其中每个节点表示数字n的余数减去一个完全平方数的组合,我们的任务是在树中找到一个节点,该节点满足两个条件:</p>
+<blockquote>
+<p>(1) 节点的值(即余数)也是一个完全平方数。</p>
+<p>(2) 在满足条件(1)的所有节点中,节点和根之间的距离应该最小。</p>
+</blockquote>
+<p>下面是这棵树的样子。</p>
+<p><img alt="" src="http://imgconvert.csdnimg.cn/aHR0cHM6Ly9waWMubGVldGNvZGUtY24uY29tL0ZpZ3VyZXMvMjc5LzI3OV9ncmVlZHlfdHJlZS5wbmc?x-oss-process=image/format,png" /></p>
+<p>在前面的方法3中,由于我们执行调用的贪心策略,我们实际上是从上到下逐层构造N元树。我们以BFS(广度优先搜索)的方式遍历它。在N元树的每一级,我们都在枚举相同大小的组合。</p>
+<p>遍历的顺序是BFS,而不是DFS(深度优先搜索),这是因为在用尽固定数量的完全平方数分解数字n的所有可能性之前,我们不会探索任何需要更多元素的潜在组合。</p>
+<p>算法:</p>
+<blockquote>
+<p>首先,我们准备小于给定数字n的完全平方数列表(即square_nums)。</p>
+<p>然后创建queue遍历,该变量将保存所有剩余项在每个级别的枚举。</p>
+<p>在主循环中,我们迭代queue变量。在每次迭代中,我们检查余数是否是一个完全平方数。如果余数不是一个完全平方数,就用其中一个完全平方数减去它,得到一个新余数,然后将新余数添加到next_queue中,以进行下一级的迭代。一旦遇到一个完全平方数的余数,我们就会跳出循环,这也意味着我们找到了解。</p>
+</blockquote>
+<p>注意:在典型的BFS算法中,queue变量通常是数组或列表类型。但是,这里我们使用set类型,以消除同一级别中的剩余项的冗余。事实证明,这个小技巧甚至可以增加5倍的运行加速。</p>
+<p>在下图中,我们以numSquares(7)为例说明队列的布局。</p>
+<p><img alt="" src="http://imgconvert.csdnimg.cn/aHR0cHM6Ly9waWMubGVldGNvZGUtY24uY29tL0ZpZ3VyZXMvMjc5LzI3OV9ncmVlZHlfYmZzLnBuZw?x-oss-process=image/format,png" /></p>
+<pre><code class="python">class Solution:
+    def numSquares(self, n):
+
+        # list of square numbers that are less than `n`
+        square_nums = [i * i for i in range(1, int(n**0.5)+1)]
+
+        level = 0
+        queue = {n}
+        while queue:
+            level += 1
+            #! Important: use set() instead of list() to eliminate the redundancy,
+            # which would even provide a 5-times speedup, 200ms vs. 1000ms.
+            next_queue = set()
+            # construct the queue for the next level
+            for remainder in queue:
+                for square_num in square_nums:    
+                    if remainder == square_num:
+                        return level  # find the node!
+                    elif remainder &lt; square_num:
+                        break
+                    else:
+                        next_queue.add(remainder - square_num)
+            queue = next_queue
+        return level
+</code></pre>
+
+<p>复杂度分析</p>
+<blockquote>
+<p>时间复杂度:<span><span class="MathJax_Preview">\mathcal{O}( \frac{\sqrt{n}^{h+1} - 1}{\sqrt{n} - 1} ) = \mathcal{O}(n^{\frac{h}{2}})</span><script type="math/tex">\mathcal{O}( \frac{\sqrt{n}^{h+1} - 1}{\sqrt{n} - 1} ) = \mathcal{O}(n^{\frac{h}{2}})</script></span>,其中h是N元树的高度。在前面的方法三我们可以看到详细解释。</p>
+<p>空间复杂度:<span><span class="MathJax_Preview">\mathcal{O}\Big((\sqrt{n})^h\Big)</span><script type="math/tex">\mathcal{O}\Big((\sqrt{n})^h\Big)</script></span>,这也是在h级可以出现的最大节点数。可以看到,虽然我们保留了一个完全平方数列表,但是空间的主要消耗是队列变量,它跟踪给定N元树级别上要访问的剩余节点。</p>
+</blockquote>
+<ul>
+<li><strong>方法五:数学运算</strong></li>
+</ul>
+<p>随着时间的推移,已经提出并证明的数学定理可以解决这个问题。在这一节中,我们将把这个问题分成几个例子。</p>
+<p>1770年,<a href="https://en.wikipedia.org/wiki/Lagrange%27s_four-square_theorem">Joseph Louis Lagrange</a>证明了一个定理,称为四平方和定理,也称为Bachet 猜想,它指出每个自然数都可以表示为四个整数平方和:</p>
+<div>
+<div class="MathJax_Preview">p=a_{0}^{2}+a_{1}^{2}+a_{2}^{2}+a_{3}^{2}</div>
+<script type="math/tex; mode=display">p=a_{0}^{2}+a_{1}^{2}+a_{2}^{2}+a_{3}^{2}</script>
+</div>
+<p>其中<span><span class="MathJax_Preview">a_{0},a_{1},a_{2},a_{3}</span><script type="math/tex">a_{0},a_{1},a_{2},a_{3}</script></span>表示整数。</p>
+<p>例如,3,31可以被表示为四平方和如下:</p>
+<div>
+<div class="MathJax_Preview">3=1^{2}+1^{2}+1^{2}+0^{2} \qquad 31=5^{2}+2^{2}+1^{2}+1^{2}</div>
+<script type="math/tex; mode=display">3=1^{2}+1^{2}+1^{2}+0^{2} \qquad 31=5^{2}+2^{2}+1^{2}+1^{2}</script>
+</div>
+<p>情况1:拉格朗日四平方定理设置了问题结果的上界,即如果数n不能分解为较少的完全平方数,则至少可以分解为4个完全平方数之和,即<span><span class="MathJax_Preview">\text{numSquares}(n) \le 4</span><script type="math/tex">\text{numSquares}(n) \le 4</script></span>。</p>
+<p>正如我们在上面的例子中可能注意到的,数字0也被认为是一个完全平方数,因此我们可以认为数字3可以分解为3个或4个完全平方数。</p>
+<p>然而,拉格朗日四平方定理并没有直接告诉我们用最小平方数来分解自然数。</p>
+<p>后来,在1797年,<a href="https://en.wikipedia.org/wiki/Adrien-Marie_Legendre">Adrien Marie Legendre</a>用他的三平方定理完成了四平方定理,证明了正整数可以表示为三个平方和的一个特殊条件:</p>
+<div>
+<div class="MathJax_Preview">n \ne 4^{k}(8m+7) \iff n = a_{0}^{2}+a_{1}^{2}+a_{2}^{2}</div>
+<script type="math/tex; mode=display">n \ne 4^{k}(8m+7) \iff n = a_{0}^{2}+a_{1}^{2}+a_{2}^{2}</script>
+</div>
+<p>其中k和m是整数。</p>
+<p>情况2:与四平方定理不同,Adrien-Marie-Legendre的三平方定理给了我们一个充分必要的条件来检验这个数是否只能分解成4个平方。</p>
+<p>从三平方定理看我们在第2种情况下得出的结论可能很难。让我们详细说明一下推论过程。</p>
+<p>首先,三平方定理告诉我们,如果n的形式是<span><span class="MathJax_Preview">n = 4^{k}(8m+7)</span><script type="math/tex">n = 4^{k}(8m+7)</script></span>,那么n不能分解为3个平方的和。此外,我们还可以断言n不能分解为两个平方和,数本身也不是完全平方数。因为假设数n可以分解为<span><span class="MathJax_Preview">n = a_{0}^{2}+a_{1}^{2}</span><script type="math/tex">n = a_{0}^{2}+a_{1}^{2}</script></span>,然后通过在表达式中添加平方数0,即<span><span class="MathJax_Preview">n = a_{0}^{2}+a_{1}^{2} + 0^2</span><script type="math/tex">n = a_{0}^{2}+a_{1}^{2} + 0^2</script></span>,我们得到了数n可以分解为3个平方的结论,这与三平方定理相矛盾。因此,结合四平方定理,我们可以断言,如果这个数不满足三平方定理的条件,它只能分解成四个平方和。</p>
+<p>如果这个数满足三平方定理的条件,则可以分解成三个完全平方数。但我们不知道的是,如果这个数可以分解成更少的完全平方数,即一个或两个完全平方数。</p>
+<p>所以在我们把这个数视为底部情况(三平方定理)之前,还有两种情况需要检查,即:</p>
+<p>情况3.1:如果数字本身是一个完全平方数,这很容易检查,例如<span><span class="MathJax_Preview">n == int(sqrt(n))^2</span><script type="math/tex">n == int(sqrt(n))^2</script></span>。</p>
+<p>情况3.2:如果这个数可以分解成两个完全平方数和。不幸的是,没有任何数学定理可以帮助我们检查这个情况。我们需要使用枚举方法。</p>
+<p>算法:可以按照上面的例子来实现解决方案。</p>
+<blockquote>
+<p>首先,我们检查数字n的形式是否为<span><span class="MathJax_Preview">n = 4^{k}(8m+7)</span><script type="math/tex">n = 4^{k}(8m+7)</script></span>,如果是,则直接返回4。</p>
+<p>否则,我们进一步检查这个数本身是否是一个完全平方数,或者这个数是否可以分解为两个完全平方数和。</p>
+<p>在底部的情况下,这个数可以分解为3个平方和,但我们也可以根据四平方定理,通过加零,把它分解为4个平方。但是我们被要求找出最小的平方数。</p>
+</blockquote>
+<pre><code class="python">class Solution:
+    def isSquare(self, n: int) -&gt; bool:
+        sq = int(math.sqrt(n))
+        return sq*sq == n
+
+    def numSquares(self, n: int) -&gt; int:
+        # four-square and three-square theorems
+        while (n &amp; 3) == 0:
+            n &gt;&gt;= 2      # reducing the 4^k factor from number
+        if (n &amp; 7) == 7: # mod 8
+            return 4
+
+        if self.isSquare(n):
+            return 1
+        # check if the number can be decomposed into sum of two squares
+        for i in range(1, int(n**(0.5)) + 1):
+            if self.isSquare(n - i*i):
+                return 2
+        # bottom case from the three-square theorem
+        return 3
+</code></pre>
+
+<p>复杂度分析:</p>
+<blockquote>
+<p>时间复杂度:<span><span class="MathJax_Preview">\mathcal{O}(\sqrt{n})</span><script type="math/tex">\mathcal{O}(\sqrt{n})</script></span>,在主循环中,我们检查数字是否可以分解为两个平方和,这需要<span><span class="MathJax_Preview">\mathcal{O}(\sqrt{n})</span><script type="math/tex">\mathcal{O}(\sqrt{n})</script></span>个迭代。在其他情况下,我们会在常数时间内进行检查。</p>
+<p>空间复杂度:<span><span class="MathJax_Preview">\mathcal{O}(1)</span><script type="math/tex">\mathcal{O}(1)</script></span>,该算法消耗一个常量空间。</p>
+</blockquote>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    <br>
+</div>
+
+</body>
+</html>

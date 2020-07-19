@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/leetcode/%E9%A2%98%E7%9B%AE0155_%E6%9C%80%E5%B0%8F%E6%A0%88/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>题目0155:最小栈 - 图像/视频算法</title>
+    <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "\u9898\u76ee0155:\u6700\u5c0f\u6808", url: "#_top", level:1, children: [
+              {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1", level:2, children: [ 
+              ]},
+              {title: "\u89e3\u9898\u6280\u5de7", url: "#_2", level:2, children: [ 
+              ]},
+          ]},
+        ];
+    </script>
+    <script src="../../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    
+
+    <h1 id="0155">题目0155:最小栈</h1>
+<h2 id="_1">题目描述</h2>
+<p>设计一个支持push,pop,top操作，并能在常数时间内检索到最小元素的栈。</p>
+<blockquote>
+<p>push(x) —— 将元素 x 推入栈中。</p>
+<p>pop() —— 删除栈顶的元素。</p>
+<p>top() —— 获取栈顶元素。</p>
+<p>getMin() —— 检索栈中的最小元素。</p>
+</blockquote>
+<p>示例:</p>
+<pre><code>输入:
+[&quot;MinStack&quot;,&quot;push&quot;,&quot;push&quot;,&quot;push&quot;,&quot;getMin&quot;,&quot;pop&quot;,&quot;top&quot;,&quot;getMin&quot;]
+[[],[-2],[0],[-3],[],[],[],[]]
+
+输出：
+[null,null,null,null,-3,null,0,-2]
+
+解释：
+MinStack minStack = new MinStack();
+minStack.push(-2);
+minStack.push(0);
+minStack.push(-3);
+minStack.getMin();   --&gt; 返回 -3.
+minStack.pop();
+minStack.top();      --&gt; 返回 0.
+minStack.getMin();   --&gt; 返回 -2.
+</code></pre>
+
+<h2 id="_2">解题技巧</h2>
+<video src="../leetcode/images/a68ab94124164ad4a975778ab5aeff03b942cd69de124b799b762072007241f6.mp4" controls />
+
+* **方法一:辅助栈**
+
+思路:要做出这道题目,首先要理解栈结构先进后出的性质。
+
+对于栈来说,如果一个元素a在入栈时,栈里有其它的元素b,c,d,那么无论这个栈在之后经历了什么操作,只要a在栈中,b,c,d就一定在栈中,因为在a被弹出之前,b,c,d不会被弹出。
+
+因此,在操作过程中的任意一个时刻,只要栈顶的元素是a,那么我们就可以确定栈里面现在的元素一定是a,b,c,d。
+
+那么,我们可以在每个元素a入栈时把当前栈的最小值m存储起来。在这之后无论何时,如果栈顶元素是a,我们就可以直接返回存储的最小值m。
+
+![](http://assets.leetcode-cn.com/solution-static/155/155_fig1.gif)
+
+算法:按照上面的思路,我们只需要设计一个数据结构,使得每个元素a与其相应的最小值m时刻保持一一对应。因此我们可以使用一个辅助栈,与元素栈同步插入与删除,用于存储与每个元素对应的最小值。
+
+当一个元素要入栈时,我们取当前辅助栈的栈顶存储的最小值,与当前元素比较得出最小值,将这个最小值插入辅助栈中;
+
+当一个元素要出栈时,我们把辅助栈的栈顶元素也一并弹出;
+
+在任意一个时刻,栈内元素的最小值就存储在辅助栈的栈顶元素中。
+
+
+<pre><code class="python">class MinStack:
+    def __init__(self):
+        self.stack = []
+        self.min_stack = [math.inf]
+
+    def push(self, x: int) -&gt; None:
+        self.stack.append(x)
+        self.min_stack.append(min(x, self.min_stack[-1]))
+
+    def pop(self) -&gt; None:
+        self.stack.pop()
+        self.min_stack.pop()
+
+    def top(self) -&gt; int:
+        return self.stack[-1]
+
+    def getMin(self) -&gt; int:
+        return self.min_stack[-1]
+</code></pre>
+
+
+复杂度分析
+
+> 时间复杂度:对于题目中的所有操作,时间复杂度均为O(1)。因为栈的插入、删除与读取操作都是O(1),我们定义的每个操作最多调用栈操作两次。
+> 
+> 空间复杂度:O(n),其中n为总操作数。最坏情况下,我们会连续插入n个元素,此时两个栈占用的空间为O(n)。
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    <br>
+</div>
+
+</body>
+</html>

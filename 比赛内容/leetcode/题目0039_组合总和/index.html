@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/leetcode/%E9%A2%98%E7%9B%AE0039_%E7%BB%84%E5%90%88%E6%80%BB%E5%92%8C/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>题目0039:组合总和 - 图像/视频算法</title>
+    <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "\u9898\u76ee0039:\u7ec4\u5408\u603b\u548c", url: "#_top", level:1, children: [
+              {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1", level:2, children: [ 
+              ]},
+              {title: "\u89e3\u9898\u6280\u5de7", url: "#_2", level:2, children: [ 
+              ]},
+          ]},
+        ];
+    </script>
+    <script src="../../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    
+
+    <h1 id="0039">题目0039:组合总和</h1>
+<h2 id="_1">题目描述</h2>
+<p>给定一个无重复元素的数组candidates和一个目标数target,找出candidates中所有可以使数字和为target的组合。</p>
+<p>candidates中的数字可以无限制重复被选取。</p>
+<p>说明:</p>
+<blockquote>
+<p>所有数字(包括target)都是正整数。</p>
+<p>解集不能包含重复的组合。</p>
+</blockquote>
+<p>示例1:</p>
+<pre><code>输入：candidates = [2,3,6,7], target = 7,
+所求解集为：
+[
+  [7],
+  [2,2,3]
+]
+</code></pre>
+
+<p>示例2:</p>
+<pre><code>输入：candidates = [2,3,5], target = 8,
+所求解集为：
+[
+  [2,2,2,2],
+  [2,3,3],
+  [3,5]
+]
+</code></pre>
+
+<p>提示:</p>
+<blockquote>
+<p>1 &lt;= candidates.length &lt;= 30</p>
+<p>1 &lt;= candidates[i] &lt;= 200</p>
+<p>candidate 中的每个元素都是独一无二的。
+1 &lt;= target &lt;= 500</p>
+</blockquote>
+<h2 id="_2">解题技巧</h2>
+<p>思路:根据示例1输入: candidates = [2,3,6,7],target = 7。</p>
+<p>候选数组里有2,如果找到了7-2=5的所有组合,再在之前加上2,就是7的所有组合;同理考虑3,如果找到了7-3=4的所有组合,再在之前加上3,就是7的所有组合,依次这样找下去;上面的思路就可以画成下面的树形图。
+其实这里思路已经介绍完了，大家可以自己尝试在纸上画一下这棵树。然后编码实现，如果遇到问题，再看下面的文字。</p>
+<p><img alt="" src="http://pic.leetcode-cn.com/fe32ae9cee9ec8e2545d038d80a8da70d809eed01c153c6f0076801baab5010d-39-1.png" /></p>
+<p>如果这样编码的话,会发现提交不能通过,这是因为递归树画的有问题,下面看一下是什么原因。</p>
+<p><img alt="" src="http://pic.leetcode-cn.com/ade93b4f0678b2b1385ad1362ff426ce0a5a800a5b0ae07dfb65f58677374559-39-3.png" /></p>
+<p>画出图以后,我看了一下,我这张图画出的结果有4个0,对应的路径是[[2, 2, 3],[2, 3, 2], [3, 2, 2], [7]],而示例中的解集只有[[7], [2, 2, 3]],很显然,重复的原因是在较深层的结点值考虑了之前考虑过的元素,因此我们需要设置“下一轮搜索的起点”即可(这里可能没有说清楚,已经尽力了)。</p>
+<p><strong>去重复</strong></p>
+<p>在搜索的时候,需要设置搜索起点的下标begin,由于一个数可以使用多次,下一层的结点从这个搜索起点开始搜索;
+在搜索起点begin之前的数因为以前的分支搜索过了,所以一定会产生重复。</p>
+<ul>
+<li><strong>剪枝提速</strong></li>
+</ul>
+<p>如果一个数位搜索起点都不能搜索到结果,那么比它还大的数肯定搜索不到结果,基于这个想法,我们可以对输入数组进行排序,以减少搜索的分支;</p>
+<p>排序是为了提高搜索速度,非必要;</p>
+<p>搜索问题一般复杂度较高,能剪枝就尽量需要剪枝。把候选数组排个序,遇到一个较大的数,如果以这个数为起点都搜索不到结果,后面的数就更搜索不到结果了。</p>
+<pre><code class="python">from typing import List
+
+
+class Solution:
+    def combinationSum(self, candidates: List[int], target: int) -&gt; List[List[int]]:
+        size = len(candidates)
+        if size == 0:
+            return []
+
+        # 剪枝是为了提速，在本题非必需
+        candidates.sort()
+        # 在遍历的过程中记录路径，它是一个栈
+        path = []
+        res = []
+        # 注意要传入 size ，在 range 中， size 取不到
+        self.__dfs(candidates, 0, size, path, res, target)
+        return res
+
+    def __dfs(self, candidates, begin, size, path, res, target):
+        # 先写递归终止的情况
+        if target == 0:
+            # Python 中可变对象是引用传递，因此需要将当前 path 里的值拷贝出来
+            # 或者使用 path.copy()
+            res.append(path[:])
+            return
+
+        for index in range(begin, size):
+            residue = target - candidates[index]
+            # “剪枝”操作，不必递归到下一层，并且后面的分支也不必执行
+            if residue &lt; 0:
+                break
+            path.append(candidates[index])
+            # 因为下一层不能比上一层还小，起始索引还从 index 开始
+            self.__dfs(candidates, index, size, path, res, residue)
+            path.pop()
+
+
+if __name__ == '__main__':
+    candidates = [2, 3, 6, 7]
+    target = 7
+    solution = Solution()
+    result = solution.combinationSum(candidates, target)
+    print(result)
+</code></pre>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    <br>
+</div>
+
+</body>
+</html>

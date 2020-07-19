@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/leetcode/%E9%A2%98%E7%9B%AE0461_%E6%B1%89%E6%98%8E%E8%B7%9D%E7%A6%BB/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>题目0461:汉明距离 - 图像/视频算法</title>
+    <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "\u9898\u76ee0461:\u6c49\u660e\u8ddd\u79bb", url: "#_top", level:1, children: [
+              {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1", level:2, children: [ 
+              ]},
+              {title: "\u89e3\u9898\u6280\u5de7", url: "#_2", level:2, children: [ 
+              ]},
+          ]},
+        ];
+    </script>
+    <script src="../../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    
+
+    <h1 id="0461">题目0461:汉明距离</h1>
+<h2 id="_1">题目描述</h2>
+<p>两个整数之间的汉明距离指的是这两个数字对应二进制位不同的位置的数目。</p>
+<p>给出两个整数x和y,计算它们之间的汉明距离。</p>
+<p>注意:0 ≤ x, y &lt; 231.</p>
+<p>示例:</p>
+<pre><code>输入: x = 1, y = 4
+输出: 2
+解释:
+1   (0 0 0 1)
+4   (0 1 0 0)
+       ↑   ↑
+</code></pre>
+
+<p>上面的箭头指出了对应二进制位不同的位置。</p>
+<h2 id="_2">解题技巧</h2>
+<p>汉明距离广泛应用于多个领域。在编码理论中用于错误检测,在信息论中量化字符串之间的差异。两个整数之间的汉明距离是对应位置上数字不同的位数。根据以上定义,提出一种XOR的位运算,当且仅当输入位不同时输出为1。</p>
+<p>计算x和y之间的汉明距离,可以先计算x XOR y,然后统计结果中等于1的位数。</p>
+<p><img alt="" src="http://pic.leetcode-cn.com/Figures/461/461_XOR.png" /></p>
+<p>现在,原始问题转换为位计数问题。位计数有多种思路,将在下面的方法中介绍。</p>
+<ul>
+<li><strong>方法一:内置位计数功能</strong></li>
+</ul>
+<p>思路:大多数编程语言中,都存在各种内置计算等于1的位数函数。如果这是一个项目中的问题,应该直接使用内置函数,而不是重复造轮子。</p>
+<p>但这是一个力扣问题,有人会认为使用内置函数就好像使用使用LinkedList实现LinkedList。对此,我们完全赞同。因此后面会有手工实现的位计数算法。</p>
+<pre><code class="python">class Solution:
+    def hammingDistance(self, x: int, y: int) -&gt; int:
+        return bin(x ^ y).count('1')
+</code></pre>
+
+<p>复杂度分析</p>
+<blockquote>
+<p>时间复杂度:<span><span class="MathJax_Preview">\mathcal{O}(1)</span><script type="math/tex">\mathcal{O}(1)</script></span>。该算法有两个操作。计算XOR花费恒定时间。调用内置的bitCount函数。最坏情况下,该函数复杂度为<span><span class="MathJax_Preview">\mathcal{O}(k)</span><script type="math/tex">\mathcal{O}(k)</script></span>,其中k是整数的位数。在Python和Java中Integer是固定长度的。因此该算法复杂度恒定,与输入大小无关。</p>
+<p>空间复杂度:<span><span class="MathJax_Preview">\mathcal{O}(1)</span><script type="math/tex">\mathcal{O}(1)</script></span>,使用恒定大小的空间保存XOR的结果。假设内置函数也使用恒定空间。</p>
+</blockquote>
+<ul>
+<li><strong>方法二:移位</strong></li>
+</ul>
+<p>思路:为了计算等于1的位数,可以将每个位移动到最左侧或最右侧,然后检查该位是否为1。</p>
+<p>更准确的说,应该进行逻辑移位,移入零替换丢弃的位。</p>
+<p><img alt="" src="http://pic.leetcode-cn.com/Figures/461/461_shift.png" /></p>
+<p>这里采用右移位,每个位置都会被移动到最右边。移位后检查最右位的位是否为1即可。检查最右位是否为1,可以使用取模运算(i % 2)或者AND操作(i &amp; 1),这两个操作都会屏蔽最右位以外的其他位。</p>
+<pre><code class="python">class Solution(object):
+    def hammingDistance(self, x, y):
+        &quot;&quot;&quot;
+        :type x: int
+        :type y: int
+        :rtype: int
+        &quot;&quot;&quot;
+        xor = x ^ y
+        distance = 0
+        while xor:
+            # mask out the rest bits
+            if xor &amp; 1:
+                distance += 1
+            xor = xor &gt;&gt; 1
+        return distance
+</code></pre>
+
+<p>复杂度分析</p>
+<blockquote>
+<p>时间复杂度:<span><span class="MathJax_Preview">\mathcal{O}(1)</span><script type="math/tex">\mathcal{O}(1)</script></span>,在Python和Java中Integer的大小是固定的,处理时间也是固定的。32位整数需要32次迭代。</p>
+<p>空间复杂度:<span><span class="MathJax_Preview">\mathcal{O}(1)</span><script type="math/tex">\mathcal{O}(1)</script></span>,使用恒定大小的空间。</p>
+</blockquote>
+<ul>
+<li><strong>方法三:布赖恩·克尼根算法</strong></li>
+</ul>
+<p>思路:方法二是逐位移动,逐位比较边缘位置是否为1。寻找一种更快的方法找出等于1的位数。是否可以像人类直观的计数比特为1的位数,跳过两个1之间的0。例如:10001000。</p>
+<p>上面例子中,遇到最右边的1后,如果可以跳过中间的0,直接跳到下一个1,效率会高很多。</p>
+<p>这是布赖恩·克尼根位计数算法的基本思想。该算法使用特定比特位和算术运算移除等于1的最右比特位。</p>
+<p>当我们在number和number-1上做AND位运算时,原数字number的最右边等于1的比特会被移除。</p>
+<p><img alt="" src="http://pic.leetcode-cn.com/Figures/461/461_brian.png" /></p>
+<p>基于以上思路,通过2次迭代就可以知道10001000中1的位数,而不需要8次。</p>
+<pre><code class="python">class Solution:
+    def hammingDistance(self, x, y):
+        xor = x ^ y
+        distance = 0
+        while xor:
+            distance += 1
+            # remove the rightmost bit of '1'
+            xor = xor &amp; (xor - 1)
+        return distance
+</code></pre>
+
+<p>注意:该算法发布在1988年《C语言编程第二版》的练习中(由Brian W. Kernighan和Dennis M. Ritchie编写),但是Donald Knuth在2006年4月19日指出,该方法第一次是由Peter Wegner在1960年的CACM3上出版。顺便说一句,可以在上述书籍中找到更多位操作的技巧。</p>
+<p>复杂度分析</p>
+<blockquote>
+<p>时间复杂度:<span><span class="MathJax_Preview">\mathcal{O}(1)</span><script type="math/tex">\mathcal{O}(1)</script></span>。与移位方法相似,由于整数的位数恒定,因此具有恒定的时间复杂度。但是该方法需要的迭代操作更少。</p>
+<p>空间复杂度:<span><span class="MathJax_Preview">\mathcal{O}(1)</span><script type="math/tex">\mathcal{O}(1)</script></span>,与输入无关,使用恒定大小的空间。</p>
+</blockquote>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    <br>
+</div>
+
+</body>
+</html>

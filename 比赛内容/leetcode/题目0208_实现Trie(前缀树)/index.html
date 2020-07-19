@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/leetcode/%E9%A2%98%E7%9B%AE0208_%E5%AE%9E%E7%8E%B0Trie%28%E5%89%8D%E7%BC%80%E6%A0%91%29/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>题目0208:实现Trie(前缀树) - 图像/视频算法</title>
+    <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "\u9898\u76ee0208:\u5b9e\u73b0Trie(\u524d\u7f00\u6811)", url: "#_top", level:1, children: [
+              {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1", level:2, children: [ 
+              ]},
+              {title: "\u89e3\u9898\u6280\u5de7", url: "#_2", level:2, children: [ 
+              ]},
+          ]},
+        ];
+    </script>
+    <script src="../../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    
+
+    <h1 id="0208trie">题目0208:实现Trie(前缀树)</h1>
+<h2 id="_1">题目描述</h2>
+<p>实现一个Trie(前缀树),包含insert,search和startsWith这三个操作。</p>
+<p>示例:</p>
+<pre><code>Trie trie = new Trie();
+
+trie.insert(&quot;apple&quot;);
+trie.search(&quot;apple&quot;);   // 返回 true
+trie.search(&quot;app&quot;);     // 返回 false
+trie.startsWith(&quot;app&quot;); // 返回 true
+trie.insert(&quot;app&quot;);   
+trie.search(&quot;app&quot;);     // 返回 true
+</code></pre>
+
+<p>说明:</p>
+<blockquote>
+<p>你可以假设所有的输入都是由小写字母a-z构成的。</p>
+<p>保证所有输入均为非空字符串。</p>
+</blockquote>
+<h2 id="_2">解题技巧</h2>
+<ul>
+<li>
+<p><strong>方法1:实现</strong></p>
+</li>
+<li>
+<p><strong>应用</strong></p>
+</li>
+</ul>
+<p>Trie(发音为"try")或前缀树是一种树数据结构,用于检索字符串数据集中的键。这一高效的数据结构有多种应用:</p>
+<ol>
+<li>自动补全</li>
+</ol>
+<p><img alt="谷歌的搜索建议" src="http://pic.leetcode-cn.com/963cd3fc83e9618aba9cb78365c8a5bf6b7cef8967da0d204dede7844f6738f2-file_1562596867150" /></p>
+<ol>
+<li>拼写检查</li>
+</ol>
+<p><img alt="文字处理软件中的拼写检查" src="http://pic.leetcode-cn.com/4d18efbdd4d51ae3935b42cd59b11d66fb62f1586b9638f9499d2a18fa8919d0-image.png" /></p>
+<ol>
+<li>IP路由(最长前缀匹配)</li>
+</ol>
+<p><img alt="使用Trie树的最长前缀匹配算法,Internet协议(IP)路由中利用转发表选择路径" src="http://pic.leetcode-cn.com/e3f22b3ab2df82e6c0a7880996749b5e62707e9ef925876e583d666343644526-file_1562596867150" /></p>
+<ol>
+<li>T9(九宫格)打字预测</li>
+</ol>
+<p><img alt="T9(九宫格输入),在20世纪90年代常用于手机输入" src="http://pic.leetcode-cn.com/00900cce532f199559249a47375a76b409f18876bc329087ac057fbe47085f5e-file_1562596867185" /></p>
+<ol>
+<li>单词游戏</li>
+</ol>
+<p><img alt="Trie树可通过剪枝搜索空间来高效解决Boggle单词游戏" src="http://pic.leetcode-cn.com/e49e9f0b26566673c32bfbb7de404b5d563a0fe74070bb231de811a70e71f147-image.png" /></p>
+<p>还有其他的数据结构,如平衡树和哈希表,使我们能够在字符串数据集中搜索单词。为什么我们还需要Trie树呢？尽管哈希表可以在O(1)时间内寻找键值,却无法高效的完成以下操作:</p>
+<blockquote>
+<p>找到具有同一前缀的全部键值。</p>
+<p>按词典序枚举字符串的数据集。</p>
+</blockquote>
+<p>Trie树优于哈希表的另一个理由是,随着哈希表大小增加,会出现大量的冲突,时间复杂度可能增加到O(n),其中n是插入的键的数量。与哈希表相比,Trie树在存储多个具有相同前缀的键时可以使用较少的空间。此时Trie树只需要O(m)的时间复杂度,其中m为键长。而在平衡树中查找键值需要<span><span class="MathJax_Preview">O(m \log n)</span><script type="math/tex">O(m \log n)</script></span>时间复杂度。</p>
+<p><strong>Trie树的结点结构</strong></p>
+<p>Trie树是一个有根的树,其结点具有以下字段:</p>
+<blockquote>
+<p>最多R个指向子结点的链接,其中每个链接对应字母表数据集中的一个字母。</p>
+<p>本文中假定R为26,小写拉丁字母的数量。</p>
+<p>布尔字段,以指定节点是对应键的结尾还是只是键前缀。</p>
+</blockquote>
+<p><img alt="单词&quot;leet&quot;在Trie树中的表示" src="http://pic.leetcode-cn.com/3463d9e7cb323911aa67cbd94910a34d88c9402a1ab41bbea10852cd0a74f2af-file_1562596867185" /></p>
+<pre><code class="java">class TrieNode {
+
+    // R links to node children
+    private TrieNode[] links;
+
+    private final int R = 26;
+
+    private boolean isEnd;
+
+    public TrieNode() {
+        links = new TrieNode[R];
+    }
+
+    public boolean containsKey(char ch) {
+        return links[ch -'a'] != null;
+    }
+    public TrieNode get(char ch) {
+        return links[ch -'a'];
+    }
+    public void put(char ch, TrieNode node) {
+        links[ch -'a'] = node;
+    }
+    public void setEnd() {
+        isEnd = true;
+    }
+    public boolean isEnd() {
+        return isEnd;
+    }
+}
+</code></pre>
+
+<p>Trie树中最常见的两个操作是键的插入和查找。</p>
+<p><strong>向Trie树中插入键</strong></p>
+<p>我们通过搜索Trie树来插入一个键。我们从根开始搜索它对应于第一个键字符的链接。有两种情况:</p>
+<blockquote>
+<p>链接存在。沿着链接移动到树的下一个子层。算法继续搜索下一个键字符。</p>
+<p>链接不存在。创建一个新的节点,并将它与父节点的链接相连,该链接与当前的键字符相匹配。</p>
+<p>重复以上步骤,直到到达键的最后一个字符,然后将当前节点标记为结束节点,算法完成。</p>
+</blockquote>
+<p><img alt="向Trie树中插入键" src="http://pic.leetcode-cn.com/0cddad836ee9a200b150a3d89f96035f44f3643c4fba0cb1f329e2307c714895-file_1562596867185" /></p>
+<pre><code class="java">class Trie {
+    private TrieNode root;
+
+    public Trie() {
+        root = new TrieNode();
+    }
+
+    // Inserts a word into the trie.
+    public void insert(String word) {
+        TrieNode node = root;
+        for (int i = 0; i &lt; word.length(); i++) {
+            char currentChar = word.charAt(i);
+            if (!node.containsKey(currentChar)) {
+                node.put(currentChar, new TrieNode());
+            }
+            node = node.get(currentChar);
+        }
+        node.setEnd();
+    }
+}
+</code></pre>
+
+<p>复杂度分析</p>
+<blockquote>
+<p>时间复杂度:O(m),其中m为键长。在算法的每次迭代中,我们要么检查要么创建一个节点,直到到达键尾。只需要m次操作。</p>
+<p>空间复杂度:O(m)。最坏的情况下,新插入的键和Trie树中已有的键没有公共前缀。此时需要添加m个结点,使用O(m)空间。</p>
+</blockquote>
+<p><strong>在Trie树中查找键</strong></p>
+<p>每个键在trie中表示为从根到内部节点或叶的路径。我们用第一个键字符从根开始,检查当前节点中与键字符对应的链接。有两种情况:</p>
+<blockquote>
+<p>存在链接。我们移动到该链接后面路径中的下一个节点,并继续搜索下一个键字符。</p>
+<p>不存在链接。若已无键字符,且当前结点标记为isEnd,则返回true。否则有两种可能,均返回false :</p>
+<p>还有键字符剩余，但无法跟随Trie树的键路径,找不到键。</p>
+<p>没有键字符剩余,但当前结点没有标记为isEnd。也就是说,待查找键只是Trie树中另一个键的前缀。</p>
+</blockquote>
+<p><img alt="在Trie树中查找键" src="http://pic.leetcode-cn.com/ba775065813363474d982b509ae99aa5423418a3ee7e5aa71f9aa4d062b6e19e-image.png" /></p>
+<pre><code class="java">class Trie {
+    ...
+
+    // search a prefix or whole key in trie and
+    // returns the node where search ends
+    private TrieNode searchPrefix(String word) {
+        TrieNode node = root;
+        for (int i = 0; i &lt; word.length(); i++) {
+           char curLetter = word.charAt(i);
+           if (node.containsKey(curLetter)) {
+               node = node.get(curLetter);
+           } else {
+               return null;
+           }
+        }
+        return node;
+    }
+
+    // Returns if the word is in the trie.
+    public boolean search(String word) {
+       TrieNode node = searchPrefix(word);
+       return node != null &amp;&amp; node.isEnd();
+    }
+}
+</code></pre>
+
+<p>复杂度分析</p>
+<blockquote>
+<p>时间复杂度 : O(m)O(m)。算法的每一步均搜索下一个键字符。最坏的情况下需要 mm 次操作。</p>
+<p>空间复杂度 : O(1)O(1)。</p>
+</blockquote>
+<p><strong>查找Trie树中的键前缀</strong></p>
+<p>该方法与在Trie树中搜索键时使用的方法非常相似。我们从根遍历Trie树,直到键前缀中没有字符,或者无法用当前的键字符继续Trie中的路径。与上面提到的"搜索键"算法唯一的区别是,到达键前缀的末尾时,总是返回true。我们不需要考虑当前Trie节点是否用"isend"标记,因为我们搜索的是键的前缀,而不是整个键。</p>
+<p><img alt="查找Trie树中的键前缀" src="http://pic.leetcode-cn.com/7cc64e93088feeedece697a7cae0c7240245e4c5e05de22634b610d7dddb31c8-image.png" /></p>
+<pre><code class="java">class Trie {
+    ...
+
+    // Returns if there is any word in the trie
+    // that starts with the given prefix.
+    public boolean startsWith(String prefix) {
+        TrieNode node = searchPrefix(prefix);
+        return node != null;
+    }
+}
+</code></pre>
+
+<p>复杂度分析</p>
+<blockquote>
+<p>时间复杂度:O(m)。</p>
+<p>空间复杂度:O(1)。</p>
+</blockquote>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    <br>
+</div>
+
+</body>
+</html>

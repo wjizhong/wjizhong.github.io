@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/leetcode/%E9%A2%98%E7%9B%AE0032_%E6%9C%80%E9%95%BF%E6%9C%89%E6%95%88%E6%8B%AC%E5%8F%B7/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>题目0032:最长有效括号 - 图像/视频算法</title>
+    <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "\u9898\u76ee0032:\u6700\u957f\u6709\u6548\u62ec\u53f7", url: "#_top", level:1, children: [
+              {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1", level:2, children: [ 
+              ]},
+              {title: "\u89e3\u9898\u6280\u5de7", url: "#_2", level:2, children: [ 
+              ]},
+          ]},
+        ];
+    </script>
+    <script src="../../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    
+
+    <h1 id="0032">题目0032:最长有效括号</h1>
+<h2 id="_1">题目描述</h2>
+<p>给定一个只包含'('和')'的字符串,找出最长的包含有效括号的子串的长度。</p>
+<p>示例1:</p>
+<pre><code>输入: &quot;(()&quot;
+输出: 2
+解释: 最长有效括号子串为 &quot;()&quot;
+</code></pre>
+
+<p>示例2:</p>
+<pre><code>输入: &quot;)()())&quot;
+输出: 4
+解释: 最长有效括号子串为 &quot;()()&quot;
+</code></pre>
+
+<h2 id="_2">解题技巧</h2>
+<ul>
+<li><strong>方法一:动态规划</strong></li>
+</ul>
+<p>思路和算法:我们定义dp[i]表示以下标i字符结尾的最长有效括号的长度。我们将dp数组全部初始化为0。显然有效的子串一定以‘)’ 结尾,因此我们可以知道以‘(’结尾的子串对应的dp值必定为0,我们只需要求解‘)’在dp数组中对应位置的值。</p>
+<p>我们从前往后遍历字符串求解dp值,我们每两个字符检查一次:</p>
+<blockquote>
+<ul>
+<li>s[i]=‘)’且s[i−1]=‘(’,也就是字符串形如“……()”,我们可以推出:dp[i]=dp[i−2]+2</li>
+</ul>
+<p>我们可以进行这样的转移,是因为结束部分的"()"是一个有效子字符串,并且将之前有效子字符串的长度增加了2。</p>
+<ul>
+<li>s[i]=‘)’且s[i−1]=‘)’,也就是字符串形如“……))”,我们可以推出:如果s[i−dp[i−1]−1]=‘(’,那么dp[i]=dp[i−1]+dp[i−dp[i−1]−2]+2</li>
+</ul>
+</blockquote>
+<p>我们考虑如果倒数第二个‘)’是一个有效子字符串的一部分(记作<span><span class="MathJax_Preview">sub_s</span><script type="math/tex">sub_s</script></span>),对于最后一个‘)’,如果它是一个更长子字符串的一部分,那么它一定有一个对应的‘(’,且它的位置在倒数第二个‘)’所在的有效子字符串的前面(也就是<span><span class="MathJax_Preview">sub_s</span><script type="math/tex">sub_s</script></span>的前面)。因此,如果子字符串<span><span class="MathJax_Preview">sub_s</span><script type="math/tex">sub_s</script></span>的前面恰好是‘(’,那么我们就用2加上<span><span class="MathJax_Preview">sub_s</span><script type="math/tex">sub_s</script></span>的长度dp[i−1])去更新dp[i]。同时,我们也会把有效子串“(sub_s)”之前的有效子串的长度也加上,也就是再加上dp[i−dp[i−1]−2]。</p>
+<p><img alt="" src="../images/longest_valid_parentheses_v1.gif" /></p>
+<p>最后的答案即为dp数组中的最大值。</p>
+<pre><code class="c++">class Solution {
+public:
+    int longestValidParentheses(string s) {
+        int maxans = 0, n = s.length();
+        vector&lt;int&gt; dp(n, 0);
+        for (int i = 1; i &lt; n; i++) {
+            if (s[i] == ')') {
+                if (s[i - 1] == '(') {
+                    dp[i] = (i &gt;= 2 ? dp[i - 2] : 0) + 2;
+                } else if (i - dp[i - 1] &gt; 0 &amp;&amp; s[i - dp[i - 1] - 1] == '(') {
+                    dp[i] = dp[i - 1] + ((i - dp[i - 1]) &gt;= 2 ? dp[i - dp[i - 1] - 2] : 0) + 2;
+                }
+                maxans = max(maxans, dp[i]);
+            }
+        }
+        return maxans;
+    }
+};
+</code></pre>
+
+<p>复杂度分析</p>
+<blockquote>
+<p>时间复杂度:O(n),其中n为字符串的长度。我们只需遍历整个字符串一次,即可将dp数组求出来。</p>
+<p>空间复杂度:O(n)。我们需要一个大小为n的dp数组。</p>
+</blockquote>
+<ul>
+<li><strong>方法二:栈</strong></li>
+</ul>
+<p>撇开方法一提及的动态规划方法,相信大多数人对于这题的第一直觉是找到每个可能的子串后判断它的有效性,但这样的时间复杂度会达到<span><span class="MathJax_Preview">O(n^3)</span><script type="math/tex">O(n^3)</script></span>,无法通过所有测试用例。但是通过栈,我们可以在遍历给定字符串的过程中去判断到目前为止扫描的子串的有效性，同时能得到最长有效括号的长度。</p>
+<p>具体做法是我们始终保持栈底元素为当前已经遍历过的元素中最后一个没有被匹配的右括号的下标,这样的做法主要是考虑了边界条件的处理,栈里其他元素维护左括号的下标:</p>
+<blockquote>
+<ul>
+<li>对于遇到的每个‘(’,我们将它的下标放入栈中</li>
+<li>对于遇到的每个‘)’,我们先弹出栈顶元素表示匹配了当前右括号:</li>
+<li>如果栈为空,说明当前的右括号为没有被匹配的右括号,我们将其下标放入栈中来更新我们之前提到的最后一个没有被匹配的右括号的下标</li>
+<li>如果栈不为空,当前右括号的下标减去栈顶元素即为以该右括号为结尾的最长有效括号的长度</li>
+</ul>
+</blockquote>
+<p>我们从前往后遍历字符串并更新答案即可。</p>
+<p>需要注意的是,如果一开始栈为空,第一个字符为左括号的时候我们会将其放入栈中,这样就不满足提及的最后一个没有被匹配的右括号的下标,为了保持统一,我们在一开始的时候往栈中放入一个值为-1的元素。</p>
+<p><img alt="" src="../images/longest_valid_parentheses_v2.gif" /></p>
+<pre><code class="c++">class Solution {
+public:
+    int longestValidParentheses(string s) {
+        int maxans = 0;
+        stack&lt;int&gt; stk;
+        stk.push(-1);
+        for (int i = 0; i &lt; s.length(); i++) {
+            if (s[i] == '(') {
+                stk.push(i);
+            } else {
+                stk.pop();
+                if (stk.empty()) {
+                    stk.push(i);
+                } else {
+                    maxans = max(maxans, i - stk.top());
+                }
+            }
+        }
+        return maxans;
+    }
+};
+</code></pre>
+
+<p>复杂度分析</p>
+<blockquote>
+<p>时间复杂度:O(n),n是给定字符串的长度。我们只需要遍历字符串一次即可。</p>
+<p>空间复杂度:O(n)。栈的大小在最坏情况下会达到n,因此空间复杂度为O(n)。</p>
+</blockquote>
+<ul>
+<li><strong>方法三:不需要额外的空间</strong></li>
+</ul>
+<p>在此方法中,我们利用两个计数器left和right。首先,我们从左到右遍历字符串,对于遇到的每个‘(’,我们增加left计数器,对于遇到的每个‘)’,我们增加right计数器。每当left计数器与right计数器相等时,我们计算当前有效字符串的长度,并且记录目前为止找到的最长子字符串。当right计数器比left计数器大时,我们将left和right计数器同时变回0。</p>
+<p>这样的做法贪心地考虑了以当前字符下标结尾的有效括号长度,每次当右括号数量多于左括号数量的时候之前的字符我们都扔掉不再考虑,重新从下一个字符开始计算,但这样会漏掉一种情况,就是遍历的时候左括号的数量始终大于右括号的数量,即(() ,这种时候最长有效括号是求不出来的。</p>
+<p>解决的方法也很简单,我们只需要从右往左遍历用类似的方法计算即可,只是这个时候判断条件反了过来:</p>
+<blockquote>
+<p>当left计数器比right计数器大时,我们将left和right计数器同时变回0</p>
+<p>当left计数器与right计数器相等时,我们计算当前有效字符串的长度,并且记录目前为止找到的最长子字符串</p>
+</blockquote>
+<p>这样我们就能涵盖所有情况从而求解出答案。</p>
+<p><img alt="" src="../images/longest_valid_parentheses_v3.gif" /></p>
+<pre><code class="c++">class Solution {
+public:
+    int longestValidParentheses(string s) {
+        int left = 0, right = 0, maxlength = 0;
+        for (int i = 0; i &lt; s.length(); i++) {
+            if (s[i] == '(') {
+                left++;
+            } else {
+                right++;
+            }
+            if (left == right) {
+                maxlength = max(maxlength, 2 * right);
+            } else if (right &gt; left) {
+                left = right = 0;
+            }
+        }
+        left = right = 0;
+        for (int i = (int)s.length() - 1; i &gt;= 0; i--) {
+            if (s[i] == '(') {
+                left++;
+            } else {
+                right++;
+            }
+            if (left == right) {
+                maxlength = max(maxlength, 2 * left);
+            } else if (left &gt; right) {
+                left = right = 0;
+            }
+        }
+        return maxlength;
+    }
+};
+</code></pre>
+
+<p>复杂度分析</p>
+<blockquote>
+<p>时间复杂度:O(n),其中n为字符串长度。我们只要正反遍历两边字符串即可。</p>
+<p>空间复杂度:O(1)。我们只需要常数空间存放若干变量。</p>
+</blockquote>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+    
+      
+    
+
+    <br>
+</div>
+
+</body>
+</html>
