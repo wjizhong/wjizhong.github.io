@@ -195,7 +195,16 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </ul>
 </blockquote>
 <p>具体请参考下面的代码。</p>
-<pre><code class="c++">class Codec {
+<pre><code class="c++">/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Codec {
 public:
     string serialize(TreeNode* root) {
         if (!root) return &quot;X&quot;;
