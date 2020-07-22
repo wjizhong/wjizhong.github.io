@@ -87,22 +87,23 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </code></pre>
 
 <h2 id="_2">解题技巧</h2>
-<video src="../images/7ba8099a88fb478199feaf736ed9d3d5ba5309538b6ea284abe11f7641ff7eb7.mp4" controls  />
+<video src="../images/7ba8099a88fb478199feaf736ed9d3d5ba5309538b6ea284abe11f7641ff7eb7.mp4" controls></video>
 
-* **方法1:暴力**
-
-直观想法:直接按问题描述进行。对于数组中的每个元素,我们找出下雨后水能达到的最高位置,等于两边最大高度的较小值减去当前高度的值。
-
-算法
-
-> - 初始化ans=0
-> - 从左向右扫描数组:
->   + 初始化$\text{max\_left}=0$和$\text{max\_right}=0$
->   + 从当前元素向左扫描并更新:$\text{max\_left}=\max(\text{max\_left},\text{height}[j])$
->   + 从当前元素向右扫描并更新:$\text{max\_right}=\max(\text{max\_right},\text{height}[j])$
->   + 将$\min(\text{max\_left},\text{max\_right}) - \text{height}[i]$累加到$\text{ans}$
-
-
+<ul>
+<li><strong>方法1:暴力</strong></li>
+</ul>
+<p>直观想法:直接按问题描述进行。对于数组中的每个元素,我们找出下雨后水能达到的最高位置,等于两边最大高度的较小值减去当前高度的值。</p>
+<p>算法</p>
+<blockquote>
+<ul>
+<li>初始化ans=0</li>
+<li>从左向右扫描数组:</li>
+<li>初始化<span><span class="MathJax_Preview">\text{max\_left}=0</span><script type="math/tex">\text{max\_left}=0</script></span>和<span><span class="MathJax_Preview">\text{max\_right}=0</span><script type="math/tex">\text{max\_right}=0</script></span></li>
+<li>从当前元素向左扫描并更新:<span><span class="MathJax_Preview">\text{max\_left}=\max(\text{max\_left},\text{height}[j])</span><script type="math/tex">\text{max\_left}=\max(\text{max\_left},\text{height}[j])</script></span></li>
+<li>从当前元素向右扫描并更新:<span><span class="MathJax_Preview">\text{max\_right}=\max(\text{max\_right},\text{height}[j])</span><script type="math/tex">\text{max\_right}=\max(\text{max\_right},\text{height}[j])</script></span></li>
+<li>将<span><span class="MathJax_Preview">\min(\text{max\_left},\text{max\_right}) - \text{height}[i]</span><script type="math/tex">\min(\text{max\_left},\text{max\_right}) - \text{height}[i]</script></span>累加到<span><span class="MathJax_Preview">\text{ans}</span><script type="math/tex">\text{ans}</script></span></li>
+</ul>
+</blockquote>
 <pre><code class="c++">int trap(vector&lt;int&gt;&amp; height)
 {
     int ans = 0;
@@ -121,29 +122,26 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 }
 </code></pre>
 
-
-复杂性分析
-
-> 时间复杂度:$O(n^2)$。数组中的每个元素都需要向左向右扫描。
->
-> 空间复杂度:O(1)的额外空间。
-
-* **方法2:动态编程**
-
-直观想法:在暴力方法中,我们仅仅为了找到最大值每次都要向左和向右扫描一次。但是我们可以提前存储这个值。因此,可以通过动态编程解决。
-
-这个概念可以见下图解释：
-
-![](http://pic.leetcode-cn.com/53ab7a66023039ed4dce42b709b4997d2ba0089077912d39a0b31d3572a55d0b-trapping_rain_water.png)
-
-算法
-
-> - 找到数组中从下标i到最左端最高的条形块高度$\text{left\_max}$。
-> - 找到数组中从下标i到最右端最高的条形块高度$\text{right\_max}$
-> - 扫描数组$\text{height}$并更新答案：
->   + 累加$\min(\text{max\_left}[i],\text{max\_right}[i]) - \text{height}[i]$到ans上
-
-
+<p>复杂性分析</p>
+<blockquote>
+<p>时间复杂度:<span><span class="MathJax_Preview">O(n^2)</span><script type="math/tex">O(n^2)</script></span>。数组中的每个元素都需要向左向右扫描。</p>
+<p>空间复杂度:O(1)的额外空间。</p>
+</blockquote>
+<ul>
+<li><strong>方法2:动态编程</strong></li>
+</ul>
+<p>直观想法:在暴力方法中,我们仅仅为了找到最大值每次都要向左和向右扫描一次。但是我们可以提前存储这个值。因此,可以通过动态编程解决。</p>
+<p>这个概念可以见下图解释：</p>
+<p><img alt="" src="http://pic.leetcode-cn.com/53ab7a66023039ed4dce42b709b4997d2ba0089077912d39a0b31d3572a55d0b-trapping_rain_water.png" /></p>
+<p>算法</p>
+<blockquote>
+<ul>
+<li>找到数组中从下标i到最左端最高的条形块高度<span><span class="MathJax_Preview">\text{left\_max}</span><script type="math/tex">\text{left\_max}</script></span>。</li>
+<li>找到数组中从下标i到最右端最高的条形块高度<span><span class="MathJax_Preview">\text{right\_max}</span><script type="math/tex">\text{right\_max}</script></span></li>
+<li>扫描数组<span><span class="MathJax_Preview">\text{height}</span><script type="math/tex">\text{height}</script></span>并更新答案：</li>
+<li>累加<span><span class="MathJax_Preview">\min(\text{max\_left}[i],\text{max\_right}[i]) - \text{height}[i]</span><script type="math/tex">\min(\text{max\_left}[i],\text{max\_right}[i]) - \text{height}[i]</script></span>到ans上</li>
+</ul>
+</blockquote>
 <pre><code class="c++">int trap(vector&lt;int&gt;&amp; height)
 {
     if(height == null)
@@ -166,34 +164,35 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 }
 </code></pre>
 
-
-复杂性分析
-
-> 时间复杂度:O(n)。存储最大高度数组,需要两次遍历,每次O(n)。最终使用存储的数据更新ans,O(n)。
-> 
-> 空间复杂度:O(n)额外空间。
-
-和方法1相比使用了额外的O(n)空间用来放置$\text{left\_max}$和$\text{right\_max}$数组。
-
-* **方法3:栈的应用**
-
-直观想法:我们可以不用像方法2那样存储最大高度,而是用栈来跟踪可能储水的最长的条形块。使用栈就可以在一次遍历内完成计算。
-
-我们在遍历数组时维护一个栈。如果当前的条形块小于或等于栈顶的条形块,我们将条形块的索引入栈,意思是当前的条形块被栈中的前一个条形块界定。如果我们发现一个条形块长于栈顶,我们可以确定栈顶的条形块被当前条形块和栈的前一个条形块界定,因此我们可以弹出栈顶元素并且累加答案到$\text{ans}$。
-
-算法
-
-> - 使用栈来存储条形块的索引下标。
-> - 遍历数组：
->   + 当栈非空且$\text{height}[current]>\text{height}[st.top()]$
->   >   - 意味着栈中元素可以被弹出。弹出栈顶元素$\text{top}$。
->   >   - 计算当前元素和栈顶元素的距离,准备进行填充操作:$\text{distance} = \text{current} - \text{st.top}() - 1$
->   >   - 找出界定高度:$\text{bounded\_height} = \min(\text{height[current]}, \text{height[st.top()]}) - \text{height[top]}$
->   >   - 往答案中累加积水量$\text{ans} \mathrel{+}= \text{distance} \times \text{bounded\_height}$
->   + 将当前索引下标入栈
->   + 将$\text{current}$移动到下个位置
-
-
+<p>复杂性分析</p>
+<blockquote>
+<p>时间复杂度:O(n)。存储最大高度数组,需要两次遍历,每次O(n)。最终使用存储的数据更新ans,O(n)。</p>
+<p>空间复杂度:O(n)额外空间。</p>
+</blockquote>
+<p>和方法1相比使用了额外的O(n)空间用来放置<span><span class="MathJax_Preview">\text{left\_max}</span><script type="math/tex">\text{left\_max}</script></span>和<span><span class="MathJax_Preview">\text{right\_max}</span><script type="math/tex">\text{right\_max}</script></span>数组。</p>
+<ul>
+<li><strong>方法3:栈的应用</strong></li>
+</ul>
+<p>直观想法:我们可以不用像方法2那样存储最大高度,而是用栈来跟踪可能储水的最长的条形块。使用栈就可以在一次遍历内完成计算。</p>
+<p>我们在遍历数组时维护一个栈。如果当前的条形块小于或等于栈顶的条形块,我们将条形块的索引入栈,意思是当前的条形块被栈中的前一个条形块界定。如果我们发现一个条形块长于栈顶,我们可以确定栈顶的条形块被当前条形块和栈的前一个条形块界定,因此我们可以弹出栈顶元素并且累加答案到<span><span class="MathJax_Preview">\text{ans}</span><script type="math/tex">\text{ans}</script></span>。</p>
+<p>算法</p>
+<blockquote>
+<ul>
+<li>使用栈来存储条形块的索引下标。</li>
+<li>遍历数组：</li>
+<li>当栈非空且<span><span class="MathJax_Preview">\text{height}[current]&gt;\text{height}[st.top()]</span><script type="math/tex">\text{height}[current]>\text{height}[st.top()]</script></span><blockquote>
+<ul>
+<li>意味着栈中元素可以被弹出。弹出栈顶元素<span><span class="MathJax_Preview">\text{top}</span><script type="math/tex">\text{top}</script></span>。</li>
+<li>计算当前元素和栈顶元素的距离,准备进行填充操作:<span><span class="MathJax_Preview">\text{distance} = \text{current} - \text{st.top}() - 1</span><script type="math/tex">\text{distance} = \text{current} - \text{st.top}() - 1</script></span></li>
+<li>找出界定高度:<span><span class="MathJax_Preview">\text{bounded\_height} = \min(\text{height[current]}, \text{height[st.top()]}) - \text{height[top]}</span><script type="math/tex">\text{bounded\_height} = \min(\text{height[current]}, \text{height[st.top()]}) - \text{height[top]}</script></span></li>
+<li>往答案中累加积水量<span><span class="MathJax_Preview">\text{ans} \mathrel{+}= \text{distance} \times \text{bounded\_height}</span><script type="math/tex">\text{ans} \mathrel{+}= \text{distance} \times \text{bounded\_height}</script></span></li>
+</ul>
+</blockquote>
+</li>
+<li>将当前索引下标入栈</li>
+<li>将<span><span class="MathJax_Preview">\text{current}</span><script type="math/tex">\text{current}</script></span>移动到下个位置</li>
+</ul>
+</blockquote>
 <pre><code class="c++">int trap(vector&lt;int&gt;&amp; height)
 {
     int ans = 0, current = 0;
@@ -214,34 +213,39 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 }
 </code></pre>
 
-
-复杂性分析
-
-> 时间复杂度:O(n)。单次遍历O(n),每个条形块最多访问两次(由于栈的弹入和弹出),并且弹入和弹出栈都是O(1)的。
-> 
-> 空间复杂度:O(n)。栈最多在阶梯型或平坦型条形块结构中占用O(n)的空间。
-
-* **方法4:使用双指针**
-
-直观想法:和方法2相比,我们不从左和从右分开计算,我们想办法一次完成遍历。从动态编程方法的示意图中我们注意到,只要$\text{right\_max}[i]>\text{left\_max}[i]$(元素0到元素6),积水高度将由left_max决定,类似地$\text{left\_max}[i]>\text{right\_max}[i]$(元素8到元素11)。所以我们可以认为如果一端有更高的条形块(例如右端),积水的高度依赖于当前方向的高度(从左到右)。当我们发现另一侧(右侧)的条形块高度不是最高的,我们则开始从相反的方向遍历(从右到左)。我们必须在遍历时维护$\text{left\_max}$和$\text{right\_max}$,但是我们现在可以使用两个指针交替进行,实现1次遍历即可完成。
-
-算法
-
-> - 初始化$\text{left}$指针为0并且$\text{right}$指针为size-1
-> - While $\text{left}< \text{right}$, do:
->   + If $\text{height[left]}$ < $\text{height[right]}$
->   >   - If $\text{height[left]} \geq \text{left\_max}$,更新$\text{left\_max}$
->   >   - Else 累加$\text{left\_max}-\text{height[left]}$到$\text{ans}$
->   >   - $\text{left} = \text{left} + 1$.
->   + Else
->   >   - If $\text{height[right]} \geq \text{right\_max}$,更新$\text{right\_max}$
->   >   - Else 累加$\text{right\_max}-\text{height[right]}$到$\text{ans}$
->   >   - $\text{right} = \text{right} - 1$.
-
-
-![](images/trapping_rain_water.gif)
-
-
+<p>复杂性分析</p>
+<blockquote>
+<p>时间复杂度:O(n)。单次遍历O(n),每个条形块最多访问两次(由于栈的弹入和弹出),并且弹入和弹出栈都是O(1)的。</p>
+<p>空间复杂度:O(n)。栈最多在阶梯型或平坦型条形块结构中占用O(n)的空间。</p>
+</blockquote>
+<ul>
+<li><strong>方法4:使用双指针</strong></li>
+</ul>
+<p>直观想法:和方法2相比,我们不从左和从右分开计算,我们想办法一次完成遍历。从动态编程方法的示意图中我们注意到,只要<span><span class="MathJax_Preview">\text{right\_max}[i]&gt;\text{left\_max}[i]</span><script type="math/tex">\text{right\_max}[i]>\text{left\_max}[i]</script></span>(元素0到元素6),积水高度将由left_max决定,类似地<span><span class="MathJax_Preview">\text{left\_max}[i]&gt;\text{right\_max}[i]</span><script type="math/tex">\text{left\_max}[i]>\text{right\_max}[i]</script></span>(元素8到元素11)。所以我们可以认为如果一端有更高的条形块(例如右端),积水的高度依赖于当前方向的高度(从左到右)。当我们发现另一侧(右侧)的条形块高度不是最高的,我们则开始从相反的方向遍历(从右到左)。我们必须在遍历时维护<span><span class="MathJax_Preview">\text{left\_max}</span><script type="math/tex">\text{left\_max}</script></span>和<span><span class="MathJax_Preview">\text{right\_max}</span><script type="math/tex">\text{right\_max}</script></span>,但是我们现在可以使用两个指针交替进行,实现1次遍历即可完成。</p>
+<p>算法</p>
+<blockquote>
+<ul>
+<li>初始化<span><span class="MathJax_Preview">\text{left}</span><script type="math/tex">\text{left}</script></span>指针为0并且<span><span class="MathJax_Preview">\text{right}</span><script type="math/tex">\text{right}</script></span>指针为size-1</li>
+<li>While <span><span class="MathJax_Preview">\text{left}&lt; \text{right}</span><script type="math/tex">\text{left}< \text{right}</script></span>, do:</li>
+<li>If <span><span class="MathJax_Preview">\text{height[left]}</span><script type="math/tex">\text{height[left]}</script></span> &lt; <span><span class="MathJax_Preview">\text{height[right]}</span><script type="math/tex">\text{height[right]}</script></span><blockquote>
+<ul>
+<li>If <span><span class="MathJax_Preview">\text{height[left]} \geq \text{left\_max}</span><script type="math/tex">\text{height[left]} \geq \text{left\_max}</script></span>,更新<span><span class="MathJax_Preview">\text{left\_max}</span><script type="math/tex">\text{left\_max}</script></span></li>
+<li>Else 累加<span><span class="MathJax_Preview">\text{left\_max}-\text{height[left]}</span><script type="math/tex">\text{left\_max}-\text{height[left]}</script></span>到<span><span class="MathJax_Preview">\text{ans}</span><script type="math/tex">\text{ans}</script></span></li>
+<li><span><span class="MathJax_Preview">\text{left} = \text{left} + 1</span><script type="math/tex">\text{left} = \text{left} + 1</script></span>.</li>
+</ul>
+</blockquote>
+</li>
+<li>Else<blockquote>
+<ul>
+<li>If <span><span class="MathJax_Preview">\text{height[right]} \geq \text{right\_max}</span><script type="math/tex">\text{height[right]} \geq \text{right\_max}</script></span>,更新<span><span class="MathJax_Preview">\text{right\_max}</span><script type="math/tex">\text{right\_max}</script></span></li>
+<li>Else 累加<span><span class="MathJax_Preview">\text{right\_max}-\text{height[right]}</span><script type="math/tex">\text{right\_max}-\text{height[right]}</script></span>到<span><span class="MathJax_Preview">\text{ans}</span><script type="math/tex">\text{ans}</script></span></li>
+<li><span><span class="MathJax_Preview">\text{right} = \text{right} - 1</span><script type="math/tex">\text{right} = \text{right} - 1</script></span>.</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+</blockquote>
+<p><img alt="" src="../images/trapping_rain_water.gif" /></p>
 <pre><code class="c++">int trap(vector&lt;int&gt;&amp; height)
 {
     int left = 0, right = height.size() - 1;
@@ -261,12 +265,11 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 }
 </code></pre>
 
-
-复杂性分析
-
-> 时间复杂度:O(n)。单次遍历的时间O(n)。
-> 
-> 空间复杂度:O(1)的额外空间。left,right,left_max和right_max只需要常数的空间。
+<p>复杂性分析</p>
+<blockquote>
+<p>时间复杂度:O(n)。单次遍历的时间O(n)。</p>
+<p>空间复杂度:O(1)的额外空间。left,right,left_max和right_max只需要常数的空间。</p>
+</blockquote>
 
   <br>
     <style>

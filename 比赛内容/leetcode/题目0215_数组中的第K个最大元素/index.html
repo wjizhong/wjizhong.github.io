@@ -91,34 +91,25 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 
 <p>说明:你可以假设k总是有效的,且1 ≤ k ≤ 数组的长度。</p>
 <h2 id="_2">解题技巧</h2>
-<video src="../images/ce030f845861488baf033a7a1b2be6513971df797c632f929b9aebf1082629f0.mp4" controls />
+<video src="../images/ce030f845861488baf033a7a1b2be6513971df797c632f929b9aebf1082629f0.mp4" controls></video>
 
-约定:假设这里数组的长度为n。
-
-题目分析:本题希望我们返回数组排序之后的倒数第k个位置。
-
-* **方法一:基于快速排序的选择方法**
-
-思路和算法:我们可以用快速排序来解决这个问题,先对原数组排序,再返回倒数第k个位置,这样平均时间复杂度是$O(n \log n)$,但其实我们可以做的更快。
-
-首先我们来回顾一下快速排序,这是一个典型的分治算法。我们对数组$a[l \cdots r]$做快速排序的过程是(参考《算法导论》):
-
-> 分解:将数组$a[l \cdots r]$划分成两个子数组$a[l \cdots q - 1]$、$a[q + 1 \cdots r]$,使得$a[l \cdots q - 1]$中的每个元素小于等于a[q],且a[q]小于等于$a[q + 1 \cdots r]$中的每个元素。其中,计算下标q也是划分过程的一部分。
-> 
-> 解决:通过递归调用快速排序,对子数组$a[l \cdots q - 1]$和$a[q + 1 \cdots r]$进行排序。
-> 
-> 合并:因为子数组都是原址排序的,所以不需要进行合并操作,$a[l \cdots r]$已经有序。
-
-上文中提到的划分过程是:从子数组$a[l \cdots r]$中选择任意一个元素x作为主元,调整子数组的元素使得左边的元素都小于等于它,右边的元素都大于等于它,x的最终位置就是q。
-由此可以发现每次经过划分操作后,我们一定可以确定一个元素的最终位置,即x的最终位置为q,并且保证$a[l \cdots q - 1]$中的每个元素小于等于a[q],且a[q]小于等于$a[q + 1 \cdots r]$中的每个元素。所以只要某次划分的q为倒数第k个下标的时候,我们就已经找到了答案。我们只关心这一点,至于$a[l \cdots q - 1]$和$a[q+1 \cdots r]$是否是有序的,我们不关心。
-
-因此我们可以改进快速排序算法来解决这个问题:在分解的过程当中,我们会对子数组进行划分,如果划分得到的q正好就是我们需要的下标,就直接返回a[q];否则,如果q比目标下标小,就递归右子区间,否则递归左子区间。这样就可以把原来递归两个区间变成只递归一个区间,提高了时间效率。这就是快速选择算法。
-
-我们知道快速排序的性能和划分出的子数组的长度密切相关。直观地理解如果每次规模为n的问题我们都划分成1和n - 1,每次递归的时候又向n−1的集合中递归,这种情况是最坏的,时间代价是$O(n^2)$。我们可以引入随机化来加速这个过程,它的时间代价的期望是O(n),证明过程可以参考《算法导论》9.2:期望为线性的选择算法。
-
-代码:
-
-
+<p>约定:假设这里数组的长度为n。</p>
+<p>题目分析:本题希望我们返回数组排序之后的倒数第k个位置。</p>
+<ul>
+<li><strong>方法一:基于快速排序的选择方法</strong></li>
+</ul>
+<p>思路和算法:我们可以用快速排序来解决这个问题,先对原数组排序,再返回倒数第k个位置,这样平均时间复杂度是<span><span class="MathJax_Preview">O(n \log n)</span><script type="math/tex">O(n \log n)</script></span>,但其实我们可以做的更快。</p>
+<p>首先我们来回顾一下快速排序,这是一个典型的分治算法。我们对数组<span><span class="MathJax_Preview">a[l \cdots r]</span><script type="math/tex">a[l \cdots r]</script></span>做快速排序的过程是(参考《算法导论》):</p>
+<blockquote>
+<p>分解:将数组<span><span class="MathJax_Preview">a[l \cdots r]</span><script type="math/tex">a[l \cdots r]</script></span>划分成两个子数组<span><span class="MathJax_Preview">a[l \cdots q - 1]</span><script type="math/tex">a[l \cdots q - 1]</script></span>、<span><span class="MathJax_Preview">a[q + 1 \cdots r]</span><script type="math/tex">a[q + 1 \cdots r]</script></span>,使得<span><span class="MathJax_Preview">a[l \cdots q - 1]</span><script type="math/tex">a[l \cdots q - 1]</script></span>中的每个元素小于等于a[q],且a[q]小于等于<span><span class="MathJax_Preview">a[q + 1 \cdots r]</span><script type="math/tex">a[q + 1 \cdots r]</script></span>中的每个元素。其中,计算下标q也是划分过程的一部分。</p>
+<p>解决:通过递归调用快速排序,对子数组<span><span class="MathJax_Preview">a[l \cdots q - 1]</span><script type="math/tex">a[l \cdots q - 1]</script></span>和<span><span class="MathJax_Preview">a[q + 1 \cdots r]</span><script type="math/tex">a[q + 1 \cdots r]</script></span>进行排序。</p>
+<p>合并:因为子数组都是原址排序的,所以不需要进行合并操作,<span><span class="MathJax_Preview">a[l \cdots r]</span><script type="math/tex">a[l \cdots r]</script></span>已经有序。</p>
+</blockquote>
+<p>上文中提到的划分过程是:从子数组<span><span class="MathJax_Preview">a[l \cdots r]</span><script type="math/tex">a[l \cdots r]</script></span>中选择任意一个元素x作为主元,调整子数组的元素使得左边的元素都小于等于它,右边的元素都大于等于它,x的最终位置就是q。
+由此可以发现每次经过划分操作后,我们一定可以确定一个元素的最终位置,即x的最终位置为q,并且保证<span><span class="MathJax_Preview">a[l \cdots q - 1]</span><script type="math/tex">a[l \cdots q - 1]</script></span>中的每个元素小于等于a[q],且a[q]小于等于<span><span class="MathJax_Preview">a[q + 1 \cdots r]</span><script type="math/tex">a[q + 1 \cdots r]</script></span>中的每个元素。所以只要某次划分的q为倒数第k个下标的时候,我们就已经找到了答案。我们只关心这一点,至于<span><span class="MathJax_Preview">a[l \cdots q - 1]</span><script type="math/tex">a[l \cdots q - 1]</script></span>和<span><span class="MathJax_Preview">a[q+1 \cdots r]</span><script type="math/tex">a[q+1 \cdots r]</script></span>是否是有序的,我们不关心。</p>
+<p>因此我们可以改进快速排序算法来解决这个问题:在分解的过程当中,我们会对子数组进行划分,如果划分得到的q正好就是我们需要的下标,就直接返回a[q];否则,如果q比目标下标小,就递归右子区间,否则递归左子区间。这样就可以把原来递归两个区间变成只递归一个区间,提高了时间效率。这就是快速选择算法。</p>
+<p>我们知道快速排序的性能和划分出的子数组的长度密切相关。直观地理解如果每次规模为n的问题我们都划分成1和n - 1,每次递归的时候又向n−1的集合中递归,这种情况是最坏的,时间代价是<span><span class="MathJax_Preview">O(n^2)</span><script type="math/tex">O(n^2)</script></span>。我们可以引入随机化来加速这个过程,它的时间代价的期望是O(n),证明过程可以参考《算法导论》9.2:期望为线性的选择算法。</p>
+<p>代码:</p>
 <pre><code class="c++">class Solution {
 public:
     int quickSelect(vector&lt;int&gt;&amp; a, int l, int r, int index) {
@@ -154,22 +145,17 @@ public:
 };
 </code></pre>
 
-
-复杂度分析
-
-> 时间复杂度:O(n),如上文所述,证明过程可以参考《算法导论》9.2:期望为线性的选择算法。
-> 
-> 空间复杂度:$O(\log n)$,递归使用栈空间的空间代价的期望为$O(\log n)$。
-
-* **方法二:基于堆排序的选择方法**
-
-思路和算法:我们也可以使用堆排序来解决这个问题——建立一个大根堆,做k−1次删除操作后堆顶元素就是我们要找的答案。在很多语言中,都有优先队列或者堆的的容器可以直接使用,但是在面试中,面试官更倾向于让更面试者自己实现一个堆。所以建议读者掌握这里大根堆的实现方法,在这道题中尤其要搞懂建堆、调整和删除的过程。
-
-友情提醒:堆排在很多大公司的面试中都很常见,不了解的同学建议参考《算法导论》或者大家的数据结构教材,一定要学会这个知识点哦! ^_^
-
-![](images/kth_largest_element_in_an_array.gif)
-
-
+<p>复杂度分析</p>
+<blockquote>
+<p>时间复杂度:O(n),如上文所述,证明过程可以参考《算法导论》9.2:期望为线性的选择算法。</p>
+<p>空间复杂度:<span><span class="MathJax_Preview">O(\log n)</span><script type="math/tex">O(\log n)</script></span>,递归使用栈空间的空间代价的期望为<span><span class="MathJax_Preview">O(\log n)</span><script type="math/tex">O(\log n)</script></span>。</p>
+</blockquote>
+<ul>
+<li><strong>方法二:基于堆排序的选择方法</strong></li>
+</ul>
+<p>思路和算法:我们也可以使用堆排序来解决这个问题——建立一个大根堆,做k−1次删除操作后堆顶元素就是我们要找的答案。在很多语言中,都有优先队列或者堆的的容器可以直接使用,但是在面试中,面试官更倾向于让更面试者自己实现一个堆。所以建议读者掌握这里大根堆的实现方法,在这道题中尤其要搞懂建堆、调整和删除的过程。</p>
+<p>友情提醒:堆排在很多大公司的面试中都很常见,不了解的同学建议参考《算法导论》或者大家的数据结构教材,一定要学会这个知识点哦! ^_^</p>
+<p><img alt="" src="../images/kth_largest_element_in_an_array.gif" /></p>
 <pre><code class="c++">class Solution {
 public:
     void maxHeapify(vector&lt;int&gt;&amp; a, int i, int heapSize) {
@@ -205,12 +191,11 @@ public:
 };
 </code></pre>
 
-
-复杂度分析
-
-> 时间复杂度:$O(n \log n)$,建堆的时间代价是O(n),删除的总代价是$O(k \log n)$,因为 k < n,故渐进时间复杂为$O(n + k \log n) = O(n \log n)$。
-> 
-> 空间复杂度：O(\log n)O(logn)，即递归使用栈空间的空间代价。
+<p>复杂度分析</p>
+<blockquote>
+<p>时间复杂度:<span><span class="MathJax_Preview">O(n \log n)</span><script type="math/tex">O(n \log n)</script></span>,建堆的时间代价是O(n),删除的总代价是<span><span class="MathJax_Preview">O(k \log n)</span><script type="math/tex">O(k \log n)</script></span>,因为 k &lt; n,故渐进时间复杂为<span><span class="MathJax_Preview">O(n + k \log n) = O(n \log n)</span><script type="math/tex">O(n + k \log n) = O(n \log n)</script></span>。</p>
+<p>空间复杂度：O(\log n)O(logn)，即递归使用栈空间的空间代价。</p>
+</blockquote>
 
   <br>
     <style>

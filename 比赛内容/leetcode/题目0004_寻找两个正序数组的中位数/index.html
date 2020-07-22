@@ -96,98 +96,75 @@ nums2 = [3, 4]
 </code></pre>
 
 <h2 id="_2">解题技巧</h2>
-<video src="../images/26a2b5fa621c4efd9ef9138aa5e5c3b8b897588a3af07def39154a2e92df332a.mp4" controls />
+<video src="../images/26a2b5fa621c4efd9ef9138aa5e5c3b8b897588a3af07def39154a2e92df332a.mp4" controls style="width: 70%"></video>
 
-* **方法一:二分查找**
-
-给定两个有序数组,要求找到两个有序数组的中位数,最直观的思路有以下两种:
-
-> 使用归并的方式,合并两个有序数组,得到一个大的有序数组。大的有序数组的中间位置的元素,即为中位数。
-> 
-> 不需要合并两个有序数组,只要找到中位数的位置即可。由于两个数组的长度已知,因此中位数对应的两个数组的下标之和也是已知的。维护两个指针,初始时分别指向两个数组的下标0的位置,每次将指向较小值的指针后移一位(如果一个指针已经到达数组末尾,则只需要移动另一个数组的指针),直到到达中位数的位置。
-
-假设两个有序数组的长度分别为m和n,上述两种思路的复杂度如何?
-
-第一种思路的时间复杂度是O(m+n),空间复杂度是O(m+n)。第二种思路虽然可以将空间复杂度降到O(1),但是时间复杂度仍是O(m+n)。题目要求时间复杂度是$O(\log(m+n))$,因此上述两种思路都不满足题目要求的时间复杂度。
-
-如何把时间复杂度降低到$O(\log(m+n))$呢?如果对时间复杂度的要求有$\log$,通常都需要用到二分查找,这道题也可以通过二分查找实现。
-
-根据中位数的定义,当m+n是奇数时,中位数是两个有序数组中的第$(m+n)/2$个元素,当m+n是偶数时,中位数是两个有序数组中的第(m+n)/2个元素和第(m+n)/2+1个元素的平均值。因此,这道题可以转化成寻找两个有序数组中的第k小的数,其中k为(m+n)/2或(m+n)/2+1。
-
-假设两个有序数组分别是A和B。要找到第k个元素,我们可以比较A[k/2−1]和B[k/2−1],其中//表示整数除法。由于A[k/2−1]和B[k/2−1]的前面分别有$\text{A}[0\,..\,k/2-2]$和$\text{B}[0\,..\,k/2-2]$,即k/2−1个元素,对于A[k/2−1]和B[k/2−1]中的较小值,最多只会有(k/2−1)+(k/2−1)≤k/2−2个元素比它小,那么它就不能是第k小的数了。
-
-因此我们可以归纳出三种情况:
-
-> - 如果$\text{A}[k/2-1] < \text{B}[k/2-1]$,则比$\text{A}[k/2-1]$小的数最多只有A的前k/2-1个数和B的前k/2−1 个数,即比A[k/2−1]小的数最多只有k−2个,因此A[k/2−1]不可能是第k个数,A[0]到A[k/2−1]也都不可能是第k个数,可以全部排除。
-> - 如果A[k/2−1]>B[k/2−1],则可以排除B[0]到B[k/2−1]。
-> - 如果A[k/2−1]=B[k/2−1],则可以归入第一种情况处理。
-
-![](http://assets.leetcode-cn.com/solution-static/4/4_fig1.png)
-
-可以看到,比较A[k/2−1]和B[k/2−1]之后,可以排除k/2个不可能是第k小的数,查找范围缩小了一半。同时,我们将在排除后的新数组上继续进行二分查找,并且根据我们排除数的个数,减少k的值,这是因为我们排除的数都不大于第k小的数。
-
-有以下三种情况需要特殊处理:
-
-> - 如果A[k/2−1]或者B[k/2−1]越界,那么我们可以选取对应数组中的最后一个元素。在这种情况下,我们必须根据排除数的个数减少k的值,而不能直接将k减去k/2。
-> - 如果一个数组为空,说明该数组中的所有元素都被排除,我们可以直接返回另一个数组中第k小的元素。
-> - 如果k=1,我们只要返回两个数组首元素的最小值即可。
-
-用一个例子说明上述算法。假设两个有序数组如下:
-
-
+<ul>
+<li><strong>方法一:二分查找</strong></li>
+</ul>
+<p>给定两个有序数组,要求找到两个有序数组的中位数,最直观的思路有以下两种:</p>
+<blockquote>
+<p>使用归并的方式,合并两个有序数组,得到一个大的有序数组。大的有序数组的中间位置的元素,即为中位数。</p>
+<p>不需要合并两个有序数组,只要找到中位数的位置即可。由于两个数组的长度已知,因此中位数对应的两个数组的下标之和也是已知的。维护两个指针,初始时分别指向两个数组的下标0的位置,每次将指向较小值的指针后移一位(如果一个指针已经到达数组末尾,则只需要移动另一个数组的指针),直到到达中位数的位置。</p>
+</blockquote>
+<p>假设两个有序数组的长度分别为m和n,上述两种思路的复杂度如何?</p>
+<p>第一种思路的时间复杂度是O(m+n),空间复杂度是O(m+n)。第二种思路虽然可以将空间复杂度降到O(1),但是时间复杂度仍是O(m+n)。题目要求时间复杂度是<span><span class="MathJax_Preview">O(\log(m+n))</span><script type="math/tex">O(\log(m+n))</script></span>,因此上述两种思路都不满足题目要求的时间复杂度。</p>
+<p>如何把时间复杂度降低到<span><span class="MathJax_Preview">O(\log(m+n))</span><script type="math/tex">O(\log(m+n))</script></span>呢?如果对时间复杂度的要求有<span><span class="MathJax_Preview">\log</span><script type="math/tex">\log</script></span>,通常都需要用到二分查找,这道题也可以通过二分查找实现。</p>
+<p>根据中位数的定义,当m+n是奇数时,中位数是两个有序数组中的第<span><span class="MathJax_Preview">(m+n)/2</span><script type="math/tex">(m+n)/2</script></span>个元素,当m+n是偶数时,中位数是两个有序数组中的第(m+n)/2个元素和第(m+n)/2+1个元素的平均值。因此,这道题可以转化成寻找两个有序数组中的第k小的数,其中k为(m+n)/2或(m+n)/2+1。</p>
+<p>假设两个有序数组分别是A和B。要找到第k个元素,我们可以比较A[k/2−1]和B[k/2−1],其中//表示整数除法。由于A[k/2−1]和B[k/2−1]的前面分别有<span><span class="MathJax_Preview">\text{A}[0\,..\,k/2-2]</span><script type="math/tex">\text{A}[0\,..\,k/2-2]</script></span>和<span><span class="MathJax_Preview">\text{B}[0\,..\,k/2-2]</span><script type="math/tex">\text{B}[0\,..\,k/2-2]</script></span>,即k/2−1个元素,对于A[k/2−1]和B[k/2−1]中的较小值,最多只会有(k/2−1)+(k/2−1)≤k/2−2个元素比它小,那么它就不能是第k小的数了。</p>
+<p>因此我们可以归纳出三种情况:</p>
+<blockquote>
+<ul>
+<li>如果<span><span class="MathJax_Preview">\text{A}[k/2-1] &lt; \text{B}[k/2-1]</span><script type="math/tex">\text{A}[k/2-1] < \text{B}[k/2-1]</script></span>,则比<span><span class="MathJax_Preview">\text{A}[k/2-1]</span><script type="math/tex">\text{A}[k/2-1]</script></span>小的数最多只有A的前k/2-1个数和B的前k/2−1 个数,即比A[k/2−1]小的数最多只有k−2个,因此A[k/2−1]不可能是第k个数,A[0]到A[k/2−1]也都不可能是第k个数,可以全部排除。</li>
+<li>如果A[k/2−1]&gt;B[k/2−1],则可以排除B[0]到B[k/2−1]。</li>
+<li>如果A[k/2−1]=B[k/2−1],则可以归入第一种情况处理。</li>
+</ul>
+</blockquote>
+<p><img alt="" src="http://assets.leetcode-cn.com/solution-static/4/4_fig1.png" /></p>
+<p>可以看到,比较A[k/2−1]和B[k/2−1]之后,可以排除k/2个不可能是第k小的数,查找范围缩小了一半。同时,我们将在排除后的新数组上继续进行二分查找,并且根据我们排除数的个数,减少k的值,这是因为我们排除的数都不大于第k小的数。</p>
+<p>有以下三种情况需要特殊处理:</p>
+<blockquote>
+<ul>
+<li>如果A[k/2−1]或者B[k/2−1]越界,那么我们可以选取对应数组中的最后一个元素。在这种情况下,我们必须根据排除数的个数减少k的值,而不能直接将k减去k/2。</li>
+<li>如果一个数组为空,说明该数组中的所有元素都被排除,我们可以直接返回另一个数组中第k小的元素。</li>
+<li>如果k=1,我们只要返回两个数组首元素的最小值即可。</li>
+</ul>
+</blockquote>
+<p>用一个例子说明上述算法。假设两个有序数组如下:</p>
 <pre><code>A: 1 3 4 9
 B: 1 2 3 4 5 6 7 8 9
 </code></pre>
 
-
-两个有序数组的长度分别是4和9,长度之和是13,中位数是两个有序数组中的第7个元素,因此需要找到第k=7个元素。
-
-比较两个有序数组中下标为k/2-1=2的数,即A[2]和B[2],如下面所示:
-
-
+<p>两个有序数组的长度分别是4和9,长度之和是13,中位数是两个有序数组中的第7个元素,因此需要找到第k=7个元素。</p>
+<p>比较两个有序数组中下标为k/2-1=2的数,即A[2]和B[2],如下面所示:</p>
 <pre><code>A: 1 3 4 9
        ↑
 B: 1 2 3 4 5 6 7 8 9
        ↑
 </code></pre>
 
-
-由于A[2]>B[2],因此排除B[0]到B[2],即数组B的下标偏移(offset)变为3,同时更新k的值:k=k−k/2=4。
-
-下一步寻找,比较两个有序数组中下标为k/2−1=1的数,即A[1]和B[4],如下面所示,其中方括号部分表示已经被排除的数。
-
-
+<p>由于A[2]&gt;B[2],因此排除B[0]到B[2],即数组B的下标偏移(offset)变为3,同时更新k的值:k=k−k/2=4。</p>
+<p>下一步寻找,比较两个有序数组中下标为k/2−1=1的数,即A[1]和B[4],如下面所示,其中方括号部分表示已经被排除的数。</p>
 <pre><code>A: 1 3 4 9
      ↑
 B: [1 2 3] 4 5 6 7 8 9
              ↑
 </code></pre>
 
-
-由于A[1]<B[4],因此排除A[0]到A[1],即数组A的下标偏移变为2,同时更新k的值:k=k−k/2=2。
-
-下一步寻找,比较两个有序数组中下标为k/2−1=0的数,即比较A[2]和B[3],如下面所示,其中方括号部分表示已经被排除的数。
-
-
+<p>由于A[1]&lt;B[4],因此排除A[0]到A[1],即数组A的下标偏移变为2,同时更新k的值:k=k−k/2=2。</p>
+<p>下一步寻找,比较两个有序数组中下标为k/2−1=0的数,即比较A[2]和B[3],如下面所示,其中方括号部分表示已经被排除的数。</p>
 <pre><code>A: [1 3] 4 9
          ↑
 B: [1 2 3] 4 5 6 7 8 9
            ↑
 </code></pre>
 
-
-由于A[2]=B[3],根据之前的规则,排除A中的元素,因此排除A[2],即数组A的下标偏移变为3,同时更新k的值:k=k−k/2=1。
-
-由于k的值变成1,因此比较两个有序数组中的未排除下标范围内的第一个数,其中较小的数即为第k个数,由于A[3]>B[3],因此第k个数是B[3]=4。
-
-
+<p>由于A[2]=B[3],根据之前的规则,排除A中的元素,因此排除A[2],即数组A的下标偏移变为3,同时更新k的值:k=k−k/2=1。</p>
+<p>由于k的值变成1,因此比较两个有序数组中的未排除下标范围内的第一个数,其中较小的数即为第k个数,由于A[3]&gt;B[3],因此第k个数是B[3]=4。</p>
 <pre><code>A: [1 3 4] 9
            ↑
 B: [1 2 3] 4 5 6 7 8 9
            ↑
 </code></pre>
-
-
 
 <pre><code class="c++">class Solution {
 public:
@@ -247,107 +224,93 @@ public:
 };
 </code></pre>
 
-
-复杂度分析
-
-> 时间复杂度:O(\log(m+n)),其中m和n分别是数组nums1和nums2的长度。初始时有k=(m+n)/2或k=(m+n)/2+1,每一轮循环可以将查找范围减少一半,因此时间复杂度是$O(\log(m+n))$。
-> 
-> 空间复杂度:O(1)。
-
-* **方法二:划分数组**
-
-方法一的时间复杂度已经很优秀了,但本题存在时间复杂度更低的一种方法。这里给出推导过程,勇于挑战自己的读者可以进行尝试。
-
-为了使用划分的方法解决这个问题,需要理解中位数的作用是什么。在统计中,中位数被用来:
-
-> 将一个集合划分为两个长度相等的子集,其中一个子集中的元素总是大于另一个子集中的元素。
-
-如果理解了中位数的划分作用,就很接近答案了。
-
-首先,在任意位置i将A划分成两个部分:
-
-
+<p>复杂度分析</p>
+<blockquote>
+<p>时间复杂度:O(\log(m+n)),其中m和n分别是数组nums1和nums2的长度。初始时有k=(m+n)/2或k=(m+n)/2+1,每一轮循环可以将查找范围减少一半,因此时间复杂度是<span><span class="MathJax_Preview">O(\log(m+n))</span><script type="math/tex">O(\log(m+n))</script></span>。</p>
+<p>空间复杂度:O(1)。</p>
+</blockquote>
+<ul>
+<li><strong>方法二:划分数组</strong></li>
+</ul>
+<p>方法一的时间复杂度已经很优秀了,但本题存在时间复杂度更低的一种方法。这里给出推导过程,勇于挑战自己的读者可以进行尝试。</p>
+<p>为了使用划分的方法解决这个问题,需要理解中位数的作用是什么。在统计中,中位数被用来:</p>
+<blockquote>
+<p>将一个集合划分为两个长度相等的子集,其中一个子集中的元素总是大于另一个子集中的元素。</p>
+</blockquote>
+<p>如果理解了中位数的划分作用,就很接近答案了。</p>
+<p>首先,在任意位置i将A划分成两个部分:</p>
 <pre><code>           left_A            |          right_A
     A[0], A[1], ..., A[i-1]  |  A[i], A[i+1], ..., A[m-1]
 </code></pre>
 
-
-由于A中有m个元素,所以有m+1种划分的方法($i \in [0, m]$)。
-
-$\text{len}(\text{left\_A}) = i, \text{len}(\text{right\_A}) = m - i$.
-
-注意:当i=0时,$\text{left\_A}$为空集,而当i=m时,$\text{right\_A}$为空集。
-
-采用同样的方式,在任意位置j将B划分成两个部分:
-
-
+<p>由于A中有m个元素,所以有m+1种划分的方法(<span><span class="MathJax_Preview">i \in [0, m]</span><script type="math/tex">i \in [0, m]</script></span>)。</p>
+<p><span><span class="MathJax_Preview">\text{len}(\text{left\_A}) = i, \text{len}(\text{right\_A}) = m - i</span><script type="math/tex">\text{len}(\text{left\_A}) = i, \text{len}(\text{right\_A}) = m - i</script></span>.</p>
+<p>注意:当i=0时,<span><span class="MathJax_Preview">\text{left\_A}</span><script type="math/tex">\text{left\_A}</script></span>为空集,而当i=m时,<span><span class="MathJax_Preview">\text{right\_A}</span><script type="math/tex">\text{right\_A}</script></span>为空集。</p>
+<p>采用同样的方式,在任意位置j将B划分成两个部分:</p>
 <pre><code>           left_B            |          right_B
     B[0], B[1], ..., B[j-1]  |  B[j], B[j+1], ..., B[n-1]
 </code></pre>
 
-
-将$\text{left\_A}$和$\text{left\_B}$放入一个集合,并将$\text{right\_A}$和$\text{right\_B}$放入另一个集合。 再把这两个新的集合分别命名为$\text{left\_part}$和$\text{right\_part}$:
-
-
+<p>将<span><span class="MathJax_Preview">\text{left\_A}</span><script type="math/tex">\text{left\_A}</script></span>和<span><span class="MathJax_Preview">\text{left\_B}</span><script type="math/tex">\text{left\_B}</script></span>放入一个集合,并将<span><span class="MathJax_Preview">\text{right\_A}</span><script type="math/tex">\text{right\_A}</script></span>和<span><span class="MathJax_Preview">\text{right\_B}</span><script type="math/tex">\text{right\_B}</script></span>放入另一个集合。 再把这两个新的集合分别命名为<span><span class="MathJax_Preview">\text{left\_part}</span><script type="math/tex">\text{left\_part}</script></span>和<span><span class="MathJax_Preview">\text{right\_part}</span><script type="math/tex">\text{right\_part}</script></span>:</p>
 <pre><code>          left_part          |         right_part
     A[0], A[1], ..., A[i-1]  |  A[i], A[i+1], ..., A[m-1]
     B[0], B[1], ..., B[j-1]  |  B[j], B[j+1], ..., B[n-1]
 </code></pre>
 
-
-当$\text{A}$和$\text{B}$的总长度是偶数时,如果可以确认:
-
-> $\text{len}(\text{left\_part}) = \text{len}(\text{right\_part})$
->
-> $\max(\text{left\_part}) \leq \min(\text{right\_part})$
-
-那么,$\{\text{A},\text{B}\}$中的所有元素已经被划分为相同长度的两个部分,且前一部分中的元素总是小于或等于后一部分中的元素。中位数就是前一部分的最大值和后一部分的最小值的平均值:
-
-$$\text{median} = \frac{\text{max}(\text{left}\_\text{part}) + \text{min}(\text{right}\_\text{part})}{2}$$
-
-​ 当$\text{A}$和$\text{B}$的总长度是奇数时,如果可以确认:
-
-> $\text{len}(\text{left\_part}) = \text{len}(\text{right\_part})+1$
-> 
-> $\max(\text{left\_part}) \leq \min(\text{right\_part})$
-
-那么,$\{\text{A}, \text{B}\}$中的所有元素已经被划分为两个部分,前一部分比后一部分多一个元素,且前一部分中的元素总是小于或等于后一部分中的元素。中位数就是前一部分的最大值:
-
-$$\text{median} = \text{max}(\text{left}\_\text{part})$$
-
-第一个条件对于总长度是偶数和奇数的情况有所不同,但是可以将两种情况合并。第二个条件对于总长度是偶数和奇数的情况是一样的。
-
-要确保这两个条件,只需要保证:
-
-> - i+j=m−i+n−j(当m+n为偶数)或i+j=m−i+n−j+1(当m+n为奇数)。等号左侧为前一部分的元素个数,等号右侧为后一部分的元素个数。将i和j全部移到等号左侧,我们就可以得到$i+j = \frac{m + n + 1}{2}$。这里的分数结果只保留整数部分。
-> - $0 \leq i \leq m$,$0 \leq j \leq n$。如果我们规定$\text{A}$的长度小于等于$\text{B}$的长度,即$m \leq n$。这样对于任意的$i \in [0, m]$,都有$j = \frac{m + n + 1}{2} - i \in [0, n]$,那么我们在[0, m]的范围内枚举i并得到j,就不需要额外的性质了。
->   + 如果$\text{A}$的长度较大,那么我们只要交换$\text{A}$和$\text{B}$即可。
->   + 如果m > n,那么得出的j有可能是负数。
-> - $\text{B}[j-1] \leq \text{A}[i]$以及$\text{A}[i-1] \leq \text{B}[j]$,即前一部分的最大值小于等于后一部分的最小值。
-
-为了简化分析,假设$\text{A}[i-1],\text{B}[j-1],\text{A}[i],\text{B}[j]$总是存在。对于i=0、i=m、j=0、j=n这样的临界条件,我们只需要规定$A[-1]=B[-1]=-\infty$,$A[m]=B[n]=\infty$即可。这也是比较直观的:当一个数组不出现在前一部分时,对应的值为负无穷,就不会对前一部分的最大值产生影响;当一个数组不出现在后一部分时,对应的值为正无穷,就不会对后一部分的最小值产生影响。
-
-所以我们需要做的是:
-
-> 在[0,m]中找到i,使得:
->
-> $\qquad \text{B}[j-1] \leq \text{A}[i]$且$\text{A}[i-1] \leq \text{B}[j]$,其中$j = \frac{m + n + 1}{2} - i$
-
-我们证明它等价于:
-
-> 在[0,m]中找到最大的i,使得:
->
-> $\qquad \text{A}[i-1] \leq \text{B}[j]$,其中$j = \frac{m + n + 1}{2} - i$
-
-这是因为:
-
-> - 当i从$0 \sim m$递增时,$\text{A}[i-1]$递增,$\text{B}[j]$递减,所以一定存在一个最大的i满足$A[i-1] \leq B[j]$;
->
-> - 如果i是最大的,那么说明i+1不满足。将i+1带入可以得到$A[i] > B[j-1]$,也就是$B[j - 1] < A[i]$,就和我们进行等价变换前i的性质一致了(甚至还要更强)。
-
-因此我们可以对i在[0,m]的区间上进行二分搜索,找到最大的满足$A[i-1] \leq B[j]$的i值,就得到了划分的方法。此时,划分前一部分元素中的最大值,以及划分后一部分元素中的最小值,才可能作为就是这两个数组的中位数。
-
-
+<p>当<span><span class="MathJax_Preview">\text{A}</span><script type="math/tex">\text{A}</script></span>和<span><span class="MathJax_Preview">\text{B}</span><script type="math/tex">\text{B}</script></span>的总长度是偶数时,如果可以确认:</p>
+<blockquote>
+<p><span><span class="MathJax_Preview">\text{len}(\text{left\_part}) = \text{len}(\text{right\_part})</span><script type="math/tex">\text{len}(\text{left\_part}) = \text{len}(\text{right\_part})</script></span></p>
+<p><span><span class="MathJax_Preview">\max(\text{left\_part}) \leq \min(\text{right\_part})</span><script type="math/tex">\max(\text{left\_part}) \leq \min(\text{right\_part})</script></span></p>
+</blockquote>
+<p>那么,<span><span class="MathJax_Preview">\{\text{A},\text{B}\}</span><script type="math/tex">\{\text{A},\text{B}\}</script></span>中的所有元素已经被划分为相同长度的两个部分,且前一部分中的元素总是小于或等于后一部分中的元素。中位数就是前一部分的最大值和后一部分的最小值的平均值:</p>
+<div>
+<div class="MathJax_Preview">\text{median} = \frac{\text{max}(\text{left}\_\text{part}) + \text{min}(\text{right}\_\text{part})}{2}</div>
+<script type="math/tex; mode=display">\text{median} = \frac{\text{max}(\text{left}\_\text{part}) + \text{min}(\text{right}\_\text{part})}{2}</script>
+</div>
+<p>​ 当<span><span class="MathJax_Preview">\text{A}</span><script type="math/tex">\text{A}</script></span>和<span><span class="MathJax_Preview">\text{B}</span><script type="math/tex">\text{B}</script></span>的总长度是奇数时,如果可以确认:</p>
+<blockquote>
+<p><span><span class="MathJax_Preview">\text{len}(\text{left\_part}) = \text{len}(\text{right\_part})+1</span><script type="math/tex">\text{len}(\text{left\_part}) = \text{len}(\text{right\_part})+1</script></span></p>
+<p><span><span class="MathJax_Preview">\max(\text{left\_part}) \leq \min(\text{right\_part})</span><script type="math/tex">\max(\text{left\_part}) \leq \min(\text{right\_part})</script></span></p>
+</blockquote>
+<p>那么,<span><span class="MathJax_Preview">\{\text{A}, \text{B}\}</span><script type="math/tex">\{\text{A}, \text{B}\}</script></span>中的所有元素已经被划分为两个部分,前一部分比后一部分多一个元素,且前一部分中的元素总是小于或等于后一部分中的元素。中位数就是前一部分的最大值:</p>
+<div>
+<div class="MathJax_Preview">\text{median} = \text{max}(\text{left}\_\text{part})</div>
+<script type="math/tex; mode=display">\text{median} = \text{max}(\text{left}\_\text{part})</script>
+</div>
+<p>第一个条件对于总长度是偶数和奇数的情况有所不同,但是可以将两种情况合并。第二个条件对于总长度是偶数和奇数的情况是一样的。</p>
+<p>要确保这两个条件,只需要保证:</p>
+<blockquote>
+<ul>
+<li>i+j=m−i+n−j(当m+n为偶数)或i+j=m−i+n−j+1(当m+n为奇数)。等号左侧为前一部分的元素个数,等号右侧为后一部分的元素个数。将i和j全部移到等号左侧,我们就可以得到<span><span class="MathJax_Preview">i+j = \frac{m + n + 1}{2}</span><script type="math/tex">i+j = \frac{m + n + 1}{2}</script></span>。这里的分数结果只保留整数部分。</li>
+<li><span><span class="MathJax_Preview">0 \leq i \leq m</span><script type="math/tex">0 \leq i \leq m</script></span>,<span><span class="MathJax_Preview">0 \leq j \leq n</span><script type="math/tex">0 \leq j \leq n</script></span>。如果我们规定<span><span class="MathJax_Preview">\text{A}</span><script type="math/tex">\text{A}</script></span>的长度小于等于<span><span class="MathJax_Preview">\text{B}</span><script type="math/tex">\text{B}</script></span>的长度,即<span><span class="MathJax_Preview">m \leq n</span><script type="math/tex">m \leq n</script></span>。这样对于任意的<span><span class="MathJax_Preview">i \in [0, m]</span><script type="math/tex">i \in [0, m]</script></span>,都有<span><span class="MathJax_Preview">j = \frac{m + n + 1}{2} - i \in [0, n]</span><script type="math/tex">j = \frac{m + n + 1}{2} - i \in [0, n]</script></span>,那么我们在[0, m]的范围内枚举i并得到j,就不需要额外的性质了。</li>
+<li>如果<span><span class="MathJax_Preview">\text{A}</span><script type="math/tex">\text{A}</script></span>的长度较大,那么我们只要交换<span><span class="MathJax_Preview">\text{A}</span><script type="math/tex">\text{A}</script></span>和<span><span class="MathJax_Preview">\text{B}</span><script type="math/tex">\text{B}</script></span>即可。</li>
+<li>如果m &gt; n,那么得出的j有可能是负数。</li>
+<li><span><span class="MathJax_Preview">\text{B}[j-1] \leq \text{A}[i]</span><script type="math/tex">\text{B}[j-1] \leq \text{A}[i]</script></span>以及<span><span class="MathJax_Preview">\text{A}[i-1] \leq \text{B}[j]</span><script type="math/tex">\text{A}[i-1] \leq \text{B}[j]</script></span>,即前一部分的最大值小于等于后一部分的最小值。</li>
+</ul>
+</blockquote>
+<p>为了简化分析,假设<span><span class="MathJax_Preview">\text{A}[i-1],\text{B}[j-1],\text{A}[i],\text{B}[j]</span><script type="math/tex">\text{A}[i-1],\text{B}[j-1],\text{A}[i],\text{B}[j]</script></span>总是存在。对于i=0、i=m、j=0、j=n这样的临界条件,我们只需要规定<span><span class="MathJax_Preview">A[-1]=B[-1]=-\infty</span><script type="math/tex">A[-1]=B[-1]=-\infty</script></span>,<span><span class="MathJax_Preview">A[m]=B[n]=\infty</span><script type="math/tex">A[m]=B[n]=\infty</script></span>即可。这也是比较直观的:当一个数组不出现在前一部分时,对应的值为负无穷,就不会对前一部分的最大值产生影响;当一个数组不出现在后一部分时,对应的值为正无穷,就不会对后一部分的最小值产生影响。</p>
+<p>所以我们需要做的是:</p>
+<blockquote>
+<p>在[0,m]中找到i,使得:</p>
+<p><span><span class="MathJax_Preview">\qquad \text{B}[j-1] \leq \text{A}[i]</span><script type="math/tex">\qquad \text{B}[j-1] \leq \text{A}[i]</script></span>且<span><span class="MathJax_Preview">\text{A}[i-1] \leq \text{B}[j]</span><script type="math/tex">\text{A}[i-1] \leq \text{B}[j]</script></span>,其中<span><span class="MathJax_Preview">j = \frac{m + n + 1}{2} - i</span><script type="math/tex">j = \frac{m + n + 1}{2} - i</script></span></p>
+</blockquote>
+<p>我们证明它等价于:</p>
+<blockquote>
+<p>在[0,m]中找到最大的i,使得:</p>
+<p><span><span class="MathJax_Preview">\qquad \text{A}[i-1] \leq \text{B}[j]</span><script type="math/tex">\qquad \text{A}[i-1] \leq \text{B}[j]</script></span>,其中<span><span class="MathJax_Preview">j = \frac{m + n + 1}{2} - i</span><script type="math/tex">j = \frac{m + n + 1}{2} - i</script></span></p>
+</blockquote>
+<p>这是因为:</p>
+<blockquote>
+<ul>
+<li>
+<p>当i从<span><span class="MathJax_Preview">0 \sim m</span><script type="math/tex">0 \sim m</script></span>递增时,<span><span class="MathJax_Preview">\text{A}[i-1]</span><script type="math/tex">\text{A}[i-1]</script></span>递增,<span><span class="MathJax_Preview">\text{B}[j]</span><script type="math/tex">\text{B}[j]</script></span>递减,所以一定存在一个最大的i满足<span><span class="MathJax_Preview">A[i-1] \leq B[j]</span><script type="math/tex">A[i-1] \leq B[j]</script></span>;</p>
+</li>
+<li>
+<p>如果i是最大的,那么说明i+1不满足。将i+1带入可以得到<span><span class="MathJax_Preview">A[i] &gt; B[j-1]</span><script type="math/tex">A[i] > B[j-1]</script></span>,也就是<span><span class="MathJax_Preview">B[j - 1] &lt; A[i]</span><script type="math/tex">B[j - 1] < A[i]</script></span>,就和我们进行等价变换前i的性质一致了(甚至还要更强)。</p>
+</li>
+</ul>
+</blockquote>
+<p>因此我们可以对i在[0,m]的区间上进行二分搜索,找到最大的满足<span><span class="MathJax_Preview">A[i-1] \leq B[j]</span><script type="math/tex">A[i-1] \leq B[j]</script></span>的i值,就得到了划分的方法。此时,划分前一部分元素中的最大值,以及划分后一部分元素中的最小值,才可能作为就是这两个数组的中位数。</p>
 <pre><code class="python">class Solution:
     def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -&gt; float:
         if len(nums1) &gt; len(nums2):
@@ -382,12 +345,11 @@ $$\text{median} = \text{max}(\text{left}\_\text{part})$$
         return (median1 + median2) / 2 if (m + n) % 2 == 0 else median1
 </code></pre>
 
-
-复杂度分析
-
-> 时间复杂度:$O(\log\min(m,n)))$,其中m和n分别是数组$\text{nums1}$和$\text{nums2}$的长度。查找的区间是[0,m],而该区间的长度在每次循环之后都会减少为原来的一半。所以,只需要执行$\log m$次循环。由于每次循环中的操作次数是常数,所以时间复杂度为$O(\log m)$。由于我们可能需要交换$\text{nums1}$和$\text{nums2}$使得$m \leq n$,因此时间复杂度是$O(\log\min(m,n)))$。
-> 
-> 空间复杂度:O(1)。
+<p>复杂度分析</p>
+<blockquote>
+<p>时间复杂度:<span><span class="MathJax_Preview">O(\log\min(m,n)))</span><script type="math/tex">O(\log\min(m,n)))</script></span>,其中m和n分别是数组<span><span class="MathJax_Preview">\text{nums1}</span><script type="math/tex">\text{nums1}</script></span>和<span><span class="MathJax_Preview">\text{nums2}</span><script type="math/tex">\text{nums2}</script></span>的长度。查找的区间是[0,m],而该区间的长度在每次循环之后都会减少为原来的一半。所以,只需要执行<span><span class="MathJax_Preview">\log m</span><script type="math/tex">\log m</script></span>次循环。由于每次循环中的操作次数是常数,所以时间复杂度为<span><span class="MathJax_Preview">O(\log m)</span><script type="math/tex">O(\log m)</script></span>。由于我们可能需要交换<span><span class="MathJax_Preview">\text{nums1}</span><script type="math/tex">\text{nums1}</script></span>和<span><span class="MathJax_Preview">\text{nums2}</span><script type="math/tex">\text{nums2}</script></span>使得<span><span class="MathJax_Preview">m \leq n</span><script type="math/tex">m \leq n</script></span>,因此时间复杂度是<span><span class="MathJax_Preview">O(\log\min(m,n)))</span><script type="math/tex">O(\log\min(m,n)))</script></span>。</p>
+<p>空间复杂度:O(1)。</p>
+</blockquote>
 
   <br>
     <style>

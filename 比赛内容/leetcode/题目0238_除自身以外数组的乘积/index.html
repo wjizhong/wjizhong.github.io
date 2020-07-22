@@ -88,29 +88,22 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <p>说明: 请不要使用除法,且在O(n)时间复杂度内完成此题。</p>
 <p>进阶:你可以在常数空间复杂度内完成这个题目吗?(出于对空间复杂度分析的目的,输出数组不被视为额外空间。)</p>
 <h2 id="_2">解题技巧</h2>
-<video src="../images/e7b8441cbfe24c52bd5043cf8ae9909224eb7284751b01d296ad4f29aa659696.mp4" controls />
+<video src="../images/e7b8441cbfe24c52bd5043cf8ae9909224eb7284751b01d296ad4f29aa659696.mp4" controls></video>
 
-* **方法一:左右乘积列表**
-
-思路:我们不必将所有数字的乘积除以给定索引处的数字得到相应的答案,而是利用索引左侧所有数字的乘积和右侧所有数字的乘积(即前缀与后缀)相乘得到答案。
-
-对于给定索引i,我们将使用它左边所有数字的乘积乘以右边所有数字的乘积。下面让我们更加具体的描述这个算法。
-
-算法
-
-> 初始化两个空数组L和R。对于给定索引i,L[i]代表的是i左侧所有数字的乘积,R[i]代表的是i右侧所有数字的乘积。
-> 
-> 我们需要用两个循环来填充L和R数组的值。对于数组L,L[0]应该是1,因为第一个元素的左边没有元素。对于其他元素:L[i] = L[i-1] * nums[i-1]。
-> 
-> 同理,对于数组 R,R[length-1]应为1。length指的是输入数组的大小。其他元素:R[i] = R[i+1] * nums[i+1]。
-> 
-> 当R和L数组填充完成,我们只需要在输入数组上迭代,且索引i处的值为:L[i] * R[i]。
-
-让我们用以下图片看看算法是如何工作的:
-
-![](images/product_of_array_except_self.gif)
-
-
+<ul>
+<li><strong>方法一:左右乘积列表</strong></li>
+</ul>
+<p>思路:我们不必将所有数字的乘积除以给定索引处的数字得到相应的答案,而是利用索引左侧所有数字的乘积和右侧所有数字的乘积(即前缀与后缀)相乘得到答案。</p>
+<p>对于给定索引i,我们将使用它左边所有数字的乘积乘以右边所有数字的乘积。下面让我们更加具体的描述这个算法。</p>
+<p>算法</p>
+<blockquote>
+<p>初始化两个空数组L和R。对于给定索引i,L[i]代表的是i左侧所有数字的乘积,R[i]代表的是i右侧所有数字的乘积。</p>
+<p>我们需要用两个循环来填充L和R数组的值。对于数组L,L[0]应该是1,因为第一个元素的左边没有元素。对于其他元素:L[i] = L[i-1] * nums[i-1]。</p>
+<p>同理,对于数组 R,R[length-1]应为1。length指的是输入数组的大小。其他元素:R[i] = R[i+1] * nums[i+1]。</p>
+<p>当R和L数组填充完成,我们只需要在输入数组上迭代,且索引i处的值为:L[i] * R[i]。</p>
+</blockquote>
+<p>让我们用以下图片看看算法是如何工作的:</p>
+<p><img alt="" src="../images/product_of_array_except_self.gif" /></p>
 <pre><code class="python">class Solution:
     def productExceptSelf(self, nums: List[int]) -&gt; List[int]:
         length = len(nums)
@@ -137,28 +130,22 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
         return answer
 </code></pre>
 
-
-复杂度分析
-
-> 时间复杂度:O(N),其中N指的是数组nums的大小。预处理L和R数组以及最后的遍历计算都是O(N)的时间复杂度。
-> 
-> 空间复杂度:O(N),其中N指的是数组nums的大小。使用了L和R数组去构造答案,L和R数组的长度为数组nums的大小。
-
-* **方法二:空间复杂度O(1)的方法**
-
-思路:尽管上面的方法已经能够很好的解决这个问题,但是空间复杂度并不为常数。
-
-由于输出数组不算在空间复杂度内,那么我们可以将L或R数组用输出数组来计算。先把输出数组当作L数组来计算,然后再动态构造R数组得到结果。让我们来看看基于这个思想的算法。
-
-算法
-
-> 初始化answer数组,对于给定索引i,answer[i]代表的是i左侧所有数字的乘积。
-> 
-> 构造方式与之前相同,只是我们试图节省空间,先把answer作为方法一的L数组。
-> 
-> 这种方法的唯一变化就是我们没有构造R数组。而是用一个遍历来跟踪右边元素的乘积。并更新数组answer[i]=answer[i]*R。然后R更新为R=R*nums[i],其中变量R表示的就是索引右侧数字的乘积。
-
-
+<p>复杂度分析</p>
+<blockquote>
+<p>时间复杂度:O(N),其中N指的是数组nums的大小。预处理L和R数组以及最后的遍历计算都是O(N)的时间复杂度。</p>
+<p>空间复杂度:O(N),其中N指的是数组nums的大小。使用了L和R数组去构造答案,L和R数组的长度为数组nums的大小。</p>
+</blockquote>
+<ul>
+<li><strong>方法二:空间复杂度O(1)的方法</strong></li>
+</ul>
+<p>思路:尽管上面的方法已经能够很好的解决这个问题,但是空间复杂度并不为常数。</p>
+<p>由于输出数组不算在空间复杂度内,那么我们可以将L或R数组用输出数组来计算。先把输出数组当作L数组来计算,然后再动态构造R数组得到结果。让我们来看看基于这个思想的算法。</p>
+<p>算法</p>
+<blockquote>
+<p>初始化answer数组,对于给定索引i,answer[i]代表的是i左侧所有数字的乘积。</p>
+<p>构造方式与之前相同,只是我们试图节省空间,先把answer作为方法一的L数组。</p>
+<p>这种方法的唯一变化就是我们没有构造R数组。而是用一个遍历来跟踪右边元素的乘积。并更新数组answer[i]=answer[i]<em>R。然后R更新为R=R</em>nums[i],其中变量R表示的就是索引右侧数字的乘积。</p>
+</blockquote>
 <pre><code class="python">class Solution:
     def productExceptSelf(self, nums: List[int]) -&gt; List[int]:
         length = len(nums)
@@ -182,12 +169,11 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
         return answer
 </code></pre>
 
-
-复杂度分析
-
-> 时间复杂度:O(N),其中N指的是数组nums的大小。分析与方法一相同。
-> 
-> 空间复杂度:O(1),输出数组不算进空间复杂度中,因此我们只需要常数的空间存放变量。
+<p>复杂度分析</p>
+<blockquote>
+<p>时间复杂度:O(N),其中N指的是数组nums的大小。分析与方法一相同。</p>
+<p>空间复杂度:O(1),输出数组不算进空间复杂度中,因此我们只需要常数的空间存放变量。</p>
+</blockquote>
 
   <br>
     <style>

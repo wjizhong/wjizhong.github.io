@@ -90,21 +90,20 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </code></pre>
 
 <h2 id="_2">解题技巧</h2>
-<video ssrc="../images/9b92d675461e44618275ed5dd36660e57b2b740c51e91f0131f5646bc041113e.mp4" controls />
+<video ssrc="../images/9b92d675461e44618275ed5dd36660e57b2b740c51e91f0131f5646bc041113e.mp4" controls></video>
 
-**前置知识:合并两个有序链表**
-
-在解决合并K个排序链表这个问题之前,我们先来看一个更简单的问题:如何合并两个有序链表?假设链表a和b的长度都是n,如何在O(n)的时间代价以及O(1)的空间代价完成合并?这个问题在面试中常常出现,为了达到空间代价是O(1),我们的宗旨是原地调整链表元素的next指针完成合并。以下是合并的步骤和注意事项,对这个问题比较熟悉的读者可以跳过这一部分。此部分建议结合代码阅读。
-
-> * 首先我们需要一个变量head来保存合并之后链表的头部,你可以把head设置为一个虚拟的头(也就是head的val属性不保存任何值),这是为了方便代码的书写,在整个链表合并完之后,返回它的下一位置即可。
-> * 我们需要一个指针tail来记录下一个插入位置的前一个位置,以及两个指针aPtr和bPtr来记录a和b未合并部分的第一位。注意这里的描述,tail不是下一个插入的位置,aPtr和bPtr所指向的元素处于待合并的状态,也就是说它们还没有合并入最终的链表。当然你也可以给他们赋予其他的定义,但是定义不同实现就会不同。
-> * 当aPtr和bPtr都不为空的时候,取val熟悉较小的合并;如果aPtr为空,则把整个bPtr以及后面的元素全部合并;bPtr为空时同理。
-在合并的时候,应该先调整tail的next属性,再后移tail和*Ptr(aPtr或者bPtr)。那么这里tail和*Ptr是否存在先后顺序呢?它们谁先动谁后动都是一样的,不会改变任何元素的next指针。
-
-代码
-
-C++
-
+<p><strong>前置知识:合并两个有序链表</strong></p>
+<p>在解决合并K个排序链表这个问题之前,我们先来看一个更简单的问题:如何合并两个有序链表?假设链表a和b的长度都是n,如何在O(n)的时间代价以及O(1)的空间代价完成合并?这个问题在面试中常常出现,为了达到空间代价是O(1),我们的宗旨是原地调整链表元素的next指针完成合并。以下是合并的步骤和注意事项,对这个问题比较熟悉的读者可以跳过这一部分。此部分建议结合代码阅读。</p>
+<blockquote>
+<ul>
+<li>首先我们需要一个变量head来保存合并之后链表的头部,你可以把head设置为一个虚拟的头(也就是head的val属性不保存任何值),这是为了方便代码的书写,在整个链表合并完之后,返回它的下一位置即可。</li>
+<li>我们需要一个指针tail来记录下一个插入位置的前一个位置,以及两个指针aPtr和bPtr来记录a和b未合并部分的第一位。注意这里的描述,tail不是下一个插入的位置,aPtr和bPtr所指向的元素处于待合并的状态,也就是说它们还没有合并入最终的链表。当然你也可以给他们赋予其他的定义,但是定义不同实现就会不同。</li>
+<li>当aPtr和bPtr都不为空的时候,取val熟悉较小的合并;如果aPtr为空,则把整个bPtr以及后面的元素全部合并;bPtr为空时同理。
+在合并的时候,应该先调整tail的next属性,再后移tail和<em>Ptr(aPtr或者bPtr)。那么这里tail和</em>Ptr是否存在先后顺序呢?它们谁先动谁后动都是一样的,不会改变任何元素的next指针。</li>
+</ul>
+</blockquote>
+<p>代码</p>
+<p>C++</p>
 <pre><code class="c++">ListNode* mergeTwoLists(ListNode *a, ListNode *b) {
     if ((!a) || (!b)) return a ? a : b;
     ListNode head, *tail = &amp;head, *aPtr = a, *bPtr = b;
@@ -121,20 +120,16 @@ C++
 }
 </code></pre>
 
-
-复杂度
-
-> 时间复杂度:O(n)。
-> 
-> 空间复杂度:O(1)。
-
-* **方法一:顺序合并**
-
-思路:我们可以想到一种最朴素的方法:用一个变量ans来维护以及合并的链表,第i次循环把第i个链表和ans合并,答案保存到ans中。
-
-代码
-
-
+<p>复杂度</p>
+<blockquote>
+<p>时间复杂度:O(n)。</p>
+<p>空间复杂度:O(1)。</p>
+</blockquote>
+<ul>
+<li><strong>方法一:顺序合并</strong></li>
+</ul>
+<p>思路:我们可以想到一种最朴素的方法:用一个变量ans来维护以及合并的链表,第i次循环把第i个链表和ans合并,答案保存到ans中。</p>
+<p>代码</p>
 <pre><code class="c++">/**
  * Definition for singly-linked list.
  * struct ListNode {
@@ -170,26 +165,24 @@ public:
 };
 </code></pre>
 
-
-复杂度分析
-
-> 时间复杂度:假设每个链表的最长长度是n。在第一次合并后,ans的长度为n;第二次合并后,ans的长度为$2\times n$,第i次合并后,ans的长度为$i\times n$。第i次合并的时间代价是$O(n + (i - 1) \times n) = O(i \times n)$,那么总的时间代价为$O(\sum_{i = 1}^{k} (i \times n)) = O(\frac{(1 + k)\cdot k}{2} \times n) = O(k^2 n)$,故渐进时间复杂度为$O(k^2 n)$。
-> 
-> 空间复杂度:没有用到与k和n规模相关的辅助空间,故渐进空间复杂度为O(1)。
-
-* **方法二:分治合并**
-
-考虑优化方法一,用分治的方法进行合并。
-
-> * 将k个链表配对并将同一对中的链表合并;
-> * 第一轮合并以后,k个链表被合并成了$\frac{k}{2}$个链表,平均长度为$\frac{2n}{k}$,然后是$\frac{k}{4}$个链表,$\frac{k}{8}$个链表等等;
-> * 重复这一过程,直到我们得到了最终的有序链表。
-
-![](http://pic.leetcode-cn.com/6f70a6649d2192cf32af68500915d84b476aa34ec899f98766c038fc9cc54662-image.png)
-
-代码
-
-
+<p>复杂度分析</p>
+<blockquote>
+<p>时间复杂度:假设每个链表的最长长度是n。在第一次合并后,ans的长度为n;第二次合并后,ans的长度为<span><span class="MathJax_Preview">2\times n</span><script type="math/tex">2\times n</script></span>,第i次合并后,ans的长度为<span><span class="MathJax_Preview">i\times n</span><script type="math/tex">i\times n</script></span>。第i次合并的时间代价是<span><span class="MathJax_Preview">O(n + (i - 1) \times n) = O(i \times n)</span><script type="math/tex">O(n + (i - 1) \times n) = O(i \times n)</script></span>,那么总的时间代价为<span><span class="MathJax_Preview">O(\sum_{i = 1}^{k} (i \times n)) = O(\frac{(1 + k)\cdot k}{2} \times n) = O(k^2 n)</span><script type="math/tex">O(\sum_{i = 1}^{k} (i \times n)) = O(\frac{(1 + k)\cdot k}{2} \times n) = O(k^2 n)</script></span>,故渐进时间复杂度为<span><span class="MathJax_Preview">O(k^2 n)</span><script type="math/tex">O(k^2 n)</script></span>。</p>
+<p>空间复杂度:没有用到与k和n规模相关的辅助空间,故渐进空间复杂度为O(1)。</p>
+</blockquote>
+<ul>
+<li><strong>方法二:分治合并</strong></li>
+</ul>
+<p>考虑优化方法一,用分治的方法进行合并。</p>
+<blockquote>
+<ul>
+<li>将k个链表配对并将同一对中的链表合并;</li>
+<li>第一轮合并以后,k个链表被合并成了<span><span class="MathJax_Preview">\frac{k}{2}</span><script type="math/tex">\frac{k}{2}</script></span>个链表,平均长度为<span><span class="MathJax_Preview">\frac{2n}{k}</span><script type="math/tex">\frac{2n}{k}</script></span>,然后是<span><span class="MathJax_Preview">\frac{k}{4}</span><script type="math/tex">\frac{k}{4}</script></span>个链表,<span><span class="MathJax_Preview">\frac{k}{8}</span><script type="math/tex">\frac{k}{8}</script></span>个链表等等;</li>
+<li>重复这一过程,直到我们得到了最终的有序链表。</li>
+</ul>
+</blockquote>
+<p><img alt="" src="http://pic.leetcode-cn.com/6f70a6649d2192cf32af68500915d84b476aa34ec899f98766c038fc9cc54662-image.png" /></p>
+<p>代码</p>
 <pre><code class="c++">/**
  * Definition for singly-linked list.
  * struct ListNode {
@@ -228,20 +221,16 @@ public:
 };
 </code></pre>
 
-
-复杂度分析:
-
-> 时间复杂度:考虑递归向上回升的过程——第一轮合并$\frac{k}{2}$组链表,每一组的时间代价是$O(2n)$;第二轮合并$\frac{k}{4}$组链表,每一组的时间代价是$O(4n)$......所以总的时间代价是$O(\sum_{i = 1}^{\infty} \frac{k}{2^i} \times 2^i n) = O(kn \times \log k)$,故渐进时间复杂度为$O(kn \times \log k)$。
-> 
-> 空间复杂度:递归会使用到$O(\log k)$空间代价的栈空间。
-
-* **方法三:使用优先队列合并**
-
-这个方法和前两种方法的思路有所不同,我们需要维护当前每个链表没有被合并的元素的最前面一个,k个链表就最多有k个满足这样条件的元素,每次在这些元素里面选取val属性最小的元素合并到答案中。在选取最小元素的时候,我们可以用优先队列来优化这个过程。
-
-代码
-
-
+<p>复杂度分析:</p>
+<blockquote>
+<p>时间复杂度:考虑递归向上回升的过程——第一轮合并<span><span class="MathJax_Preview">\frac{k}{2}</span><script type="math/tex">\frac{k}{2}</script></span>组链表,每一组的时间代价是<span><span class="MathJax_Preview">O(2n)</span><script type="math/tex">O(2n)</script></span>;第二轮合并<span><span class="MathJax_Preview">\frac{k}{4}</span><script type="math/tex">\frac{k}{4}</script></span>组链表,每一组的时间代价是<span><span class="MathJax_Preview">O(4n)</span><script type="math/tex">O(4n)</script></span>......所以总的时间代价是<span><span class="MathJax_Preview">O(\sum_{i = 1}^{\infty} \frac{k}{2^i} \times 2^i n) = O(kn \times \log k)</span><script type="math/tex">O(\sum_{i = 1}^{\infty} \frac{k}{2^i} \times 2^i n) = O(kn \times \log k)</script></span>,故渐进时间复杂度为<span><span class="MathJax_Preview">O(kn \times \log k)</span><script type="math/tex">O(kn \times \log k)</script></span>。</p>
+<p>空间复杂度:递归会使用到<span><span class="MathJax_Preview">O(\log k)</span><script type="math/tex">O(\log k)</script></span>空间代价的栈空间。</p>
+</blockquote>
+<ul>
+<li><strong>方法三:使用优先队列合并</strong></li>
+</ul>
+<p>这个方法和前两种方法的思路有所不同,我们需要维护当前每个链表没有被合并的元素的最前面一个,k个链表就最多有k个满足这样条件的元素,每次在这些元素里面选取val属性最小的元素合并到答案中。在选取最小元素的时候,我们可以用优先队列来优化这个过程。</p>
+<p>代码</p>
 <pre><code class="c++">/**
  * Definition for singly-linked list.
  * struct ListNode {
@@ -278,12 +267,11 @@ public:
 };
 </code></pre>
 
-
-复杂度
-
-> 时间复杂度:考虑优先队列中的元素不超过k个,那么插入和删除的时间代价为$O(\log k)$,这里最多有$kn$个点,对于每个点都被插入删除各一次,故总的时间代价即渐进时间复杂度为$O(kn \times \log k)$。
-> 
-> 空间复杂度:这里用了优先队列,优先队列中的元素不超过k个,故渐进空间复杂度为$O(k)$。
+<p>复杂度</p>
+<blockquote>
+<p>时间复杂度:考虑优先队列中的元素不超过k个,那么插入和删除的时间代价为<span><span class="MathJax_Preview">O(\log k)</span><script type="math/tex">O(\log k)</script></span>,这里最多有<span><span class="MathJax_Preview">kn</span><script type="math/tex">kn</script></span>个点,对于每个点都被插入删除各一次,故总的时间代价即渐进时间复杂度为<span><span class="MathJax_Preview">O(kn \times \log k)</span><script type="math/tex">O(kn \times \log k)</script></span>。</p>
+<p>空间复杂度:这里用了优先队列,优先队列中的元素不超过k个,故渐进空间复杂度为<span><span class="MathJax_Preview">O(k)</span><script type="math/tex">O(k)</script></span>。</p>
+</blockquote>
 
   <br>
     <style>
