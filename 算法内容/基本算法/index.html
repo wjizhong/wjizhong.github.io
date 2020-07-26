@@ -32,10 +32,10 @@
       var is_top_frame = false;
         
         var pageToc = [
-          {title: "\u57fa\u672c\u51fd\u6570\u7684\u8ba1\u7b97\u673a\u5b9e\u73b0", url: "#_top", level:1, children: [
-              {title: "\u4e00\u3001\u5e38\u89c1\u7684\u7535\u8def", url: "#_2", level:2, children: [ 
+          {title: "\u57fa\u672c\u7b97\u6cd5", url: "#_top", level:1, children: [
+              {title: "\u4e00\u3001\u57fa\u672c\u7535\u8def", url: "#_2", level:2, children: [ 
               ]},
-              {title: "\u4e8c\u3001\u57fa\u672c\u7684\u6a21\u62df\u7535\u8def", url: "#_3", level:2, children: [ 
+              {title: "\u4e8c\u3001\u57fa\u672c\u8fd0\u7b97\u6a21\u62df\u7535\u8def", url: "#_3", level:2, children: [ 
               ]},
               {title: "\u4e09\u3001\u57fa\u672c\u51fd\u6570\u5b9e\u73b0\u539f\u7406", url: "#_4", level:2, children: [
                   {title: "3.1 Taylor\u7ea7\u6570/\u5c55\u5f00", url: "#31-taylor", level:3, children: [
@@ -69,6 +69,48 @@
           {title: "else", url: "#else_1", level:1, children: [
           ]},
           {title: "endif", url: "#endif_1", level:1, children: [
+          ]},
+          {title: "\u7ecf\u5178\u6025\u8f6c\u5f2f", url: "#_6", level:1, children: [
+              {title: "\u4e00\u3001\u6392\u5e8f\u7b97\u6cd5", url: "#_7", level:2, children: [
+                  {title: "1.1 \u9009\u62e9\u6392\u5e8f", url: "#11", level:3, children: [
+                  ]},
+                  {title: "1.2 \u5192\u6ce1\u6392\u5e8f", url: "#12", level:3, children: [
+                  ]},
+                  {title: "1.3 \u63d2\u5165\u6392\u5e8f", url: "#13", level:3, children: [
+                  ]},
+                  {title: "1.4 \u5e0c\u5c14\u6392\u5e8f", url: "#14", level:3, children: [
+                  ]},
+                  {title: "1.5 \u5f52\u5e76\u6392\u5e8f", url: "#15", level:3, children: [
+                  ]},
+                  {title: "1.6 \u5feb\u901f\u6392\u5e8f", url: "#16", level:3, children: [
+                  ]},
+                  {title: "1.7 \u5806\u6392\u5e8f", url: "#17", level:3, children: [
+                  ]},
+                  {title: "1.8 \u8ba1\u6570\u6392\u5e8f", url: "#18", level:3, children: [
+                  ]},
+                  {title: "1.9 \u6876\u6392\u5e8f", url: "#19", level:3, children: [
+                  ]},
+                  {title: "1.10 \u57fa\u6570\u6392\u5e8f", url: "#110", level:3, children: [
+                  ]}, 
+              ]},
+              {title: "\u4e8c\u3001\u6d17\u724c\u7b97\u6cd5", url: "#_8", level:2, children: [
+                  {title: "2.1 \u66b4\u529b\u7b97\u6cd5", url: "#21", level:3, children: [
+                  ]},
+                  {title: "2.2 Fisher-Yates Shuffle\u7b97\u6cd5", url: "#22-fisher-yates-shuffle", level:3, children: [
+                  ]},
+                  {title: "2.3 Knuth-Durstenfeld Shuffle\u7b97\u6cd5", url: "#23-knuth-durstenfeld-shuffle", level:3, children: [
+                  ]},
+                  {title: "2.4 Inside-Out\u7b97\u6cd5", url: "#24-inside-out", level:3, children: [
+                  ]},
+                  {title: "2.5 \u84c4\u6c34\u6c60\u62bd\u6837", url: "#25", level:3, children: [
+                  ]},
+                  {title: "2.6 \u6251\u514b\u724c\u6d17\u724c", url: "#26", level:3, children: [
+                  ]}, 
+              ]},
+              {title: "\u4e09\u3001\u5e76\u67e5\u96c6", url: "#_9", level:2, children: [ 
+              ]},
+              {title: "\u56db\u3001\u56de\u6eaf\u6cd5", url: "#_10", level:2, children: [ 
+              ]},
           ]},
         ];
     </script>
@@ -108,8 +150,8 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 
     
 
-    <h1 id="_1">基本函数的计算机实现</h1>
-<h2 id="_2">一、常见的电路</h2>
+    <h1 id="_1">基本算法</h1>
+<h2 id="_2">一、基本电路</h2>
 <ul>
 <li><strong>通用的电路符号图库</strong></li>
 </ul>
@@ -127,158 +169,188 @@ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 <tbody>
 <tr>
 <td>电池,1个电池,多个电池</td>
-<td><img alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Symbol_baterie_2.svg/240px-Symbol_baterie_2.svg.png" /></td>
+<td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Symbol_baterie_2.svg/240px-Symbol_baterie_2.svg.png" style="height: 70px"></td>
 <td>电容器</td>
-<td><img alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Capacitor_Symbol.svg/240px-Capacitor_Symbol.svg.png" /></td>
+<td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Capacitor_Symbol.svg/240px-Capacitor_Symbol.svg.png" style="height: 70px"></td>
 <td>电解电容器(ANSI)</td>
-<td><img alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Polarized_capacitor_symbol.svg/240px-Polarized_capacitor_symbol.svg.png" /></td>
+<td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Polarized_capacitor_symbol.svg/240px-Polarized_capacitor_symbol.svg.png" style="height: 70px"></td>
 </tr>
 <tr>
 <td>可变电容器</td>
-<td><img alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Variable_capacitor_symbol.svg/240px-Variable_capacitor_symbol.svg.png" /></td>
+<td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Variable_capacitor_symbol.svg/240px-Variable_capacitor_symbol.svg.png" style="height: 70px"></td>
 <td>二极管</td>
-<td><img alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Diode_symbol.svg/240px-Diode_symbol.svg.png" /></td>
+<td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Diode_symbol.svg/240px-Diode_symbol.svg.png" style="height: 70px"></td>
 <td>齐纳二极管</td>
-<td><img alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Zener_diode_symbol.svg/240px-Zener_diode_symbol.svg.png" /></td>
+<td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Zener_diode_symbol.svg/240px-Zener_diode_symbol.svg.png" style="height: 70px"></td>
 </tr>
 <tr>
 <td>隧道二极管(Tunnel diode)</td>
-<td><img alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Tunnel_diode_symbol.svg/240px-Tunnel_diode_symbol.svg.png" /></td>
+<td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Tunnel_diode_symbol.svg/240px-Tunnel_diode_symbol.svg.png" style="height: 70px"></td>
 <td>发光二极管(LED)</td>
-<td><img alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/LED_symbol.svg/240px-LED_symbol.svg.png" /></td>
+<td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/LED_symbol.svg/240px-LED_symbol.svg.png" style="height: 70px"></td>
 <td>光电二极管</td>
-<td><img alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Photodiode_symbol.svg/240px-Photodiode_symbol.svg.png" /></td>
+<td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Photodiode_symbol.svg/240px-Photodiode_symbol.svg.png" style="height: 70px"></td>
 </tr>
 <tr>
 <td>可控硅整流器(Silicon-controlled rectifier)</td>
-<td><img alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/SCR_symbol.svg/240px-SCR_symbol.svg.png" /></td>
+<td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/SCR_symbol.svg/240px-SCR_symbol.svg.png" style="height: 70px"></td>
 <td>变容二极管(Varicap)</td>
-<td><img alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Varicap_symbol.svg/240px-Varicap_symbol.svg.png" /></td>
+<td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Varicap_symbol.svg/240px-Varicap_symbol.svg.png" style="height: 70px"></td>
 <td>肖特基二极管</td>
-<td><img alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Schottky_diode_symbol.svg/240px-Schottky_diode_symbol.svg.png" /></td>
+<td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Schottky_diode_symbol.svg/240px-Schottky_diode_symbol.svg.png" style="height: 70px"></td>
 </tr>
 <tr>
 <td>保险丝:IEC(上)与ANSI(中与下)</td>
-<td><img alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Fuse-basic-symbols.svg/160px-Fuse-basic-symbols.svg.png" /></td>
+<td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Fuse-basic-symbols.svg/160px-Fuse-basic-symbols.svg.png" style="height: 70px"></td>
 <td>电感元件</td>
-<td><img alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Inductor.svg/240px-Inductor.svg.png" /></td>
+<td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Inductor.svg/240px-Inductor.svg.png" style="height: 70px"></td>
 <td>TRS插口</td>
-<td><img alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Phone_Jack_Symbols.svg/240px-Phone_Jack_Symbols.svg.png" /></td>
+<td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Phone_Jack_Symbols.svg/240px-Phone_Jack_Symbols.svg.png" style="height: 70px"></td>
 </tr>
 <tr>
 <td>可变电阻(ANSI)</td>
-<td><img alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Pot_schemA.svg/240px-Pot_schemA.svg.png" /></td>
+<td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Pot_schemA.svg/240px-Pot_schemA.svg.png" style="height: 70px"></td>
 <td>电阻器:ANSI(上)与IEC(下)</td>
-<td><img alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Resistors.svg/240px-Resistors.svg.png" /></td>
+<td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Resistors.svg/240px-Resistors.svg.png" style="height: 70px"></td>
 <td>开关,单刀/单掷(SPST)</td>
-<td><img alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/SPST-Switch.svg/240px-SPST-Switch.svg.png" /></td>
+<td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/SPST-Switch.svg/240px-SPST-Switch.svg.png" style="height: 70px"></td>
 </tr>
 <tr>
 <td>开关,单刀/双掷(SPDT:single port double throw)</td>
-<td><img alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/SPDT-Switch.svg/240px-SPDT-Switch.svg.png" /></td>
+<td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/SPDT-Switch.svg/240px-SPDT-Switch.svg.png" style="height: 70px"></td>
 <td>开关,双刀/双掷(DPDT)</td>
-<td><img alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/DPDT-symbol.svg/188px-DPDT-symbol.svg.png" /></td>
+<td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/DPDT-symbol.svg/188px-DPDT-symbol.svg.png" style="height: 70px"></td>
 <td>变压器,右线圈中间有抽头</td>
-<td><img alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Transformer_Centre-tap_Iron_Core.svg/240px-Transformer_Centre-tap_Iron_Core.svg.png" /></td>
+<td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Transformer_Centre-tap_Iron_Core.svg/240px-Transformer_Centre-tap_Iron_Core.svg.png" style="height: 70px"></td>
 </tr>
 <tr>
 <td>NPN晶体管</td>
-<td><img alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/BJT_NPN_symbol_%28case%29.svg/240px-BJT_NPN_symbol_%28case%29.svg.png" /></td>
+<td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/BJT_NPN_symbol_%28case%29.svg/240px-BJT_NPN_symbol_%28case%29.svg.png" style="height: 70px"" style="height: 70px"></td>
 <td>PNP晶体管</td>
-<td><img alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/BJT_PNP_symbol_%28case%29.svg/240px-BJT_PNP_symbol_%28case%29.svg.png" /></td>
+<td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/BJT_PNP_symbol_%28case%29.svg/240px-BJT_PNP_symbol_%28case%29.svg.png" style="height: 70px"></td>
 <td>n-沟道JFET</td>
-<td><img alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/JFET_N-dep_symbol.svg/240px-JFET_N-dep_symbol.svg.png" /></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
+<td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/JFET_N-dep_symbol.svg/240px-JFET_N-dep_symbol.svg.png" style="height: 70px"></td>
 </tr>
 <tr>
 <td>p-沟道JFET</td>
-<td><img alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/JFET_P-dep_symbol.svg/240px-JFET_P-dep_symbol.svg.png" /></td>
+<td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/JFET_P-dep_symbol.svg/240px-JFET_P-dep_symbol.svg.png" style="height: 70px"></td>
 <td>场效晶体管</td>
-<td><img alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/IGFET_N-Ch_Enh_Labelled_simplified.svg/240px-IGFET_N-Ch_Enh_Labelled_simplified.svg.png" /></td>
+<td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/IGFET_N-Ch_Enh_Labelled_simplified.svg/240px-IGFET_N-Ch_Enh_Labelled_simplified.svg.png" style="height: 70px"></td>
 <td>真空管二极管</td>
-<td><img alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Dioda_symbol.svg/240px-Dioda_symbol.svg.png" /></td>
+<td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Dioda_symbol.svg/240px-Dioda_symbol.svg.png" style="height: 70px"></td>
 </tr>
 <tr>
 <td>真空管三极管</td>
-<td><img alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Trioda_symbol.svg/240px-Trioda_symbol.svg.png" /></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
+<td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Trioda_symbol.svg/240px-Trioda_symbol.svg.png" style="height: 70px"></td>
 <td>真空管五极管</td>
-<td><img alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Pentoda_symbol.svg/174px-Pentoda_symbol.svg.png" /></td>
+<td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Pentoda_symbol.svg/174px-Pentoda_symbol.svg.png" style="height: 70px"></td>
 <td>真空管四极管</td>
-<td><img alt="" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Vacuum_Tube_Tetrode.svg/240px-Vacuum_Tube_Tetrode.svg.png" /></td>
-<td></td>
-<td></td>
+<td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Vacuum_Tube_Tetrode.svg/240px-Vacuum_Tube_Tetrode.svg.png" style="height: 70px"></td>
 </tr>
 </tbody>
 </table>
 <ul>
 <li><strong>经典电路</strong></li>
 </ul>
-<p><strong>桥式整流电路</strong></p>
-<p><img alt="" src="http://discourse-production.oss-cn-shanghai.aliyuncs.com/original/3X/1/e/1ed987e6dcd8cb55b7bfb29c2256dd9b8d75fffc.jpg" /></p>
-<p><strong>功率放大电路</strong></p>
-<p><img alt="" src="http://discourse-production.oss-cn-shanghai.aliyuncs.com/original/3X/a/2/a2d82be67b864ec13557a9c36a89efd4067aedcf.jpg" /></p>
-<p><strong>石英晶体振荡电路</strong></p>
-<p><img alt="" src="http://discourse-production.oss-cn-shanghai.aliyuncs.com/original/3X/8/5/85e896247b5576e1983373367174d25a8f2927f8.jpg" /></p>
-<p><strong>LC振荡电路</strong></p>
-<p><img alt="" src="http://discourse-production.oss-cn-shanghai.aliyuncs.com/original/3X/f/6/f6bbd6440ce77651639f8194c4f9baf2c508eb30.jpg" /></p>
-<p><strong>RC振荡电路</strong></p>
-<p><img alt="" src="http://discourse-production.oss-cn-shanghai.aliyuncs.com/original/3X/0/a/0a56d5296d1f6d162e1886779e890643b0203887.jpg" /></p>
-<p><strong>电压比较电路</strong></p>
-<p><img alt="" src="http://discourse-production.oss-cn-shanghai.aliyuncs.com/original/3X/c/7/c71bf913c3040944bf1d8fc78da76ab6afbf78d3.jpg" /></p>
-<p><strong>差分输入运算放大电路</strong></p>
-<p><img alt="" src="http://discourse-production.oss-cn-shanghai.aliyuncs.com/original/3X/9/3/93d7a9ee6700eaf6a9cac7b58a978d0f147f7655.jpg" /></p>
-<p><strong>运算放大电路</strong></p>
-<p><img alt="" src="http://discourse-production.oss-cn-shanghai.aliyuncs.com/original/3X/b/6/b673a237c0c864ef252efc9d5eb88dac29d56ef4.jpg" /></p>
-<p><strong>选频(带通)放大电路</strong></p>
-<p><img alt="" src="http://discourse-production.oss-cn-shanghai.aliyuncs.com/original/3X/6/0/600204b63cc782fd7181339a42c78c38db69f2d1.jpg" /></p>
-<p><strong>场效应管放大电路</strong></p>
-<p><img alt="" src="http://discourse-production.oss-cn-shanghai.aliyuncs.com/original/3X/c/3/c33d84ff20c8476e0ddf3287acb5e21dc4998e7d.jpg" /></p>
-<p><strong>差分放大电路</strong></p>
-<p><img alt="" src="http://discourse-production.oss-cn-shanghai.aliyuncs.com/original/3X/d/f/dfeb6ddfcc5c5acbf4dd6a2693a0bed64e4e4def.jpg" /></p>
-<p><strong>串联稳压电源</strong></p>
-<p><img alt="" src="http://discourse-production.oss-cn-shanghai.aliyuncs.com/original/3X/1/5/154132e3d755f65ac1743a5425b51582b53d18db.jpg" /></p>
-<p><strong>二极管稳压电路</strong></p>
-<p><img alt="" src="http://discourse-production.oss-cn-shanghai.aliyuncs.com/original/3X/1/b/1b2fdb96309fdf9479397093f808627b6f0f6056.jpg" /></p>
-<p><strong>电路反馈框图</strong></p>
-<p><img alt="" src="http://discourse-production.oss-cn-shanghai.aliyuncs.com/original/3X/8/2/828df7fb63a222ae4df24ce594ae2f3dc366cc90.jpg" /></p>
-<p><strong>共集电极放大电路(射极跟随器)</strong></p>
-<p><img alt="" src="http://discourse-production.oss-cn-shanghai.aliyuncs.com/original/3X/3/7/3706cc8e5550b17173f162a1ff7e733d7b02a85a.jpg" /></p>
-<p><strong>分压偏置式共射极放大电路</strong></p>
-<p><img alt="" src="http://discourse-production.oss-cn-shanghai.aliyuncs.com/original/3X/5/4/5405c802b2d8f6ec921ad8be053982e05526097d.jpg" /></p>
-<p><strong>共射极放大电路</strong></p>
-<p><img alt="" src="http://discourse-production.oss-cn-shanghai.aliyuncs.com/original/3X/6/a/6a6699de719be3f749b2c3eb629a79a4624be0c1.jpg" /></p>
-<p><strong>微分和积分电路</strong></p>
-<p><img alt="" src="http://discourse-production.oss-cn-shanghai.aliyuncs.com/original/3X/8/2/82f1586b4394c68c4c9a62337395ce35c57ccf4a.jpg" /></p>
-<p><strong>信号滤波器</strong></p>
-<p><img alt="" src="http://discourse-production.oss-cn-shanghai.aliyuncs.com/original/3X/6/7/67700511ecea33567eebb28759f3b3f03430d8a4.jpg" /></p>
-<p><strong>电源滤波器</strong></p>
-<p><img alt="" src="http://discourse-production.oss-cn-shanghai.aliyuncs.com/original/3X/8/8/88fa17b7e84e301f4e8010ed04ad3c9ef7784152.jpg" /></p>
-<h2 id="_3">二、基本的模拟电路</h2>
+<table>
+<thead>
+<tr>
+<th align="left">名称</th>
+<th align="center">电路图</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><strong>桥式整流电路</strong></td>
+<td align="center"><img alt="" src="http://discourse-production.oss-cn-shanghai.aliyuncs.com/original/3X/1/e/1ed987e6dcd8cb55b7bfb29c2256dd9b8d75fffc.jpg" /></td>
+</tr>
+<tr>
+<td align="left"><strong>功率放大电路</strong></td>
+<td align="center"><img alt="" src="http://discourse-production.oss-cn-shanghai.aliyuncs.com/original/3X/a/2/a2d82be67b864ec13557a9c36a89efd4067aedcf.jpg" /></td>
+</tr>
+<tr>
+<td align="left"><strong>石英晶体振荡电路</strong></td>
+<td align="center"><img alt="" src="http://discourse-production.oss-cn-shanghai.aliyuncs.com/original/3X/8/5/85e896247b5576e1983373367174d25a8f2927f8.jpg" /></td>
+</tr>
+<tr>
+<td align="left"><strong>LC振荡电路</strong></td>
+<td align="center"><img alt="" src="http://discourse-production.oss-cn-shanghai.aliyuncs.com/original/3X/f/6/f6bbd6440ce77651639f8194c4f9baf2c508eb30.jpg" /></td>
+</tr>
+<tr>
+<td align="left"><strong>RC振荡电路</strong></td>
+<td align="center"><img alt="" src="http://discourse-production.oss-cn-shanghai.aliyuncs.com/original/3X/0/a/0a56d5296d1f6d162e1886779e890643b0203887.jpg" /></td>
+</tr>
+<tr>
+<td align="left"><strong>电压比较电路</strong></td>
+<td align="center"><img alt="" src="http://discourse-production.oss-cn-shanghai.aliyuncs.com/original/3X/c/7/c71bf913c3040944bf1d8fc78da76ab6afbf78d3.jpg" /></td>
+</tr>
+<tr>
+<td align="left"><strong>差分输入运算放大电路</strong></td>
+<td align="center"><img alt="" src="http://discourse-production.oss-cn-shanghai.aliyuncs.com/original/3X/9/3/93d7a9ee6700eaf6a9cac7b58a978d0f147f7655.jpg" /></td>
+</tr>
+<tr>
+<td align="left"><strong>运算放大电路</strong></td>
+<td align="center"><img alt="" src="http://discourse-production.oss-cn-shanghai.aliyuncs.com/original/3X/b/6/b673a237c0c864ef252efc9d5eb88dac29d56ef4.jpg" /></td>
+</tr>
+<tr>
+<td align="left"><strong>选频(带通)放大电路</strong></td>
+<td align="center"><img alt="" src="http://discourse-production.oss-cn-shanghai.aliyuncs.com/original/3X/6/0/600204b63cc782fd7181339a42c78c38db69f2d1.jpg" /></td>
+</tr>
+<tr>
+<td align="left"><strong>场效应管放大电路</strong></td>
+<td align="center"><img alt="" src="http://discourse-production.oss-cn-shanghai.aliyuncs.com/original/3X/c/3/c33d84ff20c8476e0ddf3287acb5e21dc4998e7d.jpg" /></td>
+</tr>
+<tr>
+<td align="left"><strong>差分放大电路</strong></td>
+<td align="center"><img alt="" src="http://discourse-production.oss-cn-shanghai.aliyuncs.com/original/3X/d/f/dfeb6ddfcc5c5acbf4dd6a2693a0bed64e4e4def.jpg" /></td>
+</tr>
+<tr>
+<td align="left"><strong>串联稳压电源</strong></td>
+<td align="center"><img alt="" src="http://discourse-production.oss-cn-shanghai.aliyuncs.com/original/3X/1/5/154132e3d755f65ac1743a5425b51582b53d18db.jpg" /></td>
+</tr>
+<tr>
+<td align="left"><strong>二极管稳压电路</strong></td>
+<td align="center"><img alt="" src="http://discourse-production.oss-cn-shanghai.aliyuncs.com/original/3X/1/b/1b2fdb96309fdf9479397093f808627b6f0f6056.jpg" /></td>
+</tr>
+<tr>
+<td align="left"><strong>电路反馈框图</strong></td>
+<td align="center"><img alt="" src="http://discourse-production.oss-cn-shanghai.aliyuncs.com/original/3X/8/2/828df7fb63a222ae4df24ce594ae2f3dc366cc90.jpg" /></td>
+</tr>
+<tr>
+<td align="left"><strong>共集电极放大电路(射极跟随器)</strong></td>
+<td align="center"><img alt="" src="http://discourse-production.oss-cn-shanghai.aliyuncs.com/original/3X/3/7/3706cc8e5550b17173f162a1ff7e733d7b02a85a.jpg" /></td>
+</tr>
+<tr>
+<td align="left"><strong>分压偏置式共射极放大电路</strong></td>
+<td align="center"><img alt="" src="http://discourse-production.oss-cn-shanghai.aliyuncs.com/original/3X/5/4/5405c802b2d8f6ec921ad8be053982e05526097d.jpg" /></td>
+</tr>
+<tr>
+<td align="left"><strong>共射极放大电路</strong></td>
+<td align="center"><img alt="" src="http://discourse-production.oss-cn-shanghai.aliyuncs.com/original/3X/6/a/6a6699de719be3f749b2c3eb629a79a4624be0c1.jpg" /></td>
+</tr>
+<tr>
+<td align="left"><strong>微分和积分电路</strong></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="left"><strong>信号滤波器</strong></td>
+<td align="center"><img alt="" src="http://discourse-production.oss-cn-shanghai.aliyuncs.com/original/3X/6/7/67700511ecea33567eebb28759f3b3f03430d8a4.jpg" /></td>
+</tr>
+<tr>
+<td align="left"><strong>电源滤波器</strong></td>
+<td align="center"><img alt="" src="http://discourse-production.oss-cn-shanghai.aliyuncs.com/original/3X/8/8/88fa17b7e84e301f4e8010ed04ad3c9ef7784152.jpg" /></td>
+</tr>
+</tbody>
+</table>
+<h2 id="_3">二、基本运算模拟电路</h2>
 <h2 id="_4">三、基本函数实现原理</h2>
 <h3 id="31-taylor">3.1 Taylor级数/展开</h3>
 <p>在数学中,泰勒级数用无限项连加式——级数来表示一个函数,这些相加的项由函数在某一点的导数求得。泰勒级数是以于1715年发表了泰勒公式的英国数学家布鲁克·泰勒(Sir Brook Taylor)来命名的。通过函数在自变量零点的导数求得的泰勒级数又叫做麦克劳林级数,以苏格兰数学家科林·麦克劳林的名字命名。</p>
 <p>拉格朗日在1797年之前,最先提出带有余项的现在形式的泰勒定理。实际应用中,泰勒级数需要截断,只取有限项,可以用泰勒定理估算这种近似的误差。一个函数的有限项的泰勒级数叫做泰勒多项式。一个函数的泰勒级数是其泰勒多项式的极限(如果存在极限)。即使泰勒级数在每点都收敛,函数与其泰勒级数也可能不相等。在开区间(或复平面上的开区间)上,与自身泰勒级数相等的函数称为解析函数。</p>
 <p>在数学上,对于一个在实数或复数<span><span class="MathJax_Preview">a</span><script type="math/tex">a</script></span>邻域上,以实数作为变量或以复数作为变量的函数,并且是无穷可微的函数<span><span class="MathJax_Preview">f(x)</span><script type="math/tex">f(x)</script></span>,它的泰勒级数是以下这种形式的幂级数:</p>
 <div>
-<div class="MathJax_Preview">
-\sum _{n=0}^{\infty }{\frac {f^{(n)}(a)}{n!}}(x-a)^{n}
-</div>
-<script type="math/tex; mode=display">
-\sum _{n=0}^{\infty }{\frac {f^{(n)}(a)}{n!}}(x-a)^{n}
-</script>
+<div class="MathJax_Preview">\sum _{n=0}^{\infty }{\frac {f^{(n)}(a)}{n!}}(x-a)^{n}</div>
+<script type="math/tex; mode=display">\sum _{n=0}^{\infty }{\frac {f^{(n)}(a)}{n!}}(x-a)^{n}</script>
 </div>
 <p>这里,<span><span class="MathJax_Preview">n!</span><script type="math/tex">n!</script></span>表示<span><span class="MathJax_Preview">n</span><script type="math/tex">n</script></span>的阶乘,而<span><span class="MathJax_Preview">f^{(n)}(a)\,\!</span><script type="math/tex">f^{(n)}(a)\,\!</script></span>表示函数<span><span class="MathJax_Preview">f</span><script type="math/tex">f</script></span>在点<span><span class="MathJax_Preview">a</span><script type="math/tex">a</script></span>处的<span><span class="MathJax_Preview">n</span><script type="math/tex">n</script></span>阶导数。如果<span><span class="MathJax_Preview">a=0</span><script type="math/tex">a=0</script></span>,也可以把这个级数称为麦克劳林级数。</p>
 <ul>
@@ -8756,6 +8828,762 @@ S6  =  1.58969099521155010221e-10; /* 0x3DE5D93A, 0x5ACFD57C */
     else      return x-((z*(half*y-v*r)-y)-v*S1);
 }
 </code></pre>
+
+<h1 id="_6">经典急转弯</h1>
+<h2 id="_7">一、排序算法</h2>
+<p><img alt="" src="https://pic1.zhimg.com/v2-76bec25597f777c6559091cda1e31b6c_r.jpg" /></p>
+<p>稳定排序:如果<code>a</code>原本在<code>b</code>的前面,且<code>a==b</code>,排序之后<code>a</code>仍然在<code>b</code>的前面,则为稳定排序。</p>
+<p>非稳定排序:如果<code>a</code>原本在<code>b</code>的前面,且<code>a==b</code>,排序之后<code>a</code>可能不在<code>b</code>的前面,则为非稳定排序。</p>
+<p>原地排序:原地排序就是指在排序过程中不申请多余的存储空间,只利用原来存储待排数据的存储空间进行比较和交换的数据排序。</p>
+<p>非原地排序:需要利用额外的数组来辅助排序。</p>
+<p>时间复杂度:一个算法执行所消耗的时间。</p>
+<p>空间复杂度:运行完一个算法所需的内存大小。</p>
+<p><code>n</code>个数顺序的可能情况一共有<span><span class="MathJax_Preview">n!</span><script type="math/tex">n!</script></span>种,如果把每种情况当做二叉树的一个叶子结点,那么每一次比较判断就相当于在二叉树的分叉处选择一个分支,一次排序就可以看做从根节点到一个叶子结点的路径。根据叶子结点有<span><span class="MathJax_Preview">n!</span><script type="math/tex">n!</script></span>个可以得出二叉树的高度至少为<span><span class="MathJax_Preview">\log_2(n!)+1</span><script type="math/tex">\log_2(n!)+1</script></span>,也就是说至少存在一种情况使得需要比较<span><span class="MathJax_Preview">\log_2(n!)</span><script type="math/tex">\log_2(n!)</script></span>次。根据Stirling公式(<span><span class="MathJax_Preview">n!~\sqrt{2\pi n }(n/e)^n</span><script type="math/tex">n!~\sqrt{2\pi n }(n/e)^n</script></span>)近似,可以得出基于比较的排序算法时间复杂度下限为<span><span class="MathJax_Preview">O(n\log n)</span><script type="math/tex">O(n\log n)</script></span>。</p>
+<h3 id="11">1.1 选择排序</h3>
+<p>过程描述:首先找到数组中最小的那个元素,其次,将它和数组的第一个元素交换位置(如果第一个元素就是最小元素那么它就和自己交换)。其次在剩下的元素中找到最小的元素,将它与数组的第二个元素交换位置。如此往复,直到将整个数组排序。这种方法我们称之为选择排序。</p>
+<p><img alt="" src="https://pic1.zhimg.com/v2-44be35da53ae9ee564ce444542a43d10_b.webp" /></p>
+<pre><code class="c">#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+
+using namespace std;
+template&lt;typename T&gt; //整数或浮点数皆可使用
+void selection_sort(T arr[],int len ) {
+    for (int i = 0; i &lt; len  - 1; i++) {
+        int min = i;
+        for (int j = i + 1; j &lt; len; j++)
+            if (arr[j] &lt; arr[min])
+                min = j;
+        std::swap(arr[i], arr[min]);
+    }
+}
+int main() {
+    float arrf[] = { 17.5, 19.1, 0.6, 1.9, 10.5, 12.4, 3.8, 19.7, 1.5, 25.4, 28.6, 4.4, 23.8, 5.4 };
+    int len = (int) sizeof(arrf) / sizeof(*arrf);
+    selection_sort(arrf,len);
+    for (int i = 0; i &lt; len; i++)
+        cout &lt;&lt; arrf[i] &lt;&lt; ' ';
+    return 0;
+}
+</code></pre>
+
+<p>平均时间复杂度:<span><span class="MathJax_Preview">O(n^2)</span><script type="math/tex">O(n^2)</script></span>,空间复杂度:<span><span class="MathJax_Preview">O(1)</span><script type="math/tex">O(1)</script></span>。</p>
+<h3 id="12">1.2 冒泡排序</h3>
+<p>冒泡排序是排序算法中较为简单的一种,英文称为<code>Bubble Sort</code>。它遍历所有的数据,每次对相邻元素进行两两比较,如果顺序和预先规定的顺序不一致,则进行位置交换;这样一次遍历会将最大或最小的数据上浮到顶端,之后再重复同样的操作,直到所有的数据有序。</p>
+<p><img alt="" src="https://pic3.zhimg.com/v2-b7d216a5b292cf3a5412bbc7fbb56a9e_b.webp" /></p>
+<pre><code class="c++">#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+template&lt;typename T&gt; //整数或浮点数皆可使用
+void bubble_sort(T arr[], int len) {
+    int i, j;
+    for (i = 0; i &lt; len - 1; i++){
+        for (j = 0; j &lt; len - 1 - i; j++)
+            if (arr[j] &gt; arr[j + 1])
+                swap(arr[j], arr[j + 1]);
+    }
+}
+int main() {
+    int arr[] = { 61, 17, 29, 22, 34, 60, 72, 21, 50, 1, 62 };
+    int len = (int) sizeof(arr) / sizeof(*arr);
+    bubble_sort(arr, len);
+    for (int i = 0; i &lt; len; i++)
+        cout &lt;&lt; arr[i] &lt;&lt; ' ';
+    cout &lt;&lt; endl;
+    float arrf[] = { 17.5, 19.1, 0.6, 1.9, 10.5, 12.4, 3.8, 19.7, 1.5, 25.4, 28.6, 4.4, 23.8, 5.4 };
+    len = (int) sizeof(arrf) / sizeof(*arrf);
+    bubble_sort(arrf, len);
+    for (int i = 0; i &lt; len; i++)
+        cout &lt;&lt; arrf[i] &lt;&lt; ' ';
+    return 0;
+}
+</code></pre>
+
+<p>平均时间复杂度:<span><span class="MathJax_Preview">O(n^2)</span><script type="math/tex">O(n^2)</script></span>,空间复杂度:<span><span class="MathJax_Preview">O(1)</span><script type="math/tex">O(1)</script></span>。</p>
+<h3 id="13">1.3 插入排序</h3>
+<p>插入排序英文称为<code>Insertion Sort</code>,它通过构建有序序列,对于未排序的数据序列,在已排序序列中从后向前扫描,找到相应的位置并插入,类似打扑克牌时的码牌。插入排序有一种优化的算法,可以进行拆半插入。</p>
+<p>基本思路是先将待排序序列的第一个元素看做一个有序序列,把第二个元素到最后一个元素当成是未排序序列;然后从头到尾依次扫描未排序序列,将扫描到的每个元素插入有序序列的适当位置,直到所有数据都完成排序;如果待插入的元素与有序序列中的某个元素相等,则将待插入元素插入到相等元素的后面。</p>
+<p><img alt="" src="https://pic1.zhimg.com/v2-be81c151f38d8923fe1ede31ac530ac4_b.webp" /></p>
+<pre><code class="c++">#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+template&lt;typename T&gt; //整数或浮点数皆可使用
+void insertion_sort(T arr,int len){
+    for(int i=1;i&lt;len;i++){
+        T key=arr[i];
+        int j;
+        for(j=i-1;j&gt;=0 &amp;&amp; key&lt;arr[j];j--)
+            arr[j+1]=arr[j];
+        arr[j+1]=key;
+    }
+}
+
+int main() {
+    float arrf[] = { 17.5, 19.1, 0.6, 1.9, 10.5, 12.4, 3.8, 19.7, 1.5, 25.4, 28.6, 4.4, 23.8, 5.4 };
+    int len = (int) sizeof(arrf) / sizeof(*arrf);
+    insertion_sort(arrf,len);
+    for (int i = 0; i &lt; len; i++)
+        cout &lt;&lt; arrf[i] &lt;&lt; ' ';
+    return 0;
+}
+</code></pre>
+
+<p>平均时间复杂度:<span><span class="MathJax_Preview">O(n^2)</span><script type="math/tex">O(n^2)</script></span>,空间复杂度:<span><span class="MathJax_Preview">O(1)</span><script type="math/tex">O(1)</script></span>。</p>
+<h3 id="14">1.4 希尔排序</h3>
+<p>希尔排序也称递减增量排序,是插入排序的一种改进版本,英文称为<code>Shell Sort</code>,效率虽高,但它是一种不稳定的排序算法。</p>
+<p>插入排序在对几乎已经排好序的数据操作时,效果是非常好的;但是插入排序每次只能移动一位数据,因此插入排序效率比较低。</p>
+<p>希尔排序在插入排序的基础上进行了改进,它的基本思路是先将整个数据序列分割成若干子序列分别进行直接插入排序,待整个序列中的记录基本有序时,再对全部数据进行依次直接插入排序。</p>
+<p><img alt="" src="https://pic1.zhimg.com/80/v2-6bfd7452333abc0d8288ee11a4fbfe80_hd.jpg" /></p>
+<pre><code class="c++">#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+template&lt;typename T&gt;
+void shell_sort(T array[], int length) {
+    int h = 1;
+    while (h &lt; length / 3) {
+        h = 3 * h + 1;
+    }
+    while (h &gt;= 1) {
+        for (int i = h; i &lt; length; i++) {
+            for (int j = i; j &gt;= h &amp;&amp; array[j] &lt; array[j - h]; j -= h) {
+                std::swap(array[j], array[j - h]);
+            }
+        }
+        h = h / 3;
+    }
+}
+
+int main() {
+    int arrf[] = { 13，14，94，33，82，25，59，94，65，23，45，27，73，25，39，10 };
+    int len = (int) sizeof(arrf) / sizeof(*arrf);
+    shell_sort(arrf,len);
+    for (int i = 0; i &lt; len; i++)
+        cout &lt;&lt; arrf[i] &lt;&lt; ' ';
+    return 0;
+}
+</code></pre>
+
+<p>平均时间复杂度: <span><span class="MathJax_Preview">O(n\log n)</span><script type="math/tex">O(n\log n)</script></span>,空间复杂度:<span><span class="MathJax_Preview">O(1)</span><script type="math/tex">O(1)</script></span>。</p>
+<h3 id="15">1.5 归并排序</h3>
+<p>归并排序英文称为<code>Merge Sort</code>,归并排序是建立在归并操作上的一种有效的排序算法。该算法是采用分治法(Divide and Conquer)的一个非常典型的应用。它首先将数据样本拆分为两个子数据样本,并分别对它们排序,最后再将两个子数据样本合并在一起;拆分后的两个子数据样本序列,再继续递归的拆分为更小的子数据样本序列,再分别进行排序,直到最后数据序列为1,而不再拆分,此时即完成对数据样本的最终排序。</p>
+<p>归并排序严格遵循从左到右或从右到左的顺序合并子数据序列,它不会改变相同数据之间的相对顺序,因此归并排序是一种稳定的排序算法.</p>
+<p>作为一种典型的分而治之思想的算法应用,归并排序的实现分为两种方法:自上而下的递归和自下而上的迭代。</p>
+<p><img alt="" src="https://pic3.zhimg.com/v2-9541d116b9ad191437cb0f9acce7baf6_b.webp" /></p>
+<pre><code class="c++">#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+template&lt;typename T&gt;
+void merge_sort_iteration(T arr[], int len) {//迭代法
+    T* a = arr;
+    T* b = new T[len];
+    for (int seg = 1; seg &lt; len; seg += seg) {
+        for (int start = 0; start &lt; len; start += seg + seg) {
+            int low = start, mid = min(start + seg, len), high = min(start + seg + seg, len);
+            int k = low;
+            int start1 = low, end1 = mid;
+            int start2 = mid, end2 = high;
+            while (start1 &lt; end1 &amp;&amp; start2 &lt; end2)
+                b[k++] = a[start1] &lt; a[start2] ? a[start1++] : a[start2++];
+            while (start1 &lt; end1)
+                b[k++] = a[start1++];
+            while (start2 &lt; end2)
+                b[k++] = a[start2++];
+        }
+        T* temp = a;
+        a = b;
+        b = temp;
+    }
+    if (a != arr) {
+        for (int i = 0; i &lt; len; i++)
+            b[i] = a[i];
+        b = a;
+    }
+    delete[] b;
+}
+template&lt;typename T&gt;
+void merge_sort_recursive_t(T arr[], T reg[], int start, int end) {//递归法
+    if (start &gt;= end)
+        return;
+    int len = end - start, mid = (len &gt;&gt; 1) + start;
+    int start1 = start, end1 = mid;
+    int start2 = mid + 1, end2 = end;
+    merge_sort_recursive_t(arr, reg, start1, end1);
+    merge_sort_recursive_t(arr, reg, start2, end2);
+    int k = start;
+    while (start1 &lt;= end1 &amp;&amp; start2 &lt;= end2)
+        reg[k++] = arr[start1] &lt; arr[start2] ? arr[start1++] : arr[start2++];
+    while (start1 &lt;= end1)
+        reg[k++] = arr[start1++];
+    while (start2 &lt;= end2)
+        reg[k++] = arr[start2++];
+    for (k = start; k &lt;= end; k++)
+        arr[k] = reg[k];
+}
+template&lt;typename T&gt;
+void merge_sort_recursive(T arr[], const int len) {
+    T *reg = new T[len];
+    merge_sort_recursive_t(arr, reg, 0, len - 1);
+    delete[] reg;
+}
+
+int main() {
+    float arrf[] = { 17.5, 19.1, 0.6, 1.9, 10.5, 12.4, 3.8, 19.7, 1.5, 25.4, 28.6, 4.4, 23.8, 5.4 };
+    int len = (int) sizeof(arrf) / sizeof(*arrf);
+    merge_sort_recursive(arrf,len);
+    for (int i = 0; i &lt; len; i++)
+        cout &lt;&lt; arrf[i] &lt;&lt; ' ';
+    merge_sort_iteration(arrf,len);
+    for (int i = 0; i &lt; len; i++)
+        cout &lt;&lt; arrf[i] &lt;&lt; ' ';
+    return 0;
+}
+</code></pre>
+
+<p>平均时间复杂度:<span><span class="MathJax_Preview">O(n\log n)</span><script type="math/tex">O(n\log n)</script></span>,空间复杂度:<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>。</p>
+<h3 id="16">1.6 快速排序</h3>
+<p>快速排序,英文称为<code>Quicksort</code>,又称划分交换排序<code>partition-exchange sort</code>简称快排。</p>
+<p>快速排序使用分治法(Divide and conquer)策略来把一个序列(list)分为两个子序列(sub-lists)。首先从数列中挑出一个元素,并将这个元素称为基准,英文<code>pivot</code>。重新排序数列,所有比基准值小的元素摆放在基准前面,所有比基准值大的元素摆在基准后面(相同的数可以到任何一边)。在这个分区结束之后,该基准就处于数列的中间位置。这个称为分区(partition)操作。之后在子序列中继续重复这个方法,直到最后整个数据序列排序完成。
+在平均状况下,排序n个项目要<span><span class="MathJax_Preview">O(n\log n)</span><script type="math/tex">O(n\log n)</script></span>次比较。在最坏状况下则需要<span><span class="MathJax_Preview">O(n^2)</span><script type="math/tex">O(n^2)</script></span>次比较,但这种状况并不常见。事实上快速排序通常明显比其他算法更快,因为它的内部循环可以在大部分的架构上很有效率地达成。</p>
+<p><img alt="" src="https://pic3.zhimg.com/v2-71c0f1c0ceb0e053c423426e7f343602_b.webp" /></p>
+<p>迭代法:</p>
+<pre><code class="c++">struct Range {
+    int start, end;
+    Range(int s = 0, int e = 0) {
+        start = s, end = e;
+    }
+};
+template &lt;typename T&gt; //
+void quick_sort(T arr[], const int len) {
+    if (len &lt;= 0)
+        return; //
+
+    Range r[len];
+    int p = 0;
+    r[p++] = Range(0, len - 1);
+    while (p) {
+        Range range = r[--p];
+        if (range.start &gt;= range.end)
+            continue;
+        T mid = arr[range.end];
+        int left = range.start, right = range.end - 1;
+        while (left &lt; right) {
+            while (arr[left] &lt; mid &amp;&amp; left &lt; right) left++;
+            while (arr[right] &gt;= mid &amp;&amp; left &lt; right) right--;
+            std::swap(arr[left], arr[right]);
+        }
+        if (arr[left] &gt;= arr[range.end])
+            std::swap(arr[left], arr[range.end]);
+        else
+            left++;
+        r[p++] = Range(range.start, left - 1);
+        r[p++] = Range(left + 1, range.end);
+    }
+}
+</code></pre>
+
+<p>递归法:</p>
+<pre><code class="c++">template &lt;typename T&gt;
+void quick_sort_recursive(T arr[], int start, int end) {
+    if (start &gt;= end)
+        return;
+    T mid = arr[end];
+    int left = start, right = end - 1;
+    while (left &lt; right) {
+        while (arr[left] &lt; mid &amp;&amp; left &lt; right)
+            left++;
+        while (arr[right] &gt;= mid &amp;&amp; left &lt; right)
+            right--;
+        std::swap(arr[left], arr[right]);
+    }
+    if (arr[left] &gt;= arr[end])
+        std::swap(arr[left], arr[end]);
+    else
+        left++;
+    quick_sort_recursive(arr, start, left - 1);
+    quick_sort_recursive(arr, left + 1, end);
+}
+template &lt;typename T&gt; //
+void quick_sort(T arr[], int len) {
+    quick_sort_recursive(arr, 0, len - 1);
+}
+</code></pre>
+
+<p>平均时间复杂度:<span><span class="MathJax_Preview">O(n\log n</span><script type="math/tex">O(n\log n</script></span>,空间复杂度:<span><span class="MathJax_Preview">O(\log n)</span><script type="math/tex">O(\log n)</script></span>。</p>
+<h3 id="17">1.7 堆排序</h3>
+<p>堆排序,英文称<code>Heapsort</code>,是指利用堆这种数据结构所设计的一种排序算法。堆积是一个近似完全二叉树的结构,并同时满足堆积的性质:即子结点的键值或索引总是小于(或者大于)它的父节点。堆排序实现分为两种方法:</p>
+<blockquote>
+<ul>
+<li>大顶堆:每个节点的值都大于或等于其子节点的值,在堆排序算法中用于升序排列;</li>
+<li>小顶堆:每个节点的值都小于或等于其子节点的值,在堆排序算法中用于降序排列;</li>
+</ul>
+</blockquote>
+<p>算法步骤:</p>
+<blockquote>
+<ul>
+<li>创建一个堆`H[0\dots n-1]$;</li>
+<li>把堆首(最大值)和堆尾互换;</li>
+<li>把堆的尺寸缩小并调用<code>shift_down(0)</code>,目的是把新的数组顶端数据调整到相应位置;重复步骤直到堆的尺寸为1</li>
+</ul>
+</blockquote>
+<p><img alt="" src="https://pic3.zhimg.com/v2-658d0f58eed41a5c11cd1d1c039269ba_b.webp" /></p>
+<pre><code class="c++">#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+void max_heapify(int arr[], int start, int end) {
+    // 建立父节点指标和子节点指标
+    int dad = start;
+    int son = dad * 2 + 1;
+    while (son &lt;= end) { //子节点指标在范围内才做比较
+        if (son + 1 &lt;= end &amp;&amp; arr[son] &lt; arr[son + 1]) //比较两个子节点大小,选择最大的
+            son++;
+        if (arr[dad] &gt; arr[son]) //如果父节点大于子节点代表调整完毕,直接跳出函数
+            return;
+        else { //否則交换父子内容再继续子节点和孙节点比较
+            swap(arr[dad], arr[son]);
+            dad = son;
+            son = dad * 2 + 1;
+        }
+    }
+}
+
+void heap_sort(int arr[], int len) {
+    // 初始化,i从最后一个父节点开始调整
+    for (int i = len / 2 - 1; i &gt;= 0; i--)
+        max_heapify(arr, i, len - 1);
+    // 先將第一个元素和已经排好的元素前一位做交换,再重调整(刚调整的元素之前的元素),直到排序完毕
+    for (int i = len - 1; i &gt; 0; i--) {
+        swap(arr[0], arr[i]);
+        max_heapify(arr, 0, i - 1);
+    }
+}
+
+int main() {
+    int arr[] = { 3, 5, 3, 0, 8, 6, 1, 5, 8, 6, 2, 4, 9, 4, 7, 0, 1, 8, 9, 7, 3, 1, 2, 5, 9, 7, 4, 0, 2, 6 };
+    int len = (int) sizeof(arr) / sizeof(*arr);
+    heap_sort(arr, len);
+    for (int i = 0; i &lt; len; i++)
+        cout &lt;&lt; arr[i] &lt;&lt; ' ';
+    cout &lt;&lt; endl;
+    return 0;
+}
+</code></pre>
+
+<h3 id="18">1.8 计数排序</h3>
+<p>计数排序英文称<code>Counting sort</code>,是一种稳定的线性时间排序算法。计数排序使用一个额外的数组<code>C</code>,其中第i个元素是待排序数组<code>A</code>中值等于i的元素的个数。然后根据数组C来将A中的元素排到正确的位置。基本的步骤如下:</p>
+<blockquote>
+<ul>
+<li>找出待排序的数组中最大和最小的元素</li>
+<li>统计数组中每个值为i的元素出现的次数,存入数组C的第i项</li>
+<li>对所有的计数累加,从C中的第一个元素开始,每一项和前一项相加</li>
+<li>反向填充目标数组,将每个元素i放在新数组的第C[i]项,每放一个元素就将C[i]减去1</li>
+</ul>
+</blockquote>
+<p><img alt="" src="https://pic1.zhimg.com/v2-827d96b8ca3682e8775f4916f22b45ac_b.webp" /></p>
+<pre><code class="c++">void  Count_Sort(int* Data, int Len){
+    int* Cout = NULL;
+    Cout = (int*)malloc(sizeof(int) * Len);
+    //初始化记数为0
+    for (int i = 0; i &lt; Len; i++) {
+        Cout[i] = 0;
+    }
+
+    // 记录重复的个数
+    for (int i = 0; i &lt; Len; i++){
+        Cout[Data[i]] += 1;
+    }
+
+    //确定不比该位置大的数据个数。
+    for (int i = 1; i &lt; Len; i++){
+        Cout[i] += Cout[i - 1];
+    }
+
+    int* Sort = NULL;
+    Sort = (int*)malloc(sizeof(int) * Len);
+
+    for (int i = 0; i &lt; Len; i++) {
+        //将数组反向填充到Sort，每次拿出一个就减一
+        Cout[Data[i]] -= 1;
+        Sort[Cout[Data[i]]] = Data[i];
+    }
+
+    // 排序结束，将排序好的数据复制到原来数组中。
+    for (int i = 0; i &lt; Len; ++i){
+        Data[i] = Sort[i];
+    }
+
+    // 释放申请的空间。
+    free(Cout);
+    free(Sort);
+}
+</code></pre>
+
+<p>平均时间复杂度:<span><span class="MathJax_Preview">O(n+k)</span><script type="math/tex">O(n+k)</script></span>,空间复杂度:<span><span class="MathJax_Preview">O(k)</span><script type="math/tex">O(k)</script></span>。</p>
+<h3 id="19">1.9 桶排序</h3>
+<p>桶排序也称为箱排序,英文称为<code>Bucket Sort</code>。它是将数组划分到一定数量的有序的桶里,然后再对每个桶中的数据进行排序,最后再将各个桶里的数据有序的合并到一起。</p>
+<p><img alt="" src="https://pic3.zhimg.com/v2-b7d216a5b292cf3a5412bbc7fbb56a9e_b.webp" /></p>
+<pre><code class="c++">#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+using namespace std;
+
+struct tNode{
+    int tValue;
+    tNode *next;
+
+    tNode(int val) {
+        this-&gt;tValue = val;
+        this-&gt;next = NULL;
+    }
+};
+
+bool bucket_sort(int *arrf, const int SIZE){
+    tNode **pNode = (tNode **)malloc(sizeof(tNode *) * 512);
+    if (NULL == pNode)
+        return false;
+
+    memset(pNode, 0, sizeof(tNode *) * 512);
+
+    int shiftNum = 0;
+    tNode *p = NULL;
+    tNode *pLast = NULL;
+    tNode *pNewNode = NULL;
+
+    for (int i = 0; i &lt; SIZE; ++i){
+        shiftNum = arrf[i] &gt;&gt; 24;
+        p = pNode[shiftNum];
+
+        pNewNode = new tNode(arrf[i]);
+        if (NULL == pNewNode)
+            return false;
+
+        if (NULL == p){
+            pNode[shiftNum] = pNewNode;
+        } else if (arrf[i] &lt;= p-&gt;tValue) {
+            pNode[shiftNum] = pNewNode;
+            pNewNode-&gt;next = p;
+        } else {
+            while (NULL != p-&gt;next)
+            {
+                if (arrf[i] &gt; p-&gt;next-&gt;tValue)
+                    p = p-&gt;next;
+                else
+                    break;
+            }
+            pNewNode-&gt;next = p-&gt;next;
+            p-&gt;next = pNewNode;
+        }
+    }
+    for (int i = 0, k = 0; i &lt; 512; i++){
+        p = pNode[i];
+        while (NULL != p){
+            arrf[k++] = p-&gt;tValue;
+            p = p-&gt;next;
+        }
+    }
+    return true;
+}
+int main(int argc, char **argv){
+    int arr[] = { 5,558,772,935,344,487,96,665,302,735,954,308,718,147,185,371,166,849,202,478,874,169,980,125,44,15,279,882,466,974 };
+
+    bucket_sort(arr,30);
+    for (int i = 0; i &lt; 30; ++i){
+        cout&lt;&lt;arr[i]&lt;&lt;&quot; &quot;;
+    }
+
+   cout&lt;&lt;endl;
+   return 0;
+}
+</code></pre>
+
+<p>平均时间复杂度:<span><span class="MathJax_Preview">O(n+k)</span><script type="math/tex">O(n+k)</script></span>,空间复杂度:<span><span class="MathJax_Preview">O(n+k)</span><script type="math/tex">O(n+k)</script></span>。</p>
+<h3 id="110">1.10 基数排序</h3>
+<p>基数排序英文称<code>Radix sort</code>,是一种非比较型整数排序算法,其原理是将整数按位数切割成不同的数字,然后按每个位数分别比较。由于整数也可以表达字符串和特定格式的浮点数,所以基数排序也仅限于整数。它首先将所有待比较数值,统一为同样的数位长度,数位较短的数前面补零。然后从最低位开始,依次进行一次排序。这样从最低位排序一直到最高位排序完成以后,数列就变成一个有序序列。</p>
+<p><img alt="" src="https://pic1.zhimg.com/v2-6690b1054909755ffcca96feb7a4d3ec_b.webp" /></p>
+<pre><code class="c++">int maxbit(int data[], int n) //辅助函数，求数据的最大位数
+{
+    int maxData = data[0];        ///&lt; 最大数
+    // 先求出最大数,再求其位数,这样有原先依次每个数判断其位数,稍微优化点。
+    for (int i = 1; i &lt; n; ++i) {
+        if (maxData &lt; data[i])
+            maxData = data[i];
+    }
+    int d = 1;
+    int p = 10;
+    while (maxData &gt;= p) {
+        //p *= 10; // Maybe overflow
+        maxData /= 10;
+        ++d;
+    }
+    return d;
+}
+
+void radixsort(int data[], int n) //基数排序
+{
+    int d = maxbit(data, n);
+    int *tmp = new int[n];
+    int *count = new int[10]; //计数器
+    int i, j, k;
+    int radix = 1;
+    for(i = 1; i &lt;= d; i++) //进行d次排序
+    {
+        for(j = 0; j &lt; 10; j++)
+            count[j] = 0; //每次分配前清空计数器
+        for(j = 0; j &lt; n; j++){
+            k = (data[j] / radix) % 10; //统计每个桶中的记录数
+            count[k]++;
+        }
+        for(j = 1; j &lt; 10; j++)
+            count[j] = count[j - 1] + count[j]; //将tmp中的位置依次分配给每个桶
+        for(j = n - 1; j &gt;= 0; j--) //将所有桶中记录依次收集到tmp中
+        {
+            k = (data[j] / radix) % 10;
+            tmp[count[k] - 1] = data[j];
+            count[k]--;
+        }
+        for(j = 0; j &lt; n; j++) //将临时数组的内容复制到data中
+            data[j] = tmp[j];
+        radix = radix * 10;
+    }
+    delete []tmp;
+    delete []count;
+}
+</code></pre>
+
+<p>平均时间复杂度:<span><span class="MathJax_Preview">O(n\times k)</span><script type="math/tex">O(n\times k)</script></span>,空间复杂度:<span><span class="MathJax_Preview">O(n+k)</span><script type="math/tex">O(n+k)</script></span>。</p>
+<h2 id="_8">二、洗牌算法</h2>
+<p>洗牌(随机)算法有很多应用,例如我们平时用的音乐播放器随机播放,棋牌游戏中的洗牌,扫雷游戏中雷的位置随机等等,都会用到洗牌算法。洗牌可以抽象为:给定一组排列,输出该排列的一个随机组合。</p>
+<h3 id="21">2.1 暴力算法</h3>
+<p>暴力算法简单的来说就是把每个数放在一个"帽子"里面,每次从"帽子"里面随机摸一个数出来,直到"帽子"为空。下面是具体操作,首先我们把数组array复制一份给数组aux,之后每次随机从aux中取一个数,为了防止数被重复取出,每次取完就把这个数从aux中移除。重置的实现方式很简单,只需把array恢复称最开始的状态就可以了。</p>
+<p>这个算法的正确性在于,每次for循环中,任何一个元素都会以等可能的概率被选中。为了证明这一点,我们可以算出来,一个特定的元素<span><span class="MathJax_Preview">e</span><script type="math/tex">e</script></span>在第<span><span class="MathJax_Preview">k</span><script type="math/tex">k</script></span>轮被选中的概率为<span><span class="MathJax_Preview">P(e\text{在第}k\text{轮被选中})\cdot P(e\text{在前}k\text{轮不被选中})</span><script type="math/tex">P(e\text{在第}k\text{轮被选中})\cdot P(e\text{在前}k\text{轮不被选中})</script></span>。假设洗牌的数组有<span><span class="MathJax_Preview">n</span><script type="math/tex">n</script></span>个元素,这个概率公式如下所示:</p>
+<div>
+<div class="MathJax_Preview">
+\frac{1}{n-k} \cdot \prod_{i=1}^{k} \frac{n-i}{n-i+1}
+</div>
+<script type="math/tex; mode=display">
+\frac{1}{n-k} \cdot \prod_{i=1}^{k} \frac{n-i}{n-i+1}
+</script>
+</div>
+<p>把这个式子展开一下是这样的:</p>
+<div>
+<div class="MathJax_Preview">
+(\frac{n-1}{n} \cdot \frac{n-2}{n-1} \cdot (\ldots) \cdot \frac{n-k+1}{n-k+2} \cdot \frac{n-k}{n-k+1}) \cdot \frac{1}{n-k}
+</div>
+<script type="math/tex; mode=display">
+(\frac{n-1}{n} \cdot \frac{n-2}{n-1} \cdot (\ldots) \cdot \frac{n-k+1}{n-k+2} \cdot \frac{n-k}{n-k+1}) \cdot \frac{1}{n-k}
+</script>
+</div>
+<p>在<span><span class="MathJax_Preview">k=0</span><script type="math/tex">k=0</script></span>的情况下,很显然<span><span class="MathJax_Preview">\frac{1}{n-k} = \frac{1}{n}</span><script type="math/tex">\frac{1}{n-k} = \frac{1}{n}</script></span>。对于<span><span class="MathJax_Preview">k&gt;0</span><script type="math/tex">k>0</script></span>的情况,前一个式子的分子正好能把下一个式子的分母约去,到最后也只有第一个式子分母还在。因此,不管是哪一轮摸到了哪一个数,概率都是<span><span class="MathJax_Preview">\frac{1}{n}</span><script type="math/tex">\frac{1}{n}</script></span>,所以这个数组的每个排列组合都是等概率的。</p>
+<pre><code class="python">class Solution:
+    def __init__(self, nums):
+        self.array = nums
+        self.original = list(nums)
+
+    def reset(self):
+        self.array = self.original
+        self.original = list(self.original)
+        return self.array
+
+    def shuffle(self):
+        aux = list(self.array)
+
+        for idx in range(len(self.array)):
+            remove_idx = random.randrange(len(aux))
+            self.array[idx] = aux.pop(remove_idx)
+
+        return self.array
+</code></pre>
+
+<p>复杂度分析:时间复杂度<span><span class="MathJax_Preview">O(n^2)</span><script type="math/tex">O(n^2)</script></span>,空间复杂度<span><span class="MathJax_Preview">O(n)</span><script type="math/tex">O(n)</script></span>。</p>
+<h3 id="22-fisher-yates-shuffle">2.2 <code>Fisher-Yates Shuffle</code>算法</h3>
+<p>最早提出这个洗牌方法的是Ronald A. Fisher和Frank Yates,即Fisher–Yates Shuffle,其基本思想就是从原始数组中随机取一个之前没取过的数字到新的数组中,具体如下:</p>
+<blockquote>
+<ol>
+<li>初始化原始数组和新数组,原始数组长度为n(已知);</li>
+<li>从还没处理的数组(假如还剩k个)中,随机产生一个[0,k)之间的数字p(假设数组从0开始);</li>
+<li>从剩下的k个数中把第p个数取出;</li>
+<li>重复步骤2和3直到数字全部取完;</li>
+<li>从步骤3取出的数字序列便是一个打乱了的数列</li>
+</ol>
+</blockquote>
+<p>下面证明其随机性,即每个元素被放置在新数组中的第i个位置是1/n(假设数组大小是n)。证明:一个元素m被放入第i个位置的概率P=前i-1个位置选择元素时没有选中m的概率*第i个位置选中m的概率。</p>
+<pre><code class="c++">#define N 10
+#define M 5
+void Fisher_Yates_Shuffle(vector&lt;int&gt;&amp; arr,vector&lt;int&gt;&amp; res){
+     srand((unsigned)time(NULL));
+     int k;
+     for (int i=0;i&lt;M;++i) {
+        k=rand()%arr.size();
+        res.push_back(arr[k]);
+        arr.erase(arr.begin()+k);
+     }
+}
+</code></pre>
+
+<p>时间复杂度为<code>O(n*n)</code>,空间复杂度为<code>O(n)</code>.</p>
+<h3 id="23-knuth-durstenfeld-shuffle">2.3 <code>Knuth-Durstenfeld Shuffle</code>算法</h3>
+<p>Knuth和Durstenfeld在Fisher等人的基础上对算法进行了改进,在原始数组上对数字进行交互,省去了额外<code>O(n)</code>的空间。该算法的基本思想和Fisher类似,每次从未处理的数据中随机取出一个数字,然后把该数字放在数组的尾部,即数组尾部存放的是已经处理过的数字。</p>
+<p>算法步骤为：</p>
+<blockquote>
+<ol>
+<li>建立一个数组大小为n的数组arr,分别存放1到n的数值;</li>
+<li>生成一个从0到n-1的随机数x;</li>
+<li>输出arr下标为x的数值,即为第一个随机数;</li>
+<li>将arr的尾元素和下标为x的元素互换;</li>
+<li>同2,生成一个从0到n-2的随机数x;</li>
+<li>输出arr下标为x的数值,为第二个随机数;</li>
+<li>将arr的倒数第二个元素和下标为x的元素互换;</li>
+<li>...</li>
+<li>如上,直到输出m个数为止</li>
+</ol>
+</blockquote>
+<p>该算法是经典洗牌算法。它的proof如下:</p>
+<blockquote>
+<ul>
+<li>对于arr[i],洗牌后在第n-1个位置的概率是1/n(第一次交换的随机数为i）</li>
+<li>在n-2个位置概率是[(n-1)/n] * [1/(n-1)]=1/n,(第一次交换的随机数不为i,第二次为arr[i]所在的位置(注意,若i=n-1,第一交换arr[n-1]会被换到一个随机的位置))</li>
+<li>在第n-k个位置的概率是[(n-1)/n]<em>[(n-2)/(n-1)]</em>...<em>[(n-k+1)/(n-k+2)] </em>[1/(n-k+1)]=1/n
+(第一个随机数不要为i,第二次不为arr[i]所在的位置(随着交换有可能会变)...第n-k次为arr[i]所在的位置)。</li>
+</ul>
+</blockquote>
+<pre><code class="c++">void Knuth_Durstenfeld_Shuffle(vector&lt;int&gt;&amp;arr){
+    for (int i=arr.size()-1;i&gt;=0;--i) {
+        srand((unsigned)time(NULL));
+        swap(arr[rand()%(i+1)],arr[i]);
+    }
+}
+</code></pre>
+
+<p>时间复杂度为<code>O(n)</code>,空间复杂度为<code>O(1)</code>,缺点必须知道数组长度<code>n</code>。</p>
+<p>原始数组被修改了,这是一个原地打乱顺序的算法,算法时间复杂度也从Fisher算法的<code>O(n^2)</code>提升到了<code>O(n)</code>。由于是从后往前扫描,无法处理不知道长度或动态增长的数组。</p>
+<h3 id="24-inside-out">2.4 <code>Inside-Out</code>算法</h3>
+<p><code>Knuth-Durstenfeld Shuffle</code>是一个内部打乱的算法,算法完成后原始数据被直接打乱,尽管这个方法可以节省空间,但在有些应用中可能需要保留原始数据,所以需要另外开辟一个数组来存储生成的新序列。</p>
+<p><code>Inside-Out</code>算法算法的基本思思是从前向后扫描数据,把位置i的数据随机插入到前i个(包括第i个)位置中(假设为k),这个操作是在新数组中进行,然后把原始数据中位置k的数字替换新数组位置i的数字。其实效果相当于新数组中位置k和位置i的数字进行交互。</p>
+<p>如果知道arr的lengh的话,可以改为for循环,由于是从前往后遍历,所以可以应对arr[]数目未知的情况,或者arr[]是一个动态增加的情况。证明如下:</p>
+<blockquote>
+<ul>
+<li>原数组的第i个元素(随机到的数)在新数组的前i个位置的概率都是:(1/i) * [i/(i+1)] * [(i+1)/(i+2)] <em>...</em> [(n-1)/n] = 1/n,(即第i次刚好随机放到了该位置,在后面的n-i次选择中该数字不被选中)。</li>
+<li>原数组的第i个元素(随机到的数)在新数组的i+1(包括i+1)以后的位置(假设是第k个位置)的概率是:(1/k)<em>[k/(k+1)]</em>[(k+1)/(k+2)]<em>...</em>[(n-1)/n]=1/n(即第k次刚好随机放到了该位置,在后面的n-k次选择中该数字不被选中)。</li>
+</ul>
+</blockquote>
+<pre><code class="c++">void Inside_Out_Shuffle(const vector&lt;int&gt;&amp;arr,vector&lt;int&gt;&amp; res) {
+    res.assign(arr.size(),0);
+    copy(arr.begin(),arr.end(),res.begin());
+    int k;
+    for (int i=0;i&lt;arr.size();++i)
+    {
+        srand((unsigned)time(NULL));
+        k=rand()%(i+1);
+        res[i]=res[k];
+        res[k]=arr[i];
+    }
+}
+</code></pre>
+
+<p>时间复杂度为<code>O(n)</code>,空间复杂度为<code>O(n)</code>。</p>
+<h3 id="25">2.5 蓄水池抽样</h3>
+<p>从N个元素中随机等概率取出k个元素,N长度未知。它能够在O(n)时间内对n个数据进行等概率随机抽取。如果数据集合的量特别大或者还在增长(相当于未知数据集合总量),该算法依然可以等概率抽样。伪代码:</p>
+<pre><code>Init : a reservoir with the size k
+    for i= k+1 to N
+        M=random(1, i);
+        if( M &lt; k)
+            SWAP the Mth value and ith value
+    end for
+</code></pre>
+
+<p>上述伪代码的意思是:先选中第1到k个元素,作为被选中的元素。然后依次对第k+1至第N个元素做如下操作:每个元素都有k/x的概率被选中，然后等概率的(1/k)替换掉被选中的元素,其中x是元素的序号。</p>
+<p>每次都是以k/i的概率来选择证明如下(归纳法)k&lt; i &lt;=N:</p>
+<blockquote>
+<ol>
+<li>当i=k+1的时候,蓄水池的容量为k,第k+1个元素被选择的概率明显为k/(k+1),此时前k个元素出现在蓄水池的概率为 k/(k+1),很明显结论成立。</li>
+<li>假设当j=i的时候结论成立,此时以k/i的概率来选择第i个元素,前i-1个元素出现在蓄水池的概率都为k/i。证明当j=i+1的情况即需要证明当以k/i+1的概率来选择第i+1个元素的时候,此时任一前i个元素出现在蓄水池的概率都为k/(i+1).
+  i. 前i个元素出现在蓄水池的概率有2部分组成,① 在第i+1次选择前得出现在蓄水池中,② 得保证第i+1次选择的时候不被替换掉
+  ii. ①由2知道在第i+1次选择前,任一前i个元素出现在蓄水池的概率都为k/i
+  iii. ②. 考虑被替换的概率:首先要被替换得第i+1个元素被选中(不然不用替换了)概率为k/i+1,其次是因为随机替换的池子中k个元素中任意一个,所以不幸被替换的概率是1/k,故
+前i个元素(池中元素)中任一被替换的概率=k/(i+1) * 1/k = 1/i+1,则(池中元素中)没有被替换的概率为:1 - 1/(i+1) = i/i+1
+  iv. 综合①②,通过乘法规则,得到前i个元素出现在蓄水池的概率为 k/i*i/(i+1) = k/i+1</li>
+<li>故证明成立</li>
+</ol>
+</blockquote>
+<pre><code class="c++">void Reservoir_Sampling(vector&lt;int&gt;&amp; arr) {
+    int k;
+    for (int i=M;i&lt;arr.size();++i)
+    {
+        srand((unsigned)time(NULL));
+        k=rand()%(i+1);
+        if (k&lt;M)
+            swap(arr[k],arr[i]);
+    }
+}
+</code></pre>
+
+<p>因此蓄水池抽样因为不需知道n的长度,可用于机器学习的数据集的划分,等概率随机抽样分为测试集和训练集。</p>
+<h3 id="26">2.6 扑克牌洗牌</h3>
+<p>一堆每张牌都互不一样的牌堆,规定某一种具有随机性的洗牌法。那么在不考虑初始状态的情况下,经过重复进行该洗牌法若干次后,牌堆的每种排列出现的概率都相同或接近相同。问:对某一种确定的洗牌法,若干次是多少次?</p>
+<blockquote>
+<ul>
+<li><strong>每张牌都互不一样</strong> 是为了规范我们所研究的问题。对有重复牌的牌堆,比如说同时洗两幅牌,每一张牌都与另一张牌一样。这样的洗牌问题与无重复牌堆的洗牌问题是不一样的,这方面的研究成果也有很多。</li>
+<li><strong>不考虑初始状态</strong> 是要将初始状态的影响去除掉,一堆看起来非常无序的牌堆和一堆看起来非常有序的牌堆处理起来应该是一样的。当然,从数学上来看,看起来非常无序和看起来非常有序本身就是没有区别的。</li>
+</ul>
+</blockquote>
+<p>目前已经处理解决的洗牌模型及结论如下:</p>
+<ul>
+<li>
+<p><strong><code>Top-to-Random Shuffle</code></strong> :抽出顶部的牌,随机插入牌堆中任一位置。<span><span class="MathJax_Preview">n\log n</span><script type="math/tex">n\log n</script></span></p>
+</li>
+<li>
+<p><strong><code>Random-Transposition</code></strong> :随机抽取两张牌,交换他们。<span><span class="MathJax_Preview">O(n\log n</span><script type="math/tex">O(n\log n</script></span></p>
+</li>
+<li>
+<p><strong><code>Random-Adjacent-Transposition</code></strong> :随机抽取两张相邻的牌,交换他们。<span><span class="MathJax_Preview">n^3\log n</span><script type="math/tex">n^3\log n</script></span></p>
+</li>
+<li>
+<p><strong><code>Riffle Shuffle</code>(鸽尾式洗牌法)</strong> :将牌分成两叠,交错放下。<span><span class="MathJax_Preview">O(\log n)</span><script type="math/tex">O(\log n)</script></span></p>
+</li>
+</ul>
+<p><img alt="" src="https://pic3.zhimg.com/80/9953418a7b29b848bffc8a2129cb76a2_hd.jpg" /></p>
+<p>参考文章: <code>Shuffling cards and stopping times</code></p>
+<ul>
+<li>
+<p><strong><code>Overhand Shuffle</code>(过手洗牌法)&amp;<code>Hindu Shuffle</code>(印度洗牌法)</strong> :即不断地从牌堆中抽出一叠,放置到整个牌堆上方。<span><span class="MathJax_Preview">O(n^2\log n)</span><script type="math/tex">O(n^2\log n)</script></span></p>
+</li>
+<li>
+<p><code>Rudvalis Shuffle</code>,<code>Thorp Shuffle</code>,<code>L-reversal chain</code>等其他洗牌法,此处就不详细说明了。</p>
+</li>
+</ul>
+<p>测试洗牌算法的效果:</p>
+<pre><code class="c++">void testShuffle(char arr[], const int len, void(*shuffle)(char *, const int, char *), const int testTime) {
+    int testResult[len][len];
+    // testResult[i][j]表示牌arr[i]在第j个位置出现的次数
+    std::map&lt;char, int&gt; arrMap; //用于查找牌在原来数组中的位置
+    for(int j = 0; j &lt;len; j++) {
+        arrMap.insert(map&lt;char, int&gt; :: value_type(arr[j], j));
+        memset(testResult[j], 0, len*sizeof(int));
+    }
+
+    // 对一副牌洗多次，统计每张牌在每个位置出现的次数
+    for(int i = 1; i &lt;= testTime; i++) {
+        char arrDest[len];
+        shuffle(arr, len, arrDest);
+        for(int j = 0; j &lt;len; j++) {
+            testResult[arrMap[arrDest[j]]][j] ++;
+        }
+    }
+
+    for(int i = 0; i &lt; len; i++) {
+        printf(&quot;%c:&quot;, arr[i]);
+        for(int j = 0; j &lt; len; j++) {
+            printf(&quot;%7d&quot;,testResult[i][j]);
+        }
+        printf(&quot;\n&quot;);
+    }
+    printf(&quot;----------------------------------\n&quot;);
+}
+</code></pre>
+
+<h2 id="_9">三、并查集</h2>
+<h2 id="_10">四、回溯法</h2>
 
   <br>
     <style>
