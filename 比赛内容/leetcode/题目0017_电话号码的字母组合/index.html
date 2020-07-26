@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/leetcode/%E9%A2%98%E7%9B%AE0017_%E7%94%B5%E8%AF%9D%E5%8F%B7%E7%A0%81%E7%9A%84%E5%AD%97%E6%AF%8D%E7%BB%84%E5%90%88/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>题目0017:电话号码的字母组合 - 图像/视频算法</title>
+    <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "\u9898\u76ee0017:\u7535\u8bdd\u53f7\u7801\u7684\u5b57\u6bcd\u7ec4\u5408", url: "#_top", level:1, children: [
+              {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1", level:2, children: [ 
+              ]},
+              {title: "\u89e3\u9898\u6280\u5de7", url: "#_2", level:2, children: [ 
+              ]},
+          ]},
+        ];
+    </script>
+    <script src="../../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+    <h1 id="0017">题目0017:电话号码的字母组合</h1>
+<h2 id="_1">题目描述</h2>
+<p>给定一个仅包含数字2-9的字符串,返回所有它能表示的字母组合。</p>
+<p>给出数字到字母的映射如下(与电话按键相同)。注意1不对应任何字母。</p>
+<p><img alt="" src="http://assets.leetcode-cn.com/aliyun-lc-upload/original_images/17_telephone_keypad.png" /></p>
+<p>示例:</p>
+<pre><code>输入：&quot;23&quot;
+输出：[&quot;ad&quot;, &quot;ae&quot;, &quot;af&quot;, &quot;bd&quot;, &quot;be&quot;, &quot;bf&quot;, &quot;cd&quot;, &quot;ce&quot;, &quot;cf&quot;].
+</code></pre>
+
+<p>说明:尽管上面的答案是按字典序排列的,但是你可以任意选择答案输出的顺序。</p>
+<h2 id="_2">解题技巧</h2>
+<ul>
+<li><strong>方法:回溯</strong></li>
+</ul>
+<p>回溯是一种通过穷举所有可能情况来找到所有解的算法。如果一个候选解最后被发现并不是可行解,回溯算法会舍弃它,并在前面的一些步骤做出一些修改,并重新尝试找到可行解。</p>
+<p>给出如下回溯函数backtrack(combination, next_digits),它将一个目前已经产生的组合combination和接下来准备要输入的数字next_digits作为参数。</p>
+<blockquote>
+<ul>
+<li>如果没有更多的数字需要被输入,那意味着当前的组合已经产生好了。</li>
+<li>如果还有数字需要被输入:</li>
+<li>遍历下一个数字所对应的所有映射的字母。</li>
+<li>将当前的字母添加到组合最后,也就是combination = combination + letter 。</li>
+<li>重复这个过程,输入剩下的数字:backtrack(combination + letter, next_digits[1:]) 。</li>
+</ul>
+</blockquote>
+<p><img alt="" src="../images/letter_combinations_of_a_phone_number.gif" /></p>
+<pre><code class="python">class Solution:
+    def letterCombinations(self, digits):
+        &quot;&quot;&quot;
+        :type digits: str
+        :rtype: List[str]
+        &quot;&quot;&quot;
+        phone = {'2': ['a', 'b', 'c'],
+                 '3': ['d', 'e', 'f'],
+                 '4': ['g', 'h', 'i'],
+                 '5': ['j', 'k', 'l'],
+                 '6': ['m', 'n', 'o'],
+                 '7': ['p', 'q', 'r', 's'],
+                 '8': ['t', 'u', 'v'],
+                 '9': ['w', 'x', 'y', 'z']}
+
+        def backtrack(combination, next_digits):
+            # if there is no more digits to check
+            if len(next_digits) == 0:
+                # the combination is done
+                output.append(combination)
+            # if there are still digits to check
+            else:
+                # iterate over all letters which map 
+                # the next available digit
+                for letter in phone[next_digits[0]]:
+                    # append the current letter to the combination
+                    # and proceed to the next digits
+                    backtrack(combination + letter, next_digits[1:])
+
+        output = []
+        if digits:
+            backtrack(&quot;&quot;, digits)
+        return output
+</code></pre>
+
+<p>复杂度分析</p>
+<blockquote>
+<p>时间复杂度:<span><span class="MathJax_Preview">O(3^N \times 4^M)</span><script type="math/tex">O(3^N \times 4^M)</script></span>,其中N是输入数字中对应3个字母的数目(比方说2,3,4,5,6,8),M是输入数字中对应4个字母的数目(比方说7,9),N+M是输入数字的总数。</p>
+<p>空间复杂度:<span><span class="MathJax_Preview">O(3^N \times 4^M)</span><script type="math/tex">O(3^N \times 4^M)</script></span>,这是因为需要保存<span><span class="MathJax_Preview">3^N \times 4^M</span><script type="math/tex">3^N \times 4^M</script></span>个结果。</p>
+</blockquote>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    <br>
+</div>
+
+</body>
+</html>

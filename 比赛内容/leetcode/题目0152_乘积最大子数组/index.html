@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/leetcode/%E9%A2%98%E7%9B%AE0152_%E4%B9%98%E7%A7%AF%E6%9C%80%E5%A4%A7%E5%AD%90%E6%95%B0%E7%BB%84/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>题目0152:乘积最大子数组 - 图像/视频算法</title>
+    <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "\u9898\u76ee0152:\u4e58\u79ef\u6700\u5927\u5b50\u6570\u7ec4", url: "#_top", level:1, children: [
+              {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1", level:2, children: [ 
+              ]},
+              {title: "\u89e3\u9898\u6280\u5de7", url: "#_2", level:2, children: [ 
+              ]},
+          ]},
+        ];
+    </script>
+    <script src="../../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+    <h1 id="0152">题目0152:乘积最大子数组</h1>
+<h2 id="_1">题目描述</h2>
+<p>给你一个整数数组nums,请你找出数组中乘积最大的连续子数组(该子数组中至少包含一个数字),并返回该子数组所对应的乘积。</p>
+<p>示例1:</p>
+<pre><code>输入: [2,3,-2,4]
+输出: 6
+解释: 子数组 [2,3] 有最大乘积 6。
+</code></pre>
+
+<p>示例2:</p>
+<pre><code>输入: [-2,0,-1]
+输出: 0
+解释: 结果不能为 2, 因为 [-2,-1] 不是子数组。
+</code></pre>
+
+<h2 id="_2">解题技巧</h2>
+<ul>
+<li><strong>方法一:动态规划</strong></li>
+</ul>
+<p>如果我们用<span><span class="MathJax_Preview">f_{\max}(i)</span><script type="math/tex">f_{\max}(i)</script></span>开表示以第i个元素结尾的乘积最大子数组的乘积,a表示输入参数nums,那么根据题目53.最大子序和的经验,我们很容易推导出这样的状态转移方程:</p>
+<div>
+<div class="MathJax_Preview">f_{\max}(i) = \max_{i = 1}^{n} \{ f(i - 1) \times a_i, a_i \}</div>
+<script type="math/tex; mode=display">f_{\max}(i) = \max_{i = 1}^{n} \{ f(i - 1) \times a_i, a_i \}</script>
+</div>
+<p>它表示以第i个元素结尾的乘积最大子数组的乘积可以考虑<span><span class="MathJax_Preview">a_i</span><script type="math/tex">a_i</script></span>加入前面的<span><span class="MathJax_Preview">f_{\max}(i - 1)</span><script type="math/tex">f_{\max}(i - 1)</script></span>对应的一段,或者单独成为一段,这里两种情况下取最大值。求出所有的<span><span class="MathJax_Preview">f_{\max}(i)</span><script type="math/tex">f_{\max}(i)</script></span>之后选取最大的一个作为答案。</p>
+<p>可是在这里,这样做是错误的。为什么呢?</p>
+<p>因为这里的定义并不满足最优子结构。具体地讲,如果<span><span class="MathJax_Preview">a = \{ 5, 6, -3, 4, -3 \}</span><script type="math/tex">a = \{ 5, 6, -3, 4, -3 \}</script></span>,那么此时<span><span class="MathJax_Preview">f_{\max}</span><script type="math/tex">f_{\max}</script></span>对应的序列是<span><span class="MathJax_Preview">\{ 5, 30, -3, 4, -3 \}</span><script type="math/tex">\{ 5, 30, -3, 4, -3 \}</script></span>,按照前面的算法我们可以得到答案为3030,即前两个数的乘积,而实际上答案应该是全体数字的乘积。我们来想一想问题出在哪里呢?问题出在最后一个−3所对应的<span><span class="MathJax_Preview">f_{\max}</span><script type="math/tex">f_{\max}</script></span>的值既不是−3,也不是<span><span class="MathJax_Preview">4 \times -3</span><script type="math/tex">4 \times -3</script></span>,而是<span><span class="MathJax_Preview">5 \times 30 \times (-3) \times 4 \times (-3)</span><script type="math/tex">5 \times 30 \times (-3) \times 4 \times (-3)</script></span>。所以我们得到了一个结论:当前位置的最优解未必是由前一个位置的最优解转移得到的。</p>
+<p>我们可以根据正负性进行分类讨论。</p>
+<p>考虑当前位置如果是一个负数的话,那么我们希望以它前一个位置结尾的某个段的积也是个负数,这样就可以负负得正,并且我们希望这个积尽可能负得更多,即尽可能小。如果当前位置是一个正数的话,我们更希望以它前一个位置结尾的某个段的积也是个正数,并且希望它尽可能地大。于是这里我们可以再维护一个<span><span class="MathJax_Preview">f_{\min}(i)</span><script type="math/tex">f_{\min}(i)</script></span>,它表示以第i个元素结尾的乘积最小子数组的乘积,那么我们可以得到这样的动态规划转移方程:</p>
+<div>
+<div class="MathJax_Preview">\begin{aligned} f_{\max}(i) &amp;= \max_{i = 1}^{n} \{ f_{\max}(i - 1) \times a_i, f_{\min}(i - 1) \times a_i, a_i \} \\ f_{\min}(i) &amp;= \min_{i = 1}^{n} \{ f_{\max}(i - 1) \times a_i, f_{\min}(i - 1) \times a_i, a_i \} \end{aligned}</div>
+<script type="math/tex; mode=display">\begin{aligned} f_{\max}(i) &= \max_{i = 1}^{n} \{ f_{\max}(i - 1) \times a_i, f_{\min}(i - 1) \times a_i, a_i \} \\ f_{\min}(i) &= \min_{i = 1}^{n} \{ f_{\max}(i - 1) \times a_i, f_{\min}(i - 1) \times a_i, a_i \} \end{aligned}</script>
+</div>
+<p>它代表第i个元素结尾的乘积最大子数组的乘积<span><span class="MathJax_Preview">f_{\max}(i)</span><script type="math/tex">f_{\max}(i)</script></span>,可以考虑把<span><span class="MathJax_Preview">a_i</span><script type="math/tex">a_i</script></span>加入第i-1个元素结尾的乘积最大或最小的子数组的乘积中,二者加上<span><span class="MathJax_Preview">a_i</span><script type="math/tex">a_i</script></span>,三者取大,就是第i个元素结尾的乘积最大子数组的乘积。第i个元素结尾的乘积最小子数组的乘积<span><span class="MathJax_Preview">f_{\min}(i)</span><script type="math/tex">f_{\min}(i)</script></span>同理。</p>
+<p>不难给出这样的实现:</p>
+<pre><code class="c++">class Solution {
+public:
+    int maxProduct(vector&lt;int&gt;&amp; nums) {
+        vector &lt;int&gt; maxF(nums), minF(nums);
+        for (int i = 1; i &lt; nums.size(); ++i) {
+            maxF[i] = max(maxF[i - 1] * nums[i], max(nums[i], minF[i - 1] * nums[i]));
+            minF[i] = min(minF[i - 1] * nums[i], min(nums[i], maxF[i - 1] * nums[i]));
+        }
+        return *max_element(maxF.begin(), maxF.end());
+    }
+};
+</code></pre>
+
+<p>易得这里的渐进时间复杂度和渐进空间复杂度都是O(n)。</p>
+<p>考虑优化空间:由于第i个状态只和第i-1个状态相关,根据滚动数组思想,我们可以只用两个变量来维护i−1时刻的状态,一个维护<span><span class="MathJax_Preview">f_{\max}</span><script type="math/tex">f_{\max}</script></span>,一个维护<span><span class="MathJax_Preview">f_{\min}</span><script type="math/tex">f_{\min}</script></span>。细节参见代码。</p>
+<p>代码:</p>
+<pre><code class="c++">class Solution {
+public:
+    int maxProduct(vector&lt;int&gt;&amp; nums) {
+        int maxF = nums[0], minF = nums[0], ans = nums[0];
+        for (int i = 1; i &lt; nums.size(); ++i) {
+            int mx = maxF, mn = minF;
+            maxF = max(mx * nums[i], max(nums[i], mn * nums[i]));
+            minF = min(mn * nums[i], min(nums[i], mx * nums[i]));
+            ans = max(maxF, ans);
+        }
+        return ans;
+    }
+};
+</code></pre>
+
+<p>复杂度分析:记nums元素个数为n。</p>
+<blockquote>
+<p>时间复杂度:程序一次循环遍历了nums,故渐进时间复杂度为O(n)。</p>
+<p>空间复杂度:优化后只使用常数个临时变量作为辅助空间,与n无关,故渐进空间复杂度为O(1)。</p>
+</blockquote>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    <br>
+</div>
+
+</body>
+</html>

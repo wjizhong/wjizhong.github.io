@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="wjizhong">
+    <link rel="canonical" href="https://wjizhong.github.io/%E6%AF%94%E8%B5%9B%E5%86%85%E5%AE%B9/leetcode/%E9%A2%98%E7%9B%AE0075_%E9%A2%9C%E8%89%B2%E5%88%86%E7%B1%BB/">
+    <link rel="shortcut icon" href="https://pic.pngsucai.com/00/18/26/4a7884c36067e596.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>题目0075:颜色分类 - 图像/视频算法</title>
+    <link href="../../../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../../../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../../../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '../../..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "\u9898\u76ee0075:\u989c\u8272\u5206\u7c7b", url: "#_top", level:1, children: [
+              {title: "\u9898\u76ee\u63cf\u8ff0", url: "#_1", level:2, children: [ 
+              ]},
+              {title: "\u89e3\u9898\u6280\u5de7", url: "#_2", level:2, children: [ 
+              ]},
+          ]},
+        ];
+    </script>
+    <script src="../../../js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+    <h1 id="0075">题目0075:颜色分类</h1>
+<h2 id="_1">题目描述</h2>
+<p>给定一个包含红色、白色和蓝色,一共n个元素的数组,原地对它们进行排序,使得相同颜色的元素相邻,并按照红色、白色、蓝色顺序排列。</p>
+<p>此题中,我们使用整数0、1和2分别表示红色、白色和蓝色。</p>
+<p>注意:不能使用代码库中的排序函数来解决这道题。</p>
+<p>示例:</p>
+<pre><code>输入: [2,0,2,1,1,0]
+输出: [0,0,1,1,2,2]
+</code></pre>
+
+<p>进阶:</p>
+<blockquote>
+<p>一个直观的解决方案是使用计数排序的两趟扫描算法。</p>
+<p>首先,迭代计算出0、1和2元素的个数,然后按照0、1、2的排序,重写当前数组。</p>
+<p>你能想出一个仅使用常数空间的一趟扫描算法吗?</p>
+</blockquote>
+<h2 id="_2">解题技巧</h2>
+<ul>
+<li><strong>方法一:一次遍历</strong></li>
+</ul>
+<p>本问题被称为<a href="https://en.wikipedia.org/wiki/Dutch_national_flag_problem">荷兰国旗问题</a>
+,最初由 Edsger W. Dijkstra提出。其主要思想是给每个数字设定一种颜色,并按照荷兰国旗颜色的顺序进行调整。</p>
+<p><img alt="" src="http://pic.leetcode-cn.com/3ab6cc20bb91835c2722c688c2f894e407289333bae839a930957461e810a957-image.png" /></p>
+<p>我们用三个指针(p0,p2和curr)来分别追踪0的最右边界,2的最左边界和当前考虑的元素。</p>
+<p><img alt="" src="http://pic.leetcode-cn.com/5b3d372e0bfb293ca3aac12e90421d7612c9e75b78b579f954c42ebfe74705d4-image.png" /></p>
+<p>本解法的思路是沿着数组移动curr指针,若nums[curr] = 0,则将其与nums[p0]互换;若nums[curr] = 2,则与nums[p2]互换。</p>
+<p>算法:</p>
+<blockquote>
+<ul>
+<li>初始化0的最右边界:p0 = 0。在整个算法执行过程中nums[idx &lt; p0] = 0.</li>
+<li>初始化2的最左边界:p2 = n - 1。在整个算法执行过程中nums[idx &gt; p2] = 2.</li>
+<li>初始化当前考虑的元素序号:curr = 0.</li>
+<li>While curr &lt;= p2 :</li>
+<li>若nums[curr] = 0:交换第curr个和第p0个元素,并将指针都向右移。</li>
+<li>若nums[curr] = 2:交换第curr个和第p2个元素,并将p2指针左移 。</li>
+<li>若nums[curr] = 1:将指针curr右移。</li>
+</ul>
+</blockquote>
+<p>实现</p>
+<p><img alt="" src="../images/sort_colors.gif" /></p>
+<pre><code class="python">class Solution:
+    def sortColors(self, nums: List[int]) -&gt; None:
+        '''
+        荷兰三色旗问题解
+        '''
+        # 对于所有 idx &lt; p0 : nums[idx &lt; p0] = 0
+        # curr是当前考虑元素的下标
+        p0 = curr = 0
+        # 对于所有 idx &gt; p2 : nums[idx &gt; p2] = 2
+        p2 = len(nums) - 1
+
+        while curr &lt;= p2:
+            if nums[curr] == 0:
+                nums[p0], nums[curr] = nums[curr], nums[p0]
+                p0 += 1
+                curr += 1
+            elif nums[curr] == 2:
+                nums[curr], nums[p2] = nums[p2], nums[curr]
+                p2 -= 1
+            else:
+                curr += 1
+</code></pre>
+
+<p>复杂度分析</p>
+<blockquote>
+<p>时间复杂度:由于对长度N的数组进行了一次遍历,时间复杂度为O(N)。</p>
+<p>空间复杂度:由于只使用了常数空间,空间复杂度为O(1)。</p>
+</blockquote>
+
+  <br>
+    <style>
+blockquote{
+    font-size: 99%;
+}
+</style>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  CommonHTML: {
+    scale: 100
+  }
+});
+</script>
+<script type="text/javascript" async
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    <br>
+</div>
+
+</body>
+</html>
