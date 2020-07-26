@@ -29,6 +29,7 @@ nav:
             - python基础: 工程内容/python教程/python基础.md
             - python模块: 工程内容/python教程/python模块.md
     - 算法内容:
+        - 基本算法: 算法内容/基本算法.md
         - 算法基础: 算法内容/算法基础.md
         - 最近邻: 算法内容/最近邻.md
         - 聚类: 算法内容/聚类.md
